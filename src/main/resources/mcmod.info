@@ -9,7 +9,7 @@
 		"updateUrl": "",
 		"authorList": ["TheRandomLabs"],
 		"credits": "",
-		"logoFile": "",
+		"logoFile": "assets/randomtweaks/textures/logo.png",
 		"screenshots": [],
 		"dependencies": []
 	}

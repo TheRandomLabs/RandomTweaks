@@ -1,0 +1,15 @@
+{
+	"homepage": "https://minecraft.curseforge.com/projects/RandomTweaks",
+	"1.11.2": {
+		"1.11.2-1.0.0.0": "Initial release."
+	},
+	"1.10.2": {
+		"1.11.2-1.0.0.0": "Initial release."
+	},
+	"promos": {
+		"1.11.2-latest": "1.11.2-1.0.0.0",
+		"1.11.2-recommended": "1.11.2-1.0.0.0",
+		"1.10.2-latest": "1.11.2-1.0.0.0",
+		"1.10.2-recommended": "1.11.2-1.0.0.0"
+	}
+}
