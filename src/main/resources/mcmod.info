@@ -1,0 +1,16 @@
+[
+	{
+		"modid": "randomtweaks",
+		"name": "RandomTweaks",
+		"description": "A bunch of miscellaneous tweaks for Minecraft.",
+		"version": "${version}",
+		"mcversion": "${mcversion}",
+		"url": "https://minecraft.curseforge.com/projects/randomtweaks",
+		"updateUrl": "",
+		"authorList": ["TheRandomLabs"],
+		"credits": "",
+		"logoFile": "",
+		"screenshots": [],
+		"dependencies": []
+	}
+]

@@ -1,0 +1,6 @@
+key.reloadSoundSystem=Reload sound system
+
+reloadSoundSystem.success=§eSuccessfully reloaded sound system!
+reloadSoundSystem.failure.1=§cFailed to reload sound system:
+reloadSoundSystem.failure.2=§c%s: %s
+reloadSoundSystem.failure.3=§cCheck the log for more information
