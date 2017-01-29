@@ -1,0 +1,6 @@
+key.reloadSoundSystem=Soundsystem neuladen
+
+reloadSoundSystem.success=§eSoundsystem erfolgreich neugeladen!
+reloadSoundSystem.failure.1=§cNeuladen des Soundsystems fehlgeschlagen:
+reloadSoundSystem.failure.2=§c%s: %s
+reloadSoundSystem.failure.3=§cLogdatei überprüfen für mehr Informationen
