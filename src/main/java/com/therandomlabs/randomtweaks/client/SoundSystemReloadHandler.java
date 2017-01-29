@@ -17,7 +17,7 @@ public final class SoundSystemReloadHandler {
 	public static final Field soundManagerField =
 			RandomTweaks.findField(SoundHandler.class, SoundManager.class);
 	public static KeyBinding reloadSoundSystem =
-			new KeyBinding("key.reloadSoundSystem", Keyboard.KEY_F8, "key.categories.misc");;
+			new KeyBinding("key.reloadSoundSystem", Keyboard.KEY_F8, "key.categories.misc");
 
 	@SubscribeEvent
 	public void onKeyInput(KeyInputEvent event) {
