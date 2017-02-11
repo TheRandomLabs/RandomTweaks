@@ -2,7 +2,6 @@ package com.therandomlabs.randomtweaks.client;
 
 import java.lang.reflect.Field;
 import org.lwjgl.input.Keyboard;
-import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.audio.SoundManager;
@@ -12,10 +11,11 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public final class SoundSystemReloadHandler {
 	public static final Field soundManagerField =
-			RandomTweaks.findField(SoundHandler.class, SoundManager.class);
+			ReflectionHelper.findField(SoundHandler.class, "sndManager", "field_147694_f");
 	public static KeyBinding reloadSoundSystem =
 			new KeyBinding("key.reloadSoundSystem", Keyboard.KEY_F8, "key.categories.misc");
 

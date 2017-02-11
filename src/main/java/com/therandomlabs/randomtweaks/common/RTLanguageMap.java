@@ -10,7 +10,6 @@ import net.minecraft.util.text.translation.LanguageMap;
 
 public class RTLanguageMap extends LanguageMap {
 	public static final RTLanguageMap INSTANCE = new RTLanguageMap();
-	private static final Map<Field, LanguageMap> languageMaps = new HashMap<>(3);
 
 	@Override
 	public synchronized String translateKey(String key) {
@@ -39,29 +38,9 @@ public class RTLanguageMap extends LanguageMap {
 		return isLevel ? RomanNumeralHandler.getRomanNumeral(level) : super.translateKey(key);
 	}
 
-	public static void replaceLanguageMaps() throws Exception {
-		if(languageMaps.isEmpty()) {
-			final List<Field> fields = new ArrayList<>(3);
-			fields.addAll(RandomTweaks.findFields(I18n.class, LanguageMap.class));
-			fields.add(RandomTweaks.findField(LanguageMap.class, LanguageMap.class));
-
-			for(Field field : fields) {
-				RandomTweaks.makeNotFinal(field);
-				languageMaps.put(field, (LanguageMap) field.get(null));
-				field.set(null, INSTANCE);
-			}
-		}
-
-		for(Field field : languageMaps.keySet()) {
-			field.set(null, INSTANCE);
-		}
-	}
-
-	public static void unreplaceLanguageMaps() throws Exception {
-		if(!languageMaps.isEmpty()) {
-			for(Field field : languageMaps.keySet()) {
-				field.set(null, languageMaps.get(field));
-			}
-		}
+	public static void replaceLanguageMaps() {
+		I18n.localizedName = INSTANCE;
+		I18n.fallbackTranslator = INSTANCE;
+		LanguageMap.instance = INSTANCE;
 	}
 }

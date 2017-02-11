@@ -1,6 +1,16 @@
-key.reloadSoundSystem=Reload sound system
+key.reloadSoundSystem=Reload Sound System
 
 reloadSoundSystem.success=§eSuccessfully reloaded sound system!
 reloadSoundSystem.failure.1=§cFailed to reload sound system:
 reloadSoundSystem.failure.2=§c%s: %s
 reloadSoundSystem.failure.3=§cCheck the log for more information
+
+defaultGamerules.parseFailure=§cError in defaultgamerules.json. Check the log for more information
+
+commands.deletegamerule.usage=/deletegamerule <gamerule>
+commands.deletegamerule.failure=§cAn error occurred while attempting to delete gamerule: %s
+commands.deletegamerule.success=Gamerule %s successfully deleted!
+
+commands.hunger.usage=/hunger <player> <level> [saturation]
+commands.hunger.failure=§cAn error occurred while attempting to set saturation: %s
+commands.hunger.success=%s's new hunger level: %s New saturation: %s

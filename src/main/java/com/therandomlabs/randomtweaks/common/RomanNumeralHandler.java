@@ -3,6 +3,7 @@ package com.therandomlabs.randomtweaks.common;
 import java.util.HashMap;
 import java.util.Map;
 
+//Taken from https://github.com/TheRandomLabs/Roman-Numeral-Generator and modified
 public final class RomanNumeralHandler {
 	private static final String[] ROMAN_NUMERALS = {
 			"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"
@@ -14,7 +15,6 @@ public final class RomanNumeralHandler {
 
 	private RomanNumeralHandler() {}
 
-	//Taken from https://github.com/TheRandomLabs/Roman-Numeral-Generator
 	public static String getRomanNumeral(int number) {
 		if(number == 0) {
 			return "Nulla";
@@ -32,14 +32,14 @@ public final class RomanNumeralHandler {
 		String romanNumeral = "";
 		for(int i = 0; i < ROMAN_NUMERALS.length; i++) {
 			while(number >= ROMAN_NUMERAL_VALUES[i]) {
-				//The largest value that can be represented with Roman Numerals without special
+				//The largest value that can be represented with Roman numerals without special
 				//characters
 				if(number > 3999) {
 					int digits = String.valueOf(number).length();
 					final int nested = Integer.parseInt(
 							String.valueOf(number).substring(0, 1 + (digits - 4)));
 
-					//In Roman Numerals, brackets mean "multiply by 1000"
+					//In Roman numerals, brackets mean "multiply by 1000"
 					romanNumeral += "(" + getRomanNumeral(nested) + ")";
 					number -= nested * 1000;
 				} else {
