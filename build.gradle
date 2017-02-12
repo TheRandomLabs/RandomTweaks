@@ -12,7 +12,7 @@ buildscript {
 
 apply plugin: "net.minecraftforge.gradle.forge"
 
-version = "1.11.2-1.1.1.0"
+version = "1.11.2-1.1.1.1"
 group = "com.therandomlabs.randomtweaks"
 archivesBaseName = "randomtweaks"
 
@@ -25,7 +25,6 @@ minecraft {
 	version = "1.11.2-latest"
 	runDir = "run"
 	mappings = "snapshot_20161220"
-	at "randomtweaks_at.cfg"
 }
 
 processResources {
