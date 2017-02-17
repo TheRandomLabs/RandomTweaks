@@ -13,13 +13,28 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.MalformedJsonException;
+import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
-//TODO rewrite this mess
 public final class ConfigurationHandler {
-	public static final String RANDOMTWEAKS = RandomTweaks.MODID + ".json";
+	public static final String RANDOMTWEAKS = RandomTweaks.MODID + ".cfg";
 	public static final String DEFAULT_GAMERULES = "defaultgamerules.json";
 	private static Path directory;
+	private static Configuration configuration;
+
+	public static boolean reloadSoundSystemKeyBind;
+	public static boolean moreRomanNumerals;
+	public static boolean moveBucketCreativeTab;
+
+	public static int squidSpawnLimitRadius;
+	public static int squidChunkLimit;
+	public static int maxSquidPackSize;
+
+	public static boolean deletegameruleCommand;
+	public static boolean hungerCommand;
+
+	public static boolean dontResetHungerOnRespawn;
+	public static int minimumHungerLevelOnRespawn;
 
 	static void initialize(FMLPreInitializationEvent event) throws IOException {
 		directory =
@@ -29,25 +44,51 @@ public final class ConfigurationHandler {
 			Files.createDirectory(directory);
 		}
 
-		if(!configurationExists(RANDOMTWEAKS)) {
-			createConfiguration();
-		}
+		configuration = new Configuration(getConfiguration(RANDOMTWEAKS).toFile());
+
+		reloadConfiguration();
 		if(!configurationExists(DEFAULT_GAMERULES)) {
 			createDefaultGamerulesConfiguration();
 		}
 	}
 
-	public static void createConfiguration() throws IOException {
-		Files.write(getConfiguration(RANDOMTWEAKS), Arrays.asList(
-				"{",
-				"\t\"reloadSoundSystem\": true,",
-				"\t\"moreRomanNumerals\": true,",
-				"\t\"deletegameruleCommand\": true,",
-				"\t\"hungerCommand\": true,",
-				"\t\"dontResetHungerOnRespawn\": false,",
-				"\t\"minimumHungerLevelOnRespawn\": 3",
-				"}"
-		));
+	public static void reloadConfiguration() throws IOException {
+		configuration.load();
+
+		reloadSoundSystemKeyBind = configuration.get("general", "reloadSoundSystemKeyBind",
+				true, "Self explanatory.").getBoolean();
+		moreRomanNumerals = configuration.get("general", "moreRomanNumerals", true,
+				"Self explanatory.").getBoolean();
+		moveBucketCreativeTab = configuration.get("general", "moveBucketCreativeTab", true,
+				"Moves the bucket to the Tools creative tab.").getBoolean();
+
+		squidSpawnLimitRadius =
+				configuration.get("squids", "squidSpawnLimitRadius", 40, "Disables squid " +
+				"spawning if a player is not within the specified radius. Set to 0 to " +
+				"disable this limit.", 0, Integer.MAX_VALUE).getInt();
+		squidChunkLimit =
+				configuration.get("squids", "squidChunkLimit", 10,
+				"Limits the amount of squids allowed in a chunk. Set to 0 to disable squid " +
+				"spawning, and set to -1 to disable this limit.", -1, Integer.MAX_VALUE).getInt();
+		maxSquidPackSize =
+				configuration.get("squids", "maxSquidPackSize", 2, "The maximum amount of " +
+				"squids that can be spawned in a \"pack\". Set to 0 to use the default.", 0,
+				Integer.MAX_VALUE).getInt();
+
+		deletegameruleCommand = configuration.get("general", "deletegameruleCommand", true,
+				"Self explanatory - may be moved to another mod in the future.").getBoolean();
+		hungerCommand = configuration.get("general", "hungerCommand", true,
+				"Self explanatory - may be moved to another mod in the future.").getBoolean();
+
+		dontResetHungerOnRespawn =
+				configuration.get("balance", "dontResetHungerOnRespawn", false,
+				"When you respawn, your hunger resets. This disables that mechanic.").getBoolean();
+		minimumHungerLevelOnRespawn = configuration.get("balance",
+				"minimumHungerLevelOnRespawn", 3, "If dontResetHungerOnRespawn is enabled, " +
+				"this sets the minimum hunger on respawn so a player doesn't spawn with 0 " +
+				"hunger.", 0, Integer.MAX_VALUE).getInt();
+
+		configuration.save();
 	}
 
 	public static void createDefaultGamerulesConfiguration() throws IOException {
@@ -63,32 +104,6 @@ public final class ConfigurationHandler {
 				"//\t}",
 				"}"
 		));
-	}
-
-	public static boolean readBoolean(String key) throws IOException {
-		if(!configurationExists(RANDOMTWEAKS)) {
-			createConfiguration();
-		}
-
-		try {
-			return readJson(RANDOMTWEAKS).get(key).getAsBoolean();
-		} catch(Exception ex) {
-			createConfiguration();
-			return readJson(RANDOMTWEAKS).get(key).getAsBoolean();
-		}
-	}
-
-	public static int readInteger(String key) throws IOException {
-		if(!configurationExists(RANDOMTWEAKS)) {
-			createConfiguration();
-		}
-
-		try {
-			return readJson(RANDOMTWEAKS).get(key).getAsInt();
-		} catch(Exception ex) {
-			createConfiguration();
-			return readJson(RANDOMTWEAKS).get(key).getAsInt();
-		}
 	}
 
 	public static Map<String, String> getDefaultGamerules(int gamemode) throws IOException {

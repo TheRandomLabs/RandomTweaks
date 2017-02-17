@@ -6,13 +6,15 @@ import net.minecraft.world.DimensionType;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.WorldEvent;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class WorldCreateHandler {
-	private boolean firstLoad;
+	private static boolean firstLoad;
 
 	@SubscribeEvent
-	public void onCreateSpawn(WorldEvent.CreateSpawnPosition event) {
+	public static void onCreateSpawn(WorldEvent.CreateSpawnPosition event) {
 		final World world = event.getWorld();
 		if(!world.isRemote && world.provider.getDimension() == DimensionType.OVERWORLD.getId()) {
 			firstLoad = true;
@@ -20,7 +22,7 @@ public final class WorldCreateHandler {
 	}
 
 	@SubscribeEvent
-	public void onWorldLoad(WorldEvent.Load event) throws Exception {
+	public static void onWorldLoad(WorldEvent.Load event) throws Exception {
 		final World world = event.getWorld();
 		if(!world.isRemote && world.provider.getDimension() == DimensionType.OVERWORLD.getId() &&
 				firstLoad) {
@@ -29,7 +31,7 @@ public final class WorldCreateHandler {
 		}
 	}
 
-	private void onWorldCreate(World world) throws Exception {
+	private static void onWorldCreate(World world) throws Exception {
 		final GameRules gamerules = world.getGameRules();
 		final Map<String, String> defaultGamerules = ConfigurationHandler.getDefaultGamerules(
 				world.getWorldInfo().getGameType().getID());

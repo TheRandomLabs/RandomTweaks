@@ -22,34 +22,31 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 		"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/master/versions.json")
 public final class RandomTweaks {
 	public static final String MODID = "randomtweaks";
-	public static final String VERSION = "1.11.2-1.1.1.1";
+	public static final String VERSION = "1.11.2-1.2.0.0";
 	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.10,1.12)";
 
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
-
-	@Instance
-	public static RandomTweaks instance;
 
 	@SidedProxy(clientSide = "com.therandomlabs.randomtweaks.client.ClientProxy",
 			serverSide = "com.therandomlabs.randomtweaks.common.CommonProxy")
 	public static CommonProxy proxy;
 
 	@EventHandler
-	public void preInit(FMLPreInitializationEvent event) throws Exception {
+	public static void preInit(FMLPreInitializationEvent event) throws Exception {
 		proxy.preInit(event);
 	}
 
 	@EventHandler
-	public void init(FMLInitializationEvent event) throws Exception {
+	public static void init(FMLInitializationEvent event) throws Exception {
 		proxy.init(event);
 	}
 
 	@EventHandler
-	public void serverStarting(FMLServerStartingEvent event) throws Exception {
-		if(ConfigurationHandler.readBoolean("deletegameruleCommand")) {
+	public static void serverStarting(FMLServerStartingEvent event) throws Exception {
+		if(ConfigurationHandler.deletegameruleCommand) {
 			event.registerServerCommand(new CommandDeleteGamerule());
 		}
-		if(ConfigurationHandler.readBoolean("hungerCommand")) {
+		if(ConfigurationHandler.hungerCommand) {
 			event.registerServerCommand(new CommandHunger());
 		}
 	}

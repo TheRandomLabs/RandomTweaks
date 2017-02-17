@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.11.2": {
+		"1.11.2-1.2.0.0": "Redid configuration system. Added the bucket creative tab tweak and the squid spawning tweaks.",
 		"1.11.2-1.1.1.1": "Fixed update checker.",
 		"1.11.2-1.1.1.0": "Updated German translation.",
 		"1.11.2-1.1.0.0": "Added default gamerules, a /deletegamerule command, a /hunger command, a configuration and a hunger reset toggle. Also fixed an issue with the Roman numerals.",
@@ -8,6 +9,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.10.2": {
+		"1.11.2-1.2.0.0": "Redid configuration system. Added the bucket creative tab tweak and the squid spawning tweaks.",
 		"1.11.2-1.1.1.1": "Fixed update checker.",
 		"1.11.2-1.1.1.0": "Updated German translation.",
 		"1.11.2-1.1.0.0": "Added default gamerules, a /deletegamerule command, a /hunger command, a configuration and a hunger reset toggle. Also fixed an issue with the Roman numerals.",
@@ -15,9 +17,9 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"promos": {
-		"1.11.2-latest": "1.11.2-1.1.1.1",
-		"1.11.2-recommended": "1.11.2-1.1.1.1",
-		"1.10.2-latest": "1.11.2-1.1.1.1",
-		"1.10.2-recommended": "1.11.2-1.1.1.1"
+		"1.11.2-latest": "1.11.2-1.2.0.0",
+		"1.11.2-recommended": "1.11.2-1.2.0.0",
+		"1.10.2-latest": "1.11.2-1.2.0.0",
+		"1.10.2-recommended": "1.11.2-1.2.0.0"
 	}
 }

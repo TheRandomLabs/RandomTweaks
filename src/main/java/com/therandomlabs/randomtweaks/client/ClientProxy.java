@@ -9,6 +9,7 @@ import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.audio.SoundManager;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.init.Items;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -20,15 +21,11 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 
 public final class ClientProxy extends CommonProxy {
 	@Override
-	public void init(FMLInitializationEvent event) throws Exception {
+	public void init(FMLInitializationEvent event) {
 		super.init(event);
 
-		if(!ConfigurationHandler.readBoolean("reloadSoundSystem")) {
-			return;
+		if(ConfigurationHandler.reloadSoundSystemKeyBind) {
+			SoundSystemReloadHandler.registerKeyBinding();
 		}
-
-		final SoundSystemReloadHandler soundSystemReloadHandler = new SoundSystemReloadHandler();
-		soundSystemReloadHandler.registerKeyBinding();
-		MinecraftForge.EVENT_BUS.register(soundSystemReloadHandler);
 	}
 }
