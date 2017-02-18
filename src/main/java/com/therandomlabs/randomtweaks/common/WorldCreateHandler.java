@@ -16,7 +16,7 @@ public final class WorldCreateHandler {
 	@SubscribeEvent
 	public static void onCreateSpawn(WorldEvent.CreateSpawnPosition event) {
 		final World world = event.getWorld();
-		if(!world.isRemote && world.provider.getDimension() == DimensionType.OVERWORLD.getId()) {
+		if(!world.isRemote && world.provider.getDimensionType() == DimensionType.OVERWORLD) {
 			firstLoad = true;
 		}
 	}
@@ -24,7 +24,7 @@ public final class WorldCreateHandler {
 	@SubscribeEvent
 	public static void onWorldLoad(WorldEvent.Load event) throws Exception {
 		final World world = event.getWorld();
-		if(!world.isRemote && world.provider.getDimension() == DimensionType.OVERWORLD.getId() &&
+		if(!world.isRemote && world.provider.getDimensionType() == DimensionType.OVERWORLD &&
 				firstLoad) {
 			onWorldCreate(world);
 			firstLoad = false;
