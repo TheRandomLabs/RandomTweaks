@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.FoodStats;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -17,9 +18,13 @@ public final class HungerHandler {
 
 	@SubscribeEvent
 	public static void onDeath(LivingDeathEvent event) {
-		if(ConfigurationHandler.dontResetHungerOnRespawn &&
-				event.getEntity() instanceof EntityPlayer) {
+		if(event.getEntity() instanceof EntityPlayer) {
 			final EntityPlayer player = (EntityPlayer) event.getEntity();
+
+			if(!dontResetHungerOnRespawn(player)) {
+				return;
+			}
+
 			final NBTTagCompound data = player.getEntityData();
 			data.setInteger("DeathFoodLevel", player.getFoodStats().getFoodLevel());
 			data.setFloat("DeathSaturationLevel", player.getFoodStats().getSaturationLevel());
@@ -28,7 +33,7 @@ public final class HungerHandler {
 
 	@SubscribeEvent
 	public static void onRespawn(PlayerEvent.Clone event) throws Exception {
-		if(!ConfigurationHandler.dontResetHungerOnRespawn) {
+		if(!dontResetHungerOnRespawn(event.getOriginal())) {
 			return;
 		}
 
@@ -44,5 +49,18 @@ public final class HungerHandler {
 
 	public static void setSaturation(FoodStats stats, float saturation) throws Exception {
 		SATURATION_LEVEL.set(stats, saturation);
+	}
+
+	public static boolean dontResetHungerOnRespawn(EntityPlayer player) {
+		switch(ConfigurationHandler.hungerRespawnBehavior) {
+		case ConfigurationHandler.DONT_RESET_HUNGER_ON_RESPAWN:
+			return true;
+		case ConfigurationHandler.DONT_RESET_HUNGER_IF_KEEPINVENTORY:
+			return player.getEntityWorld().getGameRules().getBoolean("keepInventory");
+		case ConfigurationHandler.DONT_RESET_HUNGER_IF_KEEPINVENTORY_AND_NOT_CREATIVE:
+			return player.getEntityWorld().getGameRules().getBoolean("keepInventory") &&
+					!player.capabilities.isCreativeMode;
+		}
+		return false;
 	}
 }

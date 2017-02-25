@@ -19,10 +19,6 @@ public class RTLanguageMap extends LanguageMap {
 		languageList = (Map<String, String>) languageListField.get(languageMap);
 	}
 
-	private RTLanguageMap(boolean failed) {
-		languageList = null;
-	}
-
 	@Override
 	public synchronized String translateKey(String key) {
 		if(languageList.get(key) != null) {

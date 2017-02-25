@@ -35,7 +35,7 @@ public final class WorldCreateHandler {
 	private static void onWorldCreate(World world) throws Exception {
 		final GameRules gamerules = world.getGameRules();
 		final Map<String, String> defaultGamerules = ConfigurationHandler.getDefaultGamerules(
-				world.getWorldInfo().getGameType().getID());
+				world.getWorldInfo().getGameType().getID(), world.getWorldType().getName());
 
 		if(defaultGamerules == null) {
 			world.getMinecraftServer().sendMessage(

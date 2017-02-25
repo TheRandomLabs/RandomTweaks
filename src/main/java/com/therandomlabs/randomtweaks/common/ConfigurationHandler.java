@@ -42,7 +42,12 @@ public final class ConfigurationHandler {
 	public static boolean deletegameruleCommand;
 	public static boolean hungerCommand;
 
-	public static boolean dontResetHungerOnRespawn;
+	public static final int RESET_HUNGER_ON_RESPAWN = 0;
+	public static final int DONT_RESET_HUNGER_ON_RESPAWN = 1;
+	public static final int DONT_RESET_HUNGER_IF_KEEPINVENTORY = 2;
+	public static final int DONT_RESET_HUNGER_IF_KEEPINVENTORY_AND_NOT_CREATIVE = 3;
+
+	public static int hungerRespawnBehavior;
 	public static int minimumHungerLevelOnRespawn;
 
 	static void initialize(FMLPreInitializationEvent event) throws IOException {
@@ -85,19 +90,22 @@ public final class ConfigurationHandler {
 				"Limits the amount of squids allowed in a chunk. Set to 0 to disable squid " +
 				"spawning, and set to -1 to disable this limit. Server-sided.",
 				SQUID_CHUNK_LIMIT_DISABLED, Integer.MAX_VALUE).getInt();
-		maxSquidPackSize =
-				configuration.get("squids", "maxSquidPackSize", 2, "The maximum amount of " +
-				"squids that can be spawned in a \"pack\". Set to 0 to use the default. " +
-				"Server-sided.", 0, Integer.MAX_VALUE).getInt();
+		maxSquidPackSize = configuration.get("squids", "maxSquidPackSize", 2, "The maximum " +
+				"amount of squids that can be spawned in a \"pack\". Set to 0 to use the " +
+				"vanilla default. Server-sided.", DEFAULT_SQUID_PACK_SIZE,
+				Integer.MAX_VALUE).getInt();
 
 		deletegameruleCommand = configuration.get("general", "deletegameruleCommand", true,
 				"Self explanatory - may be moved to another mod in the future.").getBoolean();
 		hungerCommand = configuration.get("general", "hungerCommand", true,
 				"Self explanatory - may be moved to another mod in the future.").getBoolean();
 
-		dontResetHungerOnRespawn =
-				configuration.get("balance", "dontResetHungerOnRespawn", false,
-				"When you respawn, your hunger resets. This disables that mechanic.").getBoolean();
+		hungerRespawnBehavior = configuration.get("balance", "hungerRespawnBehavior",
+				DONT_RESET_HUNGER_IF_KEEPINVENTORY_AND_NOT_CREATIVE, "0 = hunger resets on " +
+				"respawn; 1 = hunger doesn't reset on respawn; 2 = hunger doesn't reset on " +
+				"respawn if keepInventory is true; 3 = 2, but only if the player is not in " +
+				"creative", RESET_HUNGER_ON_RESPAWN,
+				DONT_RESET_HUNGER_IF_KEEPINVENTORY_AND_NOT_CREATIVE).getInt();
 		minimumHungerLevelOnRespawn = configuration.get("balance",
 				"minimumHungerLevelOnRespawn", 3, "If dontResetHungerOnRespawn is enabled, " +
 				"this sets the minimum hunger on respawn so a player doesn't spawn with 0 " +
@@ -112,7 +120,10 @@ public final class ConfigurationHandler {
 				"{",
 				"//\t\"commandBlockOutput\": false, //These are for all game modes",
 				"//\t\"keepInventory\": true,",
-				"//\t\"1\": { //This is for a specific game mode (creative)",
+				"//\t\"1:flat\": { //Creative flat world. Game modes and world types can " +
+						"be separated with commas (no spaces). Possible game types in vanilla: " +
+						"flat = Superflat, default = Default, largeBiomes = Large Biomes, " +
+						"amplified = Amplified",
 				"//\t\t\"doDaylightCycle\": false,",
 				"//\t\t\"doWeatherCycle\": false,",
 				"//\t\t\"doMobSpawning\": false",
@@ -121,7 +132,8 @@ public final class ConfigurationHandler {
 		));
 	}
 
-	public static Map<String, String> getDefaultGamerules(int gamemode) throws IOException {
+	public static Map<String, String> getDefaultGamerules(int gamemode, String worldType)
+			throws IOException {
 		if(!configurationExists(DEFAULT_GAMERULES)) {
 			createDefaultGamerulesConfiguration();
 		}
@@ -138,9 +150,41 @@ public final class ConfigurationHandler {
 		for(Entry<String, JsonElement> entry : object.entrySet()) {
 			if(entry.getValue().isJsonObject()) {
 				try {
-					if(Integer.parseInt(entry.getKey()) == gamemode) {
-						getDefaultGamerules(entry.getValue().getAsJsonObject(), gamerules);
+					final String[] split = entry.getKey().split(":");
+
+					final String[] gamemodes = split[0].split(",");
+					boolean gamemodeFound = false;
+
+					for(String mode : gamemodes) {
+						try {
+							if(Integer.parseInt(mode) == gamemode) {
+								gamemodeFound = true;
+								break;
+							}
+						} catch(NumberFormatException ex) {}
 					}
+
+					if(!gamemodeFound) {
+						continue;
+					}
+
+					if(split.length > 1) {
+						final String[] worldTypes = split[1].split(",");
+						boolean worldTypeFound = false;
+
+						for(String type : worldTypes) {
+							if(type.equals(worldType)) {
+								worldTypeFound = true;
+								break;
+							}
+						}
+
+						if(!worldTypeFound) {
+							continue;
+						}
+					}
+
+					getDefaultGamerules(entry.getValue().getAsJsonObject(), gamerules);
 				} catch(NumberFormatException ex) {}
 				continue;
 			}

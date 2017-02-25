@@ -2,6 +2,7 @@ package com.therandomlabs.randomtweaks.common;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import net.minecraft.block.BlockLiquid;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -16,7 +17,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 		"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/master/versions.json")
 public final class RandomTweaks {
 	public static final String MODID = "randomtweaks";
-	public static final String VERSION = "1.11.2-1.3.0.0";
+	public static final String VERSION = "1.11.2-1.4.0.0";
 	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.10,1.12)";
 
 	public static final Logger LOGGER = LogManager.getLogger(MODID);

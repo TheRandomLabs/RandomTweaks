@@ -21,8 +21,8 @@ public class CommonProxy {
 			try {
 				RTLanguageMap.replaceLanguageMaps();
 			} catch(Exception ex) {
-				LOGGER.error("Failed to replace LanguageMap instances -" +
-						"more Roman numerals feature disabled", ex);
+				LOGGER.error("Failed to replace LanguageMap instances - more Roman numerals " +
+						"feature disabled", ex);
 			}
 		}
 	}

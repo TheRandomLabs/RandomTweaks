@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.11.2": {
+		"1.11.2-1.4.0.0": "Added more options for hunger resetting on respawn.\nAdded specific world types in the default gamerules.\nMultiple game modes and world types can now be specified in the default gamerules.",
 		"1.11.2-1.3.0.0": "Cleaned up some code.\nFixed some bugs.\nAdded ocelot healing.\nAdded sleep tweaks.",
 		"1.11.2-1.2.0.0": "Redid configuration system.\nAdded the bucket creative tab tweak and the squid spawning tweaks.",
 		"1.11.2-1.1.1.1": "Fixed update checker.",
@@ -10,6 +11,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.10.2": {
+		"1.11.2-1.4.0.0": "Added more options for hunger resetting on respawn.\nAdded specific world types in the default gamerules.\nMultiple game modes and world types can now be specified in the default gamerules.",
 		"1.11.2-1.3.0.0": "Cleaned up some code.\nFixed some bugs.\nAdded ocelot healing.\nAdded sleep tweaks.",
 		"1.11.2-1.2.0.0": "Redid configuration system.\nAdded the bucket creative tab tweak and the squid spawning tweaks.",
 		"1.11.2-1.1.1.1": "Fixed update checker.",
@@ -19,9 +21,9 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"promos": {
-		"1.11.2-latest": "1.11.2-1.3.0.0",
-		"1.11.2-recommended": "1.11.2-1.3.0.0",
-		"1.10.2-latest": "1.11.2-1.3.0.0",
-		"1.10.2-recommended": "1.11.2-1.3.0.0"
+		"1.11.2-latest": "1.11.2-1.4.0.0",
+		"1.11.2-recommended": "1.11.2-1.4.0.0",
+		"1.10.2-latest": "1.11.2-1.4.0.0",
+		"1.10.2-recommended": "1.11.2-1.4.0.0"
 	}
 }
