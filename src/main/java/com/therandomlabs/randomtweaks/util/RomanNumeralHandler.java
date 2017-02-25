@@ -1,4 +1,4 @@
-package com.therandomlabs.randomtweaks.common;
+package com.therandomlabs.randomtweaks.util;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +29,7 @@ public final class RomanNumeralHandler {
 			number = -number;
 		}
 
-		String romanNumeral = "";
+		final StringBuilder romanNumeral = new StringBuilder();
 		for(int i = 0; i < ROMAN_NUMERALS.length; i++) {
 			while(number >= ROMAN_NUMERAL_VALUES[i]) {
 				//The largest value that can be represented with Roman numerals without special
@@ -40,21 +40,21 @@ public final class RomanNumeralHandler {
 							String.valueOf(number).substring(0, 1 + (digits - 4)));
 
 					//In Roman numerals, brackets mean "multiply by 1000"
-					romanNumeral += "(" + getRomanNumeral(nested) + ")";
+					romanNumeral.append('(').append(getRomanNumeral(nested)).append(')');
 					number -= nested * 1000;
 				} else {
-					romanNumeral += ROMAN_NUMERALS[i];
+					romanNumeral.append(ROMAN_NUMERALS[i]);
 					number -= ROMAN_NUMERAL_VALUES[i];
 				}
 			}
 		}
 
+		String romanNumeralString = romanNumeral.toString();
 		if(negative) {
-			romanNumeral = "-" + romanNumeral;
+			romanNumeralString = "-" + romanNumeralString;
 		}
+		cachedRomanNumerals.put(number, romanNumeralString);
 
-		cachedRomanNumerals.put(number, romanNumeral);
-
-		return romanNumeral;
+		return romanNumeralString;
 	}
 }

@@ -1,8 +1,8 @@
 package com.therandomlabs.randomtweaks.common;
 
-import java.lang.reflect.Field;
 import java.util.Collections;
 import java.util.List;
+import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -11,7 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.math.BlockPos;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class CommandHunger extends CommandBase {
 	@Override
@@ -21,7 +20,7 @@ public class CommandHunger extends CommandBase {
 
 	@Override
 	public String getUsage(ICommandSender sender) {
-		return RandomTweaks.translate("commands.hunger.usage");
+		return Utils.localize("commands.hunger.usage");
 	}
 
 	@Override
@@ -39,12 +38,12 @@ public class CommandHunger extends CommandBase {
 				HungerHandler.setSaturation(stats, (float) parseDouble(args[1]));
 			} catch(Exception ex) {
 				ex.printStackTrace();
-				throw new CommandException(RandomTweaks.translate("commands.hunger.failure",
+				throw new CommandException(Utils.localize("commands.hunger.failure",
 						ex.getClass().getName() + ": " + ex.getMessage()));
 			}
 		}
 
-		notifyCommandListener(sender, this, RandomTweaks.translate("commands.hunger.success",
+		notifyCommandListener(sender, this, Utils.localize("commands.hunger.success",
 				player.getDisplayNameString(), stats.getFoodLevel(), stats.getSaturationLevel()));
 	}
 

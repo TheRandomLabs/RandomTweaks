@@ -19,15 +19,15 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class SoundSystemReloadHandler {
-	public static final Field soundManagerField =
+	public static final Field SOUND_MANAGER =
 			ReflectionHelper.findField(SoundHandler.class, "sndManager", "field_147694_f");
-	public static KeyBinding reloadSoundSystem =
+	public static final KeyBinding RELOAD_SOUND_SYSTEM =
 			new KeyBinding("key.reloadSoundSystem", Keyboard.KEY_F8, "key.categories.misc");
 
 	@SubscribeEvent
 	public static void onKeyInput(KeyInputEvent event) {
 		if(ConfigurationHandler.reloadSoundSystemKeyBind && Keyboard.getEventKeyState()) {
-			if(reloadSoundSystem.isActiveAndMatches(Keyboard.getEventKey())) {
+			if(RELOAD_SOUND_SYSTEM.isActiveAndMatches(Keyboard.getEventKey())) {
 				final EntityPlayerSP player = Minecraft.getMinecraft().player;
 
 				try {
@@ -45,11 +45,11 @@ public final class SoundSystemReloadHandler {
 	}
 
 	public static void registerKeyBinding() {
-		ClientRegistry.registerKeyBinding(reloadSoundSystem);
+		ClientRegistry.registerKeyBinding(RELOAD_SOUND_SYSTEM);
 	}
 
 	public static void reloadSoundSystem() throws Exception {
-		((SoundManager) soundManagerField.get(Minecraft.getMinecraft().getSoundHandler())).
+		((SoundManager) SOUND_MANAGER.get(Minecraft.getMinecraft().getSoundHandler())).
 				reloadSoundSystem();
 	}
 }

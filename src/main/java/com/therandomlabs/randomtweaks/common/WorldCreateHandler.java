@@ -1,6 +1,7 @@
 package com.therandomlabs.randomtweaks.common;
 
 import java.util.Map;
+import java.util.Map.Entry;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.GameRules;
@@ -39,10 +40,11 @@ public final class WorldCreateHandler {
 		if(defaultGamerules == null) {
 			world.getMinecraftServer().sendMessage(
 					new TextComponentTranslation("defaultGamerules.parseFailure"));
+			return;
 		}
 
-		for(String name : defaultGamerules.keySet()) {
-			gamerules.setOrCreateGameRule(name, defaultGamerules.get(name));
+		for(Entry<String, String> entry : defaultGamerules.entrySet()) {
+			gamerules.setOrCreateGameRule(entry.getKey(), entry.getValue());
 		}
 	}
 }

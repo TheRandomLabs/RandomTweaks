@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -24,7 +25,7 @@ public class CommandDeleteGamerule extends CommandBase {
 
 	@Override
 	public String getUsage(ICommandSender sender) {
-		return RandomTweaks.translate("commands.deletegamerule.usage");
+		return Utils.localize("commands.deletegamerule.usage");
 	}
 
 	@Override
@@ -39,12 +40,12 @@ public class CommandDeleteGamerule extends CommandBase {
 					remove(args[0]);
 		} catch(Exception ex) {
 			ex.printStackTrace();
-			throw new CommandException(RandomTweaks.translate("commands.deletegamerule.failure",
+			throw new CommandException(Utils.localize("commands.deletegamerule.failure",
 					ex.getClass().getName() + ": " + ex.getMessage()));
 		}
 
 		notifyCommandListener(sender, this,
-				RandomTweaks.translate("commands.deletegamerule.success", args[0]));
+				Utils.localize("commands.deletegamerule.success", args[0]));
 	}
 
 	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender,

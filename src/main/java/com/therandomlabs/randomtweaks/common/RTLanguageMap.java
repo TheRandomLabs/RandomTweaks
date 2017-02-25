@@ -1,25 +1,36 @@
 package com.therandomlabs.randomtweaks.common;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import com.therandomlabs.randomtweaks.util.RomanNumeralHandler;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.util.text.translation.LanguageMap;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class RTLanguageMap extends LanguageMap {
-	public static final RTLanguageMap INSTANCE = new RTLanguageMap();
+	private static RTLanguageMap instance;
+	public final Map<String, String> languageList;
+
+	public RTLanguageMap(LanguageMap languageMap)
+			throws IllegalArgumentException, IllegalAccessException {
+		final Field languageListField =
+				ReflectionHelper.findField(LanguageMap.class, "languageList", "field_74816_c");
+		languageListField.setAccessible(true);
+		languageList = (Map<String, String>) languageListField.get(languageMap);
+	}
+
+	private RTLanguageMap(boolean failed) {
+		languageList = null;
+	}
 
 	@Override
 	public synchronized String translateKey(String key) {
+		if(languageList.get(key) != null) {
+			return languageList.get(key);
+		}
+
 		boolean isLevel = false;
 		int level = 0;
-
-		//Someone might have defined a value for a key like enchantment.level.37
-		if(!super.translateKey(key).equals(key)) {
-			return super.translateKey(key);
-		}
 
 		if(key.startsWith("enchantment.level.")) {
 			final String number = key.substring("enchantment.level.".length());
@@ -35,12 +46,13 @@ public class RTLanguageMap extends LanguageMap {
 			} catch(NumberFormatException ex) {}
 		}
 
-		return isLevel ? RomanNumeralHandler.getRomanNumeral(level) : super.translateKey(key);
+		return isLevel ? RomanNumeralHandler.getRomanNumeral(level) : key;
 	}
 
-	public static void replaceLanguageMaps() {
-		I18n.localizedName = INSTANCE;
-		I18n.fallbackTranslator = INSTANCE;
-		LanguageMap.instance = INSTANCE;
+	public static void replaceLanguageMaps() throws Exception {
+		instance = new RTLanguageMap(I18n.localizedName);
+		I18n.localizedName = instance;
+		I18n.fallbackTranslator = instance;
+		LanguageMap.instance = instance;
 	}
 }

@@ -13,6 +13,8 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.MalformedJsonException;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
@@ -25,6 +27,13 @@ public final class ConfigurationHandler {
 	public static boolean reloadSoundSystemKeyBind;
 	public static boolean moreRomanNumerals;
 	public static boolean moveBucketCreativeTab;
+	public static boolean ocelotsCanBeHealed;
+	public static boolean sleepTweaks;
+
+	public static final int SQUID_SPAWNING_DISABLED = -1;
+	public static final int SQUID_CHUNK_LIMIT_DISABLED = 0;
+	public static final int SQUID_SPAWN_LIMIT_RADIUS_DISABLED = 0;
+	public static final int DEFAULT_SQUID_PACK_SIZE = 0;
 
 	public static int squidSpawnLimitRadius;
 	public static int squidChunkLimit;
@@ -56,24 +65,30 @@ public final class ConfigurationHandler {
 		configuration.load();
 
 		reloadSoundSystemKeyBind = configuration.get("general", "reloadSoundSystemKeyBind",
-				true, "Self explanatory.").getBoolean();
+				true, "Self explanatory. Client-sided.").getBoolean();
 		moreRomanNumerals = configuration.get("general", "moreRomanNumerals", true,
-				"Self explanatory.").getBoolean();
+				"Self explanatory. Client-sided but also works on servers.").getBoolean();
 		moveBucketCreativeTab = configuration.get("general", "moveBucketCreativeTab", true,
-				"Moves the bucket to the Tools creative tab.").getBoolean();
+				"Moves the bucket to the Tools creative tab. Client-sided.").getBoolean();
+		ocelotsCanBeHealed = configuration.get("general", "ocelotsCanBeHealed", true,
+				"Ocelots can be healed with fish. Server-sided.").getBoolean();
+		sleepTweaks = configuration.get("general", "sleepTweaks", true, "Players can sleep " +
+				"around non-aggressive zombie pigmen and mobs with custom names. Server-sided.").
+				getBoolean();
 
 		squidSpawnLimitRadius =
 				configuration.get("squids", "squidSpawnLimitRadius", 40, "Disables squid " +
 				"spawning if a player is not within the specified radius. Set to 0 to " +
-				"disable this limit.", 0, Integer.MAX_VALUE).getInt();
+				"disable this limit. Server-sided.", 0, Integer.MAX_VALUE).getInt();
 		squidChunkLimit =
 				configuration.get("squids", "squidChunkLimit", 10,
 				"Limits the amount of squids allowed in a chunk. Set to 0 to disable squid " +
-				"spawning, and set to -1 to disable this limit.", -1, Integer.MAX_VALUE).getInt();
+				"spawning, and set to -1 to disable this limit. Server-sided.",
+				SQUID_CHUNK_LIMIT_DISABLED, Integer.MAX_VALUE).getInt();
 		maxSquidPackSize =
 				configuration.get("squids", "maxSquidPackSize", 2, "The maximum amount of " +
-				"squids that can be spawned in a \"pack\". Set to 0 to use the default.", 0,
-				Integer.MAX_VALUE).getInt();
+				"squids that can be spawned in a \"pack\". Set to 0 to use the default. " +
+				"Server-sided.", 0, Integer.MAX_VALUE).getInt();
 
 		deletegameruleCommand = configuration.get("general", "deletegameruleCommand", true,
 				"Self explanatory - may be moved to another mod in the future.").getBoolean();

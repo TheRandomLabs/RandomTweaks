@@ -1,18 +1,12 @@
 package com.therandomlabs.randomtweaks.common;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.Mod.Instance;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLModDisabledEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
@@ -22,7 +16,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 		"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/master/versions.json")
 public final class RandomTweaks {
 	public static final String MODID = "randomtweaks";
-	public static final String VERSION = "1.11.2-1.2.0.0";
+	public static final String VERSION = "1.11.2-1.3.0.0";
 	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.10,1.12)";
 
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
@@ -46,12 +40,9 @@ public final class RandomTweaks {
 		if(ConfigurationHandler.deletegameruleCommand) {
 			event.registerServerCommand(new CommandDeleteGamerule());
 		}
+
 		if(ConfigurationHandler.hungerCommand) {
 			event.registerServerCommand(new CommandHunger());
 		}
-	}
-
-	public static String translate(String key, Object... args) {
-		return new TextComponentTranslation(key, args).getFormattedText();
 	}
 }

@@ -14,8 +14,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class SquidHandler {
-	private static Chunk isInChunk;
-
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLivingEntitySpawn(LivingSpawnEvent.CheckSpawn event) {
 		if(event.getEntity().getClass() == EntitySquid.class) {
@@ -25,9 +23,9 @@ public final class SquidHandler {
 		}
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLivingEntityPackSpawn(LivingPackSizeEvent event) {
-		if(ConfigurationHandler.maxSquidPackSize != 0 &&
+		if(ConfigurationHandler.maxSquidPackSize != ConfigurationHandler.DEFAULT_SQUID_PACK_SIZE &&
 				event.getEntity().getClass() == EntitySquid.class) {
 			event.setMaxPackSize(ConfigurationHandler.maxSquidPackSize);
 		}
@@ -35,7 +33,7 @@ public final class SquidHandler {
 
 	public static boolean isInRadiusOfPlayer(LivingSpawnEvent.CheckSpawn event) {
 		final int radius = ConfigurationHandler.squidSpawnLimitRadius;
-		if(radius == 0) { //Disabled
+		if(radius == ConfigurationHandler.SQUID_SPAWN_LIMIT_RADIUS_DISABLED) { //Disabled
 			return true;
 		}
 		return event.getWorld().getEntitiesWithinAABB(EntityPlayer.class,
@@ -44,20 +42,21 @@ public final class SquidHandler {
 	}
 
 	public static boolean tooManySquids(LivingSpawnEvent.CheckSpawn event) {
-		if(ConfigurationHandler.squidChunkLimit == 0) { //Squid spawning disabled
+		switch(ConfigurationHandler.squidChunkLimit) {
+		case ConfigurationHandler.SQUID_SPAWNING_DISABLED:
 			return true;
-		}
-		if(ConfigurationHandler.squidChunkLimit == -1) { //Limit disabled
+		case ConfigurationHandler.SQUID_CHUNK_LIMIT_DISABLED:
 			return false;
+		default:
+			return event.getWorld().getEntities(EntitySquid.class,
+					entity -> isInChunk(entity, event)).
+					size() >= ConfigurationHandler.squidChunkLimit;
 		}
-
-		isInChunk = event.getWorld().getChunkFromBlockCoords(event.getEntity().getPosition());
-		return event.getWorld().getEntities(EntitySquid.class,
-				SquidHandler::isInChunk).size() >= ConfigurationHandler.squidChunkLimit;
 	}
 
-	private static boolean isInChunk(Entity entity) {
-		return entity.chunkCoordX == isInChunk.xPosition &&
-				entity.chunkCoordZ == isInChunk.zPosition;
+	private static boolean isInChunk(Entity entity, LivingSpawnEvent.CheckSpawn event) {
+		final Chunk chunk = event.getWorld().getChunkFromBlockCoords(entity.getPosition());
+		return entity.chunkCoordX == chunk.xPosition &&
+				entity.chunkCoordZ == chunk.zPosition;
 	}
 }

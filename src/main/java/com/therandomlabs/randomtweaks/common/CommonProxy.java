@@ -4,6 +4,7 @@ import org.apache.logging.log4j.Logger;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class CommonProxy {
@@ -20,8 +21,8 @@ public class CommonProxy {
 			try {
 				RTLanguageMap.replaceLanguageMaps();
 			} catch(Exception ex) {
-				LOGGER.error("Failed to replace LanguageMap instances - more Roman numerals " +
-						"feature disabled");
+				LOGGER.error("Failed to replace LanguageMap instances -" +
+						"more Roman numerals feature disabled", ex);
 			}
 		}
 	}
