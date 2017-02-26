@@ -1,4 +1,4 @@
-package com.therandomlabs.randomtweaks.common;
+package com.therandomlabs.randomtweaks.server;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;

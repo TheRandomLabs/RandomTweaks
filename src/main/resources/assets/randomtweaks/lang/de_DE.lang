@@ -14,3 +14,9 @@ commands.deletegamerule.success=Spielregel %s erfolgreich gelöscht!
 commands.hunger.usage=/hunger <player> <level> [saturation]
 commands.hunger.failure=§cEin Fehler ist beim Setzen der Sättigung aufgetreten: %s
 commands.hunger.success=%ss neuer Hunger: %s Neue Sättigung: %s
+
+commands.rtreload.usage=/rtreload
+commands.rtreload.failure=§cAn error occurred while reloading configuration: %s
+commands.rtreload.success=Configuration reloaded!
+
+tile.bed.tooFarAway=Du kannst jetzt nicht schlafen, das Bett ist zu weit entfernt

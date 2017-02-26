@@ -41,6 +41,7 @@ public final class ConfigurationHandler {
 
 	public static boolean deletegameruleCommand;
 	public static boolean hungerCommand;
+	public static boolean rtreloadCommand;
 
 	public static final int RESET_HUNGER_ON_RESPAWN = 0;
 	public static final int DONT_RESET_HUNGER_ON_RESPAWN = 1;
@@ -49,6 +50,8 @@ public final class ConfigurationHandler {
 
 	public static int hungerRespawnBehavior;
 	public static int minimumHungerLevelOnRespawn;
+
+	private static boolean loaded;
 
 	static void initialize(FMLPreInitializationEvent event) throws IOException {
 		directory =
@@ -69,8 +72,10 @@ public final class ConfigurationHandler {
 	public static void reloadConfiguration() throws IOException {
 		configuration.load();
 
-		reloadSoundSystemKeyBind = configuration.get("general", "reloadSoundSystemKeyBind",
-				true, "Self explanatory. Client-sided.").getBoolean();
+		if(!loaded) {
+			reloadSoundSystemKeyBind = configuration.get("general", "reloadSoundSystemKeyBind",
+					true, "Self explanatory. Client-sided.").getBoolean();
+		}
 		moreRomanNumerals = configuration.get("general", "moreRomanNumerals", true,
 				"Self explanatory. Client-sided but also works on servers.").getBoolean();
 		moveBucketCreativeTab = configuration.get("general", "moveBucketCreativeTab", true,
@@ -78,8 +83,8 @@ public final class ConfigurationHandler {
 		ocelotsCanBeHealed = configuration.get("general", "ocelotsCanBeHealed", true,
 				"Ocelots can be healed with fish. Server-sided.").getBoolean();
 		sleepTweaks = configuration.get("general", "sleepTweaks", true, "Players can sleep " +
-				"around non-aggressive zombie pigmen and mobs with custom names. Server-sided.").
-				getBoolean();
+				"around non-aggressive zombie pigmen and mobs with custom names. On 1.10, " +
+				"adds a \"bed is too far away\" message. Server-sided.").getBoolean();
 
 		squidSpawnLimitRadius =
 				configuration.get("squids", "squidSpawnLimitRadius", 40, "Disables squid " +
@@ -99,6 +104,8 @@ public final class ConfigurationHandler {
 				"Self explanatory - may be moved to another mod in the future.").getBoolean();
 		hungerCommand = configuration.get("general", "hungerCommand", true,
 				"Self explanatory - may be moved to another mod in the future.").getBoolean();
+		rtreloadCommand = configuration.get("general", "rtreloadCommand", true,
+				"Reloads this configuration. Almost every value will be reloaded.").getBoolean();
 
 		hungerRespawnBehavior = configuration.get("balance", "hungerRespawnBehavior",
 				DONT_RESET_HUNGER_IF_KEEPINVENTORY_AND_NOT_CREATIVE, "0 = hunger resets on " +
@@ -112,6 +119,8 @@ public final class ConfigurationHandler {
 				"hunger.", 0, Integer.MAX_VALUE).getInt();
 
 		configuration.save();
+
+		loaded = true;
 	}
 
 	public static void createDefaultGamerulesConfiguration() throws IOException {

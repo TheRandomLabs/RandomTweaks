@@ -2,8 +2,8 @@ package com.therandomlabs.randomtweaks.common;
 
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Random;
 import java.util.UUID;
+import com.therandomlabs.randomtweaks.util.Compat;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
@@ -15,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -31,39 +32,44 @@ public final class SleepHandler {
 	public static final Field SLEEP_TIMER = ReflectionHelper.findField(EntityPlayer.class,
 			"sleepTimer", "field_71076_b");
 
-	//Lowest so this executes last (for compatibility with mods like Surge)
-	@SubscribeEvent(priority = EventPriority.LOWEST)
+	@SubscribeEvent
 	public static void onSleep(PlayerSleepInBedEvent event) throws Exception {
 		if(!ConfigurationHandler.sleepTweaks) {
 			return;
 		}
 
 		final EntityPlayer player = event.getEntityPlayer();
-		final EnumFacing facing = (EnumFacing) player.getEntityWorld().
-				getBlockState(event.getPos()).getValue(BlockHorizontal.FACING);
+		final World world = player.getEntityWorld();
+		final BlockPos location = event.getPos();
+		final EnumFacing facing = (EnumFacing) world.getBlockState(location).
+				getValue(BlockHorizontal.FACING);
 
-		if(!player.getEntityWorld().isRemote) {
+		if(!world.isRemote) {
 			if(player.isPlayerSleeping() || !player.isEntityAlive()) {
 				event.setResult(SleepResult.OTHER_PROBLEM);
 				return;
 			}
 
-			if(!player.getEntityWorld().provider.isSurfaceWorld()) {
+			if(!world.provider.isSurfaceWorld()) {
 				event.setResult(SleepResult.NOT_POSSIBLE_HERE);
 				return;
 			}
 
-			if(player.getEntityWorld().isDaytime()) {
+			if(world.isDaytime()) {
 				event.setResult(SleepResult.NOT_POSSIBLE_NOW);
 				return;
 			}
 
-			if(!bedInRange(player, event.getPos(), facing)) {
+			if(!bedInRange(player, location, facing)) {
 				event.setResult(SleepResult.TOO_FAR_AWAY);
+				if(Compat.isOnePointTen()) {
+					Compat.sendStatusMessage(player,
+							new TextComponentTranslation("tile.bed.tooFarAway"));
+				}
 				return;
 			}
 
-			for(EntityMob mob : getMobsInRange(player.getEntityWorld(), event.getPos())) {
+			for(EntityMob mob : getMobsInRange(world, location)) {
 				if(mob.hasCustomName() || !isPigZombieAngryAt(mob, player)) {
 					continue;
 				}
@@ -81,12 +87,11 @@ public final class SleepHandler {
 
 		IBlockState state = null;
 
-		if(player.getEntityWorld().isBlockLoaded(event.getPos())) {
-			state = player.getEntityWorld().getBlockState(event.getPos());
+		if(world.isBlockLoaded(location)) {
+			state = world.getBlockState(location);
 		}
 
-		if(state != null &&
-				state.getBlock().isBed(state, player.getEntityWorld(), event.getPos(), player)) {
+		if(state != null && state.getBlock().isBed(state, world, location, player)) {
 			setRenderOffsetForSleep(player, facing);
 
 			final float x = 0.5F + (float) facing.getFrontOffsetX() * 0.4F;

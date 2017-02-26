@@ -1,7 +1,8 @@
-package com.therandomlabs.randomtweaks.common;
+package com.therandomlabs.randomtweaks.server;
 
 import java.util.Collections;
 import java.util.List;
+import com.therandomlabs.randomtweaks.common.HungerHandler;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
