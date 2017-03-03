@@ -64,7 +64,5 @@ public final class CapeHandler {
 
 		playerTextures.put(MinecraftProfileTexture.Type.CAPE, location);
 		playerTextures.put(MinecraftProfileTexture.Type.ELYTRA, location);
-
-		System.out.println("I AM HERE YOU GODDAMN ANNOYING PIECE OF FUCKING SHIT PLEASE NOTICE ME");
 	}
 }
