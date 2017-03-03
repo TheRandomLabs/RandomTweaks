@@ -47,6 +47,7 @@ public final class CapeHandler {
 		}
 	}
 
+	//TODO find out why this doesn't work
 	private static void setCape(Entity entity) throws Exception {
 		final NetworkPlayerInfo info = (NetworkPlayerInfo) GET_PLAYER_INFO.invoke(entity);
 
