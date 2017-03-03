@@ -1,10 +1,12 @@
 package com.therandomlabs.randomtweaks.common;
 
+import java.util.List;
 import org.apache.logging.log4j.Logger;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
-import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public class CommonProxy {
@@ -27,5 +29,23 @@ public class CommonProxy {
 		}
 	}
 
-	public void init(FMLInitializationEvent event) {}
+	public void init(FMLInitializationEvent event) {
+		if(Loader.isModLoaded("surge")) {
+			try {
+				final List<?> features =
+						(List<?>) Class.forName("org.epoxide.surge.features.FeatureManager").
+						getDeclaredField("FEATURES").get(null);
+				for(Object feature : features) {
+					if(feature.getClass().getName().equals(
+							"org.epoxide.surge.features.pigsleep.FeaturePigmanSleep")) {
+						MinecraftForge.EVENT_BUS.unregister(feature);
+						LOGGER.info("Successfully disabled Surge's pigman sleep fix feature!");
+						return;
+					}
+				}
+			} catch(Exception ex) {
+				LOGGER.error("Failed to disable Surge's pigman sleep fix feature", ex);
+			}
+		}
+	}
 }
