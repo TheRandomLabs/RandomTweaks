@@ -26,8 +26,8 @@ public final class CapeHandler {
 	public static final Field PLAYER_TEXTURES = ReflectionHelper.findField(NetworkPlayerInfo.class,
 					"playerTextures", "field_187107_a");
 	private static final String[] PLAYERS_WITH_CAPES = {
-			"de2b3ebd-c0e9-4f43-b0f7-b660d482dd51"/*,
-			"819eb301-e040-4580-9c63-3f98684f58bc"*/
+			"de2b3ebd-c0e9-4f43-b0f7-b660d482dd51",
+			"819eb301-e040-4580-9c63-3f98684f58bc"
 	};
 
 	@SubscribeEvent
