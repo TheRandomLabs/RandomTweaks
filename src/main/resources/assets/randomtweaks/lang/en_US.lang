@@ -20,3 +20,8 @@ commands.rtreload.failure=§cAn error occurred while reloading configuration: %s
 commands.rtreload.success=Configuration reloaded!
 
 tile.bed.tooFarAway=You may not rest now, the bed is too far away
+
+generator.realistic=Realistic
+generator.realistic.info=Realistic world type by /u/Soniop
+generator.void=Void
+generator.void.info=A completely empty void world with only a block to stand on

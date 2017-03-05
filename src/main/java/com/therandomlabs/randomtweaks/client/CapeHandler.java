@@ -27,7 +27,8 @@ public final class CapeHandler {
 					"playerTextures", "field_187107_a");
 	private static final String[] PLAYERS_WITH_CAPES = {
 			"de2b3ebd-c0e9-4f43-b0f7-b660d482dd51",
-			"819eb301-e040-4580-9c63-3f98684f58bc"
+			"819eb301-e040-4580-9c63-3f98684f58bc",
+			"1dbb2583-db0a-4c8a-b187-f62bdde4595d"
 	};
 
 	@SubscribeEvent

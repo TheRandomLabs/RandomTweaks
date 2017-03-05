@@ -13,8 +13,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.MalformedJsonException;
-import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
@@ -29,6 +27,13 @@ public final class ConfigurationHandler {
 	public static boolean moveBucketCreativeTab;
 	public static boolean ocelotsCanBeHealed;
 	public static boolean sleepTweaks;
+
+	public static boolean realisticWorldType;
+	public static boolean voidWorldType;
+	public static int voidWorldTypeYSpawn;
+	public static String voidWorldTypeBlock;
+	public static int voidWorldTypeMeta;
+	public static String voidWorldTypeBiome;
 
 	public static final int SQUID_SPAWNING_DISABLED = -1;
 	public static final int SQUID_CHUNK_LIMIT_DISABLED = 0;
@@ -86,6 +91,21 @@ public final class ConfigurationHandler {
 				"around non-aggressive zombie pigmen and mobs with custom names. On 1.10, " +
 				"adds a \"bed is too far away\" message. Server-sided.").getBoolean();
 
+		realisticWorldType = configuration.get("world", "realisticWorldType", true,
+				"Adds the Realistic world type. Name: realistic").getBoolean();
+		voidWorldType = configuration.get("world", "voidWorldType", true,
+				"Adds the Void world type. Name: void").getBoolean();
+		voidWorldTypeYSpawn = configuration.get("world", "voidWorldTypeYSpawn", 17,
+				"The Y coordinate of the default spawn point in a Void world.", 1, 255).getInt();
+		voidWorldTypeBlock = configuration.get("world", "voidWorldTypeBlock", "minecraft:glass",
+				"What block should be placed in the void world type for players to stand on. " +
+				"Glass by default.").getString();
+		voidWorldTypeMeta = configuration.get("world", "voidWorldTypeYMeta", 0,
+				"The damage value for voidWorldTypeBlock.").getInt();
+		voidWorldTypeBiome = configuration.get("world", "voidWorldTypeBiome", "minecraft:plains",
+				"What biome the Void world type to use. Set to an empty string to use " +
+				"Minecraft's default behavior.").getString();
+
 		squidSpawnLimitRadius =
 				configuration.get("squids", "squidSpawnLimitRadius", 40, "Disables squid " +
 				"spawning if a player is not within the specified radius. Set to 0 to " +
@@ -129,10 +149,9 @@ public final class ConfigurationHandler {
 				"{",
 				"//\t\"commandBlockOutput\": false, //These are for all game modes",
 				"//\t\"keepInventory\": true,",
-				"//\t\"1:flat\": { //Creative flat world. Game modes and world types can " +
-						"be separated with commas (no spaces). Possible game types in vanilla: " +
-						"flat = Superflat, default = Default, largeBiomes = Large Biomes, " +
-						"amplified = Amplified",
+				"//\t\"1:flat,void\": { //Creative flat world. Game modes and world types can " +
+						"be separated with commas (no spaces). These are the same as the world " +
+						"types in server.properties.",
 				"//\t\t\"doDaylightCycle\": false,",
 				"//\t\t\"doWeatherCycle\": false,",
 				"//\t\t\"doMobSpawning\": false",
