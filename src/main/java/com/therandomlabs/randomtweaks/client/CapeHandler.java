@@ -107,6 +107,6 @@ public final class CapeHandler {
 				players = IOUtils.readLines(connection.getInputStream());
 				connection.disconnect();
 			} catch(Exception ex) {}
-		});
+		}).start();
 	}
 }
