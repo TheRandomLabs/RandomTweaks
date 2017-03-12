@@ -24,7 +24,9 @@ public final class ClientProxy extends CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) throws Exception {
 		super.preInit(event);
 
-		CapeHandler.downloadPlayers();
+		if(ConfigurationHandler.contributorCapes) {
+			CapeHandler.downloadPlayers();
+		}
 	}
 
 	@Override

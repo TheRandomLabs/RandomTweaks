@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import org.apache.commons.lang3.StringUtils;
@@ -13,7 +15,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.MalformedJsonException;
+import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
+import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public final class ConfigurationHandler {
@@ -27,6 +32,7 @@ public final class ConfigurationHandler {
 	public static boolean moveBucketCreativeTab;
 	public static boolean ocelotsCanBeHealed;
 	public static boolean sleepTweaks;
+	public static boolean contributorCapes;
 
 	public static boolean realisticWorldType;
 	public static boolean voidWorldType;
@@ -57,8 +63,6 @@ public final class ConfigurationHandler {
 	public static int hungerRespawnBehavior;
 	public static int minimumHungerLevelOnRespawn;
 
-	private static boolean loaded;
-
 	static void initialize(FMLPreInitializationEvent event) throws IOException {
 		directory =
 				Paths.get(event.getSuggestedConfigurationFile().getParentFile().getAbsolutePath(),
@@ -78,24 +82,36 @@ public final class ConfigurationHandler {
 	public static void reloadConfiguration() throws IOException {
 		configuration.load();
 
-		if(!loaded) {
-			reloadSoundSystemKeyBind = configuration.get("general", "reloadSoundSystemKeyBind",
-					true, "Self explanatory. Client-sided.").getBoolean();
-		}
+		Property property = configuration.get("clientSided", "reloadSoundSystemKeyBind",
+				true, "Self explanatory.");
+		property.setRequiresMcRestart(true);
+		reloadSoundSystemKeyBind = property.getBoolean();
+
+		property = configuration.get("clientSided", "moveBucketCreativeTab",
+				true, "Move the bucket to the Tools creative tab.");
+		property.setRequiresMcRestart(true);
+		moveBucketCreativeTab = property.getBoolean();
+
 		moreRomanNumerals = configuration.get("general", "moreRomanNumerals", true,
-				"Self explanatory. Client-sided but also works on servers.").getBoolean();
-		moveBucketCreativeTab = configuration.get("general", "moveBucketCreativeTab", true,
-				"Moves the bucket to the Tools creative tab. Client-sided.").getBoolean();
+				"Self explanatory.").getBoolean();
 		ocelotsCanBeHealed = configuration.get("general", "ocelotsCanBeHealed", true,
 				"Ocelots can be healed with fish. Server-sided.").getBoolean();
 		sleepTweaks = configuration.get("general", "sleepTweaks", true, "Players can sleep " +
 				"around non-aggressive zombie pigmen and mobs with custom names. On 1.10, " +
 				"adds a \"bed is too far away\" message. Server-sided.").getBoolean();
+		contributorCapes = configuration.get("general", "contributorCapes", true,
+				"Self explanatory. Please consider leaving this enabled.").getBoolean();
 
-		realisticWorldType = configuration.get("world", "realisticWorldType", true,
-				"Adds the Realistic world type. Name: realistic").getBoolean();
-		voidWorldType = configuration.get("world", "voidWorldType", true,
-				"Adds the Void world type. Name: void").getBoolean();
+		property = configuration.get("world", "realisticWorldType", true,
+				"Adds the Realistic world type. Name: realistic");
+		property.setRequiresMcRestart(true);
+		realisticWorldType = property.getBoolean();
+
+		property = configuration.get("world", "voidWorldType", true,
+				"Adds the Void world type. Name: void");
+		property.setRequiresMcRestart(true);
+		voidWorldType = property.getBoolean();
+
 		voidWorldTypeYSpawn = configuration.get("world", "voidWorldTypeYSpawn", 17,
 				"The Y coordinate of the default spawn point in a Void world.", 1, 255).getInt();
 		voidWorldTypeBlock = configuration.get("world", "voidWorldTypeBlock", "minecraft:glass",
@@ -142,8 +158,6 @@ public final class ConfigurationHandler {
 				"hunger.", 0, Integer.MAX_VALUE).getInt();
 
 		configuration.save();
-
-		loaded = true;
 	}
 
 	public static void createDefaultGamerulesConfiguration() throws IOException {
@@ -251,5 +265,12 @@ public final class ConfigurationHandler {
 
 	public static boolean configurationExists(String name) {
 		return Files.exists(getConfiguration(name));
+	}
+
+	public static List<IConfigElement> getConfigElements() {
+		final List<IConfigElement> elements = new ArrayList<>();
+		configuration.getCategoryNames().forEach(category -> elements.add(new ConfigElement(
+				configuration.getCategory(category))));
+		return elements;
 	}
 }
