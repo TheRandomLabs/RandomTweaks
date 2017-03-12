@@ -127,7 +127,7 @@ public final class ConfigurationHandler {
 				"Self explanatory.").getBoolean();
 		giveCommandAcceptsIntegerIDs = configuration.get("commands",
 				"giveCommandAcceptsIntegerIDs", true, "Self explanatory.").getBoolean();
-		rtreloadCommand = configuration.get("general", "rtreloadCommand", true,
+		rtreloadCommand = configuration.get("commands", "rtreloadCommand", true,
 				"Reloads this configuration. Almost every value will be reloaded.").getBoolean();
 
 		hungerRespawnBehavior = configuration.get("balance", "hungerRespawnBehavior",
