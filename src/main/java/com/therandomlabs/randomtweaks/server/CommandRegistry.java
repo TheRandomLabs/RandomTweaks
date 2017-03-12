@@ -13,6 +13,10 @@ public final class CommandRegistry {
 			event.registerServerCommand(new CommandHunger());
 		}
 
+		if(ConfigurationHandler.giveCommandAcceptsIntegerIDs) {
+			event.registerServerCommand(new CommandGive());
+		}
+
 		if(ConfigurationHandler.rtreloadCommand) {
 			event.registerServerCommand(new CommandRtreload());
 		}

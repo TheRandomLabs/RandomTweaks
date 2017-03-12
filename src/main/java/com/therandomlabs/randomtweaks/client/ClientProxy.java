@@ -21,6 +21,11 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 
 public final class ClientProxy extends CommonProxy {
 	@Override
+	public void preInit(FMLPreInitializationEvent event) {
+		CapeHandler.downloadPlayers();
+	}
+
+	@Override
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
 

@@ -46,6 +46,7 @@ public final class ConfigurationHandler {
 
 	public static boolean deletegameruleCommand;
 	public static boolean hungerCommand;
+	public static boolean giveCommandAcceptsIntegerIDs;
 	public static boolean rtreloadCommand;
 
 	public static final int RESET_HUNGER_ON_RESPAWN = 0;
@@ -107,7 +108,7 @@ public final class ConfigurationHandler {
 				"Minecraft's default behavior.").getString();
 
 		squidSpawnLimitRadius =
-				configuration.get("squids", "squidSpawnLimitRadius", 40, "Disables squid " +
+				configuration.get("squids", "squidSpawnLimitRadius", 64, "Disables squid " +
 				"spawning if a player is not within the specified radius. Set to 0 to " +
 				"disable this limit. Server-sided.", 0, Integer.MAX_VALUE).getInt();
 		squidChunkLimit =
@@ -120,10 +121,12 @@ public final class ConfigurationHandler {
 				"vanilla default. Server-sided.", DEFAULT_SQUID_PACK_SIZE,
 				Integer.MAX_VALUE).getInt();
 
-		deletegameruleCommand = configuration.get("general", "deletegameruleCommand", true,
-				"Self explanatory - may be moved to another mod in the future.").getBoolean();
-		hungerCommand = configuration.get("general", "hungerCommand", true,
-				"Self explanatory - may be moved to another mod in the future.").getBoolean();
+		deletegameruleCommand = configuration.get("commands", "deletegameruleCommand", true,
+				"Self explanatory.").getBoolean();
+		hungerCommand = configuration.get("commands", "hungerCommand", true,
+				"Self explanatory.").getBoolean();
+		giveCommandAcceptsIntegerIDs = configuration.get("commands",
+				"giveCommandAcceptsIntegerIDs", true, "Self explanatory.").getBoolean();
 		rtreloadCommand = configuration.get("general", "rtreloadCommand", true,
 				"Reloads this configuration. Almost every value will be reloaded.").getBoolean();
 
