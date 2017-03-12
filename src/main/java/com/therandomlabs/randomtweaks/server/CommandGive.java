@@ -27,11 +27,11 @@ public class CommandGive extends net.minecraft.command.CommandGive {
 
 		Item item = null;
 		try {
-			item = Item.getItemById(parseInt(args[0], 1));
+			item = Item.getItemById(parseInt(args[1], 1));
 		} catch(NumberInvalidException ex) {}
 
 		if(item == null) {
-			item = getItemByText(sender, args[0]);
+			item = getItemByText(sender, args[1]);
 		}
 
 		final int amount = args.length > 2 ? parseInt(args[2], 1, 64) : 1;

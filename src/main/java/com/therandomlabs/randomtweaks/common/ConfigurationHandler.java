@@ -137,7 +137,7 @@ public final class ConfigurationHandler {
 				"creative", RESET_HUNGER_ON_RESPAWN,
 				DONT_RESET_HUNGER_IF_KEEPINVENTORY_AND_NOT_CREATIVE).getInt();
 		minimumHungerLevelOnRespawn = configuration.get("balance",
-				"minimumHungerLevelOnRespawn", 3, "If dontResetHungerOnRespawn is enabled, " +
+				"minimumHungerLevelOnRespawn", 3, "If hungerRespawnBehavior is active, " +
 				"this sets the minimum hunger on respawn so a player doesn't spawn with 0 " +
 				"hunger.", 0, Integer.MAX_VALUE).getInt();
 
