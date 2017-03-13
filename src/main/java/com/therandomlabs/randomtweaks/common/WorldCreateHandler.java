@@ -3,6 +3,7 @@ package com.therandomlabs.randomtweaks.common;
 import java.io.File;
 import java.util.Map;
 import java.util.Map.Entry;
+import com.therandomlabs.randomtweaks.common.worldtype.WorldTypeVoid;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;

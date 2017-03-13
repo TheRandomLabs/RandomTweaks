@@ -21,9 +21,6 @@ public class RTLanguageMap extends LanguageMap {
 
 	@Override
 	public synchronized String translateKey(String key) {
-		if(key.contains("info")) {
-			System.out.println(key + " " + languageList.get(key));
-		}
 		if(languageList.get(key) != null) {
 			return languageList.get(key);
 		}

@@ -1,7 +1,8 @@
-package com.therandomlabs.randomtweaks.common;
+package com.therandomlabs.randomtweaks.common.worldtype;
 
 import java.util.Arrays;
 import java.util.List;
+import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.ResourceLocation;
