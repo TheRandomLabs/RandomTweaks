@@ -38,7 +38,6 @@ public final class OcelotHandler {
 	}
 
 	public static boolean canOcelotBeHealed(EntityOcelot ocelot, ItemStack stack) {
-		System.out.println(ocelot.isTamed());
 		return ocelot.isTamed() && !Compat.isEmpty(stack) &&
 				stack.isItemEqual(new ItemStack(Items.FISH)) &&
 				ocelot.getHealth() < Utils.getMaxHealth(ocelot);
