@@ -24,7 +24,7 @@ public final class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent event) throws Exception {
 		super.preInit(event);
-		
+
 		if(ConfigurationHandler.moveBucketCreativeTab) {
 			Items.BUCKET.setCreativeTab(CreativeTabs.TOOLS);
 		}
