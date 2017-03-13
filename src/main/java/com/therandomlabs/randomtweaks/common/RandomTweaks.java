@@ -35,7 +35,6 @@ public final class RandomTweaks {
 	@EventHandler
 	public static void init(FMLInitializationEvent event) throws Exception {
 		proxy.init(event);
-		System.out.println("HELLO JE SUIS ICI " + I18n.localizedName);
 	}
 
 	@EventHandler
