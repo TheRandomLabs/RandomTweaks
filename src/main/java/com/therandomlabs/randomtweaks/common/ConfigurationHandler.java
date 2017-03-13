@@ -16,6 +16,9 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.MalformedJsonException;
+import net.minecraft.client.Minecraft;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.util.ReportedException;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
@@ -30,7 +33,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class ConfigurationHandler {
 	public static final String RANDOMTWEAKS = RandomTweaks.MODID + ".cfg";
 	public static final String DEFAULT_GAMERULES = "defaultgamerules.json";
-	private static Path directory;
+	private static final Path directory =
+			Paths.get(Minecraft.getMinecraft().mcDataDir.getAbsolutePath(),
+			"config/" + RandomTweaks.MODID);
 	private static Configuration configuration;
 
 	//Client-sided
@@ -141,22 +146,6 @@ public final class ConfigurationHandler {
 		}
 	}
 
-	static void initialize(FMLPreInitializationEvent event) throws Exception {
-		directory =
-				Paths.get(event.getSuggestedConfigurationFile().getParentFile().getAbsolutePath(),
-				RandomTweaks.MODID);
-		if(!Files.exists(directory)) {
-			Files.createDirectory(directory);
-		}
-
-		configuration = new Configuration(getConfiguration(RANDOMTWEAKS).toFile());
-
-		reloadConfiguration();
-		if(!configurationExists(DEFAULT_GAMERULES)) {
-			createDefaultGamerulesConfiguration();
-		}
-	}
-
 	@SubscribeEvent
 	public static void onConfigurationChanged(OnConfigChangedEvent event) throws Exception {
 		configuration.save();
@@ -164,6 +153,12 @@ public final class ConfigurationHandler {
 	}
 
 	public static void reloadConfiguration() throws Exception {
+		if(configuration == null) {
+			createConfiguration();
+		}
+
+		LogHandler.updateLogFilters();
+
 		configuration.load();
 
 		if(!clientSidedFlags.isEmpty()) {
@@ -371,6 +366,7 @@ public final class ConfigurationHandler {
 
 	private static void readAll() throws Exception {
 		readFlags("clientsided", clientSidedFlags);
+		readFlags("general", generalFlags);
 		readFlags("world", worldFlags);
 		readEntries("world", worldEntries);
 		readEntries("squids", squidEntries);
@@ -441,5 +437,19 @@ public final class ConfigurationHandler {
 				}
 			}
 		}
+	}
+
+	private static void createConfiguration() throws Exception {
+		if(!Files.exists(directory)) {
+			Files.createDirectory(directory);
+		}
+
+		configuration = new Configuration(getConfiguration(RANDOMTWEAKS).toFile());
+
+		if(!configurationExists(DEFAULT_GAMERULES)) {
+			createDefaultGamerulesConfiguration();
+		}
+
+		reloadConfiguration();
 	}
 }

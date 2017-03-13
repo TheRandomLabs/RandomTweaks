@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.11.2": {
+		"1.11.2-1.7.0.1": "Fixed general tweaks not working or being registered in the configuration.",
 		"1.11.2-1.7.0.0": "Fixed compatibility with Guide-API and probably several other mods.\nAdded the Void Islands world type.\n/give now accepts amounts higher than 64.\nRedid the configuration system which fixes several issues. This will probably mess with your configuration.",
 		"1.11.2-1.6.0.0": "/give now accepts integer IDs.\nNew default squid spawn limit radius is 64.\nAdded a configuration GUI and an option to disable contributor capes.",
 		"1.11.2-1.5.0.0": "Added /rtreload.\nNow automatically disables Surge's pigman sleep fix if Surge is installed.\nAdded Realistic and Void world types.",
@@ -14,6 +15,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.10.2": {
+		"1.11.2-1.7.0.1": "Fixed general tweaks not working or being registered in the configuration.",
 		"1.11.2-1.7.0.0": "Fixed compatibility with Guide-API and probably several other mods.\nAdded the Void Islands world type.\n/give now accepts amounts higher than 64.\nRedid the configuration system which fixes several issues. This will probably mess with your configuration.",
 		"1.11.2-1.6.0.0": "/give now accepts integer IDs.\nNew default squid spawn limit radius is 64.\nAded a configuration GUI and an option to disable contributor capes.",
 		"1.11.2-1.5.0.0": "Added /rtreload.\nNow automatically disables Surge's pigman sleep fix if Surge is installed.\nAdded Realistic and Void world types.",

@@ -9,6 +9,7 @@ import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.audio.SoundManager;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
@@ -23,6 +24,10 @@ public final class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent event) throws Exception {
 		super.preInit(event);
+		
+		if(ConfigurationHandler.moveBucketCreativeTab) {
+			Items.BUCKET.setCreativeTab(CreativeTabs.TOOLS);
+		}
 
 		if(ConfigurationHandler.contributorCapes) {
 			CapeHandler.downloadPlayers();
