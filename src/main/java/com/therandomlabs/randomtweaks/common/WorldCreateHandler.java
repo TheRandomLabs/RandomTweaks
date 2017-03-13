@@ -4,8 +4,8 @@ import java.io.File;
 import java.util.Map;
 import java.util.Map.Entry;
 import com.therandomlabs.randomtweaks.common.worldtype.WorldTypeVoid;
+import com.therandomlabs.randomtweaks.common.worldtype.WorldTypeVoidIslands;
 import net.minecraft.block.Block;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
@@ -47,31 +47,21 @@ public final class WorldCreateHandler {
 		final EntityPlayer player = event.getEntityPlayer();
 		final World world = player.getEntityWorld();
 
-		if(world.getWorldType() == WorldTypeVoid.INSTANCE &&
-				!new File(event.getPlayerDirectory(), event.getPlayerUUID() + ".dat").exists()) {
-			final BlockPos spawn = world.getSpawnPoint();
-			player.setPosition(spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5);
-			player.setSpawnPoint(spawn, true);
+		if(!new File(event.getPlayerDirectory(), event.getPlayerUUID() + ".dat").exists()) {
+			if(world.getWorldType() == WorldTypeVoid.INSTANCE ||
+					world.getWorldType() == WorldTypeVoidIslands.INSTANCE) {
+				final BlockPos spawn = world.getSpawnPoint();
+				player.setPosition(spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5);
+				player.setSpawnPoint(spawn, true);
+			}
 		}
 	}
 
 	private static void onWorldCreate(World world) throws Exception {
-		//Not in WorldTypeVoid#populate to maximize generation speed
-		//(even if by just a few milliseconds)
 		if(world.getWorldType() == WorldTypeVoid.INSTANCE) {
-			Block block = GameRegistry.findRegistry(Block.class).getValue(
-					new ResourceLocation(ConfigurationHandler.voidWorldTypeBlock));
-			if(block == null) {
-				block = Blocks.GLASS;
-			}
-
-			final BlockPos spawn = world.getSpawnPoint();
-			final BlockPos newSpawn = new BlockPos(spawn.getX(),
-					ConfigurationHandler.voidWorldTypeYSpawn, spawn.getZ());
-
-			world.setSpawnPoint(newSpawn);
-			world.setBlockState(newSpawn.add(0, -1, 0),
-					block.getStateFromMeta(ConfigurationHandler.voidWorldTypeMeta));
+			onVoidWorldCreate(world);
+		} else if(world.getWorldType() == WorldTypeVoidIslands.INSTANCE) {
+			onVoidIslandsWorldCreate(world);
 		}
 
 		final GameRules gamerules = world.getGameRules();
@@ -87,5 +77,25 @@ public final class WorldCreateHandler {
 		for(Entry<String, String> entry : defaultGamerules.entrySet()) {
 			gamerules.setOrCreateGameRule(entry.getKey(), entry.getValue());
 		}
+	}
+
+	private static void onVoidWorldCreate(World world) {
+		Block block = GameRegistry.findRegistry(Block.class).getValue(
+				new ResourceLocation(ConfigurationHandler.voidWorldTypeBlock));
+		if(block == null) {
+			block = Blocks.GLASS;
+		}
+
+		final BlockPos spawn = world.getSpawnPoint();
+		final BlockPos newSpawn = new BlockPos(spawn.getX(),
+				ConfigurationHandler.voidWorldTypeYSpawn, spawn.getZ());
+
+		world.setSpawnPoint(newSpawn);
+		world.setBlockState(newSpawn.add(0, -1, 0),
+				block.getStateFromMeta(ConfigurationHandler.voidWorldTypeMeta));
+	}
+
+	private static void onVoidIslandsWorldCreate(World world) {
+		world.setSpawnPoint(world.getTopSolidOrLiquidBlock(new BlockPos(0, 0, 0)).add(0, 1, 0));
 	}
 }

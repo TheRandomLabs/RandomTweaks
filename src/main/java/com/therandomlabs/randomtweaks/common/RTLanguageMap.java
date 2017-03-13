@@ -50,6 +50,11 @@ public class RTLanguageMap extends LanguageMap {
 		return String.format(translateKey(key), args);
 	}
 
+	@Override
+	public synchronized boolean isKeyTranslated(String key) {
+		return languageList.containsKey(key);
+	}
+
 	public static void replaceLanguageMaps() throws Exception {
 		instance = new RTLanguageMap(I18n.localizedName);
 		I18n.localizedName = instance;

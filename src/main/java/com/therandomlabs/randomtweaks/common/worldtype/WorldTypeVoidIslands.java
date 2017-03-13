@@ -5,7 +5,7 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.IChunkGenerator;
 
 public class WorldTypeVoidIslands extends WorldType {
-	public static final WorldTypeVoid INSTANCE = new WorldTypeVoid();
+	public static final WorldTypeVoidIslands INSTANCE = new WorldTypeVoidIslands();
 	public static final String NAME = "voidislands";
 
 	public WorldTypeVoidIslands() {
@@ -19,6 +19,6 @@ public class WorldTypeVoidIslands extends WorldType {
 
 	@Override
 	public IChunkGenerator getChunkGenerator(World world, String generatorOptions) {
-		return new ChunkProviderVoid(world);
+		return new ChunkProviderVoidIslands(world);
 	}
 }

@@ -2,8 +2,7 @@ package com.therandomlabs.randomtweaks.common;
 
 import java.util.List;
 import org.apache.logging.log4j.Logger;
-import com.therandomlabs.randomtweaks.common.worldtype.WorldTypeRealistic;
-import com.therandomlabs.randomtweaks.common.worldtype.WorldTypeVoid;
+import com.therandomlabs.randomtweaks.common.worldtype.WorldTypeRegistry;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraftforge.common.MinecraftForge;
@@ -32,9 +31,7 @@ public class CommonProxy {
 	}
 
 	public void init(FMLInitializationEvent event) {
-		//The best way to initialize the world types
-		WorldTypeRealistic.INSTANCE.getClass();
-		WorldTypeVoid.INSTANCE.getClass();
+		WorldTypeRegistry.registerWorldTypes();
 
 		if(Loader.isModLoaded("surge")) {
 			try {

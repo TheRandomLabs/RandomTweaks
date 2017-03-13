@@ -9,18 +9,22 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class OcelotHandler {
-	@SubscribeEvent
+	//@SubscribeEvent
 	public static void onEntityInteract(PlayerInteractEvent.EntityInteract event)
 			throws Exception {
+		if(!ConfigurationHandler.ocelotsCanBeHealed) {
+			return;
+		}
+
 		final EntityPlayer player = event.getEntityPlayer();
 		final ItemStack stack = event.getItemStack();
 
-		if(ConfigurationHandler.ocelotsCanBeHealed && !player.getEntityWorld().isRemote &&
-				event.getTarget() instanceof EntityOcelot) {
+		if(!player.getEntityWorld().isRemote && event.getTarget() instanceof EntityOcelot) {
 			final EntityOcelot ocelot = (EntityOcelot) event.getTarget();
 
 			if(canOcelotBeHealed(ocelot, stack)) {
@@ -34,6 +38,7 @@ public final class OcelotHandler {
 	}
 
 	public static boolean canOcelotBeHealed(EntityOcelot ocelot, ItemStack stack) {
+		System.out.println(ocelot.isTamed());
 		return ocelot.isTamed() && !Compat.isEmpty(stack) &&
 				stack.isItemEqual(new ItemStack(Items.FISH)) &&
 				ocelot.getHealth() < Utils.getMaxHealth(ocelot);
