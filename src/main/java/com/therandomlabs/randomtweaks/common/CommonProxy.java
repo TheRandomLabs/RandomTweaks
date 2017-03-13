@@ -30,9 +30,9 @@ public class CommonProxy {
 	}
 
 	public void init(FMLInitializationEvent event) {
-		//The best way to initialize the instances XD
-		LOGGER.info("Initializing %s", WorldTypeRealistic.INSTANCE.getClass().getName());
-		LOGGER.info("Initializing %s", WorldTypeVoid.INSTANCE.getClass().getName());
+		//The best way to initialize the world types
+		WorldTypeRealistic.INSTANCE.getClass();
+		WorldTypeVoid.INSTANCE.getClass();
 
 		if(Loader.isModLoaded("surge")) {
 			try {

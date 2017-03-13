@@ -21,6 +21,9 @@ public class RTLanguageMap extends LanguageMap {
 
 	@Override
 	public synchronized String translateKey(String key) {
+		if(key.contains("info")) {
+			System.out.println(key + " " + languageList.get(key));
+		}
 		if(languageList.get(key) != null) {
 			return languageList.get(key);
 		}
@@ -45,10 +48,15 @@ public class RTLanguageMap extends LanguageMap {
 		return isLevel ? RomanNumeralHandler.getRomanNumeral(level) : key;
 	}
 
+	@Override
+	public synchronized String translateKeyFormat(String key, Object... args) {
+		return String.format(translateKey(key), args);
+	}
+
 	public static void replaceLanguageMaps() throws Exception {
 		instance = new RTLanguageMap(I18n.localizedName);
 		I18n.localizedName = instance;
-		I18n.fallbackTranslator = instance;
+		//I18n.fallbackTranslator = instance;
 		LanguageMap.instance = instance;
 	}
 }
