@@ -13,7 +13,7 @@ public final class CommandRegistry {
 			event.registerServerCommand(new CommandHunger());
 		}
 
-		if(ConfigurationHandler.giveCommandAcceptsIntegerIDs) {
+		if(ConfigurationHandler.giveCommandTweaks) {
 			event.registerServerCommand(new CommandGive());
 		}
 

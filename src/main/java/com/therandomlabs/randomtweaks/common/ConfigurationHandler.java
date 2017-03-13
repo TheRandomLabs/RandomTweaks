@@ -48,6 +48,7 @@ public final class ConfigurationHandler {
 	//World
 
 	public static final int DEFAULT_VOID_WORLD_TYPE_Y_SPAWN = 17;
+	public static final int DEFAULT_VOID_ISLANDS_WORLD_TYPE_CHUNK_RARITY = 10;
 
 	public static boolean realisticWorldType;
 	public static boolean voidWorldType;
@@ -76,7 +77,7 @@ public final class ConfigurationHandler {
 
 	public static boolean deletegameruleCommand;
 	public static boolean hungerCommand;
-	public static boolean giveCommandAcceptsIntegerIDs;
+	public static boolean giveCommandTweaks;
 	public static boolean rtreloadCommand;
 
 	//Hunger
@@ -206,6 +207,10 @@ public final class ConfigurationHandler {
 		worldEntries.add(new Entry("voidWorldTypeBiome", "What biome the Void world type uses. " +
 				"Set to an empty string to use Minecraft's default behavior.",
 				"minecraft:plains"));
+		worldEntries.add(new Entry("voidIslandsWorldTypeChunkRarity", "The rarity of non-empty " +
+				"chunks in the Void Islands world type. Must be at least 2. If n, there is a 1 " +
+				"in n chance of a chunk being non-empty.",
+				DEFAULT_VOID_ISLANDS_WORLD_TYPE_CHUNK_RARITY, 0));
 
 		//Squids
 
@@ -223,7 +228,8 @@ public final class ConfigurationHandler {
 
 		commandFlags.put("deletegameruleCommand", "Self explanatory.");
 		commandFlags.put("hungerCommand", "Sets a player's hunger.");
-		commandFlags.put("giveCommandAcceptsIntegerIDs", "Self explanatory.");
+		commandFlags.put("giveCommandTweaks", "Allows /give to accept integer IDs and amounts " +
+				"higher than 64.");
 		commandFlags.put("rtreloadCommand", "Reloads this configuration.");
 
 		commandFlags.keySet().forEach(entry -> needsWorldRestart.add(entry));

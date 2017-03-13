@@ -34,7 +34,7 @@ public class CommandGive extends net.minecraft.command.CommandGive {
 			item = getItemByText(sender, args[1]);
 		}
 
-		final int amount = args.length > 2 ? parseInt(args[2], 1, 64) : 1;
+		final int amount = args.length > 2 ? parseInt(args[2], 1) : 1;
 		final int meta = args.length > 3 ? parseInt(args[3]) : 0;
 		final ItemStack stack = new ItemStack(item, amount, meta);
 
