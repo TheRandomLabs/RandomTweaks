@@ -92,7 +92,7 @@ public final class WorldCreateHandler {
 
 		world.setSpawnPoint(newSpawn);
 		world.setBlockState(newSpawn.add(0, -1, 0),
-				block.getStateFromMeta(ConfigurationHandler.voidWorldTypeMeta));
+				block.getStateFromMeta(ConfigurationHandler.voidWorldTypeBlockMeta));
 	}
 
 	private static void onVoidIslandsWorldCreate(World world) {

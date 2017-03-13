@@ -432,6 +432,7 @@ public final class ConfigurationHandler {
 
 			if(!usedCategories.contains(categoryName)) {
 				configuration.removeCategory(category);
+				continue;
 			}
 
 			for(ConfigCategory key : category.getChildren()) {

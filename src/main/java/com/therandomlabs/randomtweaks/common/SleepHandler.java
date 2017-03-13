@@ -64,7 +64,7 @@ public final class SleepHandler {
 
 			if(!bedInRange(player, location, facing)) {
 				event.setResult(SleepResult.TOO_FAR_AWAY);
-				if(Compat.isOnePointTen()) {
+				if(Compat.IS_ONE_POINT_TEN) {
 					Compat.sendStatusMessage(player,
 							new TextComponentTranslation("tile.bed.tooFarAway"));
 				}
