@@ -17,8 +17,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.MalformedJsonException;
 import net.minecraft.client.Minecraft;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.util.ReportedException;
+import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
@@ -26,16 +25,13 @@ import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber
 public final class ConfigurationHandler {
 	public static final String RANDOMTWEAKS = RandomTweaks.MODID + ".cfg";
 	public static final String DEFAULT_GAMERULES = "defaultgamerules.json";
-	private static final Path directory =
-			Paths.get(Minecraft.getMinecraft().mcDataDir.getAbsolutePath(),
-			"config/" + RandomTweaks.MODID);
+	private static final Path directory = getConfigurationDirectory();
 	private static Configuration configuration;
 
 	//Client-sided
@@ -451,5 +447,14 @@ public final class ConfigurationHandler {
 		}
 
 		reloadConfiguration();
+	}
+
+	private static Path getConfigurationDirectory() {
+		try {
+			return Paths.get(Minecraft.getMinecraft().mcDataDir.getAbsolutePath(),
+					"config/" + RandomTweaks.MODID).normalize();
+		} catch(NoClassDefFoundError error) {}
+
+		return Paths.get("config/" + RandomTweaks.MODID).toAbsolutePath().normalize();
 	}
 }

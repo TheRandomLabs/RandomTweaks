@@ -1,29 +1,24 @@
 package com.therandomlabs.randomtweaks.common;
 
-import java.io.IOException;
-import java.io.OutputStream;
 import java.io.PrintStream;
-import net.minecraft.client.Minecraft;
+import net.minecraft.util.LoggingPrintStream;
 
-public final class LogHandler extends PrintStream {
-	public static final PrintStream originalOut = System.out;
-	public static final PrintStream out = new LogHandler();
+public final class LogHandler {// extends LoggingPrintStream {
+	public static final LoggingPrintStream originalOut = (LoggingPrintStream) System.out;
+	public static final LoggingPrintStream originalErr = (LoggingPrintStream) System.err;
+	/*private static final LoggingPrintStream out = new LogHandler(true);
+	private static final LoggingPrintStream err = new LogHandler(false);
 
-	public LogHandler() {
-		super(originalOut);
+	private LogHandler(boolean out) {
+		super(null, null); //TODO
 	}
 
 	@Override
 	public void print(String string) {
-		if(string.contains("INFO") || string.contains("WARN")) {
-			return;
-		}
-
 		super.print(string);
-	}
+	}*/
 
 	public static void updateLogFilters() {
-		System.out.println(RandomTweaks.LOGGER.getClass() + " HELLO");
-		System.setOut(out); //TODO
+
 	}
 }
