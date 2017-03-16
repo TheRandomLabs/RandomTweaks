@@ -4,8 +4,8 @@ import java.io.PrintStream;
 import net.minecraft.util.LoggingPrintStream;
 
 public final class LogHandler {// extends LoggingPrintStream {
-	public static final LoggingPrintStream originalOut = (LoggingPrintStream) System.out;
-	public static final LoggingPrintStream originalErr = (LoggingPrintStream) System.err;
+	//public static final LoggingPrintStream originalOut = (LoggingPrintStream) System.out;
+	//public static final LoggingPrintStream originalErr = (LoggingPrintStream) System.err;
 	/*private static final LoggingPrintStream out = new LogHandler(true);
 	private static final LoggingPrintStream err = new LogHandler(false);
 

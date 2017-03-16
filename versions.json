@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.11.2": {
+		"1.11.2-1.7.0.3": "Fixed yet another crash due to me accidentally including code that I wasn't meant to. 1.7.0.0 messed up everything...",
 		"1.11.2-1.7.0.2": "Fixed crash on the physical server. My fault for not testing server-sided.",
 		"1.11.2-1.7.0.1": "Fixed general tweaks not working or being registered in the configuration.",
 		"1.11.2-1.7.0.0": "Fixed compatibility with Guide-API and probably several other mods.\nAdded the Void Islands world type.\n/give now accepts amounts higher than 64.\nRedid the configuration system which fixes several issues. This will probably mess with your configuration.",
@@ -16,6 +17,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.10.2": {
+		"1.11.2-1.7.0.3": "Fixed yet another crash due to me accidentally including code that I wasn't meant to. 1.7.0.0 messed up everything...",
 		"1.11.2-1.7.0.2": "Fixed crash on the physical server. My fault for not testing server-sided.",
 		"1.11.2-1.7.0.1": "Fixed general tweaks not working or being registered in the configuration.",
 		"1.11.2-1.7.0.0": "Fixed compatibility with Guide-API and probably several other mods.\nAdded the Void Islands world type.\n/give now accepts amounts higher than 64.\nRedid the configuration system which fixes several issues. This will probably mess with your configuration.",
@@ -31,9 +33,9 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"promos": {
-		"1.11.2-latest": "1.11.2-1.7.0.2",
-		"1.11.2-recommended": "1.11.2-1.7.0.2",
-		"1.10.2-latest": "1.11.2-1.7.0.2",
-		"1.10.2-recommended": "1.11.2-1.7.0.2"
+		"1.11.2-latest": "1.11.2-1.7.0.3",
+		"1.11.2-recommended": "1.11.2-1.7.0.3",
+		"1.10.2-latest": "1.11.2-1.7.0.3",
+		"1.10.2-recommended": "1.11.2-1.7.0.3"
 	}
 }
