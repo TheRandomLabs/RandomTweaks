@@ -23,8 +23,22 @@ public final class Compat {
 		return IS_ONE_POINT_TEN ? stack == null : stack.isEmpty();
 	}
 
-	public static void shrinkItemStack(ItemStack stack, int quantity)
-			throws IllegalArgumentException, IllegalAccessException {
+	public static int getStackSize(ItemStack stack) throws Exception {
+		if(IS_ONE_POINT_TEN) {
+			return (int) STACK_SIZE.get(stack);
+		}
+		return stack.getCount();
+	}
+
+	public static void setStackSize(ItemStack stack, int size) throws Exception {
+		if(IS_ONE_POINT_TEN) {
+			STACK_SIZE.set(stack, size);
+		} else {
+			stack.setCount(size);
+		}
+	}
+
+	public static void shrinkItemStack(ItemStack stack, int quantity) throws Exception {
 		if(IS_ONE_POINT_TEN) {
 			STACK_SIZE.set(stack, quantity);
 		} else {

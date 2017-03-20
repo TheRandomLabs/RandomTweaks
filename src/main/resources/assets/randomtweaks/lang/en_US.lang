@@ -15,6 +15,8 @@ commands.hunger.usage=/hunger <player> <level> [saturation]
 commands.hunger.failure=§cAn error occurred while attempting to set saturation: %s
 commands.hunger.success=%s's new hunger level: %s New saturation: %s
 
+commands.rtgive.failure=§cAn error occurred while giving item: %s
+
 commands.rtreload.usage=/rtreload
 commands.rtreload.failure=§cAn error occurred while reloading configuration: %s
 commands.rtreload.success=Configuration reloaded!

@@ -1,5 +1,7 @@
 package com.therandomlabs.randomtweaks.server;
 
+import com.therandomlabs.randomtweaks.util.Compat;
+import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandSender;
@@ -20,7 +22,7 @@ public class CommandGive extends net.minecraft.command.CommandGive {
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args)
 			throws CommandException {
 		if(args.length < 2) {
-			throw new WrongUsageException("commands.give.usage");
+			throw new WrongUsageException(getUsage(sender));
 		}
 
 		final EntityPlayer player = getPlayer(server, sender, args[0]);
@@ -54,8 +56,14 @@ public class CommandGive extends net.minecraft.command.CommandGive {
 					((player.getRNG().nextFloat() - player.getRNG().nextFloat()) * 0.7F + 1.0F) *
 					2.0F);
 
-			if(stack.isEmpty()) {
-				stack.setCount(1);
+			if(Compat.isEmpty(stack)) {
+				try {
+					Compat.setStackSize(stack, 1);
+				} catch(Exception ex) {
+					throw new CommandException(Utils.localize("commands.rtgive.failure",
+							ex.getClass().getName() + ": " + ex.getMessage()));
+				}
+
 				sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS, amount);
 
 				final EntityItem droppedItem = player.dropItem(stack, false);
@@ -63,8 +71,13 @@ public class CommandGive extends net.minecraft.command.CommandGive {
 					droppedItem.makeFakeItem();
 				}
 			} else {
-				sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS,
-						amount - stack.getCount());
+				try {
+					sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS,
+							amount - Compat.getStackSize(stack));
+				} catch(Exception ex) {
+					throw new CommandException(Utils.localize("commands.rtgive.failure",
+							ex.getClass().getName() + ": " + ex.getMessage()));
+				}
 
 				final EntityItem droppedItem = player.dropItem(stack, false);
 				if(droppedItem != null) {
