@@ -29,3 +29,5 @@ generator.void=Void
 generator.void.info=A completely empty void world with only a block to stand on
 generator.voidislands=Void Islands
 generator.voidislands.info=I wonder what this could be...
+
+itemGroup.spawnEggs=Spawn Eggs

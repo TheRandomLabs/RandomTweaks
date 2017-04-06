@@ -5,7 +5,6 @@ import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.IChunkGenerator;
 
 public class WorldTypeVoidIslands extends WorldType {
-	public static final WorldTypeVoidIslands INSTANCE = new WorldTypeVoidIslands();
 	public static final String NAME = "voidislands";
 
 	public WorldTypeVoidIslands() {

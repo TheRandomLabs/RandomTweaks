@@ -28,6 +28,7 @@ public class CommandDeleteGamerule extends CommandBase {
 		return Utils.localize("commands.deletegamerule.usage");
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args)
 			throws CommandException {
@@ -48,6 +49,7 @@ public class CommandDeleteGamerule extends CommandBase {
 				Utils.localize("commands.deletegamerule.success", args[0]));
 	}
 
+	@Override
 	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender,
 			String[] args, BlockPos targetPos) {
 		return Arrays.asList(sender.getEntityWorld().getGameRules().getRules());

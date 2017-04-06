@@ -25,7 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class CapeHandler {
 	public static final Method GET_PLAYER_INFO = ReflectionHelper.findMethod(
-			AbstractClientPlayer.class, null, new String[] {"getPlayerInfo", "func_175155_b"});
+			AbstractClientPlayer.class, "getPlayerInfo", "func_175155_b");
 	public static final Field PLAYER_TEXTURES = ReflectionHelper.findField(NetworkPlayerInfo.class,
 					"playerTextures", "field_187107_a");
 	public static final String CONTRIBUTORS_URL =
@@ -88,6 +88,7 @@ public final class CapeHandler {
 			return false;
 		}
 
+		@SuppressWarnings("unchecked")
 		final Map<MinecraftProfileTexture.Type, ResourceLocation> playerTextures =
 				(Map<Type, ResourceLocation>) PLAYER_TEXTURES.get(info);
 

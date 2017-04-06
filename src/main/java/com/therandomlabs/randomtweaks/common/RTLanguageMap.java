@@ -7,10 +7,12 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
+@SuppressWarnings("deprecation")
 public class RTLanguageMap extends LanguageMap {
 	private static RTLanguageMap instance;
 	public final Map<String, String> languageList;
 
+	@SuppressWarnings("unchecked")
 	public RTLanguageMap(LanguageMap languageMap)
 			throws IllegalArgumentException, IllegalAccessException {
 		final Field languageListField =

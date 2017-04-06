@@ -1,6 +1,7 @@
 package com.therandomlabs.randomtweaks.common.worldtype;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
 import net.minecraft.entity.EnumCreatureType;
@@ -50,7 +51,7 @@ public class ChunkProviderVoid implements IChunkGenerator {
 
 	@Override
 	public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
-		return null;
+		return Collections.emptyList();
 	}
 
 	@Override

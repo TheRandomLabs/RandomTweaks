@@ -48,8 +48,8 @@ public final class WorldCreateHandler {
 		final World world = player.getEntityWorld();
 
 		if(!new File(event.getPlayerDirectory(), event.getPlayerUUID() + ".dat").exists()) {
-			if(world.getWorldType() == WorldTypeVoid.INSTANCE ||
-					world.getWorldType() == WorldTypeVoidIslands.INSTANCE) {
+			if(world.getWorldType() instanceof WorldTypeVoid ||
+					world.getWorldType() instanceof WorldTypeVoidIslands) {
 				final BlockPos spawn = world.getSpawnPoint();
 				player.setPosition(spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5);
 				player.setSpawnPoint(spawn, true);
@@ -58,9 +58,9 @@ public final class WorldCreateHandler {
 	}
 
 	private static void onWorldCreate(World world) throws Exception {
-		if(world.getWorldType() == WorldTypeVoid.INSTANCE) {
+		if(world.getWorldType() instanceof WorldTypeVoid) {
 			onVoidWorldCreate(world);
-		} else if(world.getWorldType() == WorldTypeVoidIslands.INSTANCE) {
+		} else if(world.getWorldType() instanceof WorldTypeVoidIslands) {
 			onVoidIslandsWorldCreate(world);
 		}
 
@@ -79,6 +79,7 @@ public final class WorldCreateHandler {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private static void onVoidWorldCreate(World world) {
 		Block block = GameRegistry.findRegistry(Block.class).getValue(
 				new ResourceLocation(ConfigurationHandler.voidWorldTypeBlock));

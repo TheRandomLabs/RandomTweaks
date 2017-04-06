@@ -15,9 +15,8 @@ public final class Compat {
 	private static final Field STACK_SIZE = IS_ONE_POINT_TEN ?
 			ReflectionHelper.findField(ItemStack.class, "stackSize", "field_77994_a") : null;
 	private static final Method SEND_STATUS_MESSAGE = IS_ONE_POINT_TEN ?
-			ReflectionHelper.findMethod(EntityPlayer.class, null,
-					new String[] {"addChatComponentMessage", "func_146105_b"},
-					ITextComponent.class) : null;
+			ReflectionHelper.findMethod(EntityPlayer.class,
+					"addChatComponentMessage", "func_146105_b", ITextComponent.class) : null;
 
 	public static boolean isEmpty(ItemStack stack) {
 		return IS_ONE_POINT_TEN ? stack == null : stack.isEmpty();

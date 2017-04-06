@@ -26,3 +26,4 @@ generator.realistic.info=Realistischer Welttyp von /u/Soniop
 generator.void=Void
 generator.void.info=A completely empty void world with only a block to stand on
 
+itemGroup.spawnEggs=Spawn Eggs

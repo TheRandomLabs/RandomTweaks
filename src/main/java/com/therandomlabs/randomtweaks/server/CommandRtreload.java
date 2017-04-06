@@ -1,12 +1,10 @@
 package com.therandomlabs.randomtweaks.server;
 
-import java.util.Map;
 import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 
 public class CommandRtreload extends CommandBase {

@@ -9,9 +9,8 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public final class Utils {
-	public static final Method SET_SIZE =
-			ReflectionHelper.findMethod(Entity.class, null,
-					new String[] {"setSize", "func_70105_a"}, float.class, float.class);
+	public static final Method SET_SIZE = ReflectionHelper.findMethod(Entity.class,
+			"setSize", "func_70105_a", float.class, float.class);
 
 	public static String localize(String key, Object... args) {
 		return new TextComponentTranslation(key, args).getFormattedText();

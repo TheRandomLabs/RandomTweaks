@@ -17,12 +17,9 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
@@ -43,8 +40,7 @@ public final class SleepHandler {
 		final EntityPlayer player = event.getEntityPlayer();
 		final World world = player.getEntityWorld();
 		final BlockPos location = event.getPos();
-		final EnumFacing facing = (EnumFacing) world.getBlockState(location).
-				getValue(BlockHorizontal.FACING);
+		final EnumFacing facing = world.getBlockState(location).getValue(BlockHorizontal.FACING);
 
 		if(!world.isRemote) {
 			if(player.isPlayerSleeping() || !player.isEntityAlive()) {
@@ -96,19 +92,19 @@ public final class SleepHandler {
 		if(state != null && state.getBlock().isBed(state, world, location, player)) {
 			setRenderOffsetForSleep(player, facing);
 
-			final float x = 0.5F + (float) facing.getFrontOffsetX() * 0.4F;
-			final float z = 0.5F + (float) facing.getFrontOffsetZ() * 0.4F;
+			final float x = 0.5F + facing.getFrontOffsetX() * 0.4F;
+			final float z = 0.5F + facing.getFrontOffsetZ() * 0.4F;
 
 			player.setPosition(
-					(double) ((float) event.getPos().getX() + x),
-					(double) ((float) event.getPos().getY() + 0.6875F),
-					(double) ((float) event.getPos().getZ() + z)
+					event.getPos().getX() + x,
+					event.getPos().getY() + 0.6875F,
+					event.getPos().getZ() + z
 			);
 		} else {
 			player.setPosition(
-					(double) ((float) event.getPos().getX() + 0.5F),
-					(double) ((float) event.getPos().getY() + 0.6875F),
-					(double) ((float) event.getPos().getZ() + 0.5F)
+					event.getPos().getX() + 0.5F,
+					event.getPos().getY() + 0.6875F,
+					event.getPos().getZ() + 0.5F
 			);
 		}
 
@@ -158,7 +154,7 @@ public final class SleepHandler {
 	}
 
 	public static void setRenderOffsetForSleep(EntityPlayer player, EnumFacing facing) {
-		player.renderOffsetX = -1.8F * (float) facing.getFrontOffsetX();
-		player.renderOffsetZ = -1.8F * (float) facing.getFrontOffsetZ();
+		player.renderOffsetX = -1.8F * facing.getFrontOffsetX();
+		player.renderOffsetZ = -1.8F * facing.getFrontOffsetZ();
 	}
 }

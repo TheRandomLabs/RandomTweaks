@@ -6,7 +6,6 @@ import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.gen.ChunkProviderOverworld;
 
 public class WorldTypeRealistic extends WorldType {
-	public static final WorldTypeRealistic INSTANCE = new WorldTypeRealistic();
 	public static final String NAME = "realistic";
 	//Thanks to /u/Soniop
 	public static final String PRESET = "{\"coordinateScale\":175.0,\"heightScale\":75.0," +

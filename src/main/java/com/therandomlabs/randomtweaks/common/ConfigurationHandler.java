@@ -16,8 +16,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.MalformedJsonException;
-import net.minecraft.client.Minecraft;
-import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
@@ -31,13 +29,15 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class ConfigurationHandler {
 	public static final String RANDOMTWEAKS = RandomTweaks.MODID + ".cfg";
 	public static final String DEFAULT_GAMERULES = "defaultgamerules.json";
-	private static final Path directory = getConfigurationDirectory();
+
+	private static Path directory;
 	private static Configuration configuration;
 
 	//Client-sided
 
 	public static boolean reloadSoundSystemKeyBind;
 	public static boolean moveBucketCreativeTab;
+	public static boolean spawnEggsCreativeTab;
 	public static boolean contributorCapes;
 
 	//General
@@ -51,6 +51,7 @@ public final class ConfigurationHandler {
 	public static final int DEFAULT_VOID_WORLD_TYPE_Y_SPAWN = 17;
 	public static final int DEFAULT_VOID_ISLANDS_WORLD_TYPE_CHUNK_RARITY = 10;
 
+	public static boolean disableRealisticWorldTypeWithQuark;
 	public static boolean realisticWorldType;
 	public static boolean voidWorldType;
 	public static boolean voidIslandsWorldType;
@@ -149,14 +150,9 @@ public final class ConfigurationHandler {
 	}
 
 	public static void reloadConfiguration() throws Exception {
-		if(configuration == null) {
-			createConfiguration();
-		}
-
-		LogHandler.updateLogFilters();
-
 		configuration.load();
 
+		//If the entries have already been initialized, just read the values, then return
 		if(!clientSidedFlags.isEmpty()) {
 			readAll();
 			return;
@@ -166,11 +162,12 @@ public final class ConfigurationHandler {
 
 		clientSidedFlags.put("reloadSoundSystemKeyBind", "Self explanatory.");
 		clientSidedFlags.put("moveBucketCreativeTab",
-				"Move the bucket to the Tools tab in creative mode.");
+				"Moves the bucket to the Tools creative tab.");
+		clientSidedFlags.put("spawnEggsCreativeTab",
+				"Moves the spawn eggs to their own creative tab.");
+		clientSidedFlags.put("contributorCapes", "Self explanatory.");
 
 		clientSidedFlags.keySet().forEach(key -> needsMcRestart.add(key));
-
-		clientSidedFlags.put("contributorCapes", "Self explanatory.");
 
 		//General
 
@@ -178,10 +175,12 @@ public final class ConfigurationHandler {
 		generalFlags.put("ocelotsCanBeHealed", "Ocelots can be healed with fish.");
 		generalFlags.put("sleepTweaks", "Players can sleep " +
 				"around non-aggressive zombie pigmen and mobs with custom names. On 1.10, " +
-				"adds a \"bed is too far away\" message. Server-sided.");
+				"adds a \"bed is too far away\" message.");
 
 		//World
 
+		worldFlags.put("disableRealisticWorldTypeWithQuark",
+				"Disables the Realistic world type if Quark is detected.");
 		worldFlags.put("realisticWorldType", "Enables the Realistic world type. Name: realistic");
 		worldFlags.put("voidWorldType", "Enables the Void world type. Name: void");
 		worldFlags.put("voidIslandsWorldType",
@@ -201,7 +200,7 @@ public final class ConfigurationHandler {
 		worldEntries.add(new Entry("voidIslandsWorldTypeChunkRarity", "The rarity of non-empty " +
 				"chunks in the Void Islands world type. Must be at least 2. If n, there is a 1 " +
 				"in n chance of a chunk being non-empty.",
-				DEFAULT_VOID_ISLANDS_WORLD_TYPE_CHUNK_RARITY, 0));
+				DEFAULT_VOID_ISLANDS_WORLD_TYPE_CHUNK_RARITY, 2));
 
 		//Squids
 
@@ -326,6 +325,14 @@ public final class ConfigurationHandler {
 		}
 	}
 
+	/*public static Pattern levelFilter = Pattern.compile("");
+	public static Pattern nameFilter = levelFilter;
+	public static Pattern messageFilter = levelFilter;
+	public static Pattern classFilter = levelFilter;
+	public static Pattern throwableClassFilter = levelFilter;
+	public static Pattern throwableMessageFilter = levelFilter;
+	public static Pattern threadFilter = levelFilter; TODO*/
+
 	public static boolean isString(JsonElement element) {
 		return element.isJsonPrimitive() && element.getAsJsonPrimitive().isString();
 	}
@@ -354,10 +361,9 @@ public final class ConfigurationHandler {
 		return elements;
 	}
 
-	private static boolean requiresRestart(String category, String key, String description) {
-		final Property property = configuration.get(category, key, true, description);
-		property.setRequiresMcRestart(true);
-		return property.getBoolean();
+	static void initialize(Path directory) throws Exception {
+		ConfigurationHandler.directory = directory;
+		createConfiguration();
 	}
 
 	private static void readAll() throws Exception {
@@ -374,12 +380,16 @@ public final class ConfigurationHandler {
 	private static void readFlags(String category, Map<String, String> flags) throws Exception {
 		usedCategories.add(category);
 
-		for(String key : flags.keySet()) {
-			final Property property = configuration.get(category, key, true, flags.get(key));
-			checkRestartNeeded(property);
-			ConfigurationHandler.class.getDeclaredField(key).set(null, property.getBoolean());
+		for(Map.Entry<String, String> entry : flags.entrySet()) {
+			final Property property =
+					configuration.get(category, entry.getKey(), true, entry.getValue());
 
-			usedKeys.add(key);
+			checkRestartNeeded(property);
+
+			ConfigurationHandler.class.getDeclaredField(entry.getKey()).
+					set(null, property.getBoolean());
+
+			usedKeys.add(entry.getKey());
 		}
 	}
 
@@ -447,14 +457,5 @@ public final class ConfigurationHandler {
 		}
 
 		reloadConfiguration();
-	}
-
-	private static Path getConfigurationDirectory() {
-		try {
-			return Paths.get(Minecraft.getMinecraft().mcDataDir.getAbsolutePath(),
-					"config/" + RandomTweaks.MODID).normalize();
-		} catch(NoClassDefFoundError error) {}
-
-		return Paths.get("config/" + RandomTweaks.MODID).toAbsolutePath().normalize();
 	}
 }
