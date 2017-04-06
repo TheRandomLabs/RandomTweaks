@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.server;
 
+import org.apache.logging.log4j.core.Logger;
 import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandBase;
@@ -23,6 +24,7 @@ public class CommandRtreload extends CommandBase {
 			throws CommandException {
 		try {
 			ConfigurationHandler.reloadConfiguration();
+			Logger.filters = ConfigurationHandler.getLogFilters();
 			notifyCommandListener(sender, this, Utils.localize("commands.rtreload.success"));
 		} catch(Exception ex) {
 			ex.printStackTrace();

@@ -6,12 +6,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.core.Logger;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -25,10 +28,13 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEve
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+//Please don't kill me for writing this mess
 @EventBusSubscriber
 public final class ConfigurationHandler {
 	public static final String RANDOMTWEAKS = RandomTweaks.MODID + ".cfg";
 	public static final String DEFAULT_GAMERULES = "defaultgamerules.json";
+
+	public static final String LOG_FILTERS = "logfilters.json";
 
 	private static Path directory;
 	private static Configuration configuration;
@@ -147,6 +153,7 @@ public final class ConfigurationHandler {
 	public static void onConfigurationChanged(OnConfigChangedEvent event) throws Exception {
 		configuration.save();
 		reloadConfiguration();
+		Logger.filters = getLogFilters();
 	}
 
 	public static void reloadConfiguration() throws Exception {
@@ -239,6 +246,45 @@ public final class ConfigurationHandler {
 		configuration.save();
 	}
 
+	public static void createLogFiltersConfiguration() throws IOException {
+		Files.write(Paths.get(LOG_FILTERS), Arrays.asList(
+				"{",
+				"\t\"levelFilter\": \"\", //A regex that matches the level. Example: TRACE|DEBUG",
+				"\t\"nameFilter\": \"\", //A regex that matches the logger name. Example: ^FML$",
+				"\t\"messageFilter\": \"\", //A regex that matches the message. " +
+						"Example: ^Skipping bad option: lastServer: $",
+				"\t\"classFilter\": \"\", //A regex that matches the caller class name. " +
+						"No example yet.",
+				"\t\"throwableClassFilter\": \"\", //A regex that matches the throwable class " +
+						"name, if there is a throwable. " +
+						"Example: ^java.lang.ArrayIndexOutOfBoundsException$",
+				"\t\"throwableMessageFilter\": \"\", //A regex that matches the throwable's " +
+						"message, if there is a throwable. No example yet.",
+				"\t\"threadFilter\": \"\" //A regex that matches the thread name. " +
+						"Example: ^Server thread$",
+				"}"
+		));
+	}
+
+	public static Map<String, Pattern> getLogFilters() throws IOException {
+		final Path path = Paths.get(LOG_FILTERS);
+
+		if(!Files.exists(path)) {
+			createLogFiltersConfiguration();
+		}
+
+		final Map<String, Pattern> filters = new HashMap<>();
+		//If the JSON is invalid, we crash the game
+		final JsonObject object = readJson(path);
+
+		for(Map.Entry<String, JsonElement> entry : object.entrySet()) {
+			//If a value is not a string/valid pattern, we crash the game
+			filters.put(entry.getKey(), Pattern.compile(entry.getValue().getAsString()));
+		}
+
+		return filters;
+	}
+
 	public static void createDefaultGamerulesConfiguration() throws IOException {
 		Files.write(getConfiguration(DEFAULT_GAMERULES), Arrays.asList(
 				"//Example configuration - game does not need to be restarted when changing this",
@@ -260,12 +306,15 @@ public final class ConfigurationHandler {
 			throws IOException {
 		if(!configurationExists(DEFAULT_GAMERULES)) {
 			createDefaultGamerulesConfiguration();
+			return Collections.emptyMap();
 		}
 
 		JsonObject object = null;
 		try {
 			object = readJson(DEFAULT_GAMERULES);
 		} catch(MalformedJsonException ex) {
+			//WorldCreateHandler sends a server message if this is null saying that the
+			//JSON was invalid, so there's no need to crash the game
 			return null;
 		}
 
@@ -325,14 +374,6 @@ public final class ConfigurationHandler {
 		}
 	}
 
-	/*public static Pattern levelFilter = Pattern.compile("");
-	public static Pattern nameFilter = levelFilter;
-	public static Pattern messageFilter = levelFilter;
-	public static Pattern classFilter = levelFilter;
-	public static Pattern throwableClassFilter = levelFilter;
-	public static Pattern throwableMessageFilter = levelFilter;
-	public static Pattern threadFilter = levelFilter; TODO*/
-
 	public static boolean isString(JsonElement element) {
 		return element.isJsonPrimitive() && element.getAsJsonPrimitive().isString();
 	}
@@ -342,11 +383,15 @@ public final class ConfigurationHandler {
 	}
 
 	public static JsonObject readJson(String name) throws IOException {
-		return new JsonParser().parse(readConfiguration(name)).getAsJsonObject();
+		return readJson(getConfiguration(name));
 	}
 
-	public static String readConfiguration(String name) throws IOException {
-		return StringUtils.join(Files.readAllLines(getConfiguration(name)),
+	public static JsonObject readJson(Path path) throws IOException {
+		return new JsonParser().parse(readConfiguration(path)).getAsJsonObject();
+	}
+
+	public static String readConfiguration(Path path) throws IOException {
+		return StringUtils.join(Files.readAllLines(path),
 				System.lineSeparator());
 	}
 

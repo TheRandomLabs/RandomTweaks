@@ -10,6 +10,7 @@ import org.apache.commons.io.IOUtils;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
+import com.therandomlabs.randomtweaks.util.Compat;
 import com.therandomlabs.randomtweaks.util.Wrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -24,7 +25,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class CapeHandler {
-	public static final Method GET_PLAYER_INFO = ReflectionHelper.findMethod(
+	public static final Method GET_PLAYER_INFO = Compat.findMethod(
 			AbstractClientPlayer.class, "getPlayerInfo", "func_175155_b");
 	public static final Field PLAYER_TEXTURES = ReflectionHelper.findField(NetworkPlayerInfo.class,
 					"playerTextures", "field_187107_a");

@@ -16,10 +16,12 @@
  */
 package org.apache.logging.log4j.core;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.core.config.Configuration;
@@ -30,6 +32,8 @@ import org.apache.logging.log4j.message.MessageFactory;
 import org.apache.logging.log4j.message.SimpleMessage;
 import org.apache.logging.log4j.spi.AbstractLogger;
 import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.util.ReportedException;
 
 /* I DO NOT TAKE CREDIT FOR ANYTHING IN THIS FILE */
 /**
@@ -39,6 +43,20 @@ import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
  * used in global filters.
  */
 public class Logger extends AbstractLogger {
+	/* RANDOMTWEAKS */
+
+	public static Map<String, Pattern> filters;
+
+	static {
+		try {
+			filters = ConfigurationHandler.getLogFilters();
+		} catch(IOException ex) {
+			throw new ReportedException(
+					new CrashReport("Failed to read RandomTweaks log filters", ex));
+		}
+	}
+
+	/* RANDOMTWEAKS END */
 
 	/**
 	 * config should be consistent across threads.
@@ -112,15 +130,14 @@ public class Logger extends AbstractLogger {
 
 		//TODO JSON just for log filter (root dir, not in config)
 
-		if(ConfigurationHandler.levelFilter.matcher(level.toString()).matches() ||
-				ConfigurationHandler.nameFilter.matcher(getName()).matches() ||
-				ConfigurationHandler.messageFilter.matcher(data.getFormattedMessage()).matches() ||
-				ConfigurationHandler.classFilter.matcher(fqcn).matches() ||
-				ConfigurationHandler.threadFilter.matcher(
-						Thread.currentThread().getName()).matches() ||
-				((t != null && (ConfigurationHandler.throwableClassFilter.matcher(
+		if(filters.get("levelFilter").matcher(level.toString()).matches() ||
+				filters.get("nameFilter").matcher(getName()).matches() ||
+				filters.get("messageFilter").matcher(data.getFormattedMessage()).matches() ||
+				filters.get("classFilter").matcher(fqcn).matches() ||
+				filters.get("threadFilter").matcher(Thread.currentThread().getName()).matches() ||
+				((t != null && (filters.get("throwableClassFilter").matcher(
 						t.getClass().getName()).matches() ||
-				ConfigurationHandler.throwableMessageFilter.matcher(t.getMessage()).matches())))) {
+				filters.get("throwableMessageFilter").matcher(t.getMessage()).matches())))) {
 			return;
 		}
 
