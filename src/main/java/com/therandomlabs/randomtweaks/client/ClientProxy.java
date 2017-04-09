@@ -29,7 +29,7 @@ public final class ClientProxy extends CommonProxy {
 				public ItemStack getTabIconItem() {
 					final ItemStack stack = new ItemStack(Items.SPAWN_EGG);
 					ItemMonsterPlacer.applyEntityIdToItemStack(stack,
-							new ResourceLocation(Compat.IS_ONE_POINT_TEN ? "Chicken" : "chicken"));
+							new ResourceLocation(Compat.CHICKEN_ENTITY_NAME));
 					return stack;
 				}
 			};

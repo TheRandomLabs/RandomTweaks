@@ -36,7 +36,7 @@ public class CommandHunger extends CommandBase {
 		stats.setFoodLevel(parseInt(args[1]));
 		if(args.length > 2) {
 			try {
-				HungerHandler.setSaturation(stats, (float) parseDouble(args[1]));
+				HungerHandler.setSaturation(stats, (float) parseDouble(args[2]));
 			} catch(Exception ex) {
 				ex.printStackTrace();
 				throw new CommandException(Utils.localize("commands.hunger.failure",

@@ -2,36 +2,33 @@ package com.therandomlabs.randomtweaks.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.util.ReportedException;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindMethodException;
 
 //In an effort to avoid requiring dependencies
 public final class Compat {
-	public static final boolean IS_ONE_POINT_TEN = MinecraftForge.MC_VERSION.contains("10");
+	public static final boolean IS_ONE_POINT_TEN = isOnePointTen();
+	public static final String CHICKEN_ENTITY_NAME = IS_ONE_POINT_TEN ? "Chicken" : "chicken";
+
 	private static final Field STACK_SIZE = IS_ONE_POINT_TEN ?
 			ReflectionHelper.findField(ItemStack.class, "stackSize", "field_77994_a") : null;
-	private static final Method SEND_STATUS_MESSAGE = IS_ONE_POINT_TEN ?
-			findMethod(EntityPlayer.class,
-					"addChatComponentMessage", "func_146105_b", ITextComponent.class) : null;
+	private static final Method ADD_CHAT_COMPONENT_MESSAGE = IS_ONE_POINT_TEN ? findMethod(
+			EntityPlayer.class, "addChatComponentMessage", "func_146105_b", ITextComponent.class) :
+				null;
 
 	public static boolean isEmpty(ItemStack stack) {
-		if(IS_ONE_POINT_TEN) {
-			return stack == null;
-		}
-		return stack.isEmpty();
+		return IS_ONE_POINT_TEN ? stack == null : stack.isEmpty();
 	}
 
 	public static int getStackSize(ItemStack stack) throws Exception {
-		if(IS_ONE_POINT_TEN) {
-			return (int) STACK_SIZE.get(stack);
-		}
-		return stack.getCount();
+		return IS_ONE_POINT_TEN ? (int) STACK_SIZE.get(stack) : stack.getCount();
 	}
 
 	public static void setStackSize(ItemStack stack, int size) throws Exception {
@@ -44,16 +41,16 @@ public final class Compat {
 
 	public static void shrinkItemStack(ItemStack stack, int quantity) throws Exception {
 		if(IS_ONE_POINT_TEN) {
-			STACK_SIZE.set(stack, quantity);
+			STACK_SIZE.set(stack, (int) STACK_SIZE.get(stack) - quantity);
 		} else {
 			stack.shrink(quantity);
 		}
 	}
 
-	public static void sendStatusMessage(EntityPlayer player, TextComponentTranslation message)
+	public static void sendStatusMessage(EntityPlayer player, ITextComponent message)
 			throws Exception {
 		if(IS_ONE_POINT_TEN) {
-			SEND_STATUS_MESSAGE.invoke(player, message);
+			ADD_CHAT_COMPONENT_MESSAGE.invoke(player, message);
 		} else {
 			player.sendStatusMessage(message, true);
 		}
@@ -76,6 +73,16 @@ public final class Compat {
 			return method;
 		} catch(Exception ex) {
 			throw new UnableToFindMethodException(ex);
+		}
+	}
+
+	private static boolean isOnePointTen() {
+		try {
+			return ((String) MinecraftForge.class.getDeclaredField("MC_VERSION").get(null)).
+					contains("10");
+		} catch(Exception ex) {
+			throw new ReportedException(new CrashReport(
+					"RandomTweaks could not get the current Minecraft version", ex));
 		}
 	}
 }
