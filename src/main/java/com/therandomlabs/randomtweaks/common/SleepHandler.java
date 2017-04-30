@@ -40,7 +40,17 @@ public final class SleepHandler {
 		final EntityPlayer player = event.getEntityPlayer();
 		final World world = player.getEntityWorld();
 		final BlockPos location = event.getPos();
-		final EnumFacing facing = world.getBlockState(location).getValue(BlockHorizontal.FACING);
+
+		IBlockState state;
+		EnumFacing facing;
+
+		try {
+			state = world.isBlockLoaded(location) ? world.getBlockState(location) : null;
+			facing = state != null ? state.getValue(BlockHorizontal.FACING) : null;
+		} catch(IllegalArgumentException ex) {
+			state = null;
+			facing = null;
+		}
 
 		if(!world.isRemote) {
 			if(player.isPlayerSleeping() || !player.isEntityAlive()) {
@@ -83,12 +93,6 @@ public final class SleepHandler {
 
 		Utils.setSize(player, 0.2F, 0.2F);
 
-		IBlockState state = null;
-
-		if(world.isBlockLoaded(location)) {
-			state = world.getBlockState(location);
-		}
-
 		if(state != null && state.getBlock().isBed(state, world, location, player)) {
 			setRenderOffsetForSleep(player, facing);
 
@@ -127,6 +131,10 @@ public final class SleepHandler {
 				Math.abs(player.posY - position.getY()) <= 2.0 &&
 				Math.abs(player.posZ - position.getZ()) <= 3.0) {
 			return true;
+		}
+
+		if(facing == null) {
+			return false;
 		}
 
 		position = position.offset(facing.getOpposite());

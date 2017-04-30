@@ -128,15 +128,13 @@ public class Logger extends AbstractLogger {
 
 		/* RANDOMTWEAKS */
 
-		//TODO JSON just for log filter (root dir, not in config)
-
 		if(filters.get("levelFilter").matcher(level.toString()).matches() ||
 				filters.get("nameFilter").matcher(getName()).matches() ||
 				filters.get("messageFilter").matcher(data.getFormattedMessage()).matches() ||
 				filters.get("classFilter").matcher(fqcn).matches() ||
 				filters.get("threadFilter").matcher(Thread.currentThread().getName()).matches() ||
-				((t != null && (filters.get("throwableClassFilter").matcher(
-						t.getClass().getName()).matches() ||
+				((t != null && t.getMessage() != null &&
+				(filters.get("throwableClassFilter").matcher(t.getClass().getName()).matches() ||
 				filters.get("throwableMessageFilter").matcher(t.getMessage()).matches())))) {
 			return;
 		}
