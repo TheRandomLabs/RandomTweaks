@@ -9,7 +9,7 @@ public class RandomTweaksGuiConfigFactory implements IModGuiFactory {
 	@Override
 	public void initialize(Minecraft minecraftInstance) {}
 
-	s@Override
+	@Override
 	public Class<? extends GuiScreen> mainConfigGuiClass() {
 		return GuiRandomTweaksConfig.class;
 	}
