@@ -21,10 +21,10 @@ public class ChunkProviderVoidIslands extends ChunkProviderOverworld {
 	}
 
 	@Override
-	public Chunk provideChunk(int x, int z) {
+	public Chunk generateChunk(int x, int z) {
 		if((x == 0 && z == 0) ||
 				random.nextInt(ConfigurationHandler.voidIslandsWorldTypeChunkRarity) == 0) {
-			return super.provideChunk(x, z);
+			return super.generateChunk(x, z);
 		}
 
 		final Chunk chunk = new Chunk(world, x, z);

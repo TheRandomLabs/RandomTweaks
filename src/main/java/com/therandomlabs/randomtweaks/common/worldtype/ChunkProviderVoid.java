@@ -23,7 +23,7 @@ public class ChunkProviderVoid implements IChunkGenerator {
 	}
 
 	@Override
-	public Chunk provideChunk(int x, int z) {
+	public Chunk generateChunk(int x, int z) {
 		final Chunk chunk = new Chunk(world, x, z);
 
 		if(!ConfigurationHandler.voidWorldTypeBiome.isEmpty()) {
@@ -53,9 +53,9 @@ public class ChunkProviderVoid implements IChunkGenerator {
 	public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
 		return Collections.emptyList();
 	}
-
+																									
 	@Override
-	public BlockPos getStrongholdGen(World world, String structureName, BlockPos position,
+	public BlockPos getNearestStructurePos(World world, String structureName, BlockPos position,
 			boolean findUnexplored) {
 		return null;
 	}

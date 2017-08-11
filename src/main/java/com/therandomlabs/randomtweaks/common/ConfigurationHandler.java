@@ -484,7 +484,7 @@ public final class ConfigurationHandler {
 
 			for(ConfigCategory key : category.getChildren()) {
 				if(!usedKeys.contains(key.getName())) {
-					category.remove(key);
+					category.remove(key.getName());
 				}
 			}
 		}

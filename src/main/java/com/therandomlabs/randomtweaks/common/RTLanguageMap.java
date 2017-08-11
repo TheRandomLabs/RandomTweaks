@@ -19,6 +19,8 @@ public class RTLanguageMap extends LanguageMap {
 				ReflectionHelper.findField(LanguageMap.class, "languageList", "field_74816_c");
 		languageListField.setAccessible(true);
 		languageList = (Map<String, String>) languageListField.get(languageMap);
+		//Set the languageList field in RTLanguageMap as well so it can be updated externally
+		languageListField.set(this, languageList);
 	}
 
 	@Override

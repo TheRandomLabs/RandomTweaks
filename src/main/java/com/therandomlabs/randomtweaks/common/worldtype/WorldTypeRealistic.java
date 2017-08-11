@@ -4,6 +4,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.gen.ChunkProviderOverworld;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public class WorldTypeRealistic extends WorldType {
 	public static final String NAME = "realistic";
@@ -37,8 +39,9 @@ public class WorldTypeRealistic extends WorldType {
 		super(NAME);
 	}
 
+	@SideOnly(Side.CLIENT)
 	@Override
-	public boolean showWorldInfoNotice() {
+	public boolean hasInfoNotice() {
 		return true;
 	}
 
