@@ -33,6 +33,7 @@ public final class ConfigurationHandler {
 	public static final String RANDOMTWEAKS = RandomTweaks.MODID + ".cfg";
 	public static final String DEFAULT_GAMERULES = "defaultgamerules.json";
 
+	//Has to be stored in the root MC directory because the logger is loaded before MC
 	public static final String LOG_FILTERS = "logfilters.json";
 
 	private static Path directory;
@@ -246,7 +247,7 @@ public final class ConfigurationHandler {
 	}
 
 	public static void createLogFiltersConfiguration() throws IOException {
-		Files.write(getConfiguration(LOG_FILTERS), Arrays.asList(
+		Files.write(Paths.get(LOG_FILTERS), Arrays.asList(
 				"{",
 				"\t\"levelFilter\": \"\", //A regex that matches the level. Example: TRACE|DEBUG",
 				"\t\"nameFilter\": \"\", //A regex that matches the logger name. Example: ^FML$",
@@ -266,7 +267,7 @@ public final class ConfigurationHandler {
 	}
 
 	public static Map<String, Pattern> getLogFilters() throws IOException {
-		final Path path = getConfiguration(LOG_FILTERS);
+		final Path path = Paths.get(LOG_FILTERS);
 
 		if(!Files.exists(path)) {
 			createLogFiltersConfiguration();
