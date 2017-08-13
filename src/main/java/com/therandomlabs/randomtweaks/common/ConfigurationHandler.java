@@ -28,7 +28,6 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEve
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-//Please don't kill me for writing this mess
 @EventBusSubscriber
 public final class ConfigurationHandler {
 	public static final String RANDOMTWEAKS = RandomTweaks.MODID + ".cfg";
