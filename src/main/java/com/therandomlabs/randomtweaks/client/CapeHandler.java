@@ -32,8 +32,7 @@ public final class CapeHandler {
 	public static final Field PLAYER_TEXTURES = ReflectionHelper.findField(NetworkPlayerInfo.class,
 					"playerTextures", "field_187107_a");
 	public static final String CONTRIBUTORS_URL =
-			"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/master/Contributors/";
-	public static final String PLAYERS_URL = CONTRIBUTORS_URL + "players.txt";
+			"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/misc/contributors.txt";
 	public static final ResourceLocation CAPE_LOCATION =
 			new ResourceLocation(RandomTweaks.MODID, "textures/cape.png");
 
@@ -123,7 +122,7 @@ public final class CapeHandler {
 		new Thread(() -> {
 			try {
 				final HttpURLConnection connection =
-						(HttpURLConnection) new URL(PLAYERS_URL).openConnection();
+						(HttpURLConnection) new URL(CONTRIBUTORS_URL).openConnection();
 				connection.setConnectTimeout(1000);
 				players = IOUtils.readLines(connection.getInputStream(), StandardCharsets.UTF_8);
 				connection.disconnect();

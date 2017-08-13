@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 @Mod(modid = RandomTweaks.MODID, version = RandomTweaks.VERSION,
 		acceptedMinecraftVersions = RandomTweaks.ACCEPTED_MINECRAFT_VERSIONS,
 		acceptableRemoteVersions = "*", updateJSON =
-		"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/master/versions.json",
+		"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/misc/versions.json",
 		guiFactory = "com.therandomlabs.randomtweaks.client.RandomTweaksGuiConfigFactory")
 public final class RandomTweaks {
 	public static final String MODID = "randomtweaks";
