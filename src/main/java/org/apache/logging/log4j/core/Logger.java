@@ -43,21 +43,6 @@ import net.minecraft.util.ReportedException;
  * used in global filters.
  */
 public class Logger extends AbstractLogger {
-	/* RANDOMTWEAKS */
-
-	public static Map<String, Pattern> filters;
-
-	static {
-		try {
-			filters = ConfigurationHandler.getLogFilters();
-		} catch(IOException ex) {
-			throw new ReportedException(
-					new CrashReport("Failed to read RandomTweaks log filters", ex));
-		}
-	}
-
-	/* RANDOMTWEAKS END */
-
 	/**
 	 * config should be consistent across threads.
 	 */
@@ -122,11 +107,21 @@ public class Logger extends AbstractLogger {
 
 	@Override
 	public void log(final Marker marker, final String fqcn, final Level level, Message data, final Throwable t) {
+		/* RANDOMTWEAKS */
+
+		if(ConfigurationHandler.disableLogging) {
+			return;
+		}
+
+		/* RANDOMTWEAKS END */
+		
 		if (data == null) {
 			data = new SimpleMessage("");
 		}
 
 		/* RANDOMTWEAKS */
+		
+		final Map<String, Pattern> filters = ConfigurationHandler.logFilters;
 
 		if(filters.get("levelFilter").matcher(level.toString()).matches() ||
 				filters.get("nameFilter").matcher(getName()).matches() ||
