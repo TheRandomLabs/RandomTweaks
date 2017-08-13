@@ -13,12 +13,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.core.Logger;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.MalformedJsonException;
+import net.minecraft.crash.CrashReport;
+import net.minecraft.util.ReportedException;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.Configuration;
@@ -35,9 +38,22 @@ public final class ConfigurationHandler {
 
 	//Has to be stored in the root MC directory because the logger is loaded before MC
 	public static final String LOG_FILTERS = "logfilters.json";
+	public static final List<String> LOG_FILTER_KEYS = Arrays.asList(
+			"disableLogging",
+			"levelFilter",
+			"nameFilter",
+			"messageFilter",
+			"classFilter",
+			"threadFilter",
+			"throwableClassFilter",
+			"throwableMessageFilter"
+	);
 
 	private static Path directory;
 	private static Configuration configuration;
+
+	public static Map<String, Pattern> logFilters;
+	public static boolean disableLogging;
 
 	//Client-sided
 
@@ -149,11 +165,20 @@ public final class ConfigurationHandler {
 		}
 	}
 
+	static {
+		try {
+			loadLogFilters();
+		} catch(IOException ex) {
+			throw new ReportedException(
+					new CrashReport("Failed to read RandomTweaks log filters", ex));
+		}
+	}
+
 	@SubscribeEvent
 	public static void onConfigurationChanged(OnConfigChangedEvent event) throws Exception {
 		configuration.save();
 		reloadConfiguration();
-		Logger.filters = getLogFilters();
+		loadLogFilters();
 	}
 
 	public static void reloadConfiguration() throws Exception {
@@ -242,6 +267,8 @@ public final class ConfigurationHandler {
 				"is active this sets the minimum hunger on respawn so a player doesn't spawn " +
 				"with 0 hunger.", DEFAULT_MINIMUM_HUNGER_LEVEL_ON_RESPAWN, 0));
 
+		loadLogFilters();
+
 		readAll();
 		configuration.save();
 	}
@@ -249,6 +276,7 @@ public final class ConfigurationHandler {
 	public static void createLogFiltersConfiguration() throws IOException {
 		Files.write(Paths.get(LOG_FILTERS), Arrays.asList(
 				"{",
+				"\t\"disableLogging\": false, //Set this to true to disable logging.",
 				"\t\"levelFilter\": \"\", //A regex that matches the level. Example: TRACE|DEBUG",
 				"\t\"nameFilter\": \"\", //A regex that matches the logger name. Example: ^FML$",
 				"\t\"messageFilter\": \"\", //A regex that matches the message. " +
@@ -266,23 +294,66 @@ public final class ConfigurationHandler {
 		));
 	}
 
-	public static Map<String, Pattern> getLogFilters() throws IOException {
+	private static void loadLogFilters() throws IOException {
 		final Path path = Paths.get(LOG_FILTERS);
 
 		if(!Files.exists(path)) {
 			createLogFiltersConfiguration();
 		}
 
-		final Map<String, Pattern> filters = new HashMap<>();
-		//If the JSON is invalid, we crash the game
-		final JsonObject object = readJson(path);
+		logFilters = new HashMap<>();
 
-		for(Map.Entry<String, JsonElement> entry : object.entrySet()) {
-			//If a value is not a string/valid pattern, we crash the game
-			filters.put(entry.getKey(), Pattern.compile(entry.getValue().getAsString()));
+		JsonObject object = null;
+		try {
+			object = readJson(path);
+		} catch(JsonSyntaxException ex) {
+			ex.printStackTrace();
+			System.err.printf("[%s] Invalid JSON. Resetting log filters\n", RandomTweaks.MODID);
+			Files.move(path, Paths.get(path.toString() + "_backup" + System.nanoTime()));
+
+			createLogFiltersConfiguration();
 		}
 
-		return filters;
+		for(String key : LOG_FILTER_KEYS) {
+			if(!object.has(key)) {
+				System.err.printf("[%s] \"%s\" is a required value. Resetting log filters\n",
+						RandomTweaks.MODID, key);
+				Files.move(path, Paths.get(path.toString() + "_backup" + System.nanoTime()));
+
+				createLogFiltersConfiguration();
+				object = readJson(path);
+			}
+		}
+
+		if(!isBoolean(object.get("disableLogging"))) {
+			System.err.printf("[%s] \"disableLogging\" must be a boolean. Resetting log filters\n",
+					RandomTweaks.MODID);
+			Files.move(path, Paths.get(path.toString() + "_backup" + System.nanoTime()));
+
+			createLogFiltersConfiguration();
+		}
+
+		for(Map.Entry<String, JsonElement> entry : object.entrySet()) {
+			if(entry.getKey().equals("disableLogging")) {
+				disableLogging = entry.getValue().getAsBoolean();
+				continue;
+			}
+
+			if(!isString(entry.getValue())) {
+				System.err.printf("[%s] \"%s\" must be a string\n",
+						RandomTweaks.MODID, entry.getKey());
+			}
+
+			try {
+				logFilters.put(entry.getKey(), Pattern.compile(entry.getValue().getAsString()));
+			} catch(PatternSyntaxException ex) {
+				System.err.printf("[%s] Invalid pattern specified for \"%s\". " +
+						"Resetting log filters\n", RandomTweaks.MODID, entry.getKey());
+				Files.move(path, Paths.get(path.toString() + "_backup" + System.nanoTime()));
+
+				createLogFiltersConfiguration();
+			}
+		}
 	}
 
 	public static void createDefaultGamerulesConfiguration() throws IOException {
@@ -376,6 +447,10 @@ public final class ConfigurationHandler {
 
 	public static boolean isString(JsonElement element) {
 		return element.isJsonPrimitive() && element.getAsJsonPrimitive().isString();
+	}
+
+	public static boolean isBoolean(JsonElement element) {
+		return element.isJsonPrimitive() && element.getAsJsonPrimitive().isBoolean();
 	}
 
 	public static Path getConfiguration(String name) {

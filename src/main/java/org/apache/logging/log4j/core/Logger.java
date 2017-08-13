@@ -16,7 +16,6 @@
  */
 package org.apache.logging.log4j.core;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -36,8 +35,6 @@ import org.apache.logging.log4j.spi.AbstractLogger;
 import org.apache.logging.log4j.util.Strings;
 import org.apache.logging.log4j.util.Supplier;
 import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.util.ReportedException;
 
 /**
  * The core implementation of the {@link org.apache.logging.log4j.Logger} interface. Besides providing an implementation
@@ -54,21 +51,6 @@ import net.minecraft.util.ReportedException;
 public class Logger extends AbstractLogger implements Supplier<LoggerConfig> {
 
 	private static final long serialVersionUID = 1L;
-
-	/* RANDOMTWEAKS */
-
-	public static Map<String, Pattern> filters;
-
-	static {
-		try {
-			filters = ConfigurationHandler.getLogFilters();
-		} catch(IOException ex) {
-			throw new ReportedException(
-					new CrashReport("Failed to read RandomTweaks log filters", ex));
-		}
-	}
-
-	/* RANDOMTWEAKS END */
 
 	/**
 	 * Config should be consistent across threads.
@@ -159,9 +141,19 @@ public class Logger extends AbstractLogger implements Supplier<LoggerConfig> {
 	@Override
 	public void logMessage(final String fqcn, final Level level, final Marker marker, final Message message,
 			final Throwable t) {
+		/* RANDOMTWEAKS */
+
+		if(ConfigurationHandler.disableLogging) {
+			return;
+		}
+
+		/* RANDOMTWEAKS END */
+
 		final Message msg = message == null ? new SimpleMessage(Strings.EMPTY) : message;
 
 		/* RANDOMTWEAKS */
+
+		final Map<String, Pattern> filters = ConfigurationHandler.logFilters;
 
 		if(filters.get("levelFilter").matcher(level.toString()).matches() ||
 				filters.get("nameFilter").matcher(getName()).matches() ||
