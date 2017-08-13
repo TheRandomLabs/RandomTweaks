@@ -13,8 +13,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class OcelotHandler {
 	@SubscribeEvent
-	public static void onEntityInteract(PlayerInteractEvent.EntityInteract event)
-			throws Exception {
+	public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
 		if(!ConfigurationHandler.ocelotsCanBeHealed) {
 			return;
 		}
