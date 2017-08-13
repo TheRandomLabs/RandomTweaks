@@ -1,6 +1,5 @@
 package com.therandomlabs.randomtweaks.common;
 
-import com.therandomlabs.randomtweaks.util.Compat;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
@@ -28,7 +27,7 @@ public final class OcelotHandler {
 
 			if(canOcelotBeHealed(ocelot, stack)) {
 				if(!player.capabilities.isCreativeMode) {
-					Compat.shrinkItemStack(stack, 1);
+					stack.shrink(1);
 				}
 
 				ocelot.heal(((ItemFood) Items.FISH).getHealAmount(stack));
@@ -37,7 +36,7 @@ public final class OcelotHandler {
 	}
 
 	public static boolean canOcelotBeHealed(EntityOcelot ocelot, ItemStack stack) {
-		return ocelot.isTamed() && !Compat.isEmpty(stack) &&
+		return ocelot.isTamed() && !stack.isEmpty() &&
 				stack.isItemEqual(new ItemStack(Items.FISH)) &&
 				ocelot.getHealth() < Utils.getMaxHealth(ocelot);
 	}

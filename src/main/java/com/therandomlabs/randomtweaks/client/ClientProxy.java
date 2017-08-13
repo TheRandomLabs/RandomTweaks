@@ -2,7 +2,6 @@ package com.therandomlabs.randomtweaks.client;
 
 import com.therandomlabs.randomtweaks.common.CommonProxy;
 import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
-import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemMonsterPlacer;
@@ -23,18 +22,7 @@ public final class ClientProxy extends CommonProxy {
 		}
 
 		if(ConfigurationHandler.spawnEggsCreativeTab) {
-			final CreativeTabs SPAWN_EGGS = new CreativeTabs("spawnEggs") {
-				@SideOnly(Side.CLIENT)
-				@Override
-				public ItemStack getTabIconItem() {
-					final ItemStack stack = new ItemStack(Items.SPAWN_EGG);
-					ItemMonsterPlacer.applyEntityIdToItemStack(stack,
-							new ResourceLocation(Compat.CHICKEN_ENTITY_NAME));
-					return stack;
-				}
-			};
-
-			Items.SPAWN_EGG.setCreativeTab(SPAWN_EGGS);
+			createSpawnEggsCreativeTab();
 		}
 
 		if(ConfigurationHandler.contributorCapes) {
@@ -49,5 +37,20 @@ public final class ClientProxy extends CommonProxy {
 		if(ConfigurationHandler.reloadSoundSystemKeyBind) {
 			SoundSystemReloadHandler.registerKeyBinding();
 		}
+	}
+
+	private static void createSpawnEggsCreativeTab() {
+		final CreativeTabs SPAWN_EGGS = new CreativeTabs("spawnEggs") {
+			@SideOnly(Side.CLIENT)
+			@Override
+			public ItemStack getTabIconItem() {
+				final ItemStack stack = new ItemStack(Items.SPAWN_EGG);
+				ItemMonsterPlacer.applyEntityIdToItemStack(stack,
+						new ResourceLocation("chicken"));
+				return stack;
+			}
+		};
+
+		Items.SPAWN_EGG.setCreativeTab(SPAWN_EGGS);
 	}
 }

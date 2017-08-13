@@ -1,7 +1,5 @@
 package com.therandomlabs.randomtweaks.server;
 
-import com.therandomlabs.randomtweaks.util.Compat;
-import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandSender;
@@ -41,7 +39,7 @@ public class CommandGive extends net.minecraft.command.CommandGive {
 		final ItemStack stack = new ItemStack(item, amount, meta);
 
 		if(args.length > 4) {
-			final String tag = getChatComponentFromNthArg(sender, args, 4).getUnformattedText();
+			final String tag = buildString(args, 4);
 			try {
 				stack.setTagCompound(JsonToNBT.getTagFromJson(tag));
 			} catch(NBTException ex) {
@@ -55,15 +53,10 @@ public class CommandGive extends net.minecraft.command.CommandGive {
 					player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
 					((player.getRNG().nextFloat() - player.getRNG().nextFloat()) * 0.7F + 1.0F) *
 					2.0F);
+			player.inventoryContainer.detectAndSendChanges();
 
-			if(Compat.isEmpty(stack)) {
-				try {
-					Compat.setStackSize(stack, 1);
-				} catch(Exception ex) {
-					throw new CommandException(Utils.localize("commands.rtgive.failure",
-							ex.getClass().getName() + ": " + ex.getMessage()));
-				}
-
+			if(stack.isEmpty()) {
+				stack.setCount(1);
 				sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS, amount);
 
 				final EntityItem droppedItem = player.dropItem(stack, false);
@@ -71,13 +64,8 @@ public class CommandGive extends net.minecraft.command.CommandGive {
 					droppedItem.makeFakeItem();
 				}
 			} else {
-				try {
-					sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS,
-							amount - Compat.getStackSize(stack));
-				} catch(Exception ex) {
-					throw new CommandException(Utils.localize("commands.rtgive.failure",
-							ex.getClass().getName() + ": " + ex.getMessage()));
-				}
+				sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS,
+						amount - stack.getCount());
 
 				final EntityItem droppedItem = player.dropItem(stack, false);
 				if(droppedItem != null) {

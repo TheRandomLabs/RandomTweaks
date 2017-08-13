@@ -10,8 +10,8 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
+import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
-import com.therandomlabs.randomtweaks.util.Compat;
 import com.therandomlabs.randomtweaks.util.Wrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -27,7 +27,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class CapeHandler {
-	public static final Method GET_PLAYER_INFO = Compat.findMethod(
+	public static final Method GET_PLAYER_INFO = ReflectionHelper.findMethod(
 			AbstractClientPlayer.class, "getPlayerInfo", "func_175155_b");
 	public static final Field PLAYER_TEXTURES = ReflectionHelper.findField(NetworkPlayerInfo.class,
 					"playerTextures", "field_187107_a");
@@ -41,6 +41,10 @@ public final class CapeHandler {
 
 	@SubscribeEvent
 	public static void entityJoinWorld(EntityJoinWorldEvent event) {
+		if(!ConfigurationHandler.contributorCapes) {
+			return;
+		}
+
 		final Entity entity = event.getEntity();
 		if(entity instanceof AbstractClientPlayer) {
 			if(!shouldHaveCape((AbstractClientPlayer) entity)) {
@@ -112,6 +116,10 @@ public final class CapeHandler {
 	}
 
 	public static void downloadPlayers() {
+		if((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
+			return;
+		}
+
 		new Thread(() -> {
 			try {
 				final HttpURLConnection connection =
