@@ -75,7 +75,7 @@ public final class CapeHandler {
 			}).start();
 		}
 
-		if(exception.get() == null) {
+		if(exception.get() != null) {
 			RandomTweaks.LOGGER.error("Failed to set cape", exception.get());
 		}
 	}
