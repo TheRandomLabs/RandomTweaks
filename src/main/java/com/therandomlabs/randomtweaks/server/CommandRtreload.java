@@ -24,7 +24,6 @@ public class CommandRtreload extends CommandBase {
 			throws CommandException {
 		try {
 			ConfigurationHandler.reloadConfiguration();
-			Logger.filters = ConfigurationHandler.getLogFilters();
 			notifyCommandListener(sender, this, Utils.localize("commands.rtreload.success"));
 		} catch(Exception ex) {
 			ex.printStackTrace();
