@@ -34,6 +34,7 @@ public final class ConfigurationHandler {
 	public static final String RANDOMTWEAKS = RandomTweaks.MODID + ".cfg";
 	public static final String DEFAULT_GAMERULES = "defaultgamerules.json";
 
+	//Has to be stored in the root MC directory because the logger is loaded before MC
 	public static final String LOG_FILTERS = "logfilters.json";
 
 	private static Path directory;
