@@ -12,13 +12,13 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkGenerator;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class ChunkProviderVoid implements IChunkGenerator {
+public class ChunkGeneratorVoid implements IChunkGenerator {
 	private final World world;
 
-	public ChunkProviderVoid(World world) {
+	public ChunkGeneratorVoid(World world) {
 		this.world = world;
 	}
 
@@ -53,7 +53,7 @@ public class ChunkProviderVoid implements IChunkGenerator {
 	public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
 		return Collections.emptyList();
 	}
-																									
+
 	@Override
 	public BlockPos getNearestStructurePos(World world, String structureName, BlockPos position,
 			boolean findUnexplored) {
@@ -62,4 +62,9 @@ public class ChunkProviderVoid implements IChunkGenerator {
 
 	@Override
 	public void recreateStructures(Chunk chunk, int x, int z) {}
+
+	@Override
+	public boolean isInsideStructure(World worldIn, String structureName, BlockPos pos) {
+		return false;
+	}
 }

@@ -10,22 +10,6 @@ public class RandomTweaksGuiConfigFactory implements IModGuiFactory {
 	public void initialize(Minecraft minecraftInstance) {}
 
 	@Override
-	public Class<? extends GuiScreen> mainConfigGuiClass() {
-		return GuiRandomTweaksConfig.class;
-	}
-
-	@Override
-	public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
-		return null;
-	}
-
-	@SuppressWarnings("deprecation")
-	@Override
-	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
-		return null;
-	}
-
-	@Override
 	public boolean hasConfigGui() {
 		return true;
 	}
@@ -33,5 +17,10 @@ public class RandomTweaksGuiConfigFactory implements IModGuiFactory {
 	@Override
 	public GuiScreen createConfigGui(GuiScreen parentScreen) {
 		return new GuiRandomTweaksConfig(parentScreen);
+	}
+
+	@Override
+	public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
+		return null;
 	}
 }

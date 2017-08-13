@@ -7,13 +7,13 @@ import net.minecraft.init.Biomes;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.ChunkProviderOverworld;
+import net.minecraft.world.gen.ChunkGeneratorOverworld;
 
-public class ChunkProviderVoidIslands extends ChunkProviderOverworld {
+public class ChunkGeneratorVoidIslands extends ChunkGeneratorOverworld {
 	private final World world;
 	private final Random random;
 
-	public ChunkProviderVoidIslands(World world) {
+	public ChunkGeneratorVoidIslands(World world) {
 		super(world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled(),
 				WorldTypeRealistic.PRESET);
 		this.world = world;

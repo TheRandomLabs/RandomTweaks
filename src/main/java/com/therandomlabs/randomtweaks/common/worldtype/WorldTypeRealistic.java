@@ -2,8 +2,8 @@ package com.therandomlabs.randomtweaks.common.worldtype;
 
 import net.minecraft.world.World;
 import net.minecraft.world.WorldType;
-import net.minecraft.world.chunk.IChunkGenerator;
-import net.minecraft.world.gen.ChunkProviderOverworld;
+import net.minecraft.world.gen.ChunkGeneratorOverworld;
+import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 
@@ -52,7 +52,7 @@ public class WorldTypeRealistic extends WorldType {
 
 	@Override
 	public IChunkGenerator getChunkGenerator(World world, String generatorOptions) {
-		return new ChunkProviderOverworld(world, world.getSeed(),
+		return new ChunkGeneratorOverworld(world, world.getSeed(),
 				world.getWorldInfo().isMapFeaturesEnabled(), PRESET);
 	}
 }

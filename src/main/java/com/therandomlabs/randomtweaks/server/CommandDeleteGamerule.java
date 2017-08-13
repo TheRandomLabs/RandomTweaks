@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public class CommandDeleteGamerule extends CommandBase {
 	public static final Field GAMERULES =
-			ReflectionHelper.findField(GameRules.class, "theGameRules", "field_82771_a");
+			ReflectionHelper.findField(GameRules.class, "rules", "field_82771_a");
 
 	@Override
 	public String getName() {

@@ -4,6 +4,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import org.apache.commons.io.IOUtils;
@@ -16,6 +17,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.Entity;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -41,7 +43,7 @@ public final class CapeHandler {
 	public static void entityJoinWorld(EntityJoinWorldEvent event) {
 		final Entity entity = event.getEntity();
 		if(entity instanceof AbstractClientPlayer) {
-			if(players == null || !players.contains(entity.getUniqueID().toString())) {
+			if(!shouldHaveCape((AbstractClientPlayer) entity)) {
 				return;
 			}
 
@@ -54,6 +56,15 @@ public final class CapeHandler {
 				}
 			});
 		}
+	}
+
+	public static boolean shouldHaveCape(AbstractClientPlayer player) {
+		//Always have a cape in a development environment
+		if((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
+			return true;
+		}
+
+		return players != null && players.contains(player.getUniqueID().toString());
 	}
 
 	private static void setCape(Entity entity) throws Exception {
@@ -106,7 +117,7 @@ public final class CapeHandler {
 				final HttpURLConnection connection =
 						(HttpURLConnection) new URL(PLAYERS_URL).openConnection();
 				connection.setConnectTimeout(1000);
-				players = IOUtils.readLines(connection.getInputStream());
+				players = IOUtils.readLines(connection.getInputStream(), StandardCharsets.UTF_8);
 				connection.disconnect();
 			} catch(Exception ex) {}
 		}).start();

@@ -1,7 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12": {
-		"1.12-2.0.0.0": "Updated to 1.12."
+		"1.12-2.0.0.0": "Updated to 1.12.\nContributor capes are now always shown in deobfuscated environments."
 	},
 	"1.11.2": {
 		"1.11.2-1.8.0.3": "Fixed a localization bug.",
