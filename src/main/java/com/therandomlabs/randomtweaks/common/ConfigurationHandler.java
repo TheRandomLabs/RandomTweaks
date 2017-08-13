@@ -28,7 +28,6 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent.OnConfigChangedEve
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-//Please don't kill me for writing this mess
 @EventBusSubscriber
 public final class ConfigurationHandler {
 	public static final String RANDOMTWEAKS = RandomTweaks.MODID + ".cfg";
@@ -247,7 +246,7 @@ public final class ConfigurationHandler {
 	}
 
 	public static void createLogFiltersConfiguration() throws IOException {
-		Files.write(Paths.get(LOG_FILTERS), Arrays.asList(
+		Files.write(getConfiguration(LOG_FILTERS), Arrays.asList(
 				"{",
 				"\t\"levelFilter\": \"\", //A regex that matches the level. Example: TRACE|DEBUG",
 				"\t\"nameFilter\": \"\", //A regex that matches the logger name. Example: ^FML$",
@@ -267,7 +266,7 @@ public final class ConfigurationHandler {
 	}
 
 	public static Map<String, Pattern> getLogFilters() throws IOException {
-		final Path path = Paths.get(LOG_FILTERS);
+		final Path path = getConfiguration(LOG_FILTERS);
 
 		if(!Files.exists(path)) {
 			createLogFiltersConfiguration();
@@ -407,7 +406,7 @@ public final class ConfigurationHandler {
 	}
 
 	static void initialize(Path directory) throws Exception {
-		ConfigurationHandler.directory = directory;
+		ConfigurationHandler.directory = Paths.get(directory.toString(), RandomTweaks.MODID);
 		createConfiguration();
 	}
 
