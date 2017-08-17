@@ -65,6 +65,20 @@ public class RTConfig {
 		public double worldSoundPitch = 1.0;
 	}
 
+	public static class General {
+		@Config.RequiresMcRestart
+		@Config.Comment("Enables more Roman numerals (Roman numerals from -32768 to 32767).")
+		public boolean moreRomanNumerals = true;
+
+		@Config.Comment("Ocelots can be healed with fish.")
+		public boolean ocelotsCanBeHealed = true;
+
+		@Config.Comment("Players can sleep around non-aggressive zombie pigmen and mobs with " +
+				"custom names. On 1.10, adds the \"bed is too far away\" message present in " +
+				"later versions of Minecraft.")
+		public boolean sleepTweaks = true;
+	}
+
 	public static class World {
 		@Config.RequiresMcRestart
 		@Config.Comment("Disables the Realistic world type if Quark is detected.")
@@ -158,21 +172,9 @@ public class RTConfig {
 		public int minimumHungerLevel = 3;
 	}
 
-	//General
-	@Config.RequiresMcRestart
-	@Config.Comment("Enables more Roman numerals (Roman numerals from -32768 to 32767).")
-	public static boolean moreRomanNumerals = true;
-
-	@Config.Comment("Ocelots can be healed with fish.")
-	public static boolean ocelotsCanBeHealed = true;
-
-	@Config.Comment("Players can sleep around non-aggressive zombie pigmen and mobs with " +
-			"custom names. On 1.10, adds the \"bed is too far away\" message present in " +
-			"later versions of Minecraft.")
-	public static boolean sleepTweaks = true;
-
 	public static Client client = new Client();
 	public static Ding ding = new Ding();
+	public static General general = new General();
 	public static World world = new World();
 	public static Squids squids = new Squids();
 	public static Commands commands = new Commands();
