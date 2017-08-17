@@ -86,11 +86,11 @@ public class RTConfig {
 
 		@Config.RequiresMcRestart
 		@Config.Comment("Enables the Realistic world type. Name: realistic")
-		public boolean realisticWorldType;
+		public boolean realisticWorldType = true;
 
 		@Config.RequiresMcRestart
 		@Config.Comment("Enables the Void world type. Name: void")
-		public boolean voidWorldType;
+		public boolean voidWorldType = true;
 
 		@Config.RangeInt(min = 1, max = 255)
 		@Config.Comment("The Y coordinate of the default spawn point in a Void world.")
@@ -107,7 +107,7 @@ public class RTConfig {
 
 		@Config.RequiresMcRestart
 		@Config.Comment("Enables the Void Islands world type. Name: voidislands")
-		public boolean voidIslandsWorldType;
+		public boolean voidIslandsWorldType = true;
 
 		@Config.RangeInt(min = 2)
 		@Config.Comment("The rarity of non-empty chunks in a Void Islands world. " +
