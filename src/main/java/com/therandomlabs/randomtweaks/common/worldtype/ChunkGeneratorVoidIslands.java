@@ -2,7 +2,7 @@ package com.therandomlabs.randomtweaks.common.worldtype;
 
 import java.util.Arrays;
 import java.util.Random;
-import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
+import com.therandomlabs.randomtweaks.common.RTConfig;
 import net.minecraft.init.Biomes;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -22,8 +22,7 @@ public class ChunkGeneratorVoidIslands extends ChunkGeneratorOverworld {
 
 	@Override
 	public Chunk generateChunk(int x, int z) {
-		if((x == 0 && z == 0) ||
-				random.nextInt(ConfigurationHandler.voidIslandsWorldTypeChunkRarity) == 0) {
+		if((x == 0 && z == 0) || random.nextInt(RTConfig.world.voidIslandsChunkRarity) == 0) {
 			return super.generateChunk(x, z);
 		}
 

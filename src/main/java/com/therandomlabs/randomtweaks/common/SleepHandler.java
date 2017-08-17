@@ -31,7 +31,7 @@ public final class SleepHandler {
 
 	@SubscribeEvent
 	public static void onSleep(PlayerSleepInBedEvent event) throws Exception {
-		if(!ConfigurationHandler.sleepTweaks) {
+		if(!RTConfig.sleepTweaks) {
 			return;
 		}
 

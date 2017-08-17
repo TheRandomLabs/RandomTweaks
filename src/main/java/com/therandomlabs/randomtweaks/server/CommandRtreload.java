@@ -1,6 +1,6 @@
 package com.therandomlabs.randomtweaks.server;
 
-import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
+import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -22,7 +22,7 @@ public class CommandRtreload extends CommandBase {
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args)
 			throws CommandException {
 		try {
-			ConfigurationHandler.reloadConfiguration();
+			RTConfig.reloadConfig();
 			notifyCommandListener(sender, this, Utils.localize("commands.rtreload.success"));
 		} catch(Exception ex) {
 			ex.printStackTrace();

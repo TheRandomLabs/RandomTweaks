@@ -3,7 +3,7 @@ package com.therandomlabs.randomtweaks.common.worldtype;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
+import com.therandomlabs.randomtweaks.common.RTConfig;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.ResourceLocation;
@@ -26,9 +26,9 @@ public class ChunkGeneratorVoid implements IChunkGenerator {
 	public Chunk generateChunk(int x, int z) {
 		final Chunk chunk = new Chunk(world, x, z);
 
-		if(!ConfigurationHandler.voidWorldTypeBiome.isEmpty()) {
+		if(!RTConfig.world.voidWorldBiome.isEmpty()) {
 			Biome biome = GameRegistry.findRegistry(Biome.class).getValue(
-					new ResourceLocation(ConfigurationHandler.voidWorldTypeBiome));
+					new ResourceLocation(RTConfig.world.voidWorldBiome));
 			if(biome == null) {
 				biome = Biomes.PLAINS;
 			}

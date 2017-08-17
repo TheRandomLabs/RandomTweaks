@@ -13,11 +13,10 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 @Mod(modid = RandomTweaks.MODID, version = RandomTweaks.VERSION,
 		acceptedMinecraftVersions = RandomTweaks.ACCEPTED_MINECRAFT_VERSIONS,
 		acceptableRemoteVersions = "*", updateJSON =
-		"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/misc/versions.json",
-		guiFactory = "com.therandomlabs.randomtweaks.client.RandomTweaksGuiConfigFactory")
+		"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/misc/versions.json")
 public final class RandomTweaks {
 	public static final String MODID = "randomtweaks";
-	public static final String VERSION = "1.12.1-2.0.0.0";
+	public static final String VERSION = "1.12.1-2.1.0.0";
 	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12,1.13)";
 
 	public static final Logger LOGGER = LogManager.getLogger(MODID);

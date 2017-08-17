@@ -14,7 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class OcelotHandler {
 	@SubscribeEvent
 	public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
-		if(!ConfigurationHandler.ocelotsCanBeHealed) {
+		if(!RTConfig.ocelotsCanBeHealed) {
 			return;
 		}
 

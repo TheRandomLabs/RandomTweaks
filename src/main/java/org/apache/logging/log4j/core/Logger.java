@@ -34,7 +34,7 @@ import org.apache.logging.log4j.message.SimpleMessage;
 import org.apache.logging.log4j.spi.AbstractLogger;
 import org.apache.logging.log4j.util.Strings;
 import org.apache.logging.log4j.util.Supplier;
-import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
+import com.therandomlabs.randomtweaks.common.RTConfig;
 
 /**
  * The core implementation of the {@link org.apache.logging.log4j.Logger} interface. Besides providing an implementation
@@ -143,7 +143,7 @@ public class Logger extends AbstractLogger implements Supplier<LoggerConfig> {
 			final Throwable t) {
 		/* RANDOMTWEAKS */
 
-		if(ConfigurationHandler.disableLogging) {
+		if(RTConfig.disableLogging()) {
 			return;
 		}
 
@@ -153,7 +153,7 @@ public class Logger extends AbstractLogger implements Supplier<LoggerConfig> {
 
 		/* RANDOMTWEAKS */
 
-		final Map<String, Pattern> filters = ConfigurationHandler.logFilters;
+		final Map<String, Pattern> filters = RTConfig.logFilters();
 
 		if(filters.get("levelFilter").matcher(level.toString()).matches() ||
 				filters.get("nameFilter").matcher(getName()).matches() ||

@@ -1,7 +1,7 @@
 package com.therandomlabs.randomtweaks.client;
 
 import com.therandomlabs.randomtweaks.common.CommonProxy;
-import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
+import com.therandomlabs.randomtweaks.common.RTConfig;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemMonsterPlacer;
@@ -17,15 +17,15 @@ public final class ClientProxy extends CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) throws Exception {
 		super.preInit(event);
 
-		if(ConfigurationHandler.moveBucketCreativeTab) {
+		if(RTConfig.client.moveBucketCreativeTab) {
 			Items.BUCKET.setCreativeTab(CreativeTabs.TOOLS);
 		}
 
-		if(ConfigurationHandler.spawnEggsCreativeTab) {
+		if(RTConfig.client.spawnEggsCreativeTab) {
 			createSpawnEggsCreativeTab();
 		}
 
-		if(ConfigurationHandler.contributorCapes) {
+		if(RTConfig.client.contributorCapes) {
 			CapeHandler.downloadPlayers();
 		}
 	}
@@ -34,7 +34,7 @@ public final class ClientProxy extends CommonProxy {
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
 
-		if(ConfigurationHandler.reloadSoundSystemKeyBind) {
+		if(RTConfig.client.reloadSoundSystemKeybind) {
 			SoundSystemReloadHandler.registerKeyBinding();
 		}
 	}
