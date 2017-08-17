@@ -12,9 +12,7 @@ public class CommonProxy {
 	public static final Logger LOGGER = RandomTweaks.LOGGER;
 
 	public void preInit(FMLPreInitializationEvent event) throws Exception {
-		ConfigurationHandler.initialize(event.getModConfigurationDirectory().toPath());
-
-		if(ConfigurationHandler.moreRomanNumerals) {
+		if(RTConfig.general.moreRomanNumerals) {
 			try {
 				RTLanguageMap.replaceLanguageMaps();
 			} catch(Exception ex) {

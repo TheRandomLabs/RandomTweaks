@@ -65,7 +65,7 @@ public final class WorldCreateHandler {
 		}
 
 		final GameRules gamerules = world.getGameRules();
-		final Map<String, String> defaultGamerules = ConfigurationHandler.getDefaultGamerules(
+		final Map<String, String> defaultGamerules = RTConfig.getDefaultGamerules(
 				world.getWorldInfo().getGameType().getID(), world.getWorldType().getName());
 
 		if(defaultGamerules == null) {
@@ -82,18 +82,18 @@ public final class WorldCreateHandler {
 	@SuppressWarnings("deprecation")
 	private static void onVoidWorldCreate(World world) {
 		Block block = GameRegistry.findRegistry(Block.class).getValue(
-				new ResourceLocation(ConfigurationHandler.voidWorldTypeBlock));
+				new ResourceLocation(RTConfig.world.voidWorldBlock));
 		if(block == null) {
 			block = Blocks.GLASS;
 		}
 
 		final BlockPos spawn = world.getSpawnPoint();
 		final BlockPos newSpawn = new BlockPos(spawn.getX(),
-				ConfigurationHandler.voidWorldTypeYSpawn, spawn.getZ());
+				RTConfig.world.voidWorldYSpawn, spawn.getZ());
 
 		world.setSpawnPoint(newSpawn);
 		world.setBlockState(newSpawn.add(0, -1, 0),
-				block.getStateFromMeta(ConfigurationHandler.voidWorldTypeBlockMeta));
+				block.getStateFromMeta(RTConfig.world.voidWorldBlockMeta));
 	}
 
 	private static void onVoidIslandsWorldCreate(World world) {

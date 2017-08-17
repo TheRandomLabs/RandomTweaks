@@ -40,7 +40,7 @@ public final class HungerHandler {
 		final EntityPlayer player = event.getEntityPlayer();
 
 		final int deathFoodLevel = oldPlayer.getInteger("DeathFoodLevel");
-		final int minimum = ConfigurationHandler.minimumHungerLevelOnRespawn;
+		final int minimum = RTConfig.hunger.minimumHungerLevel;
 		player.getFoodStats().setFoodLevel(deathFoodLevel < minimum ? minimum : deathFoodLevel);
 		setSaturation(player.getFoodStats(),
 				player.getEntityData().getFloat("DeathSaturationLevel"));
@@ -51,12 +51,12 @@ public final class HungerHandler {
 	}
 
 	public static boolean dontResetHungerOnRespawn(EntityPlayer player) {
-		switch(ConfigurationHandler.hungerRespawnBehavior) {
-		case ConfigurationHandler.DONT_RESET_HUNGER_ON_RESPAWN:
+		switch(RTConfig.hunger.respawnBehavior) {
+		case RTConfig.Hunger.DONT_RESET_ON_RESPAWN:
 			return true;
-		case ConfigurationHandler.DONT_RESET_HUNGER_IF_KEEPINVENTORY:
+		case RTConfig.Hunger.RESET_UNLESS_KEEPINVENTORY:
 			return player.getEntityWorld().getGameRules().getBoolean("keepInventory");
-		case ConfigurationHandler.DONT_RESET_HUNGER_IF_KEEPINVENTORY_AND_NOT_CREATIVE:
+		case RTConfig.Hunger.RESET_UNLESS_KEEPINVENTORY_OR_CREATIVE:
 			return player.getEntityWorld().getGameRules().getBoolean("keepInventory") &&
 					!player.capabilities.isCreativeMode;
 		}

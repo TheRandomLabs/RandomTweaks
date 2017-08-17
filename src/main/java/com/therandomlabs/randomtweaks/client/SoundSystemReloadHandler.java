@@ -2,7 +2,6 @@ package com.therandomlabs.randomtweaks.client;
 
 import java.lang.reflect.Field;
 import org.lwjgl.input.Keyboard;
-import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
@@ -26,20 +25,19 @@ public final class SoundSystemReloadHandler {
 
 	@SubscribeEvent
 	public static void onKeyInput(KeyInputEvent event) {
-		if(ConfigurationHandler.reloadSoundSystemKeyBind && Keyboard.getEventKeyState()) {
-			if(RELOAD_SOUND_SYSTEM.isActiveAndMatches(Keyboard.getEventKey())) {
-				final EntityPlayerSP player = Minecraft.getMinecraft().player;
+		if(Keyboard.getEventKeyState() &&
+				RELOAD_SOUND_SYSTEM.isActiveAndMatches(Keyboard.getEventKey())) {
+			final EntityPlayerSP player = Minecraft.getMinecraft().player;
 
-				try {
-					reloadSoundSystem();
-					player.sendMessage(new TextComponentTranslation("reloadSoundSystem.success"));
-				} catch(Exception ex) {
-					player.sendMessage(new TextComponentTranslation("reloadSoundSystem.failure.1"));
-					player.sendMessage(new TextComponentTranslation("reloadSoundSystem.failure.2",
-							ex.getClass().getName(), ex.getMessage()));
-					player.sendMessage(new TextComponentTranslation("reloadSoundSystem.failure.3"));
-					ex.printStackTrace();
-				}
+			try {
+				reloadSoundSystem();
+				player.sendMessage(new TextComponentTranslation("reloadSoundSystem.success"));
+			} catch(Exception ex) {
+				player.sendMessage(new TextComponentTranslation("reloadSoundSystem.failure.1"));
+				player.sendMessage(new TextComponentTranslation("reloadSoundSystem.failure.2",
+						ex.getClass().getName(), ex.getMessage()));
+				player.sendMessage(new TextComponentTranslation("reloadSoundSystem.failure.3"));
+				ex.printStackTrace();
 			}
 		}
 	}

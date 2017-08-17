@@ -1,3 +1,5 @@
+randomtweaks.config.title=RandomTweaks Configuration
+
 key.reloadSoundSystem=Reload Sound System
 
 reloadSoundSystem.success=§eSuccessfully reloaded sound system!

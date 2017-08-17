@@ -25,32 +25,34 @@ public final class SquidHandler {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLivingEntityPackSpawn(LivingPackSizeEvent event) {
-		if(ConfigurationHandler.maxSquidPackSize != ConfigurationHandler.DEFAULT_SQUID_PACK_SIZE &&
+		if(RTConfig.squids.maxPackSize != RTConfig.Squids.VANILLA_PACK_SIZE &&
 				event.getEntity().getClass() == EntitySquid.class) {
-			event.setMaxPackSize(ConfigurationHandler.maxSquidPackSize);
+			event.setMaxPackSize(RTConfig.squids.maxPackSize);
 		}
 	}
 
 	public static boolean isInRadiusOfPlayer(LivingSpawnEvent.CheckSpawn event) {
-		final int radius = ConfigurationHandler.squidSpawnLimitRadius;
-		if(radius == ConfigurationHandler.SQUID_SPAWN_LIMIT_RADIUS_DISABLED) { //Disabled
+		final int radius = RTConfig.squids.spawnRadiusLimit;
+
+		if(radius == RTConfig.Squids.RADIUS_LIMIT_DISABLED) {
 			return true;
 		}
+
 		return event.getWorld().getEntitiesWithinAABB(EntityPlayer.class,
 				new AxisAlignedBB(event.getX(), event.getY(), event.getZ(), event.getX(),
 						event.getY(), event.getZ()).expand(radius, radius, radius)).size() != 0;
 	}
 
 	public static boolean tooManySquids(LivingSpawnEvent.CheckSpawn event) {
-		switch(ConfigurationHandler.squidChunkLimit) {
-		case ConfigurationHandler.SQUID_SPAWNING_DISABLED:
+		switch(RTConfig.squids.chunkLimit) {
+		case RTConfig.Squids.SQUID_SPAWNING_DISABLED:
 			return true;
-		case ConfigurationHandler.SQUID_CHUNK_LIMIT_DISABLED:
+		case RTConfig.Squids.CHUNK_LIMIT_DISABLED:
 			return false;
 		default:
 			return event.getWorld().getEntities(EntitySquid.class,
 					entity -> isInChunk(entity, event)).
-					size() >= ConfigurationHandler.squidChunkLimit;
+					size() >= RTConfig.squids.chunkLimit;
 		}
 	}
 

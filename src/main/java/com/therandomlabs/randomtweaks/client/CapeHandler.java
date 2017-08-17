@@ -10,7 +10,7 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
-import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
+import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Wrapper;
 import net.minecraft.client.Minecraft;
@@ -40,7 +40,7 @@ public final class CapeHandler {
 
 	@SubscribeEvent
 	public static void entityJoinWorld(EntityJoinWorldEvent event) {
-		if(!ConfigurationHandler.contributorCapes) {
+		if(!RTConfig.client.contributorCapes) {
 			return;
 		}
 

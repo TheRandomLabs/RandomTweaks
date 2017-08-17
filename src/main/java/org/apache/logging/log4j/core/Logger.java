@@ -16,7 +16,6 @@
  */
 package org.apache.logging.log4j.core;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -31,11 +30,8 @@ import org.apache.logging.log4j.message.Message;
 import org.apache.logging.log4j.message.MessageFactory;
 import org.apache.logging.log4j.message.SimpleMessage;
 import org.apache.logging.log4j.spi.AbstractLogger;
-import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.util.ReportedException;
+import com.therandomlabs.randomtweaks.common.RTConfig;
 
-/* I DO NOT TAKE CREDIT FOR ANYTHING IN THIS FILE */
 /**
  * @doubt All the isEnabled methods could be pushed into a filter interface.  Not sure of the utility of having
  * isEnabled be able to examine the message pattern and parameters. (RG) Moving the isEnabled methods out of
@@ -109,19 +105,19 @@ public class Logger extends AbstractLogger {
 	public void log(final Marker marker, final String fqcn, final Level level, Message data, final Throwable t) {
 		/* RANDOMTWEAKS */
 
-		if(ConfigurationHandler.disableLogging) {
+		if(RTConfig.disableLogging()) {
 			return;
 		}
 
 		/* RANDOMTWEAKS END */
-		
+
 		if (data == null) {
 			data = new SimpleMessage("");
 		}
 
 		/* RANDOMTWEAKS */
-		
-		final Map<String, Pattern> filters = ConfigurationHandler.logFilters;
+
+		final Map<String, Pattern> filters = RTConfig.logFilters();
 
 		if(filters.get("levelFilter").matcher(level.toString()).matches() ||
 				filters.get("nameFilter").matcher(getName()).matches() ||

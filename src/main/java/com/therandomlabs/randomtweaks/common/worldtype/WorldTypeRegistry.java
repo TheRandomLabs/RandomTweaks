@@ -1,6 +1,6 @@
 package com.therandomlabs.randomtweaks.common.worldtype;
 
-import com.therandomlabs.randomtweaks.common.ConfigurationHandler;
+import com.therandomlabs.randomtweaks.common.RTConfig;
 import net.minecraftforge.fml.common.Loader;
 
 public final class WorldTypeRegistry {
@@ -9,21 +9,21 @@ public final class WorldTypeRegistry {
 			new WorldTypeRealistic();
 		}
 
-		if(ConfigurationHandler.voidWorldType) {
+		if(RTConfig.world.voidWorldType) {
 			new WorldTypeVoid();
 		}
 
-		if(ConfigurationHandler.voidIslandsWorldType) {
+		if(RTConfig.world.voidIslandsWorldType) {
 			new WorldTypeVoidIslands();
 		}
 	}
 
 	public static boolean shouldRegisterRealisticWorldType() {
-		if(!ConfigurationHandler.realisticWorldType) {
+		if(!RTConfig.world.realisticWorldType) {
 			return false;
 		}
 
-		if(ConfigurationHandler.disableRealisticWorldTypeWithQuark &&
+		if(RTConfig.world.disableRealisticWorldTypeWithQuark &&
 				(Loader.isModLoaded("Quark") || Loader.isModLoaded("quark"))) {
 			return false;
 		}
