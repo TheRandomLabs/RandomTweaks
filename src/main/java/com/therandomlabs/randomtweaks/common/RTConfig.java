@@ -12,12 +12,12 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import org.apache.commons.lang3.StringUtils;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.MalformedJsonException;
-import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.util.ReportedException;
 import net.minecraftforge.common.config.Config;
@@ -174,11 +174,52 @@ public class RTConfig {
 	}
 
 	public static class TimeOfDay {
-		@Config.Comment("Enables the time of day overlay.")
-		public boolean enabled = Utils.isDeobfuscated();
+		@Config.RequiresMcRestart
+		@Config.Comment("Enables the time of day overlay keybind.")
+		public boolean enableKeybind = true;
+
+		@Config.Comment("Enables the time of day overlay by default.")
+		public boolean enabledByDefault;
+
+		@Config.Comment("Disables the time of day overlay if doDaylightCycle is false.")
+		public boolean disableIfNoDaylightCycle = true;
+
+		@Config.Comment("Disables the time of day overlay in Adventure Mode.")
+		public boolean disableInAdventureMode = true;
+
+		@Config.Comment("Enables 24-hour time.")
+		public boolean twentyFourHourTime;
+
+		public static final Map<String, Boolean> worlds = new HashMap<>();
+
+		public static void loadWorlds() {
+			try {
+				worlds.clear();
+
+				final Path path = getJson("timeofdayoverlayworlds");
+				if(!Files.exists(path)) {
+					return;
+				}
+
+				worlds.putAll(new Gson().fromJson(readFile(path), Map.class));
+			} catch(IOException ex) {
+				throw new ReportedException(
+						new CrashReport("Failed to read time of day overlay worlds", ex));
+			}
+		}
+
+		public static void saveWorlds() {
+			try {
+				Files.write(getJson("timeofdayoverlayworlds"),
+						Arrays.asList(new Gson().toJson(worlds)));
+			} catch(IOException ex) {
+				throw new ReportedException(
+						new CrashReport("Failed to save time of day overlay worlds", ex));
+			}
+		}
 	}
 
-	@Config.Comment("Client-sided (excluding Ding)")
+	@Config.Comment("Client-sided (excluding Ding and the time of day overlay)")
 	public static Client client = new Client();
 	@Config.Comment("Commands")
 	public static Commands commands = new Commands();
@@ -210,6 +251,8 @@ public class RTConfig {
 
 	static {
 		loadLogFilters();
+		TimeOfDay.loadWorlds();
+		resetConfigIfNecessary();
 	}
 
 	public static void createLogFilters() throws IOException {
@@ -326,7 +369,7 @@ public class RTConfig {
 
 	public static Map<String, String> getDefaultGamerules(int gamemode, String worldType)
 			throws IOException {
-		final Path path = Paths.get("config", RandomTweaks.MODID, "defaultgamerules.json");
+		final Path path = getJson("defaultgamerules");
 
 		if(!Files.exists(path)) {
 			createDefaultGamerules();
@@ -400,13 +443,20 @@ public class RTConfig {
 		return false;
 	}
 
+	public static Path getConfig(String name) {
+		return Paths.get("config", RandomTweaks.MODID, name);
+	}
+
+	public static Path getJson(String name) {
+		return getConfig(name + ".json");
+	}
+
+	public static String readFile(Path path) throws IOException {
+		return StringUtils.join(Files.readAllLines(path), System.lineSeparator());
+	}
+
 	public static JsonObject readJson(Path path) throws IOException {
-		return new JsonParser().parse(
-				StringUtils.join(
-						Files.readAllLines(path),
-						System.lineSeparator()
-				)
-		).getAsJsonObject();
+		return new JsonParser().parse(readFile(path)).getAsJsonObject();
 	}
 
 	public static boolean isString(JsonElement element) {
@@ -419,6 +469,7 @@ public class RTConfig {
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+		System.out.println(event.getModID() + " " + event.getConfigID());
 		if(event.getModID().equals(RandomTweaks.MODID)) {
 			reloadConfig();
 		}
@@ -427,6 +478,21 @@ public class RTConfig {
 	public static void reloadConfig() {
 		ConfigManager.sync(RandomTweaks.MODID, Config.Type.INSTANCE);
 		loadLogFilters();
+		TimeOfDay.loadWorlds();
+	}
+
+	private static void resetConfigIfNecessary() {
+		try {
+			final Path path = getConfig("dontresetconfig.txt");
+			if(!Files.exists(path)) {
+				Files.deleteIfExists(getConfig(RandomTweaks.MODID + ".cfg"));
+				Files.write(path, Arrays.asList(
+						"Deleting this file will reset the RandomTweaks configuration."));
+			}
+		} catch(IOException ex) {
+			throw new ReportedException(
+					new CrashReport("A problem with the RandomTweaks configuration occurred.", ex));
+		}
 	}
 
 	private static void err(String message, Object... args) {

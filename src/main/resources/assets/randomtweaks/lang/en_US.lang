@@ -1,6 +1,14 @@
 randomtweaks.config.title=RandomTweaks Configuration
 
+timeOfDayOverlay.day=Day
+timeOfDayOverlay.am=AM
+timeOfDayOverlay.pm=PM
+timeOfDayOverlay.dayTime=§eDay
+timeOfDayOverlay.nightTime=§8Night
+
+key.categories.randomtweaks=RandomTweaks
 key.reloadSoundSystem=Reload Sound System
+key.toggleTimeOfDayOverlay=Toggle Time of Day Overlay
 
 reloadSoundSystem.success=§eSuccessfully reloaded sound system!
 reloadSoundSystem.failure.1=§cFailed to reload sound system:

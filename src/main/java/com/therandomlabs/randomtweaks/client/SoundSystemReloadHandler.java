@@ -21,7 +21,7 @@ public final class SoundSystemReloadHandler {
 	public static final Field SOUND_MANAGER =
 			ReflectionHelper.findField(SoundHandler.class, "sndManager", "field_147694_f");
 	public static final KeyBinding RELOAD_SOUND_SYSTEM =
-			new KeyBinding("key.reloadSoundSystem", Keyboard.KEY_F8, "key.categories.misc");
+			new KeyBinding("key.reloadSoundSystem", Keyboard.KEY_F8, "key.categories.randomtweaks");
 
 	@SubscribeEvent
 	public static void onKeyInput(KeyInputEvent event) {
