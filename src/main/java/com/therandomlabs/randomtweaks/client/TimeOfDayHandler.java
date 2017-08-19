@@ -22,7 +22,6 @@ public class TimeOfDayHandler {
 			return;
 		}
 
-		System.out.println("HI");
 		mc.fontRenderer.drawStringWithShadow("Test", 2.0F, 2.0F, 0xFFFFFF);
 	}
 }

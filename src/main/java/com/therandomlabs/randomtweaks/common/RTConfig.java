@@ -17,6 +17,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.MalformedJsonException;
+import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.util.ReportedException;
 import net.minecraftforge.common.config.Config;
@@ -174,7 +175,7 @@ public class RTConfig {
 
 	public static class TimeOfDay {
 		@Config.Comment("Enables the time of day overlay.")
-		public boolean enabled;
+		public boolean enabled = Utils.isDeobfuscated();
 	}
 
 	@Config.Comment("Client-sided (excluding Ding)")

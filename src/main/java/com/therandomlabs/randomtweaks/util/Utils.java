@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
@@ -24,5 +25,9 @@ public final class Utils {
 	public static void setSize(Entity entity, float width, float height)
 			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		SET_SIZE.invoke(entity, width, height);
+	}
+
+	public static boolean isDeobfuscated() {
+		return (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 	}
 }
