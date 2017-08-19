@@ -102,9 +102,6 @@ public class RTConfig {
 		@Config.Comment("The block placed in a Void world for players to stand on.")
 		public String voidWorldBlock = "minecraft:glass";
 
-		@Config.Comment("The meta value for voidWorldBlock.")
-		public int voidWorldBlockMeta;
-
 		@Config.Comment("The biome of a Void world.")
 		public String voidWorldBiome = "minecraft:plains";
 
