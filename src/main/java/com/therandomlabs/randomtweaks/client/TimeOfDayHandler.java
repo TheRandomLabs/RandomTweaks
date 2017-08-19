@@ -78,19 +78,6 @@ public class TimeOfDayHandler {
 					dayOrNight(mc.world)
 			), 2.0F, 2.0F, 0xFFFFFF);
 		}
-
-		/* final long time = world.getWorldTime();
-			long hour = (time / 1000 + 6) % 24;
-			final long minute = (time % 1000) * 60 / 1000;
-			String ampm = "AM";
-			if (hour >= 12) {
-				hour -= 12;
-				ampm = "PM";
-			}
-			if (hour == 0) {
-				hour += 12;
-			}
-			return String.format(Locale.ENGLISH, "%02d:%02d %s", hour, minute, ampm);*/
 	}
 
 	@SubscribeEvent
