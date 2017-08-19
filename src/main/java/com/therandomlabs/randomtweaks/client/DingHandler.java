@@ -9,6 +9,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -52,6 +53,10 @@ public class DingHandler {
 	}
 
 	public static void playSound(String soundName, double pitch) {
+		if(RTConfig.ding.disableIfDingIsInstalled && Loader.isModLoaded("ding")) {
+			return;
+		}
+
 		if(soundName.isEmpty()) {
 			return;
 		}

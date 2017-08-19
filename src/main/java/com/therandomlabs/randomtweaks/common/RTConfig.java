@@ -48,6 +48,9 @@ public class RTConfig {
 	}
 
 	public static class Ding {
+		@Config.Comment("Disables this feature if iChun's Ding is installed.")
+		public boolean disableIfDingIsInstalled = true;
+
 		@Config.Comment("The name of the sound to play when Minecraft starts. " +
 				"Leave this empty to disable it.")
 		public String soundName = "entity.experience_orb.pickup";
@@ -172,12 +175,19 @@ public class RTConfig {
 		public int minimumHungerLevel = 3;
 	}
 
+	@Config.Comment("Client-sided (excluding Ding)")
 	public static Client client = new Client();
+	@Config.Comment("Ding")
 	public static Ding ding = new Ding();
+	@Config.Comment("General")
 	public static General general = new General();
+	@Config.Comment("World")
 	public static World world = new World();
+	@Config.Comment("Squid spawning")
 	public static Squids squids = new Squids();
+	@Config.Comment("Commands")
 	public static Commands commands = new Commands();
+	@Config.Comment("Hunger behavior on respawn")
 	public static Hunger hunger = new Hunger();
 
 	private static final List<String> LOG_FILTER_KEYS = Arrays.asList(
