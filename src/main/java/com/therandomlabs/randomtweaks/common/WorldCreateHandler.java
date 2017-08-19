@@ -22,23 +22,11 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class WorldCreateHandler {
-	private static boolean firstLoad;
-
 	@SubscribeEvent
-	public static void onCreateSpawn(WorldEvent.CreateSpawnPosition event) {
+	public static void onCreateSpawn(WorldEvent.CreateSpawnPosition event) throws Exception {
 		final World world = event.getWorld();
 		if(!world.isRemote && world.provider.getDimensionType() == DimensionType.OVERWORLD) {
-			firstLoad = true;
-		}
-	}
-
-	@SubscribeEvent
-	public static void onWorldLoad(WorldEvent.Load event) throws Exception {
-		final World world = event.getWorld();
-		if(!world.isRemote && world.provider.getDimensionType() == DimensionType.OVERWORLD &&
-				firstLoad) {
 			onWorldCreate(world);
-			firstLoad = false;
 		}
 	}
 
