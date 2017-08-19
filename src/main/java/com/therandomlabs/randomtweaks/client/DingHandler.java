@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-//Idea and a lot of the code taken from:
+//Concept taken from:
 //https://github.com/iChun/Ding/blob/master/src/main/java/me/ichun/mods/ding/common/core/Ding.java
 //I do not take any credit, and I will remove this if asked.
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)

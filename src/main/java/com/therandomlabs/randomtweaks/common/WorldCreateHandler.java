@@ -79,7 +79,6 @@ public final class WorldCreateHandler {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	private static void onVoidWorldCreate(World world) {
 		Block block = GameRegistry.findRegistry(Block.class).getValue(
 				new ResourceLocation(RTConfig.world.voidWorldBlock));
@@ -92,8 +91,6 @@ public final class WorldCreateHandler {
 				RTConfig.world.voidWorldYSpawn, spawn.getZ());
 
 		world.setSpawnPoint(newSpawn);
-		world.setBlockState(newSpawn.add(0, -1, 0),
-				block.getStateFromMeta(RTConfig.world.voidWorldBlockMeta));
 	}
 
 	private static void onVoidIslandsWorldCreate(World world) {
