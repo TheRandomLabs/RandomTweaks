@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.text.TextComponentTranslation;
 
 public final class Utils {
