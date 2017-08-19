@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 import org.apache.commons.lang3.StringUtils;
+import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -45,6 +46,24 @@ public class RTConfig {
 		@Config.RequiresMcRestart
 		@Config.Comment("Enables Contributor Capes.")
 		public boolean contributorCapes = true;
+	}
+
+	public static class Commands {
+		@Config.RequiresMcRestart
+		@Config.Comment("Enables the /deletegamerule command.")
+		public boolean deletegamerule;
+
+		@Config.RequiresMcRestart
+		@Config.Comment("Enables the /hunger command, which sets a player's hunger level.")
+		public boolean hunger;
+
+		@Config.RequiresMcRestart
+		@Config.Comment("Allows /give to accept integer IDs and amounts higher than 64.")
+		public boolean giveTweaks;
+
+		@Config.RequiresMcRestart
+		@Config.Comment("Enables the /rtreload command, which reloads this configuration.")
+		public boolean rtreload;
 	}
 
 	public static class Ding {
@@ -137,24 +156,6 @@ public class RTConfig {
 		public int maxPackSize = 2;
 	}
 
-	public static class Commands {
-		@Config.RequiresMcRestart
-		@Config.Comment("Enables the /deletegamerule command.")
-		public boolean deletegamerule;
-
-		@Config.RequiresMcRestart
-		@Config.Comment("Enables the /hunger command, which sets a player's hunger level.")
-		public boolean hunger;
-
-		@Config.RequiresMcRestart
-		@Config.Comment("Allows /give to accept integer IDs and amounts higher than 64.")
-		public boolean giveTweaks;
-
-		@Config.RequiresMcRestart
-		@Config.Comment("Enables the /rtreload command, which reloads this configuration.")
-		public boolean rtreload;
-	}
-
 	public static class Hunger {
 		public static final int RESET_ON_RESPAWN = 0;
 		public static final int DONT_RESET_ON_RESPAWN = 1;
@@ -172,8 +173,56 @@ public class RTConfig {
 		public int minimumHungerLevel = 3;
 	}
 
-	@Config.Comment("Client-sided (excluding Ding)")
+	public static class TimeOfDay {
+		@Config.RequiresMcRestart
+		@Config.Comment("Enables the time of day overlay keybind.")
+		public boolean enableKeybind = true;
+
+		@Config.Comment("Enables the time of day overlay by default.")
+		public boolean enabledByDefault;
+
+		@Config.Comment("Disables the time of day overlay if doDaylightCycle is false.")
+		public boolean disableIfNoDaylightCycle = true;
+
+		@Config.Comment("Disables the time of day overlay in Adventure Mode.")
+		public boolean disableInAdventureMode = true;
+
+		@Config.Comment("Enables 24-hour time.")
+		public boolean twentyFourHourTime;
+
+		public static final Map<String, Boolean> worlds = new HashMap<>();
+
+		public static void loadWorlds() {
+			try {
+				worlds.clear();
+
+				final Path path = getJson("timeofdayoverlayworlds");
+				if(!Files.exists(path)) {
+					return;
+				}
+
+				worlds.putAll(new Gson().fromJson(readFile(path), Map.class));
+			} catch(IOException ex) {
+				throw new ReportedException(
+						new CrashReport("Failed to read time of day overlay worlds", ex));
+			}
+		}
+
+		public static void saveWorlds() {
+			try {
+				Files.write(getJson("timeofdayoverlayworlds"),
+						Arrays.asList(new Gson().toJson(worlds)));
+			} catch(IOException ex) {
+				throw new ReportedException(
+						new CrashReport("Failed to save time of day overlay worlds", ex));
+			}
+		}
+	}
+
+	@Config.Comment("Client-sided (excluding Ding and the time of day overlay)")
 	public static Client client = new Client();
+	@Config.Comment("Commands")
+	public static Commands commands = new Commands();
 	@Config.Comment("Ding")
 	public static Ding ding = new Ding();
 	@Config.Comment("General")
@@ -182,10 +231,10 @@ public class RTConfig {
 	public static World world = new World();
 	@Config.Comment("Squid spawning")
 	public static Squids squids = new Squids();
-	@Config.Comment("Commands")
-	public static Commands commands = new Commands();
 	@Config.Comment("Hunger behavior on respawn")
 	public static Hunger hunger = new Hunger();
+	@Config.Comment("Time of day overlay")
+	public static TimeOfDay timeofday = new TimeOfDay();
 
 	private static final List<String> LOG_FILTER_KEYS = Arrays.asList(
 			"disableLogging",
@@ -202,6 +251,8 @@ public class RTConfig {
 
 	static {
 		loadLogFilters();
+		TimeOfDay.loadWorlds();
+		resetConfigIfNecessary();
 	}
 
 	public static void createLogFilters() throws IOException {
@@ -318,7 +369,7 @@ public class RTConfig {
 
 	public static Map<String, String> getDefaultGamerules(int gamemode, String worldType)
 			throws IOException {
-		final Path path = Paths.get("config", RandomTweaks.MODID, "defaultgamerules.json");
+		final Path path = getJson("defaultgamerules");
 
 		if(!Files.exists(path)) {
 			createDefaultGamerules();
@@ -337,46 +388,9 @@ public class RTConfig {
 		final Map<String, String> gamerules = new HashMap<>();
 
 		for(Map.Entry<String, JsonElement> entry : object.entrySet()) {
-			if(entry.getValue().isJsonObject()) {
-				try {
-					final String[] split = entry.getKey().split(":");
-
-					final String[] gamemodes = split[0].split(",");
-					boolean gamemodeFound = false;
-
-					for(String mode : gamemodes) {
-						try {
-							if(Integer.parseInt(mode) == gamemode) {
-								gamemodeFound = true;
-								break;
-							}
-						} catch(NumberFormatException ex) {}
-					}
-
-					if(!gamemodeFound) {
-						continue;
-					}
-
-					if(split.length > 1) {
-						final String[] worldTypes = split[1].split(",");
-						boolean worldTypeFound = false;
-
-						for(String type : worldTypes) {
-							if(type.equals(worldType)) {
-								worldTypeFound = true;
-								break;
-							}
-						}
-
-						if(!worldTypeFound) {
-							continue;
-						}
-					}
-
-					getDefaultGamerules(entry.getValue().getAsJsonObject(), gamerules);
-				} catch(NumberFormatException ex) {}
-
-				continue;
+			if(entry.getValue().isJsonObject() &&
+					matchesGamemodeAndWorldType(entry.getKey(), gamemode, worldType)) {
+				putGamerules(gamerules, entry.getValue().getAsJsonObject());
 			}
 
 			gamerules.put(entry.getKey(), entry.getValue().toString());
@@ -385,19 +399,64 @@ public class RTConfig {
 		return gamerules;
 	}
 
-	private static void getDefaultGamerules(JsonObject object, Map<String, String> gamerules) {
+	private static void putGamerules(Map<String, String> gamerules, JsonObject object) {
 		for(Map.Entry<String, JsonElement> entry : object.entrySet()) {
 			gamerules.put(entry.getKey(), entry.getValue().toString());
 		}
 	}
 
+	//Format: comma-separated integer gamemodes (optional),comma-separated world types (optional)
+	//Examples: 0,1:flat	realistic	2:void,flat
+	public static boolean matchesGamemodeAndWorldType(String string, int gamemode,
+			String worldType) {
+		final String[] split = string.split(":");
+		final String[] gamemodes = split[0].split(",");
+
+		boolean gamemodeFound = false;
+
+		for(String mode : gamemodes) {
+			try {
+				if(Integer.parseInt(mode) == gamemode) {
+					gamemodeFound = true;
+					break;
+				}
+			} catch(NumberFormatException ex) {
+				if(split.length == 1 && mode.equals(worldType)) {
+					//Then it's a world type, not a mode.
+					return true;
+				}
+			}
+		}
+
+		if(!gamemodeFound) {
+			return false;
+		}
+
+		if(split.length > 1) {
+			for(String type : split[1].split(",")) {
+				if(type.equals(worldType)) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+
+	public static Path getConfig(String name) {
+		return Paths.get("config", RandomTweaks.MODID, name);
+	}
+
+	public static Path getJson(String name) {
+		return getConfig(name + ".json");
+	}
+
+	public static String readFile(Path path) throws IOException {
+		return StringUtils.join(Files.readAllLines(path), System.lineSeparator());
+	}
+
 	public static JsonObject readJson(Path path) throws IOException {
-		return new JsonParser().parse(
-				StringUtils.join(
-						Files.readAllLines(path),
-						System.lineSeparator()
-				)
-		).getAsJsonObject();
+		return new JsonParser().parse(readFile(path)).getAsJsonObject();
 	}
 
 	public static boolean isString(JsonElement element) {
@@ -410,6 +469,7 @@ public class RTConfig {
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+		System.out.println(event.getModID() + " " + event.getConfigID());
 		if(event.getModID().equals(RandomTweaks.MODID)) {
 			reloadConfig();
 		}
@@ -418,6 +478,21 @@ public class RTConfig {
 	public static void reloadConfig() {
 		ConfigManager.sync(RandomTweaks.MODID, Config.Type.INSTANCE);
 		loadLogFilters();
+		TimeOfDay.loadWorlds();
+	}
+
+	private static void resetConfigIfNecessary() {
+		try {
+			final Path path = getConfig("dontresetconfig.txt");
+			if(!Files.exists(path)) {
+				Files.deleteIfExists(getConfig(RandomTweaks.MODID + ".cfg"));
+				Files.write(path, Arrays.asList(
+						"Deleting this file will reset the RandomTweaks configuration."));
+			}
+		} catch(IOException ex) {
+			throw new ReportedException(
+					new CrashReport("A problem with the RandomTweaks configuration occurred.", ex));
+		}
 	}
 
 	private static void err(String message, Object... args) {

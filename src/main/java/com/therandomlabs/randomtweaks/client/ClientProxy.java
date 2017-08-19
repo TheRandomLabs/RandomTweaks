@@ -2,7 +2,7 @@ package com.therandomlabs.randomtweaks.client;
 
 import com.therandomlabs.randomtweaks.common.CommonProxy;
 import com.therandomlabs.randomtweaks.common.RTConfig;
-import com.therandomlabs.randomtweaks.util.Compat;
+import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemMonsterPlacer;
@@ -17,6 +17,11 @@ public final class ClientProxy extends CommonProxy {
 	@Override
 	public void preInit(FMLPreInitializationEvent event) throws Exception {
 		super.preInit(event);
+
+		if(Utils.isDeobfuscated()) {
+			RTConfig.timeofday.enabledByDefault = true;
+			RTConfig.reloadConfig();
+		}
 
 		if(RTConfig.client.moveBucketCreativeTab) {
 			Items.BUCKET.setCreativeTab(CreativeTabs.TOOLS);
@@ -38,6 +43,10 @@ public final class ClientProxy extends CommonProxy {
 		if(RTConfig.client.reloadSoundSystemKeybind) {
 			SoundSystemReloadHandler.registerKeyBinding();
 		}
+
+		if(RTConfig.timeofday.enableKeybind) {
+			TimeOfDayHandler.registerKeyBinding();
+		}
 	}
 
 	private static void createSpawnEggsCreativeTab() {
@@ -47,7 +56,7 @@ public final class ClientProxy extends CommonProxy {
 			public ItemStack getTabIconItem() {
 				final ItemStack stack = new ItemStack(Items.SPAWN_EGG);
 				ItemMonsterPlacer.applyEntityIdToItemStack(stack,
-						new ResourceLocation(Compat.CHICKEN_ENTITY_NAME));
+						new ResourceLocation("chicken"));
 				return stack;
 			}
 		};

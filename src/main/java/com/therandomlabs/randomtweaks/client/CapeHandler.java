@@ -12,12 +12,12 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
+import com.therandomlabs.randomtweaks.util.Utils;
 import com.therandomlabs.randomtweaks.util.Wrapper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.Entity;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -63,7 +63,7 @@ public final class CapeHandler {
 
 	public static boolean shouldHaveCape(AbstractClientPlayer player) {
 		//Always have a cape in a development environment
-		if((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
+		if(Utils.isDeobfuscated()) {
 			return true;
 		}
 
@@ -115,7 +115,7 @@ public final class CapeHandler {
 	}
 
 	public static void downloadPlayers() {
-		if((boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
+		if(Utils.isDeobfuscated()) {
 			return;
 		}
 

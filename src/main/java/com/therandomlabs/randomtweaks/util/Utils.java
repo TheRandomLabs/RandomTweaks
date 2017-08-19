@@ -24,4 +24,8 @@ public final class Utils {
 			throws IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		SET_SIZE.invoke(entity, width, height);
 	}
+
+	public static boolean isDeobfuscated() {
+		return (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+	}
 }
