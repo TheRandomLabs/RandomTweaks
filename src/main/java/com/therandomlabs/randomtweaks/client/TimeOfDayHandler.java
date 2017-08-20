@@ -78,19 +78,6 @@ public class TimeOfDayHandler {
 					dayOrNight(mc.world)
 			), 2.0F, 2.0F, 0xFFFFFF);
 		}
-
-		/* final long time = world.getWorldTime();
-			long hour = (time / 1000 + 6) % 24;
-			final long minute = (time % 1000) * 60 / 1000;
-			String ampm = "AM";
-			if (hour >= 12) {
-				hour -= 12;
-				ampm = "PM";
-			}
-			if (hour == 0) {
-				hour += 12;
-			}
-			return String.format(Locale.ENGLISH, "%02d:%02d %s", hour, minute, ampm);*/
 	}
 
 	@SubscribeEvent
@@ -100,16 +87,12 @@ public class TimeOfDayHandler {
 			final Minecraft mc = Minecraft.getMinecraft();
 			final World world = mc.world;
 
-			if(!shouldDraw(world)) {
-				return;
-			}
-
 			final File saveDirectory = DimensionManager.getCurrentSaveRootDirectory();
 			if(saveDirectory != null) {
-				RTConfig.TimeOfDay.worlds.put(saveDirectory.getName(), !shouldDraw(world));
+				RTConfig.TimeOfDay.worlds.put(saveDirectory.getName(), !isEnabledForWorld(world));
 			} else {
 				RTConfig.TimeOfDay.worlds.put(mc.getCurrentServerData().serverIP,
-						!shouldDraw(world));
+						!isEnabledForWorld(world));
 			}
 			RTConfig.TimeOfDay.saveWorlds();
 		}
@@ -134,6 +117,10 @@ public class TimeOfDayHandler {
 			return false;
 		}
 
+		return isEnabledForWorld(world);
+	}
+
+	public static boolean isEnabledForWorld(World world) {
 		final File saveDirectory = DimensionManager.getCurrentSaveRootDirectory();
 		if(saveDirectory != null) {
 			final String name = saveDirectory.getName();
@@ -145,6 +132,11 @@ public class TimeOfDayHandler {
 		}
 
 		final String ip = Minecraft.getMinecraft().getCurrentServerData().serverIP;
+
+		if(ip == null) {
+			return false;
+		}
+
 		if(!RTConfig.TimeOfDay.worlds.containsKey(ip)) {
 			RTConfig.TimeOfDay.worlds.put(ip, RTConfig.timeofday.enabledByDefault);
 			RTConfig.TimeOfDay.saveWorlds();
