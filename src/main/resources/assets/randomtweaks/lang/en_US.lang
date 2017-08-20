@@ -8,6 +8,7 @@ timeOfDayOverlay.nightTime=§8Night
 
 key.categories.randomtweaks=RandomTweaks
 key.reloadSoundSystem=Reload Sound System
+key.clearChat=Clear Chat
 key.toggleTimeOfDayOverlay=Toggle Time of Day Overlay
 
 reloadSoundSystem.success=§eSuccessfully reloaded sound system!

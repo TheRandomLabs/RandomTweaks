@@ -36,6 +36,10 @@ public class RTConfig {
 		public boolean reloadSoundSystemKeybind = true;
 
 		@Config.RequiresMcRestart
+		@Config.Comment("Enables the Clear Chat keybind.")
+		public boolean clearChatKeybind = true;
+
+		@Config.RequiresMcRestart
 		@Config.Comment("Moves the Bucket to the Tools creative tab.")
 		public boolean moveBucketCreativeTab = true;
 
@@ -49,21 +53,21 @@ public class RTConfig {
 	}
 
 	public static class Commands {
-		@Config.RequiresMcRestart
+		@Config.RequiresWorldRestart
 		@Config.Comment("Enables the /deletegamerule command.")
-		public boolean deletegamerule;
+		public boolean deletegamerule = true;
 
-		@Config.RequiresMcRestart
+		@Config.RequiresWorldRestart
 		@Config.Comment("Enables the /hunger command, which sets a player's hunger level.")
-		public boolean hunger;
+		public boolean hunger = true;
 
-		@Config.RequiresMcRestart
+		@Config.RequiresWorldRestart
 		@Config.Comment("Allows /give to accept integer IDs and amounts higher than 64.")
-		public boolean giveTweaks;
+		public boolean giveTweaks = true;
 
-		@Config.RequiresMcRestart
+		@Config.RequiresWorldRestart
 		@Config.Comment("Enables the /rtreload command, which reloads this configuration.")
-		public boolean rtreload;
+		public boolean rtreload = true;
 	}
 
 	public static class Ding {
