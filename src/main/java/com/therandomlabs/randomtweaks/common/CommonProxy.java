@@ -12,6 +12,8 @@ public class CommonProxy {
 	public static final Logger LOGGER = RandomTweaks.LOGGER;
 
 	public void preInit(FMLPreInitializationEvent event) throws Exception {
+		RTConfig.preInit();
+
 		if(RTConfig.general.moreRomanNumerals) {
 			try {
 				RTLanguageMap.replaceLanguageMaps();

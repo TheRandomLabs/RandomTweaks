@@ -99,6 +99,9 @@ public class RTConfig {
 				"custom names. On 1.10, adds the \"bed is too far away\" message present in " +
 				"later versions of Minecraft.")
 		public boolean sleepTweaks = true;
+
+		@Config.Comment("Do not change this value.")
+		public int configVersion = -1;
 	}
 
 	public static class World {
@@ -252,7 +255,6 @@ public class RTConfig {
 	static {
 		loadLogFilters();
 		TimeOfDay.loadWorlds();
-		resetConfigIfNecessary();
 	}
 
 	public static void createLogFilters() throws IOException {
@@ -481,17 +483,18 @@ public class RTConfig {
 		TimeOfDay.loadWorlds();
 	}
 
-	private static void resetConfigIfNecessary() {
-		try {
-			final Path path = getConfig("dontresetconfig.txt");
-			if(!Files.exists(path)) {
-				Files.deleteIfExists(getConfig(RandomTweaks.MODID + ".cfg"));
-				Files.write(path, Arrays.asList(
-						"Deleting this file will reset the RandomTweaks configuration."));
+	static void preInit() {
+		if(general.configVersion < 9) {
+			try {
+				Files.deleteIfExists(getConfig("randomtweaks.cfg"));
+				Files.deleteIfExists(getConfig("../randomtweaks.cfg"));
+				Files.deleteIfExists(getConfig("dontresetconfig.txt"));
+			} catch(IOException ex) {
+				throw new ReportedException(new CrashReport("Failed to reset config", ex));
 			}
-		} catch(IOException ex) {
-			throw new ReportedException(
-					new CrashReport("A problem with the RandomTweaks configuration occurred.", ex));
+
+			general.configVersion = 9;
+			reloadConfig();
 		}
 	}
 
