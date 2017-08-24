@@ -262,7 +262,7 @@ public class RTConfig {
 	}
 
 	public static void createLogFilters() throws IOException {
-		final Path path = Paths.get("logfilters.json");
+		final Path path = getJson("logfilters");
 
 		if(Files.exists(path)) {
 			Files.move(path, Paths.get(path.toString() + "_backup" + System.nanoTime()));
@@ -290,10 +290,15 @@ public class RTConfig {
 
 	public static void loadLogFilters() {
 		try {
-			final Path path = Paths.get("logfilters.json");
+			final Path path = getJson("logfilters");
 
 			if(!Files.exists(path)) {
-				createLogFilters();
+				final Path alternativePath = Paths.get("logfilters.json");
+				if(Files.exists(alternativePath)) {
+					Files.move(alternativePath, path);
+				} else {
+					createLogFilters();
+				}
 			}
 
 			logFilters = new HashMap<>();
