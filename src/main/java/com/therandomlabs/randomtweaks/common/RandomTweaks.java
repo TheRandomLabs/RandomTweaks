@@ -16,7 +16,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 		"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/misc/versions.json")
 public final class RandomTweaks {
 	public static final String MODID = "randomtweaks";
-	public static final String VERSION = "1.11.2-1.9.0.1";
+	public static final String VERSION = "@VERSION@";
 	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.10,1.12)";
 
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
