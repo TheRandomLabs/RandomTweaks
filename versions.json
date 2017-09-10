@@ -13,7 +13,7 @@
 		"1.12.1-2.0.0.0": "Updated to 1.12.1.\nContributor capes are now always shown in development environments.\nFixed the \"Could not set cape\" error message.\nFixed configuration location.\nFixed URLs for versions.json and contributors.txt.\nFixed some issues with log filters."
 	},
 	"1.11.2": {
-		"1.11.2-1.10.0.0": "Changed the location of logfilters.json.\nAdded /rtreloadclient.\nFixed client crash on 1.10.2.\nFixed the Clear Chat keybind on 1.10.2.\nFixed /rtreload on 1.10.2.\nFixed a crash in the developmentn environment.",
+		"1.11.2-1.10.0.0": "Changed the location of logfilters.json.\nAdded /rtreloadclient.\nFixed client crash on 1.10.2.\nFixed the Clear Chat keybind on 1.10.2.\nFixed /rtreload on 1.10.2.\nFixed a crash in the development environment.",
 		"1.11.2-1.9.0.1": "Fixed all issues in 1.11.2-1.9.0.0.\nAdded a Clear Chat keybind.",
 		"1.11.2-1.9.0.0": "Redid the configuration.\nAdded Ding.\nRemoved the voidWorldBlockMeta configuration option.\nImproved default gamerules gamemode/world type parsing.\nFixed the configuration GUI.",
 		"1.11.2-1.8.0.4": "Fixed the \"Could not set cape\" error message.\nFixed configuration location.\nFixed URLs for versions.json and contributors.txt.\nFixed some issues with log filters.",
@@ -38,7 +38,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.11": {
-		"1.11.2-1.10.0.0": "Changed the location of logfilters.json.\nAdded /rtreloadclient.\nFixed client crash on 1.10.2.\nFixed the Clear Chat keybind on 1.10.2.\nFixed /rtreload on 1.10.2.\nFixed a crash in the developmentn environment.",
+		"1.11.2-1.10.0.0": "Changed the location of logfilters.json.\nAdded /rtreloadclient.\nFixed client crash on 1.10.2.\nFixed the Clear Chat keybind on 1.10.2.\nFixed /rtreload on 1.10.2.\nFixed a crash in the development environment.",
 		"1.11.2-1.9.0.1": "Fixed all issues in 1.11.2-1.9.0.0.\nAdded a Clear Chat keybind.",
 		"1.11.2-1.9.0.0": "Redid the configuration.\nAdded Ding.\nRemoved the voidWorldBlockMeta configuration option.\nImproved default gamerules gamemode/world type parsing.\nFixed the configuration GUI.",
 		"1.11.2-1.8.0.4": "Fixed the \"Could not set cape\" error message.\nFixed configuration location.\nFixed URLs for versions.json and contributors.txt.\nFixed some issues with log filters.",
@@ -63,7 +63,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.10.2": {
-		"1.11.2-1.10.0.0": "Changed the location of logfilters.json.\nAdded /rtreloadclient.\nFixed client crash on 1.10.2.\nFixed the Clear Chat keybind on 1.10.2.\nFixed /rtreload on 1.10.2.\nFixed a crash in the developmentn environment.",
+		"1.11.2-1.10.0.0": "Changed the location of logfilters.json.\nAdded /rtreloadclient.\nFixed client crash on 1.10.2.\nFixed the Clear Chat keybind on 1.10.2.\nFixed /rtreload on 1.10.2.\nFixed a crash in the development environment.",
 		"1.11.2-1.9.0.1": "Fixed all issues in 1.11.2-1.9.0.0.\nAdded a Clear Chat keybind.",
 		"1.11.2-1.9.0.0": "Redid the configuration.\nAdded Ding.\nRemoved the voidWorldBlockMeta configuration option.\nImproved default gamerules gamemode/world type parsing.\nFixed the configuration GUI.",
 		"1.11.2-1.8.0.4": "Fixed the \"Could not set cape\" error message.\nFixed configuration location.\nFixed URLs for versions.json and contributors.txt.\nFixed some issues with log filters.",
@@ -88,7 +88,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.10": {
-		"1.11.2-1.10.0.0": "Changed the location of logfilters.json.\nAdded /rtreloadclient.\nFixed client crash on 1.10.2.\nFixed the Clear Chat keybind on 1.10.2.\nFixed /rtreload on 1.10.2.\nFixed a crash in the developmentn environment.",
+		"1.11.2-1.10.0.0": "Changed the location of logfilters.json.\nAdded /rtreloadclient.\nFixed client crash on 1.10.2.\nFixed the Clear Chat keybind on 1.10.2.\nFixed /rtreload on 1.10.2.\nFixed a crash in the development environment.",
 		"1.11.2-1.9.0.1": "Fixed all issues in 1.11.2-1.9.0.0.\nAdded a Clear Chat keybind.",
 		"1.11.2-1.9.0.0": "Redid the configuration.\nAdded Ding.\nRemoved the voidWorldBlockMeta configuration option.\nImproved default gamerules gamemode/world type parsing.\nFixed the configuration GUI.",
 		"1.11.2-1.8.0.4": "Fixed the \"Could not set cape\" error message.\nFixed configuration location.\nFixed URLs for versions.json and contributors.txt.\nFixed some issues with log filters.",
