@@ -30,6 +30,8 @@ commands.rtreload.usage=/rtreload
 commands.rtreload.failure=§cAn error occurred while reloading configuration: %s
 commands.rtreload.success=Configuration reloaded!
 
+commands.rtreloadclient.usage=/rtreloadclient
+
 tile.bed.tooFarAway=Du kannst jetzt nicht schlafen, das Bett ist zu weit entfernt
 
 generator.realistic=Realistisch

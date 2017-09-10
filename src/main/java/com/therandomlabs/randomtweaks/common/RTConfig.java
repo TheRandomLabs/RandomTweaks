@@ -1,6 +1,7 @@
 package com.therandomlabs.randomtweaks.common;
 
 import java.io.IOException;
+import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -18,6 +19,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.MalformedJsonException;
+import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.util.ReportedException;
 import net.minecraftforge.common.config.Config;
@@ -68,6 +70,11 @@ public class RTConfig {
 		@Config.RequiresWorldRestart
 		@Config.Comment("Enables the /rtreload command, which reloads this configuration.")
 		public boolean rtreload = true;
+
+		@Config.RequiresMcRestart
+		@Config.Comment("Enables the /rtreloadclient command, which is the client-sided " +
+				"version of /rtreload.")
+		public boolean rtreloadclient = true;
 	}
 
 	public static class Ding {
@@ -243,6 +250,9 @@ public class RTConfig {
 	@Config.Comment("Time of day overlay")
 	public static TimeOfDay timeofday = new TimeOfDay();
 
+	private static final Method LOAD = Compat.IS_ONE_POINT_TEN ?
+			Compat.findMethod(ConfigManager.class, "load", "load",
+					String.class, Config.Type.class) : null;
 	private static final List<String> LOG_FILTER_KEYS = Arrays.asList(
 			"disableLogging",
 			"levelFilter",
@@ -487,7 +497,16 @@ public class RTConfig {
 	}
 
 	public static void reloadConfig() {
-		ConfigManager.sync(RandomTweaks.MODID, Config.Type.INSTANCE);
+		if(Compat.IS_ONE_POINT_TEN) {
+			try {
+				LOAD.invoke(null, RandomTweaks.MODID, Config.Type.INSTANCE);
+			} catch(Exception ex) {
+				throw new ReportedException(new CrashReport("Failed to reload config", ex));
+			}
+		} else {
+			ConfigManager.sync(RandomTweaks.MODID, Config.Type.INSTANCE);
+		}
+
 		loadLogFilters();
 		TimeOfDay.loadWorlds();
 	}
@@ -508,6 +527,7 @@ public class RTConfig {
 	}
 
 	private static void err(String message, Object... args) {
-		System.err.printf("[" + RandomTweaks.MODID + "] " + message + System.lineSeparator(), args);
+		System.err.printf("[" + RandomTweaks.MODID + "] " + message + System.lineSeparator(),
+				args);
 	}
 }

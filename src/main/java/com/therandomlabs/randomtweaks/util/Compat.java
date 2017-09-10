@@ -5,7 +5,6 @@ import java.lang.reflect.Method;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.common.MinecraftForge;
@@ -60,8 +59,7 @@ public final class Compat {
 			Class<?>... parameterTypes) {
 		/* TAKEN FROM ReflectionUtils */
 		final String nameToFind;
-		if(obfuscatedName == null ||
-				(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment")) {
+		if(obfuscatedName == null || Utils.isDeobfuscated()) {
 			nameToFind = methodName;
 		} else {
 			nameToFind = obfuscatedName;
@@ -79,7 +77,7 @@ public final class Compat {
 	private static boolean isOnePointTen() {
 		try {
 			return ((String) MinecraftForge.class.getDeclaredField("MC_VERSION").get(null)).
-					contains("10");
+					startsWith("1.10");
 		} catch(Exception ex) {
 			throw new ReportedException(new CrashReport(
 					"RandomTweaks could not get the current Minecraft version", ex));
