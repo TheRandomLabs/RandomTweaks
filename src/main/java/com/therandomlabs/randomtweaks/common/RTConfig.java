@@ -68,6 +68,11 @@ public class RTConfig {
 		@Config.RequiresWorldRestart
 		@Config.Comment("Enables the /rtreload command, which reloads this configuration.")
 		public boolean rtreload = true;
+
+		@Config.RequiresMcRestart
+		@Config.Comment("Enables the /rtreloadclient command, which is the client-sided " +
+				"version of /rtreload.")
+		public boolean rtreloadclient = true;
 	}
 
 	public static class Ding {

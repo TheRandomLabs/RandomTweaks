@@ -8,6 +8,7 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -33,6 +34,10 @@ public final class ClientProxy extends CommonProxy {
 
 		if(RTConfig.client.contributorCapes) {
 			CapeHandler.downloadPlayers();
+		}
+
+		if(RTConfig.commands.rtreloadclient) {
+			ClientCommandHandler.instance.registerCommand(new CommandRtreloadClient());
 		}
 	}
 
