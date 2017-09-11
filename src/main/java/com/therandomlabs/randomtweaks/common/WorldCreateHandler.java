@@ -31,6 +31,15 @@ public final class WorldCreateHandler {
 	}
 
 	@SubscribeEvent
+	public static void onWorldLoad(WorldEvent.Load event) throws Exception {
+		final World world = event.getWorld();
+		if(!world.isRemote && world.provider.getDimensionType() == DimensionType.OVERWORLD &&
+				world.getWorldType() instanceof WorldTypeVoidIslands) {
+			onVoidIslandsWorldLoad(world);
+		}
+	}
+
+	@SubscribeEvent
 	public static void onPlayerLoad(PlayerEvent.LoadFromFile event) {
 		final EntityPlayer player = event.getEntityPlayer();
 		final World world = player.getEntityWorld();
@@ -48,8 +57,6 @@ public final class WorldCreateHandler {
 	private static void onWorldCreate(World world) throws Exception {
 		if(world.getWorldType() instanceof WorldTypeVoid) {
 			onVoidWorldCreate(world);
-		} else if(world.getWorldType() instanceof WorldTypeVoidIslands) {
-			onVoidIslandsWorldCreate(world);
 		}
 
 		final GameRules gamerules = world.getGameRules();
@@ -81,7 +88,27 @@ public final class WorldCreateHandler {
 		world.setSpawnPoint(newSpawn);
 	}
 
-	private static void onVoidIslandsWorldCreate(World world) {
-		world.setSpawnPoint(world.getTopSolidOrLiquidBlock(new BlockPos(0, 0, 0)).add(0, 1, 0));
+	private static void onVoidIslandsWorldLoad(World world) {
+		BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(0, 0, 0));
+
+		if(world.isAirBlock(pos)) {
+			for(int x = 1; x <= 16; x++) {
+				boolean found = false;
+
+				for(int z = 1; z <= 16; z++) {
+					pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
+					if(world.isAirBlock(pos)) {
+						found = true;
+						break;
+					}
+				}
+
+				if(found) {
+					break;
+				}
+			}
+		}
+
+		world.setSpawnPoint(pos.add(0, 1, 0));
 	}
 }

@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
+//TODO Compat to make updating the 1.11.2 version easier (99% copy paste)
 @Mod(modid = RandomTweaks.MODID, version = RandomTweaks.VERSION,
 		acceptedMinecraftVersions = RandomTweaks.ACCEPTED_MINECRAFT_VERSIONS,
 		acceptableRemoteVersions = "*", updateJSON =
