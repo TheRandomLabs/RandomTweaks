@@ -111,7 +111,8 @@ public class RTConfig {
 				"later versions of Minecraft.")
 		public boolean sleepTweaks = true;
 
-		@Config.Comment("Do not change this value.")
+		@Config.RequiresMcRestart
+		@Config.Comment("Do not change or reset this value unless necessary.")
 		public int configVersion = -1;
 	}
 
@@ -149,11 +150,6 @@ public class RTConfig {
 	}
 
 	public static class Squids {
-		public static final int RADIUS_LIMIT_DISABLED = 0;
-		public static final int CHUNK_LIMIT_DISABLED = -1;
-		public static final int SQUID_SPAWNING_DISABLED = 0;
-		public static final int VANILLA_PACK_SIZE = 0;
-
 		@Config.RangeInt(min = 0)
 		@Config.Comment("Disables squid spawning when a player is not within the specified " +
 				"radius. Set to 0 to disable this limit.")
@@ -171,13 +167,8 @@ public class RTConfig {
 	}
 
 	public static class Hunger {
-		public static final int RESET_ON_RESPAWN = 0;
-		public static final int DONT_RESET_ON_RESPAWN = 1;
-		public static final int RESET_UNLESS_KEEPINVENTORY = 2;
-		public static final int RESET_UNLESS_KEEPINVENTORY_OR_CREATIVE = 3;
-
 		@Config.RangeInt(min = 0, max = 3)
-		@Config.Comment("0 = reset hunger on respawn; 2 = don't reset hunger on respawn; " +
+		@Config.Comment("0 = reset hunger on respawn; 1 = don't reset hunger on respawn; " +
 				"2 = reset hunger on respawn unless keepInventory is true; 3 = reset hunger " +
 				"on respawn unless keepInventory is true or the player is in creative mode")
 		public int respawnBehavior;
@@ -464,11 +455,13 @@ public class RTConfig {
 		return false;
 	}
 
-	public static Path getConfig(String name) {
-		return Paths.get("config", RandomTweaks.MODID, name);
+	public static Path getConfig(String name) throws IOException {
+		final Path path = Paths.get("config", RandomTweaks.MODID, name);
+		Files.createDirectories(path.getParent());
+		return path;
 	}
 
-	public static Path getJson(String name) {
+	public static Path getJson(String name) throws IOException {
 		return getConfig(name + ".json");
 	}
 
@@ -490,7 +483,6 @@ public class RTConfig {
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-		System.out.println(event.getModID() + " " + event.getConfigID());
 		if(event.getModID().equals(RandomTweaks.MODID)) {
 			reloadConfig();
 		}
@@ -512,7 +504,7 @@ public class RTConfig {
 	}
 
 	static void preInit() {
-		if(general.configVersion < 9) {
+		if(general.configVersion < 10) {
 			try {
 				Files.deleteIfExists(getConfig("randomtweaks.cfg"));
 				Files.deleteIfExists(getConfig("../randomtweaks.cfg"));
@@ -521,7 +513,7 @@ public class RTConfig {
 				throw new ReportedException(new CrashReport("Failed to reset config", ex));
 			}
 
-			general.configVersion = 9;
+			general.configVersion = 10;
 			reloadConfig();
 		}
 	}

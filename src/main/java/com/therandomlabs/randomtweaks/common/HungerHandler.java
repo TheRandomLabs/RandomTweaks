@@ -52,11 +52,11 @@ public final class HungerHandler {
 
 	public static boolean dontResetHungerOnRespawn(EntityPlayer player) {
 		switch(RTConfig.hunger.respawnBehavior) {
-		case RTConfig.Hunger.DONT_RESET_ON_RESPAWN:
+		case RTConstants.Hunger.DONT_RESET_ON_RESPAWN:
 			return true;
-		case RTConfig.Hunger.RESET_UNLESS_KEEPINVENTORY:
+		case RTConstants.Hunger.RESET_UNLESS_KEEPINVENTORY:
 			return player.getEntityWorld().getGameRules().getBoolean("keepInventory");
-		case RTConfig.Hunger.RESET_UNLESS_KEEPINVENTORY_OR_CREATIVE:
+		case RTConstants.Hunger.RESET_UNLESS_KEEPINVENTORY_OR_CREATIVE:
 			return player.getEntityWorld().getGameRules().getBoolean("keepInventory") &&
 					!player.capabilities.isCreativeMode;
 		}
