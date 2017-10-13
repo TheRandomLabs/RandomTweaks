@@ -3,6 +3,7 @@ package com.therandomlabs.randomtweaks.common;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.UUID;
+import com.therandomlabs.randomtweaks.util.Compat;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
@@ -14,6 +15,7 @@ import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -68,6 +70,10 @@ public final class SleepHandler {
 
 			if(!bedInRange(player, location, facing)) {
 				event.setResult(SleepResult.TOO_FAR_AWAY);
+				if(Compat.IS_ONE_POINT_TEN) {
+					Compat.sendStatusMessage(player,
+							new TextComponentTranslation("tile.bed.tooFarAway"));
+				}
 				return;
 			}
 

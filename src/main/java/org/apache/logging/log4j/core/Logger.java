@@ -322,7 +322,7 @@ public class Logger extends AbstractLogger implements Supplier<LoggerConfig> {
 	 * @return the Level associate with the Logger.
 	 */
 	@Override
-	public Level getLevel() {
+	public synchronized Level getLevel() {
 		return privateConfig.loggerConfigLevel;
 	}
 

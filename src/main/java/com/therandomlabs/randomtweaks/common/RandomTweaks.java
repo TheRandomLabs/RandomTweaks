@@ -10,7 +10,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
-//TODO Compat to make updating the 1.11.2 version easier (99% copy paste)
 @Mod(modid = RandomTweaks.MODID, version = RandomTweaks.VERSION,
 		acceptedMinecraftVersions = RandomTweaks.ACCEPTED_MINECRAFT_VERSIONS,
 		acceptableRemoteVersions = "*", updateJSON =
@@ -18,6 +17,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 public final class RandomTweaks {
 	public static final String MODID = "randomtweaks";
 	public static final String VERSION = "@VERSION@";
+	//TODO move to Compat
 	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12,1.13)";
 
 	public static final Logger LOGGER = LogManager.getLogger(MODID);

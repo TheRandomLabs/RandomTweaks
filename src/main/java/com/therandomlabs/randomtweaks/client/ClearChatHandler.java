@@ -2,6 +2,7 @@ package com.therandomlabs.randomtweaks.client;
 
 import org.lwjgl.input.Keyboard;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
+import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -19,7 +20,7 @@ public class ClearChatHandler {
 	public static void onKeyInput(KeyInputEvent event) {
 		if(Keyboard.getEventKeyState() && CLEAR_CHAT.isActiveAndMatches(Keyboard.getEventKey()) &&
 				Minecraft.getMinecraft().ingameGUI != null) {
-			Minecraft.getMinecraft().ingameGUI.getChatGUI().clearChatMessages(false);
+			Compat.clearChatMessages(Minecraft.getMinecraft().ingameGUI.getChatGUI());
 		}
 	}
 

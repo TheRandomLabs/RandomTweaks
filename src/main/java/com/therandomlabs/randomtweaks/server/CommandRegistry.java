@@ -14,7 +14,7 @@ public final class CommandRegistry {
 		}
 
 		if(RTConfig.commands.giveTweaks) {
-			event.registerServerCommand(new CommandGive());
+			event.registerServerCommand(new CommandRTGive());
 		}
 
 		if(RTConfig.commands.rtreload) {
