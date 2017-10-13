@@ -147,9 +147,7 @@ public final class Compat {
 		return stringBuilder.toString();
 	}
 
-	public static void detectAndSendChanges(Container container) {
-		//container.detectAndSendChanges();
-	}
+	public static void detectAndSendChanges(Container container) {}
 
 	private static boolean isOnePointTen() {
 		try {
