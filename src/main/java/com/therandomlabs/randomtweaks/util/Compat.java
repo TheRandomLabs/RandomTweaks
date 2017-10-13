@@ -18,8 +18,8 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindFieldExcep
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindMethodException;
 
 public final class Compat {
+	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.10,1.12)";
 	public static final boolean IS_ONE_POINT_TEN = isOnePointTen();
-
 	public static final String CHICKEN_ENTITY_NAME = IS_ONE_POINT_TEN ? "Chicken" : "chicken";
 
 	private static final Field STACK_SIZE =
