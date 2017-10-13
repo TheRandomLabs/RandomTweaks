@@ -10,30 +10,17 @@ import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGeneratorOverworld;
 import net.minecraft.world.gen.IChunkGenerator;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindFieldException;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindMethodException;
 
 public final class Compat {
-	public static final boolean IS_ONE_POINT_TEN = isOnePointTen();
+	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12,1.13)";
+	public static final boolean IS_ONE_POINT_TEN = false;
+	public static final String CHICKEN_ENTITY_NAME = "chicken";
 
-	public static final String CHICKEN_ENTITY_NAME = IS_ONE_POINT_TEN ? "Chicken" : "chicken";
-
-	private static final Field STACK_SIZE =
-			findField(ItemStack.class, "stackSize", "field_77994_a");
-	private static final Method ADD_CHAT_COMPONENT_MESSAGE =
-			findMethod(EntityPlayer.class, "addChatComponentMessage", "func_146105_b",
-					ITextComponent.class);
-	private static final Method LOAD =
-			findMethod(ConfigManager.class, "load", "load", String.class, Config.Type.class);
-	private static final Method CLEAR_CHAT_MESSAGES =
-			findMethod(GuiNewChat.class, "clearChatMessages", "func_146231_a");
-
-	public static interface ICompatChunkGenerator extends IChunkGenerator {
-		//boolean isInsideStructure(World world, String structureName, BlockPos pos);
-	}
+	public static interface ICompatChunkGenerator extends IChunkGenerator {}
 
 	public static class ChunkGeneratorCompatOverworld extends ChunkGeneratorOverworld {
 		public ChunkGeneratorCompatOverworld(World world, long seed, boolean mapFeaturesEnabled,
@@ -43,36 +30,24 @@ public final class Compat {
 	}
 
 	public static boolean isEmpty(ItemStack stack) {
-		return IS_ONE_POINT_TEN ? stack == null : stack.isEmpty();
+		return stack.isEmpty();
 	}
 
-	public static int getStackSize(ItemStack stack) throws Exception {
-		return IS_ONE_POINT_TEN ? (int) STACK_SIZE.get(stack) : stack.getCount();
+	public static int getStackSize(ItemStack stack) {
+		return stack.getCount();
 	}
 
-	public static void setStackSize(ItemStack stack, int size) throws Exception {
-		if(IS_ONE_POINT_TEN) {
-			STACK_SIZE.set(stack, size);
-		} else {
-			stack.setCount(size);
-		}
+	public static void setStackSize(ItemStack stack, int size) {
+		stack.setCount(size);
 	}
 
-	public static void shrinkItemStack(ItemStack stack, int quantity) throws Exception {
-		if(IS_ONE_POINT_TEN) {
-			STACK_SIZE.set(stack, (int) STACK_SIZE.get(stack) - quantity);
-		} else {
-			stack.shrink(quantity);
-		}
+	public static void shrinkItemStack(ItemStack stack, int quantity) {
+		stack.shrink(quantity);
 	}
 
 	public static void sendStatusMessage(EntityPlayer player, ITextComponent message)
 			throws Exception {
-		if(IS_ONE_POINT_TEN) {
-			ADD_CHAT_COMPONENT_MESSAGE.invoke(player, message);
-		} else {
-			player.sendStatusMessage(message, true);
-		}
+		player.sendStatusMessage(message, true);
 	}
 
 	public static Field findField(Class<?> clazz, String... fieldNames) {
@@ -113,27 +88,11 @@ public final class Compat {
 	}
 
 	public static void syncConfig(String modid, Config.Type type) {
-		if(IS_ONE_POINT_TEN) {
-			try {
-				LOAD.invoke(null, modid, type);
-			} catch(Exception ex) {
-				Utils.crashReport("Could not sync config", ex);
-			}
-		} else {
-			ConfigManager.sync(modid, type);
-		}
+		ConfigManager.sync(modid, type);
 	}
 
 	public static void clearChatMessages(GuiNewChat chat) {
-		if(IS_ONE_POINT_TEN) {
-			try {
-				CLEAR_CHAT_MESSAGES.invoke(chat);
-			} catch(Exception ex) {
-				Utils.crashReport("Could not clear chat mesages", ex);
-			}
-		} else {
-			chat.clearChatMessages(false);
-		}
+		chat.clearChatMessages(false);
 	}
 
 	public static String buildString(String[] args, int startIndex) {
@@ -149,15 +108,5 @@ public final class Compat {
 
 	public static void detectAndSendChanges(Container container) {
 		container.detectAndSendChanges();
-	}
-
-	private static boolean isOnePointTen() {
-		try {
-			return ((String) MinecraftForge.class.getDeclaredField("MC_VERSION").get(null)).
-					startsWith("1.10");
-		} catch(Exception ex) {
-			Utils.crashReport("RandomTweaks could not get the current Minecraft version", ex);
-		}
-		return false;
 	}
 }

@@ -3,6 +3,7 @@ package com.therandomlabs.randomtweaks.common;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import com.therandomlabs.randomtweaks.server.CommandRegistry;
+import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -17,8 +18,7 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 public final class RandomTweaks {
 	public static final String MODID = "randomtweaks";
 	public static final String VERSION = "@VERSION@";
-	//TODO move to Compat
-	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12,1.13)";
+	public static final String ACCEPTED_MINECRAFT_VERSIONS = Compat.ACCEPTED_MINECRAFT_VERSIONS;
 
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
