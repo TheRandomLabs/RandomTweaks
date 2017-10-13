@@ -97,7 +97,7 @@ public class Logger extends AbstractLogger {
 	 * Returns the Level associated with the Logger.
 	 * @return the Level associate with the Logger.
 	 */
-	public Level getLevel() {
+	public synchronized Level getLevel() {
 		return config.level;
 	}
 

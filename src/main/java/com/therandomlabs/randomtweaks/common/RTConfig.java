@@ -1,7 +1,6 @@
 package com.therandomlabs.randomtweaks.common;
 
 import java.io.IOException;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -20,10 +19,8 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.MalformedJsonException;
 import com.therandomlabs.randomtweaks.util.Compat;
-import net.minecraft.crash.CrashReport;
-import net.minecraft.util.ReportedException;
+import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraftforge.common.config.Config;
-import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -110,10 +107,6 @@ public class RTConfig {
 				"custom names. On 1.10, adds the \"bed is too far away\" message present in " +
 				"later versions of Minecraft.")
 		public boolean sleepTweaks = true;
-
-		@Config.RequiresMcRestart
-		@Config.Comment("Do not change or reset this value unless necessary.")
-		public int configVersion = -1;
 	}
 
 	public static class World {
@@ -208,8 +201,7 @@ public class RTConfig {
 
 				worlds.putAll(new Gson().fromJson(readFile(path), Map.class));
 			} catch(IOException ex) {
-				throw new ReportedException(
-						new CrashReport("Failed to read time of day overlay worlds", ex));
+				Utils.crashReport("Failed to read time of day overlay worlds", ex);
 			}
 		}
 
@@ -218,8 +210,7 @@ public class RTConfig {
 				Files.write(getJson("timeofdayoverlayworlds"),
 						Arrays.asList(new Gson().toJson(worlds)));
 			} catch(IOException ex) {
-				throw new ReportedException(
-						new CrashReport("Failed to save time of day overlay worlds", ex));
+				Utils.crashReport("Failed to save time of day overlay worlds", ex);
 			}
 		}
 	}
@@ -241,9 +232,6 @@ public class RTConfig {
 	@Config.Comment("Time of day overlay")
 	public static TimeOfDay timeofday = new TimeOfDay();
 
-	private static final Method LOAD = Compat.IS_ONE_POINT_TEN ?
-			Compat.findMethod(ConfigManager.class, "load", "load",
-					String.class, Config.Type.class) : null;
 	private static final List<String> LOG_FILTER_KEYS = Arrays.asList(
 			"disableLogging",
 			"levelFilter",
@@ -344,7 +332,7 @@ public class RTConfig {
 
 			disableLogging = object.get("disableLogging").getAsBoolean();
 		} catch(IOException ex) {
-			throw new ReportedException(new CrashReport("Failed to read log filters", ex));
+			Utils.crashReport("Failed to read log filters", ex);
 		}
 	}
 
@@ -457,7 +445,10 @@ public class RTConfig {
 
 	public static Path getConfig(String name) throws IOException {
 		final Path path = Paths.get("config", RandomTweaks.MODID, name);
-		Files.createDirectories(path.getParent());
+		final Path parent = path.getParent();
+		if(parent != null) {
+			Files.createDirectories(parent);
+		}
 		return path;
 	}
 
@@ -489,33 +480,20 @@ public class RTConfig {
 	}
 
 	public static void reloadConfig() {
-		if(Compat.IS_ONE_POINT_TEN) {
-			try {
-				LOAD.invoke(null, RandomTweaks.MODID, Config.Type.INSTANCE);
-			} catch(Exception ex) {
-				throw new ReportedException(new CrashReport("Failed to reload config", ex));
-			}
-		} else {
-			ConfigManager.sync(RandomTweaks.MODID, Config.Type.INSTANCE);
-		}
-
+		Compat.syncConfig(RandomTweaks.MODID, Config.Type.INSTANCE);
 		loadLogFilters();
 		TimeOfDay.loadWorlds();
 	}
 
 	static void preInit() {
-		if(general.configVersion < 10) {
-			try {
-				Files.deleteIfExists(getConfig("randomtweaks.cfg"));
-				Files.deleteIfExists(getConfig("../randomtweaks.cfg"));
-				Files.deleteIfExists(getConfig("dontresetconfig.txt"));
-			} catch(IOException ex) {
-				throw new ReportedException(new CrashReport("Failed to reset config", ex));
-			}
-
-			general.configVersion = 10;
-			reloadConfig();
+		try {
+			Files.deleteIfExists(getConfig("../randomtweaks.cfg"));
+			Files.deleteIfExists(getConfig("dontresetconfig.txt"));
+		} catch(IOException ex) {
+			Utils.crashReport("Failed to delete old RandomTweaks files", ex);
 		}
+
+		reloadConfig();
 	}
 
 	private static void err(String message, Object... args) {

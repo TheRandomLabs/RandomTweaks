@@ -23,14 +23,13 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class CapeHandler {
 	public static final Method GET_PLAYER_INFO = Compat.findMethod(
 			AbstractClientPlayer.class, "getPlayerInfo", "func_175155_b");
-	public static final Field PLAYER_TEXTURES = ReflectionHelper.findField(NetworkPlayerInfo.class,
+	public static final Field PLAYER_TEXTURES = Compat.findField(NetworkPlayerInfo.class,
 					"playerTextures", "field_187107_a");
 	public static final String CONTRIBUTORS_URL =
 			"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/misc/contributors.txt";
@@ -127,7 +126,9 @@ public final class CapeHandler {
 				connection.setConnectTimeout(1000);
 				players = IOUtils.readLines(connection.getInputStream(), StandardCharsets.UTF_8);
 				connection.disconnect();
-			} catch(Exception ex) {}
+			} catch(Exception ex) {
+				RandomTweaks.LOGGER.error("Could not download cape player list", ex);
+			}
 		}).start();
 	}
 }

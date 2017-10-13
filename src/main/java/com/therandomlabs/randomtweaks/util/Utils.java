@@ -2,10 +2,12 @@ package com.therandomlabs.randomtweaks.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.util.ReportedException;
 import net.minecraft.util.text.TextComponentTranslation;
 
 public final class Utils {
@@ -28,5 +30,9 @@ public final class Utils {
 
 	public static boolean isDeobfuscated() {
 		return (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+	}
+
+	public static void crashReport(String message, Throwable throwable) {
+		throw new ReportedException(new CrashReport(message, throwable));
 	}
 }

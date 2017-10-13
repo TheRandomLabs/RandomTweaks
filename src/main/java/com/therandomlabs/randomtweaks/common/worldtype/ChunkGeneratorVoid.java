@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import com.therandomlabs.randomtweaks.common.RTConfig;
+import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.ResourceLocation;
@@ -12,13 +13,12 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
-public class ChunkProviderVoid implements IChunkGenerator {
+public class ChunkGeneratorVoid implements Compat.ICompatChunkGenerator {
 	private final World world;
 
-	public ChunkProviderVoid(World world) {
+	public ChunkGeneratorVoid(World world) {
 		this.world = world;
 	}
 
@@ -62,4 +62,9 @@ public class ChunkProviderVoid implements IChunkGenerator {
 
 	@Override
 	public void recreateStructures(Chunk chunk, int x, int z) {}
+
+	@Override
+	public boolean isInsideStructure(World world, String structureName, BlockPos pos) {
+		return false;
+	}
 }
