@@ -94,7 +94,6 @@ public final class Compat {
 
 	public static Method findMethod(Class<?> clazz, String methodName, String obfuscatedName,
 			Class<?>... parameterTypes) {
-		/* TAKEN FROM ReflectionUtils */
 		final String nameToFind;
 		if(obfuscatedName == null || Utils.isDeobfuscated()) {
 			nameToFind = methodName;
