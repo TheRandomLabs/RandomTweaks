@@ -24,7 +24,7 @@ compileJava {
 minecraft {
 	version = "1.12.2-latest"
 	runDir = "run"
-	mappings = "snapshot_20171011"
+	mappings = "snapshot_20171016"
 
 	replace "@VERSION@", project.version
 }
