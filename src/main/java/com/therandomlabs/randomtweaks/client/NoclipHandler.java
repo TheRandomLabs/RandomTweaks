@@ -2,8 +2,8 @@ package com.therandomlabs.randomtweaks.client;
 
 import org.lwjgl.input.Keyboard;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
-import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -12,19 +12,20 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
-public final class ClearChatHandler {
-	public static final KeyBinding CLEAR_CHAT =
-			new KeyBinding("key.clearChat", Keyboard.KEY_I, "key.categories.randomtweaks");
+public final class NoclipHandler {
+	public static final KeyBinding NOCLIP =
+			new KeyBinding("key.noclip", Keyboard.KEY_F4, "key.categories.randomtweaks");
 
 	@SubscribeEvent
 	public static void onKeyInput(KeyInputEvent event) {
-		if(Keyboard.getEventKeyState() && CLEAR_CHAT.isActiveAndMatches(Keyboard.getEventKey()) &&
-				Minecraft.getMinecraft().ingameGUI != null) {
-			Compat.clearChatMessages(Minecraft.getMinecraft().ingameGUI.getChatGUI());
+		if(Keyboard.getEventKeyState() && NOCLIP.isActiveAndMatches(Keyboard.getEventKey())) {
+			final EntityPlayerSP player = Minecraft.getMinecraft().player;
+			final String gamemode = player.isCreative() ? "sp" : "c";
+			player.sendChatMessage("/gamemode " + gamemode);
 		}
 	}
 
 	public static void registerKeyBinding() {
-		ClientRegistry.registerKeyBinding(CLEAR_CHAT);
+		ClientRegistry.registerKeyBinding(NOCLIP);
 	}
 }

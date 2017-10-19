@@ -24,7 +24,8 @@ public class CommandRtreloadClient extends CommandBase {
 			throws CommandException {
 		try {
 			RTConfig.reloadConfig();
-			sender.sendMessage(new TextComponentString(Utils.localize("commands.rtreload.success")));
+			sender.sendMessage(
+					new TextComponentString(Utils.localize("commands.rtreload.success")));
 		} catch(Exception ex) {
 			ex.printStackTrace();
 			throw new CommandException(Utils.localize("commands.rtreload.failure",
