@@ -7,6 +7,7 @@ import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
@@ -131,8 +132,12 @@ public class TimeOfDayHandler {
 			return RTConfig.TimeOfDay.worlds.get(name);
 		}
 
-		final String ip = Minecraft.getMinecraft().getCurrentServerData().serverIP;
+		final ServerData serverData = Minecraft.getMinecraft().getCurrentServerData();
+		if(serverData == null) {
+			return false;
+		}
 
+		final String ip = serverData.serverIP;
 		if(ip == null) {
 			return false;
 		}

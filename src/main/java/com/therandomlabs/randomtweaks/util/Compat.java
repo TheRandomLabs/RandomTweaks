@@ -3,9 +3,12 @@ package com.therandomlabs.randomtweaks.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import net.minecraft.client.gui.GuiNewChat;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.gen.ChunkGeneratorOverworld;
@@ -19,6 +22,9 @@ public final class Compat {
 	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12,1.13)";
 	public static final boolean IS_ONE_POINT_TEN = false;
 	public static final String CHICKEN_ENTITY_NAME = "chicken";
+
+	private static final Method SPAWN_SHOULDER_ENTITIES =
+			findMethod(EntityPlayer.class, "spawnShoulderEntities", "func_192030_dh");
 
 	public static interface ICompatChunkGenerator extends IChunkGenerator {}
 
@@ -92,6 +98,28 @@ public final class Compat {
 
 	public static void clearChatMessages(GuiNewChat chat) {
 		chat.clearChatMessages(false);
+	}
+
+	public static void spawnShoulderEntities(EntityPlayer player) {
+		try {
+			SPAWN_SHOULDER_ENTITIES.invoke(player);
+		} catch(Exception ex) {
+			Utils.crashReport("Could not spawn shoulder entities", ex);
+		}
+	}
+
+	public static boolean isMobInRange(EntityPlayer player, World world, BlockPos position) {
+		return !world.getEntitiesWithinAABB(EntityMob.class,
+				new AxisAlignedBB(
+						position.getX(),
+						position.getY(),
+						position.getZ(),
+						position.getX(),
+						position.getY(),
+						position.getZ()
+				).expand(8.0, 5.0, 8.0),
+				mob -> mob.isPreventingPlayerRest(player) && !mob.hasCustomName()).
+		isEmpty();
 	}
 
 	public static String buildString(String[] args, int startIndex) {

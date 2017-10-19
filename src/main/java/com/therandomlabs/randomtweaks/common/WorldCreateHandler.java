@@ -85,6 +85,7 @@ public final class WorldCreateHandler {
 		final BlockPos newSpawn = new BlockPos(spawn.getX(),
 				RTConfig.world.voidWorldYSpawn, spawn.getZ());
 
+		world.setBlockState(newSpawn.down(1), block.getDefaultState());
 		world.setSpawnPoint(newSpawn);
 	}
 
