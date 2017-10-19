@@ -1,19 +1,13 @@
 package com.therandomlabs.randomtweaks.common;
 
 import java.lang.reflect.Field;
-import java.util.List;
-import java.util.UUID;
 import com.therandomlabs.randomtweaks.util.Compat;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.util.EnumFacing;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
@@ -24,8 +18,6 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class SleepHandler {
-	public static final Field ANGER_TARGET_UUID = ReflectionHelper.findField(EntityPigZombie.class,
-			"angerTargetUUID", "field_175459_bn");
 	public static final Field SLEEPING = ReflectionHelper.findField(EntityPlayer.class,
 			"sleeping", "field_71083_bS");
 	public static final Field SLEEP_TIMER = ReflectionHelper.findField(EntityPlayer.class,
@@ -77,16 +69,13 @@ public final class SleepHandler {
 				return;
 			}
 
-			for(EntityMob mob : getMobsInRange(world, location)) {
-				if(mob.hasCustomName() || !isPigZombieAngryAt(mob, player)) {
-					continue;
-				}
-
+			if(Compat.isMobInRange(player, world, location)) {
 				event.setResult(SleepResult.NOT_SAFE);
 				return;
 			}
 		}
 
+		Compat.spawnShoulderEntities(player);
 		if(player.isRiding()) {
 			player.dismountRidingEntity();
 		}
@@ -141,24 +130,6 @@ public final class SleepHandler {
 		return Math.abs(player.posX - position.getX()) <= 3.0 &&
 				Math.abs(player.posY - position.getY()) <= 2.0 &&
 				Math.abs(player.posZ - position.getZ()) <= 3.0;
-	}
-
-	public static List<EntityMob> getMobsInRange(World world, BlockPos position) {
-		return world.getEntitiesWithinAABB(EntityMob.class, new AxisAlignedBB(
-				position.getX(),
-				position.getY(),
-				position.getZ(),
-				position.getX(),
-				position.getY(),
-				position.getZ()
-		).expand(8.0, 5.0, 8.0));
-	}
-
-	//Returns true if pigman is not instanceof EntityPigZombie
-	public static boolean isPigZombieAngryAt(EntityLivingBase pigman, EntityPlayer player)
-			throws IllegalArgumentException, IllegalAccessException {
-		return pigman instanceof EntityPigZombie ?
-				(UUID) ANGER_TARGET_UUID.get(pigman) == player.getUniqueID() : true;
 	}
 
 	public static void setRenderOffsetForSleep(EntityPlayer player, EnumFacing facing) {

@@ -3,9 +3,13 @@ package com.therandomlabs.randomtweaks.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import net.minecraft.client.gui.GuiNewChat;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityMob;
+import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
@@ -134,6 +138,26 @@ public final class Compat {
 		} else {
 			chat.clearChatMessages(false);
 		}
+	}
+
+	public static void spawnShoulderEntities(EntityPlayer player) {}
+
+	public static boolean isMobInRange(EntityPlayer player, World world, BlockPos position) {
+		return !world.getEntitiesWithinAABB(EntityMob.class,
+				new AxisAlignedBB(
+						position.getX(),
+						position.getY(),
+						position.getZ(),
+						position.getX(),
+						position.getY(),
+						position.getZ()
+				).expand(8.0, 5.0, 8.0),
+				mob -> isZombiePigmanAngry(mob) && !mob.hasCustomName()).
+		isEmpty();
+	}
+
+	private static boolean isZombiePigmanAngry(Entity pigman) {
+		return pigman instanceof EntityPigZombie ? ((EntityPigZombie) pigman).isAngry() : true;
 	}
 
 	public static String buildString(String[] args, int startIndex) {
