@@ -1,6 +1,6 @@
 package com.therandomlabs.randomtweaks.common;
 
-public class RTConstants {
+public class RTConfigConstants {
 	public static class Hunger {
 		public static final int RESET_ON_RESPAWN = 0;
 		public static final int DONT_RESET_ON_RESPAWN = 1;

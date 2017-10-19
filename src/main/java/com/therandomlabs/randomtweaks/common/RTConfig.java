@@ -39,6 +39,11 @@ public class RTConfig {
 		public boolean clearChatKeybind = true;
 
 		@Config.RequiresMcRestart
+		@Config.Comment("Enables the Noclip keybind, which toggles between /gamemode c " +
+				"and /gamemode sp.")
+		public boolean noclipKeybind = true;
+
+		@Config.RequiresMcRestart
 		@Config.Comment("Moves the Bucket to the Tools creative tab.")
 		public boolean moveBucketCreativeTab = true;
 

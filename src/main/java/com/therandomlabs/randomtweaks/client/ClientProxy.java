@@ -53,6 +53,10 @@ public final class ClientProxy extends CommonProxy {
 			ClearChatHandler.registerKeyBinding();
 		}
 
+		if(RTConfig.client.noclipKeybind) {
+			NoclipHandler.registerKeyBinding();
+		}
+
 		if(RTConfig.timeofday.enableKeybind) {
 			TimeOfDayHandler.registerKeyBinding();
 		}
