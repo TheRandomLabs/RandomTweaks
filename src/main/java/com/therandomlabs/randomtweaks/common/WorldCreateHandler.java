@@ -1,11 +1,10 @@
 package com.therandomlabs.randomtweaks.common;
 
-import java.io.File;
 import java.util.Map;
 import java.util.Map.Entry;
 import com.therandomlabs.randomtweaks.common.worldtype.WorldTypeVoid;
-import com.therandomlabs.randomtweaks.common.worldtype.WorldTypeVoidIslands;
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.ResourceLocation;
@@ -26,16 +25,7 @@ public final class WorldCreateHandler {
 	public static void onCreateSpawn(WorldEvent.CreateSpawnPosition event) throws Exception {
 		final World world = event.getWorld();
 		if(!world.isRemote && world.provider.getDimensionType() == DimensionType.OVERWORLD) {
-			onWorldCreate(world);
-		}
-	}
-
-	@SubscribeEvent
-	public static void onWorldLoad(WorldEvent.Load event) throws Exception {
-		final World world = event.getWorld();
-		if(!world.isRemote && world.provider.getDimensionType() == DimensionType.OVERWORLD &&
-				world.getWorldType() instanceof WorldTypeVoidIslands) {
-			onVoidIslandsWorldLoad(world);
+			initializeWorld(event, world);
 		}
 	}
 
@@ -44,19 +34,51 @@ public final class WorldCreateHandler {
 		final EntityPlayer player = event.getEntityPlayer();
 		final World world = player.getEntityWorld();
 
-		if(!new File(event.getPlayerDirectory(), event.getPlayerUUID() + ".dat").exists()) {
-			if(world.getWorldType() instanceof WorldTypeVoid ||
-					world.getWorldType() instanceof WorldTypeVoidIslands) {
-				final BlockPos spawn = world.getSpawnPoint();
-				player.setPosition(spawn.getX() + 0.5, spawn.getY(), spawn.getZ() + 0.5);
-				player.setSpawnPoint(spawn, true);
+		if(!(world.getWorldType() instanceof WorldTypeVoid)) {
+			return;
+		}
+
+		BlockPos spawnPoint = player.getBedLocation(0);
+		boolean setWorldSpawn = false;
+		if(spawnPoint == null) {
+			spawnPoint = world.getSpawnPoint();
+			setWorldSpawn = true;
+		}
+
+		final BlockPos topBlock = world.getTopSolidOrLiquidBlock(spawnPoint);
+		IBlockState state = world.getBlockState(topBlock);
+		if(!state.getMaterial().blocksMovement() || state.getBlock().isFoliage(world, topBlock)) {
+			final BlockPos newSpawn = new BlockPos(0.5, RTConfig.world.voidWorldYSpawn, 0.5);
+
+			player.setPosition(0.5, RTConfig.world.voidWorldYSpawn, 0.5);
+			player.setSpawnPoint(newSpawn, true);
+
+			if(setWorldSpawn) {
+				world.setSpawnPoint(newSpawn);
+			}
+
+			final BlockPos spawnBlock = newSpawn.down();
+			final IBlockState spawnBlockState = world.getBlockState(spawnBlock);
+
+			if(!spawnBlockState.getMaterial().blocksMovement() ||
+					spawnBlockState.getBlock().isFoliage(world, spawnBlock)) {
+				Block block = GameRegistry.findRegistry(Block.class).getValue(
+						new ResourceLocation(RTConfig.world.voidWorldBlock));
+				if(block == null) {
+					block = Blocks.GLASS;
+				}
+
+				world.setBlockState(new BlockPos(0, RTConfig.world.voidWorldYSpawn - 1, 0),
+						block.getDefaultState());
 			}
 		}
 	}
 
-	private static void onWorldCreate(World world) throws Exception {
+	private static void initializeWorld(WorldEvent.CreateSpawnPosition event,
+			World world) throws Exception {
 		if(world.getWorldType() instanceof WorldTypeVoid) {
-			onVoidWorldCreate(world);
+			world.setSpawnPoint(new BlockPos(0.5, RTConfig.world.voidWorldYSpawn, 0.5));
+			event.setCanceled(true);
 		}
 
 		final GameRules gamerules = world.getGameRules();
@@ -72,44 +94,5 @@ public final class WorldCreateHandler {
 		for(Entry<String, String> entry : defaultGamerules.entrySet()) {
 			gamerules.setOrCreateGameRule(entry.getKey(), entry.getValue());
 		}
-	}
-
-	private static void onVoidWorldCreate(World world) {
-		Block block = GameRegistry.findRegistry(Block.class).getValue(
-				new ResourceLocation(RTConfig.world.voidWorldBlock));
-		if(block == null) {
-			block = Blocks.GLASS;
-		}
-
-		final BlockPos spawn = world.getSpawnPoint();
-		final BlockPos newSpawn = new BlockPos(spawn.getX(),
-				RTConfig.world.voidWorldYSpawn, spawn.getZ());
-
-		world.setBlockState(newSpawn.down(1), block.getDefaultState());
-		world.setSpawnPoint(newSpawn);
-	}
-
-	private static void onVoidIslandsWorldLoad(World world) {
-		BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(0, 0, 0));
-
-		if(world.isAirBlock(pos)) {
-			for(int x = 1; x <= 16; x++) {
-				boolean found = false;
-
-				for(int z = 1; z <= 16; z++) {
-					pos = world.getTopSolidOrLiquidBlock(new BlockPos(x, 0, z));
-					if(world.isAirBlock(pos)) {
-						found = true;
-						break;
-					}
-				}
-
-				if(found) {
-					break;
-				}
-			}
-		}
-
-		world.setSpawnPoint(pos.add(0, 1, 0));
 	}
 }

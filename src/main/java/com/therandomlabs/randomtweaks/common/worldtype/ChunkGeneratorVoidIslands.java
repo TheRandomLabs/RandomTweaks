@@ -5,9 +5,11 @@ import java.util.Random;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.init.Biomes;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class ChunkGeneratorVoidIslands extends Compat.ChunkGeneratorCompatOverworld {
 	private final World world;
@@ -28,8 +30,14 @@ public class ChunkGeneratorVoidIslands extends Compat.ChunkGeneratorCompatOverwo
 
 		final Chunk chunk = new Chunk(world, x, z);
 
+		Biome biome = GameRegistry.findRegistry(Biome.class).getValue(
+				new ResourceLocation(RTConfig.world.voidIslandsWorldBiome));
+		if(biome == null) {
+			biome = Biomes.PLAINS;
+		}
+
 		final byte[] biomeArray = new byte[256];
-		Arrays.fill(biomeArray, (byte) Biome.getIdForBiome(Biomes.PLAINS));
+		Arrays.fill(biomeArray, (byte) Biome.getIdForBiome(biome));
 		chunk.setBiomeArray(biomeArray);
 
 		return chunk;
