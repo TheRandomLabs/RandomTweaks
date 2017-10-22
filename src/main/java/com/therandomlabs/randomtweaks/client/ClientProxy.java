@@ -5,6 +5,7 @@ import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -71,6 +72,13 @@ public final class ClientProxy extends CommonProxy {
 				ItemMonsterPlacer.applyEntityIdToItemStack(stack,
 						new ResourceLocation("chicken"));
 				return stack;
+			}
+
+			//In 1.10, getTabIconItem returns an Item, not an ItemStack, so we'll just
+			//use the obfuscated name
+			@SideOnly(Side.CLIENT)
+			public Item func_78016_d() {
+				return Items.SPAWN_EGG;
 			}
 		};
 
