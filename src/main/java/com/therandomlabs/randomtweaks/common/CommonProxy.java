@@ -2,7 +2,7 @@ package com.therandomlabs.randomtweaks.common;
 
 import java.util.List;
 import org.apache.logging.log4j.Logger;
-import com.therandomlabs.randomtweaks.common.worldtype.WorldTypeRegistry;
+import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;

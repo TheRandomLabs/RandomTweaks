@@ -1,4 +1,4 @@
-package com.therandomlabs.randomtweaks.common.worldtype;
+package com.therandomlabs.randomtweaks.common.world;
 
 import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.world.World;

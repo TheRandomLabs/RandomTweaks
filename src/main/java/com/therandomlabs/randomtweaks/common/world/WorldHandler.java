@@ -1,8 +1,9 @@
-package com.therandomlabs.randomtweaks.common;
+package com.therandomlabs.randomtweaks.common.world;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import com.therandomlabs.randomtweaks.common.worldtype.WorldTypeVoid;
+import com.therandomlabs.randomtweaks.common.RTConfig;
+import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,7 +21,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
-public final class WorldCreateHandler {
+public final class WorldHandler {
 	@SubscribeEvent
 	public static void onCreateSpawn(WorldEvent.CreateSpawnPosition event) throws Exception {
 		final World world = event.getWorld();
@@ -30,15 +31,24 @@ public final class WorldCreateHandler {
 	}
 
 	@SubscribeEvent
+	public static void onPlayerRespawn(PlayerEvent.Clone event) {
+		onPlayerSpawn(event.getEntityPlayer());
+	}
+
+	@SubscribeEvent
 	public static void onPlayerLoad(PlayerEvent.LoadFromFile event) {
-		final EntityPlayer player = event.getEntityPlayer();
+		onPlayerSpawn(event.getEntityPlayer());
+	}
+
+	private static void onPlayerSpawn(EntityPlayer player) {
 		final World world = player.getEntityWorld();
 
-		if(!(world.getWorldType() instanceof WorldTypeVoid)) {
+		if(world.provider.getDimensionType() != DimensionType.OVERWORLD ||
+				!(world.getWorldType() instanceof WorldTypeVoid)) {
 			return;
 		}
 
-		BlockPos spawnPoint = player.getBedLocation(0);
+		BlockPos spawnPoint = player.getBedLocation(DimensionType.OVERWORLD.getId());
 		boolean setWorldSpawn = false;
 		if(spawnPoint == null) {
 			spawnPoint = world.getSpawnPoint();

@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
@@ -23,6 +24,7 @@ public final class SleepHandler {
 	public static final Field SLEEP_TIMER = ReflectionHelper.findField(EntityPlayer.class,
 			"sleepTimer", "field_71076_b");
 
+	@SubscribeEvent
 	public static void onSleep(PlayerSleepInBedEvent event) throws Exception {
 		if(!RTConfig.general.sleepTweaks || Loader.isModLoaded("comforts")) {
 			return;
