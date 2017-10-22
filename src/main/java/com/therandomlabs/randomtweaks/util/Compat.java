@@ -33,8 +33,7 @@ public final class Compat {
 					ITextComponent.class);
 	private static final Method LOAD =
 			findMethod(ConfigManager.class, "load", "load", String.class, Config.Type.class);
-	private static final Method CLEAR_CHAT_MESSAGES =
-			findMethod(GuiNewChat.class, "clearChatMessages", "func_146231_a");
+	private static Method CLEAR_CHAT_MESSAGES;
 
 	public static interface ICompatChunkGenerator extends IChunkGenerator {
 		boolean isInsideStructure(World world, String structureName, BlockPos pos);
@@ -131,6 +130,10 @@ public final class Compat {
 	public static void clearChatMessages(GuiNewChat chat) {
 		if(IS_ONE_POINT_TEN) {
 			try {
+				if(CLEAR_CHAT_MESSAGES == null) {
+					CLEAR_CHAT_MESSAGES =
+							findMethod(GuiNewChat.class, "clearChatMessages", "func_146231_a");
+				}
 				CLEAR_CHAT_MESSAGES.invoke(chat);
 			} catch(Exception ex) {
 				Utils.crashReport("Could not clear chat mesages", ex);
