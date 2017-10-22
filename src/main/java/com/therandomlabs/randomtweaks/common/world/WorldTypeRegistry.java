@@ -1,4 +1,4 @@
-package com.therandomlabs.randomtweaks.common.worldtype;
+package com.therandomlabs.randomtweaks.common.world;
 
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import net.minecraftforge.fml.common.Loader;

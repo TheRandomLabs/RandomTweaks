@@ -115,10 +115,6 @@ public final class CapeHandler {
 	}
 
 	public static void downloadPlayers() {
-		if(Utils.isDeobfuscated()) {
-			return;
-		}
-
 		new Thread(() -> {
 			try {
 				final HttpURLConnection connection =

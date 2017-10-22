@@ -12,6 +12,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -25,7 +26,7 @@ public final class SleepHandler {
 
 	@SubscribeEvent
 	public static void onSleep(PlayerSleepInBedEvent event) throws Exception {
-		if(!RTConfig.general.sleepTweaks) {
+		if(!RTConfig.general.sleepTweaks || Loader.isModLoaded("comforts")) {
 			return;
 		}
 

@@ -1,4 +1,4 @@
-package com.therandomlabs.randomtweaks.common.worldtype;
+package com.therandomlabs.randomtweaks.common.world;
 
 import java.util.Arrays;
 import java.util.Collections;

@@ -134,12 +134,16 @@ public class RTConfig {
 		@Config.Comment("The block placed in a Void world for players to stand on.")
 		public String voidWorldBlock = "minecraft:glass";
 
-		@Config.Comment("The biome of a Void world.")
+		@Config.Comment("The biome of a Void world. Leave this empty to randomize the biomes.")
 		public String voidWorldBiome = "minecraft:plains";
 
 		@Config.RequiresMcRestart
 		@Config.Comment("Enables the Void Islands world type. Name: voidislands")
 		public boolean voidIslandsWorldType = true;
+
+		@Config.Comment("The biome of the void chunks of a Void Islands world. " +
+				"Leave this empty to randomize the biomes.")
+		public String voidIslandsWorldBiome = "minecraft:plains";
 
 		@Config.RangeInt(min = 2)
 		@Config.Comment("The rarity of non-empty chunks in a Void Islands world. " +
@@ -361,9 +365,9 @@ public class RTConfig {
 				"{",
 				"//\t\"commandBlockOutput\": false, //These are for all game modes",
 				"//\t\"keepInventory\": true,",
-				"//\t\"1:flat,void\": { //Creative flat world. Game modes and world types can " +
-						"be separated with commas (no spaces). These are the same as the world " +
-						"types in server.properties.",
+				"//\t\"1:flat,void\": { //Creative flat/void world. Game modes and world types " +
+						"can be separated with commas (no spaces). These are the same as the " +
+						"world types in server.properties.",
 				"//\t\t\"doDaylightCycle\": false,",
 				"//\t\t\"doWeatherCycle\": false,",
 				"//\t\t\"doMobSpawning\": false",
