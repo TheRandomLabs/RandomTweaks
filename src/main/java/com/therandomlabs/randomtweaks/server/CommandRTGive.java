@@ -46,6 +46,7 @@ public class CommandRTGive extends CommandGive {
 			try {
 				stack.setTagCompound(JsonToNBT.getTagFromJson(tag));
 			} catch(NBTException ex) {
+				ex.printStackTrace();
 				throw new CommandException("commands.give.tagError", ex.getMessage());
 			}
 		}
@@ -62,6 +63,7 @@ public class CommandRTGive extends CommandGive {
 				try {
 					Compat.setStackSize(stack, 1);
 				} catch(Exception ex) {
+					ex.printStackTrace();
 					throw new CommandException(Utils.localize("commands.rtgive.failure",
 							ex.getClass().getName() + ": " + ex.getMessage()));
 				}
@@ -77,6 +79,7 @@ public class CommandRTGive extends CommandGive {
 					sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS,
 							amount - Compat.getStackSize(stack));
 				} catch(Exception ex) {
+					ex.printStackTrace();
 					throw new CommandException(Utils.localize("commands.rtgive.failure",
 							ex.getClass().getName() + ": " + ex.getMessage()));
 				}

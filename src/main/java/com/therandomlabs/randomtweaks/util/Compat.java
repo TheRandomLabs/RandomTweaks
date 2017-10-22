@@ -59,12 +59,12 @@ public final class Compat {
 	public static Field findField(Class<?> clazz, String... fieldNames) {
 		try {
 			for(String fieldName : fieldNames) {
-				final Field field = clazz.getDeclaredField(fieldName);
-				field.setAccessible(true);
-				return field;
+				try {
+					final Field field = clazz.getDeclaredField(fieldName);
+					field.setAccessible(true);
+					return field;
+				} catch(NoSuchFieldException ex) {}
 			}
-		} catch(NoSuchFieldException ex) {
-			return null;
 		} catch(Exception ex) {
 			throw new UnableToFindFieldException(fieldNames, ex);
 		}
