@@ -414,7 +414,7 @@ public class RTConfig {
 		}
 	}
 
-	//Format: comma-separated integer gamemodes (optional),comma-separated world types (optional)
+	//Format: comma-separated integer gamemodes (optional):comma-separated world types (optional)
 	//Examples: 0,1:flat	realistic	2:void,flat
 	public static boolean matchesGamemodeAndWorldType(String string, int gamemode,
 			String worldType) {
