@@ -7,18 +7,24 @@ import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = RandomTweaks.MODID, version = RandomTweaks.VERSION,
 		acceptedMinecraftVersions = RandomTweaks.ACCEPTED_MINECRAFT_VERSIONS,
-		acceptableRemoteVersions = "*", updateJSON =
-		"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/misc/versions.json")
+		acceptableRemoteVersions = RandomTweaks.ACCEPTABLE_REMOTE_VEERSIONS,
+		updateJSON = RandomTweaks.UPDATE_JSON,
+		certificateFingerprint = RandomTweaks.CERTIFICATE_FINGERPRINT)
 public final class RandomTweaks {
 	public static final String MODID = "randomtweaks";
 	public static final String VERSION = "@VERSION@";
 	public static final String ACCEPTED_MINECRAFT_VERSIONS = Compat.ACCEPTED_MINECRAFT_VERSIONS;
+	public static final String ACCEPTABLE_REMOTE_VEERSIONS = "*";
+	public static final String UPDATE_JSON =
+			"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/misc/versions.json";
+	public static final String CERTIFICATE_FINGERPRINT = "@FINGERPRINT@";
 
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
@@ -39,5 +45,11 @@ public final class RandomTweaks {
 	@EventHandler
 	public static void serverStarting(FMLServerStartingEvent event) {
 		CommandRegistry.register(event);
+	}
+	
+	@EventHandler
+	public void onFingerprintViolation(FMLFingerprintViolationEvent event) {
+		LOGGER.warn("Invalid fingerprint detected! The file %s may have been tampered with.",
+				event.getSource().getName());
 	}
 }
