@@ -12,7 +12,7 @@ buildscript {
 
 apply plugin: "net.minecraftforge.gradle.forge"
 
-version = "1.12.2-1.12.0.0"
+version = "1.12.2-1.13.0.0"
 group = "com.therandomlabs.randomtweaks"
 archivesBaseName = "randomtweaks"
 
@@ -24,9 +24,10 @@ compileJava {
 minecraft {
 	version = "1.12.2-latest"
 	runDir = "run"
-	mappings = "snapshot_20171021"
+	mappings = "snapshot_20171124"
 
 	replace "@VERSION@", project.version
+	replace "@FINGERPRINT@", project.findProperty("signSHA1")
 }
 
 processResources {
@@ -46,3 +47,18 @@ jar {
 		attributes "FMLAT": "randomtweaks_at.cfg"
 	}
 }
+
+task signJar(type: SignJar, dependsOn: reobfJar) {
+	onlyIf {
+		project.hasProperty("keyStore")
+	}
+
+	keyStore = project.findProperty("keyStore")
+	alias = project.findProperty("keyStoreAlias")
+	storePass = project.findProperty("keyStorePass")
+	keyPass = project.findProperty("keyStoreKeyPass")
+	inputFile = jar.archivePath
+	outputFile = jar.archivePath
+}
+
+build.dependsOn signJar
