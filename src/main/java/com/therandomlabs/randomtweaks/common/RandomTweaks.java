@@ -46,9 +46,9 @@ public final class RandomTweaks {
 	public static void serverStarting(FMLServerStartingEvent event) {
 		CommandRegistry.register(event);
 	}
-	
+
 	@EventHandler
-	public void onFingerprintViolation(FMLFingerprintViolationEvent event) {
+	public static void onFingerprintViolation(FMLFingerprintViolationEvent event) {
 		LOGGER.warn("Invalid fingerprint detected! The file %s may have been tampered with.",
 				event.getSource().getName());
 	}
