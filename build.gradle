@@ -24,7 +24,7 @@ compileJava {
 minecraft {
 	version = "1.12.2-latest"
 	runDir = "run"
-	mappings = "snapshot_20171124"
+	mappings = "snapshot_20171125"
 
 	replace "@VERSION@", project.version
 	replace "@FINGERPRINT@", project.findProperty("signSHA1")

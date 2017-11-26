@@ -52,6 +52,8 @@ public final class HungerHandler {
 
 	public static boolean dontResetHungerOnRespawn(EntityPlayer player) {
 		switch(RTConfig.hunger.respawnBehavior) {
+		case RTConfigConstants.Hunger.RESET_ON_RESPAWN:
+			return false;
 		case RTConfigConstants.Hunger.DONT_RESET_ON_RESPAWN:
 			return true;
 		case RTConfigConstants.Hunger.RESET_UNLESS_KEEPINVENTORY:
