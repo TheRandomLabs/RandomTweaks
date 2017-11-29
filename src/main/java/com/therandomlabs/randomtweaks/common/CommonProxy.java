@@ -3,6 +3,7 @@ package com.therandomlabs.randomtweaks.common;
 import java.util.List;
 import org.apache.logging.log4j.Logger;
 import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
+import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -13,6 +14,12 @@ public class CommonProxy {
 
 	public void preInit(FMLPreInitializationEvent event) throws Exception {
 		RTConfig.preInit();
+
+		if(Utils.isDeobfuscated()) {
+			RTConfig.timeofday.enabledByDefault = true;
+			RTConfig.general.attackSpeed = 24.0;
+			RTConfig.reloadConfig();
+		}
 
 		if(RTConfig.general.moreRomanNumerals) {
 			try {

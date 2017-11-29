@@ -108,10 +108,15 @@ public class RTConfig {
 		@Config.Comment("Ocelots can be healed with fish.")
 		public boolean ocelotsCanBeHealed = true;
 
-		@Config.Comment("Players can sleep around non-aggressive zombie pigmen and mobs with " +
-				"custom names. On 1.10, adds the \"bed is too far away\" message present in " +
-				"later versions of Minecraft.")
+		@Config.Comment("Players can sleep around non-aggressive zombie pigmen " +
+				"(this is a default feature in 1.12) and mobs with custom names. On 1.10, " +
+				"adds the \"bed is too far away\" message present in later versions of Minecraft.")
 		public boolean sleepTweaks = true;
+
+		@Config.RangeDouble(min = 0.0, max = 1024.0)
+		@Config.Comment("Sets the base attack speed for players. Set this to 16.0 or higher " +
+				"to remove the attack cooldown. 4.0 is the default value.")
+		public double attackSpeed = 4.0;
 	}
 
 	public static class World {

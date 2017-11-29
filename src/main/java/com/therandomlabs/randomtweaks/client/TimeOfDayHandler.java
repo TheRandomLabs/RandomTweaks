@@ -25,11 +25,13 @@ import net.minecraftforge.fml.relauncher.Side;
 public class TimeOfDayHandler {
 	public static final KeyBinding TOGGLE_TIME_OF_DAY_OVERLAY = new KeyBinding(
 			"key.toggleTimeOfDayOverlay", Keyboard.KEY_BACKSLASH, "key.categories.randomtweaks");
+
+	private static final Minecraft client = Minecraft.getMinecraft();
 	private static boolean shouldDraw;
 
 	@SubscribeEvent
 	public static void onClientTick(TickEvent.ClientTickEvent event) {
-		shouldDraw = true;
+		shouldDraw = !client.gameSettings.showDebugInfo;
 	}
 
 	@SubscribeEvent
