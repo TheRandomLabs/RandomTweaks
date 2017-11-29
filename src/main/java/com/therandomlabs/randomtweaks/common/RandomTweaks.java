@@ -48,7 +48,7 @@ public final class RandomTweaks {
 
 	@EventHandler
 	public static void onFingerprintViolation(FMLFingerprintViolationEvent event) {
-		LOGGER.warn("Invalid fingerprint detected! The file %s may have been tampered with.",
-				event.getSource().getName());
+		LOGGER.warn("Invalid fingerprint detected! " +
+				"The following file may have been tampered with: %s", event.getSource().getName());
 	}
 }
