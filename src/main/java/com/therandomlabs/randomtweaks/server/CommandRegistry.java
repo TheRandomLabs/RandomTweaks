@@ -1,6 +1,7 @@
 package com.therandomlabs.randomtweaks.server;
 
 import com.therandomlabs.randomtweaks.common.RTConfig;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 public final class CommandRegistry {
@@ -17,8 +18,18 @@ public final class CommandRegistry {
 			event.registerServerCommand(new CommandRTGive());
 		}
 
+		if(RTConfig.commands.helpTweaks) {
+			event.registerServerCommand(new CommandRTHelp());
+		}
+
 		if(RTConfig.commands.rtreload) {
 			event.registerServerCommand(new CommandRtreload());
+		}
+	}
+
+	public static void serverStarted(FMLServerStartedEvent event) {
+		if(RTConfig.commands.helpTweaks) {
+			CommandRTHelp.serverStarted(event);
 		}
 	}
 }

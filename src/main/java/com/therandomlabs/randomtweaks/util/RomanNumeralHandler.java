@@ -3,7 +3,6 @@ package com.therandomlabs.randomtweaks.util;
 import java.util.HashMap;
 import java.util.Map;
 
-//Taken and adapted from https://github.com/TheRandomLabs/Roman-Numeral-Generator
 public final class RomanNumeralHandler {
 	private static final String[] ROMAN_NUMERALS = {
 			"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"
