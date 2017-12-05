@@ -70,6 +70,11 @@ public class RTConfig {
 		public boolean giveTweaks = true;
 
 		@Config.RequiresWorldRestart
+		@Config.Comment("Changes the /help command to make sure that sorting commands " +
+				"doesn't cause an error.")
+		public boolean helpTweaks = true;
+
+		@Config.RequiresWorldRestart
 		@Config.Comment("Enables the /rtreload command, which reloads this configuration.")
 		public boolean rtreload = true;
 

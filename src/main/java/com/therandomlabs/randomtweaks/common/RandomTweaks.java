@@ -10,6 +10,7 @@ import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLFingerprintViolationEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
 @Mod(modid = RandomTweaks.MODID, version = RandomTweaks.VERSION,
@@ -44,6 +45,11 @@ public final class RandomTweaks {
 	@EventHandler
 	public static void serverStarting(FMLServerStartingEvent event) {
 		CommandRegistry.register(event);
+	}
+
+	@EventHandler
+	public static void serverStarted(FMLServerStartedEvent event) {
+		CommandRegistry.serverStarted(event);
 	}
 
 	@EventHandler
