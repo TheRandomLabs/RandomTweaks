@@ -1,5 +1,7 @@
-package com.therandomlabs.randomtweaks.common;
+package com.therandomlabs.randomtweaks.client;
 
+import com.therandomlabs.randomtweaks.common.RTConfig;
+import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
