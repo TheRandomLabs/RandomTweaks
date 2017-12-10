@@ -1,7 +1,6 @@
 package com.therandomlabs.randomtweaks.client;
 
 import java.io.File;
-import java.util.Locale;
 import org.lwjgl.input.Keyboard;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
@@ -19,84 +18,87 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-//Some of the code in this class has been taken and adapted from here:
+//Some code has been taken and adapted from here:
 //https://github.com/Lunatrius/InGame-Info-XML
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public class TimeOfDayHandler {
 	public static final KeyBinding TOGGLE_TIME_OF_DAY_OVERLAY = new KeyBinding(
 			"key.toggleTimeOfDayOverlay", Keyboard.KEY_BACKSLASH, "key.categories.randomtweaks");
 
-	private static final Minecraft client = Minecraft.getMinecraft();
+	private static final Minecraft mc = Minecraft.getMinecraft();
 	private static boolean shouldDraw;
 
 	@SubscribeEvent
 	public static void onClientTick(TickEvent.ClientTickEvent event) {
-		shouldDraw = !client.gameSettings.showDebugInfo && !client.gameSettings.hideGUI;
+		shouldDraw = !mc.gameSettings.showDebugInfo && !mc.gameSettings.hideGUI;
 	}
 
 	@SubscribeEvent
 	public static void onRenderTick(TickEvent.RenderTickEvent event) {
-		if(!shouldDraw) {
+		if(!shouldDraw || !shouldDraw() || !isEnabled()) {
 			return;
 		}
 
-		final Minecraft mc = Minecraft.getMinecraft();
+		final World world = mc.player.getEntityWorld();
 
-		if(!shouldDraw(mc.world)) {
-			return;
-		}
+		final long time = world.getWorldTime();
+		long hour = (time / 1000L + 6L) % 24L;
+		final long minute = (time % 1000L) * 60L / 1000L;
+		final long day = time / 24000L + 1L;
 
-		final long time = mc.world.getWorldTime();
-
-		long hour = (time / 1000 + 6) % 24;
+		final String ampm;
 
 		if(RTConfig.timeofday.twentyFourHourTime) {
-			mc.fontRenderer.drawStringWithShadow(String.format(
-					Locale.ENGLISH, "%s %d, %02d:%02d (%s)",
-					Utils.localize("timeOfDayOverlay.day"),
-					time / 24000 + 1, //Day
-					hour, //Hour (minute IRL)
-					(time % 1000) * 60 / 1000, //Minute (second IRL)
-					dayOrNight(mc.world)
-			), 2.0F, 2.0F, 0xFFFFFF);
+			ampm = "";
 		} else {
-			String ampm = Utils.localize("timeOfDayOverlay.am");
-
 			if(hour >= 12) {
 				hour -= 12;
-				ampm = Utils.localize("timeOfDayOverlay.pm");
-			}
+				ampm = " " + Utils.localize("timeOfDayOverlay.pm");
+			} else {
+				//Midnight
+				if(hour == 0) {
+					hour = 12;
+				}
 
-			if(hour == 0) {
-				hour = 12;
+				ampm = " " + Utils.localize("timeOfDayOverlay.pm");
 			}
-
-			mc.fontRenderer.drawStringWithShadow(String.format(
-					Locale.ENGLISH, "%s %d, %02d:%02d %s (%s)",
-					Utils.localize("timeOfDayOverlay.day"),
-					time / 24000 + 1, //Day
-					hour, //Hour (minute IRL)
-					(time % 1000) * 60 / 1000, //Minute (second IRL)
-					ampm,
-					dayOrNight(mc.world)
-			), 2.0F, 2.0F, 0xFFFFFF);
 		}
+
+		final String hourString = hour < 10 ? "0" + hour : Long.toString(hour);
+		final String minuteString = minute < 10 ? "0" + minute : Long.toString(minute);
+
+		final String dayOrNight;
+
+		if(world.calculateSkylightSubtracted(1.0F) < 4) {
+			dayOrNight = Utils.localize("timeOfDayOverlay.dayTime");
+		} else {
+			dayOrNight = Utils.localize("timeOfDayOverlay.nightTime");
+		}
+
+		final String timeString = Utils.localize("timeOfDayOverlay.day") + " " +
+				day + ", " +
+				hourString + ":" + minuteString +
+				ampm +
+				" (" + dayOrNight + ")";
+
+		mc.fontRenderer.drawStringWithShadow(timeString, 2.0F, 2.0F, 0xFFFFFF);
 	}
 
 	@SubscribeEvent
 	public static void onKeyInput(KeyInputEvent event) {
 		if(Keyboard.getEventKeyState() &&
 				TOGGLE_TIME_OF_DAY_OVERLAY.isActiveAndMatches(Keyboard.getEventKey())) {
-			final Minecraft mc = Minecraft.getMinecraft();
-			final World world = mc.world;
+			if(!shouldDraw()) {
+				return;
+			}
 
 			final File saveDirectory = DimensionManager.getCurrentSaveRootDirectory();
 			if(saveDirectory != null) {
-				RTConfig.TimeOfDay.worlds.put(saveDirectory.getName(), !isEnabledForWorld(world));
+				RTConfig.TimeOfDay.worlds.put(saveDirectory.getName(), !isEnabled());
 			} else {
-				RTConfig.TimeOfDay.worlds.put(mc.getCurrentServerData().serverIP,
-						!isEnabledForWorld(world));
+				RTConfig.TimeOfDay.worlds.put(mc.getCurrentServerData().serverIP, !isEnabled());
 			}
+
 			RTConfig.TimeOfDay.saveWorlds();
 		}
 	}
@@ -105,7 +107,13 @@ public class TimeOfDayHandler {
 		ClientRegistry.registerKeyBinding(TOGGLE_TIME_OF_DAY_OVERLAY);
 	}
 
-	public static boolean shouldDraw(World world) {
+	public static boolean shouldDraw() {
+		if(mc.player == null) {
+			return false;
+		}
+
+		final World world = mc.player.getEntityWorld();
+
 		if(world == null) {
 			return false;
 		}
@@ -120,10 +128,10 @@ public class TimeOfDayHandler {
 			return false;
 		}
 
-		return isEnabledForWorld(world);
+		return true;
 	}
 
-	public static boolean isEnabledForWorld(World world) {
+	public static boolean isEnabled() {
 		final File saveDirectory = DimensionManager.getCurrentSaveRootDirectory();
 		if(saveDirectory != null) {
 			final String name = saveDirectory.getName();
@@ -149,12 +157,5 @@ public class TimeOfDayHandler {
 			RTConfig.TimeOfDay.saveWorlds();
 		}
 		return RTConfig.TimeOfDay.worlds.get(ip);
-	}
-
-	public static String dayOrNight(World world) {
-		if(world.calculateSkylightSubtracted(1.0F) < 4) {
-			return Utils.localize("timeOfDayOverlay.dayTime");
-		}
-		return Utils.localize("timeOfDayOverlay.nightTime");
 	}
 }
