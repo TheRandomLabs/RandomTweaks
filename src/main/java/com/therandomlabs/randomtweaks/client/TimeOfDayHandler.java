@@ -31,7 +31,7 @@ public class TimeOfDayHandler {
 
 	@SubscribeEvent
 	public static void onClientTick(TickEvent.ClientTickEvent event) {
-		shouldDraw = !client.gameSettings.showDebugInfo;
+		shouldDraw = !client.gameSettings.showDebugInfo && !client.gameSettings.hideGUI;
 	}
 
 	@SubscribeEvent
@@ -152,7 +152,9 @@ public class TimeOfDayHandler {
 	}
 
 	public static String dayOrNight(World world) {
-		return Utils.localize(String.format("timeOfDayOverlay.%sTime",
-				world.calculateSkylightSubtracted(1.0F) < 4 ? "day" : "night"));
+		if(world.calculateSkylightSubtracted(1.0F) < 4) {
+			return Utils.localize("timeOfDayOverlay.dayTime");
+		}
+		return Utils.localize("timeOfDayOverlay.nightTime");
 	}
 }

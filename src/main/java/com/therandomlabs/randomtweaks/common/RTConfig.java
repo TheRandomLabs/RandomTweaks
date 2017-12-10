@@ -54,6 +54,12 @@ public class RTConfig {
 		@Config.RequiresMcRestart
 		@Config.Comment("Enables Contributor Capes.")
 		public boolean contributorCapes = true;
+
+		@Config.Comment("Disables the Wither spawn sound.")
+		public boolean disableWitherSpawnSound;
+
+		@Config.Comment("Disables the Ender Dragon death sound.")
+		public boolean disableEnderDragonDeathSound;
 	}
 
 	public static class Commands {
