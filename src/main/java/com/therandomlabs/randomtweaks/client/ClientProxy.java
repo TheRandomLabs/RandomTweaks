@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.client;
 
+import com.therandomlabs.randomtweaks.client.command.ClientCommandRegistry;
 import com.therandomlabs.randomtweaks.common.CommonProxy;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.util.Compat;
@@ -9,7 +10,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -32,9 +32,7 @@ public final class ClientProxy extends CommonProxy {
 			CapeHandler.downloadPlayers();
 		}
 
-		if(RTConfig.commands.rtreloadclient) {
-			ClientCommandHandler.instance.registerCommand(new CommandRtreloadClient());
-		}
+		ClientCommandRegistry.register();
 	}
 
 	@Override

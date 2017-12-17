@@ -35,7 +35,7 @@ public class TimeOfDayHandler {
 
 	@SubscribeEvent
 	public static void onRenderTick(TickEvent.RenderTickEvent event) {
-		if(!shouldDraw || !shouldDraw() || !isEnabled()) {
+		if(!shouldDraw() || !isEnabled()) {
 			return;
 		}
 
@@ -108,7 +108,7 @@ public class TimeOfDayHandler {
 	}
 
 	public static boolean shouldDraw() {
-		if(mc.player == null) {
+		if(!RTConfig.timeofday.enabled || !shouldDraw || mc.player == null) {
 			return false;
 		}
 

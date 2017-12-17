@@ -1,4 +1,4 @@
-package com.therandomlabs.randomtweaks.client;
+package com.therandomlabs.randomtweaks.client.command;
 
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.util.Utils;

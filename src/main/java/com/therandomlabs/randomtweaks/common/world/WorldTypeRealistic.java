@@ -46,7 +46,7 @@ public class WorldTypeRealistic extends WorldType {
 
 	@Override
 	public float getCloudHeight() {
-		return 260.0F; //This value is taken from https://raw.githubusercontent.com/Vazkii/Quark
+		return 260.0F;
 	}
 
 	@Override
