@@ -197,6 +197,9 @@ public class RTConfig {
 	}
 
 	public static class TimeOfDay {
+		@Config.Comment("Enables the time of day overlay.")
+		public boolean enabled = true;
+
 		@Config.RequiresMcRestart
 		@Config.Comment("Enables the time of day overlay keybind.")
 		public boolean enableKeybind = true;
