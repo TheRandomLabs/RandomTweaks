@@ -6,6 +6,7 @@ import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.world.GameType;
@@ -52,7 +53,9 @@ public class TimeOfDayHandler {
 			ampm = "";
 		} else {
 			if(hour >= 12) {
-				hour -= 12;
+				if(hour != 12) {
+					hour -= 12;
+				}
 				ampm = " " + Utils.localize("timeOfDayOverlay.pm");
 			} else {
 				//Midnight
@@ -60,7 +63,7 @@ public class TimeOfDayHandler {
 					hour = 12;
 				}
 
-				ampm = " " + Utils.localize("timeOfDayOverlay.pm");
+				ampm = " " + Utils.localize("timeOfDayOverlay.am");
 			}
 		}
 
@@ -81,7 +84,20 @@ public class TimeOfDayHandler {
 				ampm +
 				" (" + dayOrNight + ")";
 
-		mc.fontRenderer.drawStringWithShadow(timeString, 2.0F, 2.0F, 0xFFFFFF);
+		final int textWidth = mc.fontRenderer.getStringWidth(timeString);
+		final int textHeight = mc.fontRenderer.FONT_HEIGHT;
+
+		final int x = RTConfig.timeofday.x;
+		final int y = RTConfig.timeofday.y;
+
+		final ScaledResolution scaled = new ScaledResolution(mc);
+		final int displayWidth = scaled.getScaledWidth();
+		final int displayHeight = scaled.getScaledHeight();
+
+		final int actualX = RTConfig.timeofday.alignment.getX(x, displayWidth, textWidth);
+		final int actualY = RTConfig.timeofday.alignment.getY(y, displayHeight, textHeight);
+
+		mc.fontRenderer.drawStringWithShadow(timeString, actualX, actualY, 0xFFFFFF);
 	}
 
 	@SubscribeEvent

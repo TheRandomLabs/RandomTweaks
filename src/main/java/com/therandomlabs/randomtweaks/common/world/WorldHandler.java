@@ -102,6 +102,12 @@ public final class WorldHandler {
 		}
 
 		for(Entry<String, String> entry : defaultGamerules.entrySet()) {
+			if(entry.getKey().equals("rtWorldBorderSize")) {
+				try {
+					world.getWorldBorder().setSize(Integer.parseInt(entry.getValue()));
+					continue;
+				} catch(NumberFormatException ex) {}
+			}
 			gamerules.setOrCreateGameRule(entry.getKey(), entry.getValue());
 		}
 	}

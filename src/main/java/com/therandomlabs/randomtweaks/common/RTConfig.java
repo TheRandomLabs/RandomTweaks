@@ -18,6 +18,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.stream.MalformedJsonException;
+import com.therandomlabs.randomtweaks.util.Alignment;
 import com.therandomlabs.randomtweaks.util.Compat;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraftforge.common.config.Config;
@@ -185,11 +186,9 @@ public class RTConfig {
 	}
 
 	public static class Hunger {
-		@Config.RangeInt(min = 0, max = 3)
-		@Config.Comment("0 = reset hunger on respawn; 1 = don't reset hunger on respawn; " +
-				"2 = reset hunger on respawn unless keepInventory is true; 3 = reset hunger " +
-				"on respawn unless keepInventory is true or the player is in creative mode")
-		public int respawnBehavior;
+		@Config.Comment("What happens to a player's hunger when they respawn.")
+		public HungerHandler.RespawnBehavior behaviorOnRespawn =
+				HungerHandler.RespawnBehavior.RESET_UNLESS_KEEPINVENTORY_OR_CREATIVE;
 
 		@Config.RangeInt(min = 0)
 		@Config.Comment("The minimum hunger level on respawn.")
@@ -215,6 +214,15 @@ public class RTConfig {
 
 		@Config.Comment("Enables 24-hour time.")
 		public boolean twentyFourHourTime;
+
+		@Config.Comment("The alignment of the time of day overlay.")
+		public Alignment alignment = Alignment.TOPLEFT;
+
+		@Config.Comment("The X offset of the time of day overlay.")
+		public int x = 0;
+
+		@Config.Comment("The Y offset of the time of day overlay.")
+		public int y = 0;
 
 		public static final Map<String, Boolean> worlds = new HashMap<>();
 
@@ -389,7 +397,9 @@ public class RTConfig {
 						"world types in server.properties.",
 				"//\t\t\"doDaylightCycle\": false,",
 				"//\t\t\"doWeatherCycle\": false,",
-				"//\t\t\"doMobSpawning\": false",
+				"//\t\t\"doMobSpawning\": false,",
+				"//\t\t\"rtWorldBorderSize\": 10000 //Sets the world border (in blocks) " +
+						"from chunk (0, 0)",
 				"//\t}",
 				"}"
 		));
