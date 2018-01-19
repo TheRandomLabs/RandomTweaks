@@ -14,6 +14,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class SquidHandler {
+	public static final int RADIUS_LIMIT_DISABLED = 0;
+	public static final int CHUNK_LIMIT_DISABLED = -1;
+	public static final int SQUID_SPAWNING_DISABLED = 0;
+	public static final int VANILLA_PACK_SIZE = 0;
+
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLivingEntitySpawn(LivingSpawnEvent.CheckSpawn event) {
 		if(event.getEntity().getClass() == EntitySquid.class) {
@@ -25,7 +30,7 @@ public final class SquidHandler {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLivingEntityPackSpawn(LivingPackSizeEvent event) {
-		if(RTConfig.squids.maxPackSize != RTConfigConstants.Squids.VANILLA_PACK_SIZE &&
+		if(RTConfig.squids.maxPackSize != VANILLA_PACK_SIZE &&
 				event.getEntity().getClass() == EntitySquid.class) {
 			event.setMaxPackSize(RTConfig.squids.maxPackSize);
 		}
@@ -34,7 +39,7 @@ public final class SquidHandler {
 	public static boolean isInRadiusOfPlayer(LivingSpawnEvent.CheckSpawn event) {
 		final int radius = RTConfig.squids.spawnRadiusLimit;
 
-		if(radius == RTConfigConstants.Squids.RADIUS_LIMIT_DISABLED) {
+		if(radius == RADIUS_LIMIT_DISABLED) {
 			return true;
 		}
 
@@ -45,9 +50,9 @@ public final class SquidHandler {
 
 	public static boolean tooManySquids(LivingSpawnEvent.CheckSpawn event) {
 		switch(RTConfig.squids.chunkLimit) {
-		case RTConfigConstants.Squids.SQUID_SPAWNING_DISABLED:
+		case SQUID_SPAWNING_DISABLED:
 			return true;
-		case RTConfigConstants.Squids.CHUNK_LIMIT_DISABLED:
+		case CHUNK_LIMIT_DISABLED:
 			return false;
 		default:
 			return event.getWorld().getEntities(EntitySquid.class,

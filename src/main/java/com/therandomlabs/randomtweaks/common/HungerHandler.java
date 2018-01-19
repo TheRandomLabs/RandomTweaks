@@ -15,6 +15,13 @@ public final class HungerHandler {
 	public static final Field SATURATION_LEVEL =
 			ReflectionHelper.findField(FoodStats.class, "foodSaturationLevel", "field_75125_b");
 
+	public enum RespawnBehavior {
+		RESET,
+		DONT_RESET,
+		RESET_UNLESS_KEEPINVENTORY,
+		RESET_UNLESS_KEEPINVENTORY_OR_CREATIVE;
+	}
+
 	@SubscribeEvent
 	public static void onDeath(LivingDeathEvent event) {
 		if(event.getEntity() instanceof EntityPlayer) {
@@ -51,14 +58,14 @@ public final class HungerHandler {
 	}
 
 	public static boolean dontResetHungerOnRespawn(EntityPlayer player) {
-		switch(RTConfig.hunger.respawnBehavior) {
-		case RTConfigConstants.Hunger.RESET_ON_RESPAWN:
+		switch(RTConfig.hunger.behaviorOnRespawn) {
+		case RESET:
 			return false;
-		case RTConfigConstants.Hunger.DONT_RESET_ON_RESPAWN:
+		case DONT_RESET:
 			return true;
-		case RTConfigConstants.Hunger.RESET_UNLESS_KEEPINVENTORY:
+		case RESET_UNLESS_KEEPINVENTORY:
 			return player.getEntityWorld().getGameRules().getBoolean("keepInventory");
-		case RTConfigConstants.Hunger.RESET_UNLESS_KEEPINVENTORY_OR_CREATIVE:
+		case RESET_UNLESS_KEEPINVENTORY_OR_CREATIVE:
 			return player.getEntityWorld().getGameRules().getBoolean("keepInventory") &&
 					!player.capabilities.isCreativeMode;
 		}
