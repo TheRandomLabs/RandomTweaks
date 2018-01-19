@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12.2": {
+		"1.12.2-1.15.0.0": "Improved the configuration.\nAdded configuration options for the time of day overlay.\nAdded default world borders.",
 		"1.12.2-1.14.1.1": "Fixed a typo in the time of day overlay.",
 		"1.12.2-1.14.1.0": "Added a config option to enable/disable the time of day overlay.",
 		"1.12.2-1.14.0.0": "The jar is now signed properly.\nAdded options to disable the Wither and Ender Dragon broadcast sounds.\nFixed issues with the time of day overlay.",
@@ -16,6 +17,7 @@
 		"1.12.1-2.0.0.0": "Updated to 1.12.1.\nContributor capes are now always shown in development environments.\nFixed the \"Could not set cape\" error message.\nFixed configuration location.\nFixed URLs for versions.json and contributors.txt.\nFixed some issues with log filters."
 	},
 	"1.12.1": {
+		"1.12.2-1.15.0.0": "Improved the configuration.\nAdded configuration options for the time of day overlay.\nAdded default world borders.",
 		"1.12.2-1.14.1.1": "Fixed a typo in the time of day overlay.",
 		"1.12.2-1.14.1.0": "Added a config option to enable/disable the time of day overlay.",
 		"1.12.2-1.14.0.0": "The jar is now signed properly.\nAdded options to disable the Wither and Ender Dragon broadcast sounds.\nFixed issues with the time of day overlay.",
@@ -31,6 +33,7 @@
 		"1.12.1-2.0.0.0": "Updated to 1.12.1.\nContributor capes are now always shown in development environments.\nFixed the \"Could not set cape\" error message.\nFixed configuration location.\nFixed URLs for versions.json and contributors.txt.\nFixed some issues with log filters."
 	},
 	"1.12": {
+		"1.12.2-1.15.0.0": "Improved the configuration.\nAdded configuration options for the time of day overlay.\nAdded default world borders.",
 		"1.12.2-1.14.1.1": "Fixed a typo in the time of day overlay.",
 		"1.12.2-1.14.1.0": "Added a config option to enable/disable the time of day overlay.",
 		"1.12.2-1.14.0.0": "The jar is now signed properly.\nAdded options to disable the Wither and Ender Dragon broadcast sounds.\nFixed issues with the time of day overlay.",
@@ -46,6 +49,7 @@
 		"1.12.1-2.0.0.0": "Updated to 1.12.1.\nContributor capes are now always shown in development environments.\nFixed the \"Could not set cape\" error message.\nFixed configuration location.\nFixed URLs for versions.json and contributors.txt.\nFixed some issues with log filters."
 	},
 	"1.11.2": {
+		"1.11.2-1.15.0.0": "Improved the configuration.\nAdded configuration options for the time of day overlay.\nAdded default world borders.",
 		"1.11.2-1.14.1.1": "Fixed a typo in the time of day overlay.",
 		"1.11.2-1.14.1.0": "Added a config option to enable/disable the time of day overlay.",
 		"1.11.2-1.14.0.0": "The jar is now signed properly.\nAdded options to disable the Wither and Ender Dragon broadcast sounds.\nFixed issues with the time of day overlay.",
@@ -80,6 +84,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.11": {
+		"1.11.2-1.15.0.0": "Improved the configuration.\nAdded configuration options for the time of day overlay.\nAdded default world borders.",
 		"1.11.2-1.14.1.1": "Fixed a typo in the time of day overlay.",
 		"1.11.2-1.14.1.0": "Added a config option to enable/disable the time of day overlay.",
 		"1.11.2-1.14.0.0": "The jar is now signed properly.\nAdded options to disable the Wither and Ender Dragon broadcast sounds.\nFixed issues with the time of day overlay.",
@@ -114,6 +119,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.10.2": {
+		"1.11.2-1.15.0.0": "Improved the configuration.\nAdded configuration options for the time of day overlay.\nAdded default world borders.",
 		"1.11.2-1.14.1.1": "Fixed a typo in the time of day overlay.",
 		"1.11.2-1.14.1.0": "Added a config option to enable/disable the time of day overlay.",
 		"1.11.2-1.14.0.0": "The jar is now signed properly.\nAdded options to disable the Wither and Ender Dragon broadcast sounds.\nFixed issues with the time of day overlay.",
@@ -148,6 +154,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.10": {
+		"1.11.2-1.15.0.0": "Improved the configuration.\nAdded configuration options for the time of day overlay.\nAdded default world borders.",
 		"1.11.2-1.14.1.1": "Fixed a typo in the time of day overlay.",
 		"1.11.2-1.14.1.0": "Added a config option to enable/disable the time of day overlay.",
 		"1.11.2-1.14.0.0": "The jar is now signed properly.\nAdded options to disable the Wither and Ender Dragon broadcast sounds.\nFixed issues with the time of day overlay.",
@@ -182,19 +189,19 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"promos": {
-		"1.12.2-latest": "1.12.2-1.14.1.1",
-		"1.12.2-recommended": "1.12.2-1.14.1.1",
-		"1.12.1-latest": "1.12.2-1.14.1.1",
-		"1.12.1-recommended": "1.12.2-1.14.1.1",
-		"1.12-latest": "1.12.2-1.14.1.1",
-		"1.12-recommended": "1.12.2-1.14.1.1",
-		"1.11.2-latest": "1.11.2-1.14.1.1",
-		"1.11.2-recommended": "1.11.2-1.14.1.1",
-		"1.11-latest": "1.11.2-1.14.1.1",
-		"1.11-recommended": "1.11.2-1.14.1.1",
-		"1.10.2-latest": "1.11.2-1.14.1.1",
-		"1.10.2-recommended": "1.11.2-1.14.1.1",
-		"1.10-latest": "1.11.2-1.14.1.1",
-		"1.10-recommended": "1.11.2-1.14.1.1"
+		"1.12.2-latest": "1.12.2-1.15.0.0",
+		"1.12.2-recommended": "1.12.2-1.15.0.0",
+		"1.12.1-latest": "1.12.2-1.15.0.0",
+		"1.12.1-recommended": "1.12.2-1.15.0.0",
+		"1.12-latest": "1.12.2-1.15.0.0",
+		"1.12-recommended": "1.12.2-1.15.0.0",
+		"1.11.2-latest": "1.11.2-1.15.0.0",
+		"1.11.2-recommended": "1.11.2-1.15.0.0",
+		"1.11-latest": "1.11.2-1.15.0.0",
+		"1.11-recommended": "1.11.2-1.15.0.0",
+		"1.10.2-latest": "1.11.2-1.15.0.0",
+		"1.10.2-recommended": "1.11.2-1.15.0.0",
+		"1.10-latest": "1.11.2-1.15.0.0",
+		"1.10-recommended": "1.11.2-1.15.0.0"
 	}
 }
