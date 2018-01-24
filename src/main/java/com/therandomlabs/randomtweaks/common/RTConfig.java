@@ -61,6 +61,9 @@ public class RTConfig {
 
 		@Config.Comment("Disables the Ender Dragon death sound.")
 		public boolean disableEnderDragonDeathSound;
+
+		@Config.Comment("Stops potion effects from moving GUIs to the right.")
+		public boolean disablePotionShift = true;
 	}
 
 	public static class Commands {
