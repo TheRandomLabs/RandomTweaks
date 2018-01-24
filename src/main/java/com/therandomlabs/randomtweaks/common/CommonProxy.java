@@ -18,6 +18,7 @@ public class CommonProxy {
 		if(Utils.isDeobfuscated()) {
 			RTConfig.timeofday.enabledByDefault = true;
 			RTConfig.general.attackSpeed = 24.0;
+			RTConfig.respawn.deathPunishmentsIfKeepInventory = true;
 			RTConfig.reloadConfig();
 		}
 

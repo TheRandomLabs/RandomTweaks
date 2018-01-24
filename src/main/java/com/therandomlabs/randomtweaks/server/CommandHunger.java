@@ -2,7 +2,6 @@ package com.therandomlabs.randomtweaks.server;
 
 import java.util.Collections;
 import java.util.List;
-import com.therandomlabs.randomtweaks.common.HungerHandler;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -36,7 +35,7 @@ public class CommandHunger extends CommandBase {
 		stats.setFoodLevel(parseInt(args[1]));
 		if(args.length > 2) {
 			try {
-				HungerHandler.setSaturation(stats, (float) parseDouble(args[2]));
+				Utils.setSaturation(stats, (float) parseDouble(args[2]));
 			} catch(Exception ex) {
 				ex.printStackTrace();
 				throw new CommandException(Utils.localize("commands.hunger.failure",
