@@ -171,6 +171,21 @@ public class RTConfig {
 		public int voidIslandsChunkRarity = 10;
 	}
 
+	public static class Respawn {
+		@Config.Comment("What happens to a player's hunger when they respawn.")
+		public RespawnHandler.HungerBehavior hungerBehavior =
+				RespawnHandler.HungerBehavior.RESET_UNLESS_KEEPINVENTORY;
+
+		@Config.RangeInt(min = 0)
+		@Config.Comment("The minimum hunger level on respawn.")
+		public int minimumHungerLevel = 3;
+
+		@Config.Comment("Enables punishments on death if keepInventory is enabled so it's not " +
+				"too overpowered. All XP and 3 hunger points are removed. This " +
+				"overrides hungerBehavior if keepInventory is true.")
+		public boolean deathPunishmentsIfKeepInventory;
+	}
+
 	public static class Squids {
 		@Config.RangeInt(min = 0)
 		@Config.Comment("Disables squid spawning when a player is not within the specified " +
@@ -186,16 +201,6 @@ public class RTConfig {
 		@Config.Comment("The maximum number of squids that can be spawned in a pack. " +
 				"Set to 0 to use vanilla behavior.")
 		public int maxPackSize = 2;
-	}
-
-	public static class Hunger {
-		@Config.Comment("What happens to a player's hunger when they respawn.")
-		public HungerHandler.RespawnBehavior behaviorOnRespawn =
-				HungerHandler.RespawnBehavior.RESET_UNLESS_KEEPINVENTORY_OR_CREATIVE;
-
-		@Config.RangeInt(min = 0)
-		@Config.Comment("The minimum hunger level on respawn.")
-		public int minimumHungerLevel = 3;
 	}
 
 	public static class TimeOfDay {
@@ -264,10 +269,10 @@ public class RTConfig {
 	public static General general = new General();
 	@Config.Comment("World")
 	public static World world = new World();
+	@Config.Comment("Respawn behavior")
+	public static Respawn respawn = new Respawn();
 	@Config.Comment("Squid spawning")
 	public static Squids squids = new Squids();
-	@Config.Comment("Hunger behavior on respawn")
-	public static Hunger hunger = new Hunger();
 	@Config.Comment("Time of day overlay")
 	public static TimeOfDay timeofday = new TimeOfDay();
 
