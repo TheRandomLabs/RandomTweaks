@@ -19,7 +19,7 @@ import net.minecraftforge.fml.relauncher.Side;
 //Concept taken from:
 //https://github.com/iChun/Ding/blob/master/src/main/java/me/ichun/mods/ding/common/core/Ding.java
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
-public class DingHandler {
+public final class DingHandler {
 	private static boolean mainMenuPlayed;
 	private static boolean playWorld;
 

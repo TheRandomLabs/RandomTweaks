@@ -64,6 +64,9 @@ public class RTConfig {
 
 		@Config.Comment("Stops potion effects from moving GUIs to the right.")
 		public boolean disablePotionShift = true;
+
+		@Config.Comment("Removes underwater fog.")
+		public boolean clearWater = true;
 	}
 
 	public static class Commands {
@@ -132,6 +135,13 @@ public class RTConfig {
 		@Config.Comment("Sets the base attack speed for players. Set this to 16.0 or higher " +
 				"to remove the attack cooldown. 4.0 is the default value.")
 		public double attackSpeed = 4.0;
+
+		@Config.Comment("Prevents pets from being attacked by their owners " +
+				"(unless they're sneaking).")
+		public boolean protectPetsFromOwners = true;
+
+		@Config.Comment("Prevents pets from being attacked by their owner's other pets.")
+		public boolean protectPetsFromOtherPets = true;
 	}
 
 	public static class World {
