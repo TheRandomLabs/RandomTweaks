@@ -8,9 +8,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
-public class PotionShiftEvent {
+public final class PotionShiftHandler {
 	@SubscribeEvent
-	public static void onPotionShiftEvent(GuiScreenEvent.PotionShiftEvent event) {
+	public static void onPotionShift(GuiScreenEvent.PotionShiftEvent event) {
 		if(RTConfig.client.disablePotionShift) {
 			event.setCanceled(true);
 		}

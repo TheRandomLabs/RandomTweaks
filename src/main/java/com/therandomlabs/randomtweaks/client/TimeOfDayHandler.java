@@ -22,7 +22,7 @@ import net.minecraftforge.fml.relauncher.Side;
 //Some code has been taken and adapted from here:
 //https://github.com/Lunatrius/InGame-Info-XML
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
-public class TimeOfDayHandler {
+public final class TimeOfDayHandler {
 	public static final KeyBinding TOGGLE_TIME_OF_DAY_OVERLAY = new KeyBinding(
 			"key.toggleTimeOfDayOverlay", Keyboard.KEY_BACKSLASH, "key.categories.randomtweaks");
 
