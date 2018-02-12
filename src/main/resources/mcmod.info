@@ -6,7 +6,7 @@
 		"version": "${version}",
 		"mcversion": "${mcversion}",
 		"url": "https://minecraft.curseforge.com/projects/randomtweaks",
-		"updateUrl": "https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/master/versions.json",
+		"updateJSON": "https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/misc/versions.json",
 		"authorList": ["TheRandomLabs"],
 		"credits": "",
 		"logoFile": "assets/randomtweaks/textures/logo.png",
