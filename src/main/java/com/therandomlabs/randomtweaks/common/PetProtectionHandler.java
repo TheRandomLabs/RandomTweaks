@@ -29,8 +29,12 @@ public final class PetProtectionHandler {
 		final IEntityOwnable pet = ((IEntityOwnable) entity);
 		final UUID owner = pet.getOwnerId();
 
-		if(RTConfig.general.protectPetsFromOwners && owner != null &&
-				owner.equals(attacker.getUniqueID()) && !attacker.isSneaking()) {
+		if(owner == null) {
+			return;
+		}
+
+		if(RTConfig.general.protectPetsFromOwners && owner.equals(attacker.getUniqueID()) &&
+				!attacker.isSneaking()) {
 			event.setCanceled(true);
 			return;
 		}
