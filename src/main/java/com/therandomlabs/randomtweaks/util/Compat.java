@@ -1,7 +1,5 @@
 package com.therandomlabs.randomtweaks.util;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,12 +9,17 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkGeneratorOverworld;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindFieldException;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindMethodException;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Random;
 
 public final class Compat {
 	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12,1.13)";
@@ -27,6 +30,16 @@ public final class Compat {
 			findMethod(EntityPlayer.class, "spawnShoulderEntities", "func_192030_dh");
 
 	public static interface ICompatChunkGenerator extends IChunkGenerator {}
+
+	public static abstract class ICompatWorldGenerator implements IWorldGenerator {
+		@Override
+		public void generate(Random random, int chunkX, int chunkZ, World world,
+							 IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+			generate(random, chunkX, chunkZ, world);
+		}
+
+		public abstract void generate(Random random, int chunkX, int chunkZ, World world);
+	}
 
 	public static class ChunkGeneratorCompatOverworld extends ChunkGeneratorOverworld {
 		public ChunkGeneratorCompatOverworld(World world, long seed, boolean mapFeaturesEnabled,

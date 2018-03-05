@@ -1,9 +1,5 @@
 package com.therandomlabs.randomtweaks.server;
 
-import java.lang.reflect.Field;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -13,6 +9,10 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.GameRules;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class CommandDeleteGamerule extends CommandBase {
 	public static final Field GAMERULES =

@@ -1,7 +1,5 @@
 package com.therandomlabs.randomtweaks.common.world;
 
-import java.util.Arrays;
-import java.util.Random;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.init.Biomes;
@@ -10,6 +8,8 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import java.util.Arrays;
+import java.util.Random;
 
 public class ChunkGeneratorVoidIslands extends Compat.ChunkGeneratorCompatOverworld {
 	private final World world;

@@ -1,22 +1,6 @@
 package com.therandomlabs.randomtweaks.common;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
-import org.apache.commons.lang3.StringUtils;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
+import com.google.gson.*;
 import com.google.gson.stream.MalformedJsonException;
 import com.therandomlabs.randomtweaks.util.Alignment;
 import com.therandomlabs.randomtweaks.util.Compat;
@@ -25,6 +9,14 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import org.apache.commons.lang3.StringUtils;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 @EventBusSubscriber
 @Config(modid = RandomTweaks.MODID, name = RandomTweaks.MODID + "/" + RandomTweaks.MODID)
@@ -142,6 +134,55 @@ public class RTConfig {
 
 		@Config.Comment("Prevents pets from being attacked by their owner's other pets.")
 		public boolean protectPetsFromOtherPets = true;
+
+		@Config.Comment("Replaces NuclearCraft Sulfur drops with Thermal Expansion Sulfur.")
+		public boolean dropTESulfur;
+	}
+
+	public static class OceanFloor {
+		@Config.RequiresMcRestart
+		@Config.Comment("Enables the ocean floor worldgen.")
+		public boolean enabled;
+
+		@Config.RequiresMcRestart
+		@Config.RangeInt(min = 0)
+		@Config.Comment("The amount of clay in a vein.")
+		public int clayVeinSize = 32;
+
+		@Config.RequiresMcRestart
+		@Config.RangeInt(min = 0)
+		@Config.Comment("The clay spawn chance.")
+		public int clayChance = 65;
+
+		@Config.RequiresMcRestart
+		@Config.RangeInt(min = 0)
+		@Config.Comment("The amount of sand in a vein.")
+		public int sandVeinSize = 22;
+
+		@Config.RequiresMcRestart
+		@Config.RangeInt(min = 0)
+		@Config.Comment("The sand spawn chance.")
+		public int sandChance = 45;
+
+		@Config.RequiresMcRestart
+		@Config.RangeInt(min = 0)
+		@Config.Comment("The amount of dirt in a vein.")
+		public int dirtVeinSize = 18;
+
+		@Config.RequiresMcRestart
+		@Config.RangeInt(min = 0)
+		@Config.Comment("The dirt spawn chance.")
+		public int dirtChance = 30;
+
+		@Config.RequiresMcRestart
+		@Config.RangeInt(min = 0)
+		@Config.Comment("The minimum Y value.")
+		public int minY = 20;
+
+		@Config.RequiresMcRestart
+		@Config.RangeInt(min = 0)
+		@Config.Comment("The maximum Y value.")
+		public int maxY = 128;
 	}
 
 	public static class World {
@@ -277,6 +318,8 @@ public class RTConfig {
 	public static Ding ding = new Ding();
 	@Config.Comment("General")
 	public static General general = new General();
+	@Config.Comment("Ocean Floor")
+	public static OceanFloor oceanFloor = new OceanFloor();
 	@Config.Comment("World")
 	public static World world = new World();
 	@Config.Comment("Respawn behavior")

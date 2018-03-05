@@ -1,7 +1,5 @@
 package com.therandomlabs.randomtweaks.server;
 
-import java.util.Collections;
-import java.util.List;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -11,6 +9,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.math.BlockPos;
+import java.util.Collections;
+import java.util.List;
 
 public class CommandHunger extends CommandBase {
 	@Override

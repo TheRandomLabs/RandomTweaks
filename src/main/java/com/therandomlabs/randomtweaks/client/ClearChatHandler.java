@@ -1,6 +1,5 @@
 package com.therandomlabs.randomtweaks.client;
 
-import org.lwjgl.input.Keyboard;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.client.Minecraft;
@@ -10,6 +9,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import org.lwjgl.input.Keyboard;
 
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class ClearChatHandler {

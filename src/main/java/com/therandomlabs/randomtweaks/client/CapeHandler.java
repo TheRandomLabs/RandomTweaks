@@ -1,13 +1,5 @@
 package com.therandomlabs.randomtweaks.client;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
-import org.apache.commons.io.IOUtils;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.therandomlabs.randomtweaks.common.RTConfig;
@@ -24,6 +16,14 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import org.apache.commons.io.IOUtils;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class CapeHandler {

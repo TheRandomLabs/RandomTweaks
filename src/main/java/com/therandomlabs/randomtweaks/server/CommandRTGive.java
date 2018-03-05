@@ -2,12 +2,7 @@ package com.therandomlabs.randomtweaks.server;
 
 import com.therandomlabs.randomtweaks.util.Compat;
 import com.therandomlabs.randomtweaks.util.Utils;
-import net.minecraft.command.CommandException;
-import net.minecraft.command.CommandGive;
-import net.minecraft.command.CommandResultStats;
-import net.minecraft.command.ICommandSender;
-import net.minecraft.command.NumberInvalidException;
-import net.minecraft.command.WrongUsageException;
+import net.minecraft.command.*;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;

@@ -1,6 +1,5 @@
 package com.therandomlabs.randomtweaks.common;
 
-import java.util.UUID;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
@@ -8,6 +7,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import java.util.UUID;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class PetProtectionHandler {

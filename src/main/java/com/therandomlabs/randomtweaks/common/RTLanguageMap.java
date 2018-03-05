@@ -1,11 +1,11 @@
 package com.therandomlabs.randomtweaks.common;
 
-import java.lang.reflect.Field;
-import java.util.Map;
 import com.therandomlabs.randomtweaks.util.RomanNumeralHandler;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
+import java.lang.reflect.Field;
+import java.util.Map;
 
 @SuppressWarnings("deprecation")
 public class RTLanguageMap extends LanguageMap {

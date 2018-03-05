@@ -1,8 +1,5 @@
 package com.therandomlabs.randomtweaks.common.world;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.entity.EnumCreatureType;
@@ -14,6 +11,9 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class ChunkGeneratorVoid implements Compat.ICompatChunkGenerator {
 	private final World world;

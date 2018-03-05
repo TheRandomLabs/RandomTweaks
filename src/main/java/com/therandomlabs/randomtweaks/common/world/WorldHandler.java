@@ -1,7 +1,5 @@
 package com.therandomlabs.randomtweaks.common.world;
 
-import java.util.Map;
-import java.util.Map.Entry;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import net.minecraft.block.Block;
@@ -19,6 +17,8 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import java.util.Map;
+import java.util.Map.Entry;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class WorldHandler {

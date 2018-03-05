@@ -16,12 +16,7 @@
  */
 package org.apache.logging.log4j.core;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
+import com.therandomlabs.randomtweaks.common.RTConfig;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.core.config.Configuration;
@@ -34,7 +29,12 @@ import org.apache.logging.log4j.message.SimpleMessage;
 import org.apache.logging.log4j.spi.AbstractLogger;
 import org.apache.logging.log4j.util.Strings;
 import org.apache.logging.log4j.util.Supplier;
-import com.therandomlabs.randomtweaks.common.RTConfig;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Pattern;
 
 /**
  * The core implementation of the {@link org.apache.logging.log4j.Logger} interface. Besides providing an implementation

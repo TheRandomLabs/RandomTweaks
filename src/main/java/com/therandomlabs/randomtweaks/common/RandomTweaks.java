@@ -1,7 +1,5 @@
 package com.therandomlabs.randomtweaks.common;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import com.therandomlabs.randomtweaks.server.CommandRegistry;
 import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraftforge.fml.common.Mod;
@@ -11,6 +9,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @Mod(modid = RandomTweaks.MODID, version = RandomTweaks.VERSION,
 		acceptedMinecraftVersions = Compat.ACCEPTED_MINECRAFT_VERSIONS,

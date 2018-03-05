@@ -1,7 +1,5 @@
 package com.therandomlabs.randomtweaks.client;
 
-import java.io.File;
-import org.lwjgl.input.Keyboard;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Utils;
@@ -18,6 +16,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import org.lwjgl.input.Keyboard;
+import java.io.File;
 
 //Some code has been taken and adapted from here:
 //https://github.com/Lunatrius/InGame-Info-XML
