@@ -2,6 +2,7 @@ package com.therandomlabs.randomtweaks.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.Random;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
@@ -14,10 +15,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkGenerator;
+import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderOverworld;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindFieldException;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindMethodException;
 
@@ -37,6 +40,16 @@ public final class Compat {
 
 	public static interface ICompatChunkGenerator extends IChunkGenerator {
 		boolean isInsideStructure(World world, String structureName, BlockPos pos);
+	}
+
+	public static abstract class ICompatWorldGenerator implements IWorldGenerator {
+		@Override
+		public void generate(Random random, int chunkX, int chunkZ, World world,
+							 IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+			generate(random, chunkX, chunkZ, world);
+		}
+
+		public abstract void generate(Random random, int chunkX, int chunkZ, World world);
 	}
 
 	public static class ChunkGeneratorCompatOverworld extends ChunkProviderOverworld {
