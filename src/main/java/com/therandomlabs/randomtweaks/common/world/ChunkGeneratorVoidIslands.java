@@ -5,17 +5,11 @@ import java.util.Random;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.init.Biomes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.registries.IForgeRegistry;
 
 public class ChunkGeneratorVoidIslands extends Compat.ChunkGeneratorCompatOverworld {
-	private static final IForgeRegistry<Biome> BIOME_REGISTRY =
-			GameRegistry.findRegistry(Biome.class);
-
 	private static String biomeName;
 	private static Biome biome;
 
@@ -47,11 +41,7 @@ public class ChunkGeneratorVoidIslands extends Compat.ChunkGeneratorCompatOverwo
 	public static Biome getBiome() {
 		if(biome == null || !RTConfig.world.voidIslandsWorldBiome.equals(biomeName)) {
 			biomeName = RTConfig.world.voidIslandsWorldBiome;
-			biome = BIOME_REGISTRY.getValue(new ResourceLocation(biomeName));
-
-			if(biome == null) {
-				biome = Biomes.PLAINS;
-			}
+			biome = Compat.getBiome(biomeName, Biomes.PLAINS);
 		}
 
 		return biome;

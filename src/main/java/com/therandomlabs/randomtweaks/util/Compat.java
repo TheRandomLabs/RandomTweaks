@@ -2,6 +2,7 @@ package com.therandomlabs.randomtweaks.util;
 
 import java.lang.reflect.Method;
 import java.util.Random;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.monster.EntityMob;
@@ -9,26 +10,35 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkGeneratorOverworld;
 import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindMethodException;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.registries.IForgeRegistry;
 
 public final class Compat {
 	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12,1.13)";
 	public static final boolean IS_ONE_POINT_TEN = false;
 	public static final String CHICKEN_ENTITY_NAME = "chicken";
 
-	private static final Method SPAWN_SHOULDER_ENTITIES =
+	public static final IForgeRegistry<Block> BLOCK_REGISTRY =
+			GameRegistry.findRegistry(Block.class);
+	public static final IForgeRegistry<Biome> BIOME_REGISTRY =
+			GameRegistry.findRegistry(Biome.class);
+
+	public static final Method SPAWN_SHOULDER_ENTITIES =
 			findMethod(EntityPlayer.class, "spawnShoulderEntities", "func_192030_dh");
 
 	public static abstract class CreativeTab extends CreativeTabs {
@@ -154,5 +164,15 @@ public final class Compat {
 
 	public static void detectAndSendChanges(Container container) {
 		container.detectAndSendChanges();
+	}
+
+	public static Block getBlock(String blockName, Block defaultBlock) {
+		final Block block = BLOCK_REGISTRY.getValue(new ResourceLocation(blockName));
+		return block == null ? defaultBlock : block;
+	}
+
+	public static Biome getBiome(String biomeName, Biome defaultBiome) {
+		final Biome biome = BIOME_REGISTRY.getValue(new ResourceLocation(biomeName));
+		return biome == null ? defaultBiome : biome;
 	}
 }
