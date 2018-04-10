@@ -2,13 +2,11 @@ package com.therandomlabs.randomtweaks.common;
 
 import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTUtil;
-import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -30,7 +28,7 @@ public final class PlayerHeadDropsHandler {
 			final EntityCreeper creeper = (EntityCreeper) source;
 
 			if(creeper.getPowered() && Compat.ableToCauseSkullDrop(creeper)) {
-				if(dropSkull(event, RTConfig.playerHeadDrops.chanceWhenKilledByChargedCreeper)) {
+				if(dropSkull(player, RTConfig.playerHeadDrops.chanceWhenKilledByChargedCreeper)) {
 					creeper.incrementDroppedSkulls();
 					return;
 				}
@@ -38,29 +36,22 @@ public final class PlayerHeadDropsHandler {
 		}
 
 		if(source != player && source instanceof EntityPlayer) {
-			dropSkull(event, RTConfig.playerHeadDrops.chanceWhenKilledByPlayer);
+			dropSkull(player, RTConfig.playerHeadDrops.chanceWhenKilledByPlayer);
 			return;
 		}
 
-		dropSkull(event, RTConfig.playerHeadDrops.normalChance);
+		dropSkull(player, RTConfig.playerHeadDrops.normalChance);
 	}
 
-	public static boolean dropSkull(PlayerDropsEvent event, double chance) {
-		final EntityPlayer player = event.getEntityPlayer();
-		final World world = player.getEntityWorld();
-
-		if(chance != 1.0 && world.rand.nextDouble() >= chance) {
+	public static boolean dropSkull(EntityPlayer player, double chance) {
+		if(chance != 1.0 && player.getEntityWorld().rand.nextDouble() >= chance) {
 			return false;
 		}
 
 		final ItemStack stack = new ItemStack(Items.SKULL, 1, 3);
 		NBTUtil.writeGameProfile(stack.getOrCreateSubCompound("SkullOwner"),
 				player.getGameProfile());
-
-		final EntityItem item = new EntityItem(world);
-		item.setItem(stack);
-
-		event.getDrops().add(item);
+		player.dropItem(stack, true, false);
 
 		return true;
 	}
