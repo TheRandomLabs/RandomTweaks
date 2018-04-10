@@ -121,10 +121,10 @@ public class CommandRTGive extends CommandGive {
 		final List<String> tabCompletions =
 				super.getTabCompletions(server, sender, args, targetPos);
 		if(args.length == 2) {
-			tabCompletions.addAll(
+			tabCompletions.addAll(getListOfStringsMatchingLastWord(args,
 					Arrays.stream(OreDictionary.getOreNames()).
 							map(name -> "ore:" + name).
-							collect(Collectors.toList())
+							collect(Collectors.toList()))
 			);
 		}
 		return tabCompletions;
