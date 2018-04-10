@@ -2,11 +2,13 @@ package com.therandomlabs.randomtweaks.common;
 
 import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTUtil;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -28,7 +30,7 @@ public final class PlayerHeadDropsHandler {
 			final EntityCreeper creeper = (EntityCreeper) source;
 
 			if(creeper.getPowered() && Compat.ableToCauseSkullDrop(creeper)) {
-				if(dropSkull(player, RTConfig.playerHeadDrops.chanceWhenKilledByChargedCreeper)) {
+				if(dropSkull(event, RTConfig.playerHeadDrops.chanceWhenKilledByChargedCreeper)) {
 					creeper.incrementDroppedSkulls();
 					return;
 				}
@@ -36,22 +38,29 @@ public final class PlayerHeadDropsHandler {
 		}
 
 		if(source != player && source instanceof EntityPlayer) {
-			dropSkull(player, RTConfig.playerHeadDrops.chanceWhenKilledByPlayer);
+			dropSkull(event, RTConfig.playerHeadDrops.chanceWhenKilledByPlayer);
 			return;
 		}
 
-		dropSkull(player, RTConfig.playerHeadDrops.normalChance);
+		dropSkull(event, RTConfig.playerHeadDrops.normalChance);
 	}
 
-	public static boolean dropSkull(EntityPlayer player, double chance) {
-		if(player.getEntityWorld().rand.nextDouble() >= chance) {
+	public static boolean dropSkull(PlayerDropsEvent event, double chance) {
+		final EntityPlayer player = event.getEntityPlayer();
+		final World world = player.getEntityWorld();
+
+		if(chance != 1.0 && world.rand.nextDouble() >= chance) {
 			return false;
 		}
 
 		final ItemStack stack = new ItemStack(Items.SKULL, 1, 3);
 		NBTUtil.writeGameProfile(stack.getOrCreateSubCompound("SkullOwner"),
 				player.getGameProfile());
-		player.dropItem(stack, true, false);
+
+		final EntityItem item = new EntityItem(world);
+		item.setItem(stack);
+
+		event.getDrops().add(item);
 
 		return true;
 	}
