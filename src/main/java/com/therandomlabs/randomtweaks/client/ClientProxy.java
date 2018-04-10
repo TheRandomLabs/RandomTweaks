@@ -3,7 +3,6 @@ package com.therandomlabs.randomtweaks.client;
 import com.therandomlabs.randomtweaks.common.CommonProxy;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.util.Compat;
-import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
