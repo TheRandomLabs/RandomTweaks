@@ -26,6 +26,26 @@ import org.apache.commons.lang3.StringUtils;
 @Config(modid = RandomTweaks.MODID, name = RandomTweaks.MODID + "/" + RandomTweaks.MODID)
 @Config.LangKey("randomtweaks.config.title")
 public class RTConfig {
+	public static class AutoThirdPerson {
+		@Config.Comment("Whether auto third person is enabled.")
+		public boolean enabled = true;
+
+		@Config.Comment("Whether auto third person is enabled when flying with elytra.")
+		public boolean elytra = true;
+
+		@Config.Comment("Whether auto third person is enabled when riding a horse.")
+		public boolean horse = true;
+
+		@Config.Comment("Whether auto third person is enabled when riding a pig.")
+		public boolean pig = true;
+
+		@Config.Comment("Whether auto third person is enabled when riding a boat.")
+		public boolean boat = true;
+
+		@Config.Comment("Whether auto third person is enabled when riding a minecart.")
+		public boolean minecart = true;
+	}
+
 	public static class Client {
 		@Config.RequiresMcRestart
 		@Config.Comment("Enables the Reload Sound System keybind.")
@@ -341,7 +361,9 @@ public class RTConfig {
 		}
 	}
 
-	@Config.Comment("Client-sided (excluding Ding and the time of day overlay)")
+	@Config.Comment("Auto third person")
+	public static AutoThirdPerson autoThirdPerson = new AutoThirdPerson();
+	@Config.Comment("Client-sided")
 	public static Client client = new Client();
 	@Config.Comment("Commands")
 	public static Commands commands = new Commands();
@@ -349,9 +371,9 @@ public class RTConfig {
 	public static Ding ding = new Ding();
 	@Config.Comment("General")
 	public static General general = new General();
-	@Config.Comment("Ocean Floor")
+	@Config.Comment("Ocean floor")
 	public static OceanFloor oceanFloor = new OceanFloor();
-	@Config.Comment("Player Head Drops")
+	@Config.Comment("Player head drops")
 	public static PlayerHeadDrops playerHeadDrops = new PlayerHeadDrops();
 	@Config.Comment("World")
 	public static World world = new World();
