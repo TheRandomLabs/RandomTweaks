@@ -9,6 +9,7 @@ import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
+import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
@@ -25,6 +26,10 @@ public class MiscClientEventHandler {
 			new KeyBinding("key.clearChat", Keyboard.KEY_I, "key.categories.randomtweaks");
 	public static final KeyBinding NOCLIP =
 			new KeyBinding("key.noclip", Keyboard.KEY_F4, "key.categories.randomtweaks");
+	public static final KeyBinding TOGGLE_FOV_CHANGES = new KeyBinding("key.toggleFoVChanges",
+			Keyboard.KEY_RMENU, "key.categories.randomtweaks");
+
+	private static boolean fovChangesEnabled = RTConfig.client.fovChangesEnabledByDefault;
 
 	@SubscribeEvent
 	public static void onKeyInput(InputEvent.KeyInputEvent event) {
@@ -36,9 +41,11 @@ public class MiscClientEventHandler {
 
 		if(CLEAR_CHAT.isActiveAndMatches(key)) {
 			final GuiIngame ingameGUI = Minecraft.getMinecraft().ingameGUI;
+
 			if(ingameGUI != null) {
 				Compat.clearChatMessages(ingameGUI.getChatGUI());
 			}
+
 			return;
 		}
 
@@ -46,6 +53,12 @@ public class MiscClientEventHandler {
 			final EntityPlayerSP player = Minecraft.getMinecraft().player;
 			final String gamemode = player.isCreative() ? "sp" : "c";
 			player.sendChatMessage("/gamemode " + gamemode);
+
+			return;
+		}
+
+		if(TOGGLE_FOV_CHANGES.isActiveAndMatches(key)) {
+			fovChangesEnabled = !fovChangesEnabled;
 		}
 	}
 
@@ -56,6 +69,10 @@ public class MiscClientEventHandler {
 
 		if(RTConfig.client.noclipKeybind) {
 			ClientRegistry.registerKeyBinding(NOCLIP);
+		}
+
+		if(RTConfig.client.toggleFoVChangesKeybind) {
+			ClientRegistry.registerKeyBinding(TOGGLE_FOV_CHANGES);
 		}
 	}
 
@@ -85,6 +102,13 @@ public class MiscClientEventHandler {
 		if(RTConfig.client.disableEnderDragonDeathSound &&
 				event.getName().equals("entity.enderdragon.death")) {
 			event.setResultSound(null);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onFoVUpdate(FOVUpdateEvent event) {
+		if(!fovChangesEnabled) {
+			event.setNewfov(1.0F);
 		}
 	}
 }

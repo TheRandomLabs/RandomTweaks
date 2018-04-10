@@ -1,5 +1,7 @@
 package com.therandomlabs.randomtweaks.client;
 
+import java.security.SecureRandom;
+import java.util.Random;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import net.minecraft.client.Minecraft;
@@ -16,18 +18,20 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-//Concept taken from:
-//https://github.com/iChun/Ding/blob/master/src/main/java/me/ichun/mods/ding/common/core/Ding.java
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class DingHandler {
+	private static final Random random = new SecureRandom();
+
 	private static boolean mainMenuPlayed;
 	private static boolean playWorld;
 
 	@SubscribeEvent
 	public static void onGuiOpen(GuiOpenEvent event) {
 		if(event.getGui() instanceof GuiMainMenu && !mainMenuPlayed) {
+			final int index = random.nextInt(RTConfig.ding.soundNames.length);
+			playSound(RTConfig.ding.soundNames[index], RTConfig.ding.soundPitch);
+
 			mainMenuPlayed = true;
-			playSound(RTConfig.ding.soundName, RTConfig.ding.soundPitch);
 		}
 	}
 

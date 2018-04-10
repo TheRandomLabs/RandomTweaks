@@ -4,6 +4,7 @@ import com.therandomlabs.randomtweaks.client.command.ClientCommandRegistry;
 import com.therandomlabs.randomtweaks.common.CommonProxy;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.util.Compat;
+import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
@@ -28,10 +29,6 @@ public final class ClientProxy extends CommonProxy {
 			createSpawnEggsCreativeTab();
 		}
 
-		if(RTConfig.client.contributorCapes) {
-			CapeHandler.downloadPlayers();
-		}
-
 		ClientCommandRegistry.register();
 	}
 
@@ -49,7 +46,12 @@ public final class ClientProxy extends CommonProxy {
 	}
 
 	private static void createSpawnEggsCreativeTab() {
-		final CreativeTabs SPAWN_EGGS = new CreativeTabs("spawnEggs") {
+		//Compat.CreativeTab will crash in a 1.10 development environment
+		if(Utils.isDeobfuscated() && Compat.IS_ONE_POINT_TEN) {
+			return;
+		}
+
+		final CreativeTabs SPAWN_EGGS = new Compat.CreativeTab("spawnEggs") {
 			@SideOnly(Side.CLIENT)
 			@Override
 			public ItemStack getTabIconItem() {
@@ -59,10 +61,9 @@ public final class ClientProxy extends CommonProxy {
 				return stack;
 			}
 
-			//In 1.10, getTabIconItem returns an Item, not an ItemStack, so we'll just
-			//use the obfuscated name
 			@SideOnly(Side.CLIENT)
-			public Item func_78016_d() {
+			@Override
+			public Item getTabIconItem110() {
 				return Items.SPAWN_EGG;
 			}
 		};

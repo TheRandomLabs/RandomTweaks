@@ -49,7 +49,7 @@ public class RTConfig {
 		public boolean spawnEggsCreativeTab = true;
 
 		@Config.RequiresMcRestart
-		@Config.Comment("Enables Contributor Capes.")
+		@Config.Comment("Enables contributor capes.")
 		public boolean contributorCapes = true;
 
 		@Config.Comment("Disables the Wither spawn sound.")
@@ -63,6 +63,12 @@ public class RTConfig {
 
 		@Config.Comment("Removes underwater fog.")
 		public boolean clearWater = true;
+
+		@Config.Comment("Enables a keybind to disable FoV changes.")
+		public boolean toggleFoVChangesKeybind;
+
+		@Config.Comment("Whether FoV changes are enabled by default.")
+		public boolean fovChangesEnabledByDefault = true;
 	}
 
 	public static class Commands {
@@ -97,9 +103,11 @@ public class RTConfig {
 		@Config.Comment("Disables this feature if iChun's Ding is installed.")
 		public boolean disableIfDingIsInstalled = true;
 
-		@Config.Comment("The name of the sound to play when Minecraft starts. " +
+		@Config.Comment("The names of the sounds to play when Minecraft starts. " +
 				"Leave this empty to disable it.")
-		public String soundName = "entity.experience_orb.pickup";
+		public String[] soundNames = new String[] {
+				"entity.experience_orb.pickup"
+		};
 
 		@Config.RangeDouble(min = 0.0, max = 10.0)
 		@Config.Comment("The pitch of the sound to play when Minecraft starts.")

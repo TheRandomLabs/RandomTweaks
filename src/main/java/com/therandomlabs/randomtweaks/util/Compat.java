@@ -3,9 +3,11 @@ package com.therandomlabs.randomtweaks.util;
 import java.lang.reflect.Method;
 import java.util.Random;
 import net.minecraft.client.gui.GuiNewChat;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -18,6 +20,8 @@ import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindMethodException;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class Compat {
 	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12,1.13)";
@@ -26,6 +30,26 @@ public final class Compat {
 
 	private static final Method SPAWN_SHOULDER_ENTITIES =
 			findMethod(EntityPlayer.class, "spawnShoulderEntities", "func_192030_dh");
+
+	public static abstract class CreativeTab extends CreativeTabs {
+		public CreativeTab(String label) {
+			super(label);
+		}
+
+		@SideOnly(Side.CLIENT)
+		@Override
+		public abstract ItemStack getTabIconItem();
+
+		@SideOnly(Side.CLIENT)
+		public abstract Item getTabIconItem110();
+
+		//In 1.10, getTabIconItem returns an Item, not an ItemStack, so we use the obfuscated name
+		//Hacky, I know, and this will cause a crash in a 1.10 development environment
+		@SideOnly(Side.CLIENT)
+		public final Item func_78016_d() {
+			return getTabIconItem110();
+		}
+	}
 
 	public interface ICompatChunkGenerator extends IChunkGenerator {}
 
