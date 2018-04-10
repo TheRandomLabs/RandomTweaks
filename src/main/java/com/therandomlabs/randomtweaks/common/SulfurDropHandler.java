@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
-public final class DropHandler {
+public final class SulfurDropHandler {
 	@GameRegistry.ObjectHolder("nuclearcraft:gem_dust")
 	public static final Item NC_GEM_DUST = null;
 	public static final int NC_SULFUR_META = 6;

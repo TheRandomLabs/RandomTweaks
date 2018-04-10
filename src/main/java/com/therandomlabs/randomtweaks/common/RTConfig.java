@@ -170,6 +170,14 @@ public class RTConfig {
 
 		@Config.Comment("Replaces NuclearCraft Sulfur drops with Thermal Expansion Sulfur.")
 		public boolean dropTESulfur;
+
+		@Config.RangeInt(min = 0)
+		@Config.Comment("The interval between every check for unused dimensions in ticks. " +
+				"Set this to 0 to disable the check.")
+		public int dimensionUnloadCheckInterval = 600;
+
+		@Config.Comment("Disables the cumulative anvil cost.")
+		public boolean disableCumulativeAnvilCost = true;
 	}
 
 	public static class OceanFloor {
