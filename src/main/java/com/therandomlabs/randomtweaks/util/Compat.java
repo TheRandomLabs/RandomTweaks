@@ -67,7 +67,7 @@ public final class Compat {
 		public abstract Item getTabIconItem110();
 
 		//In 1.10, getTabIconItem returns an Item, not an ItemStack, so we use the obfuscated name
-		//Hacky, I know, and this will cause a crash in a 1.10 development environment
+		//Hacky, I know, and this won't work in a 1.10 development environment
 		@SideOnly(Side.CLIENT)
 		public final Item func_78016_d() {
 			return getTabIconItem110();

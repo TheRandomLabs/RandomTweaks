@@ -47,11 +47,6 @@ public final class ClientProxy extends CommonProxy {
 	}
 
 	private static void createSpawnEggsCreativeTab() {
-		//Compat.CreativeTab will crash in a 1.10 development environment
-		if(Utils.isDeobfuscated() && Compat.IS_ONE_POINT_TEN) {
-			return;
-		}
-
 		final CreativeTabs SPAWN_EGGS = new Compat.CreativeTab("spawnEggs") {
 			@SideOnly(Side.CLIENT)
 			@Override
