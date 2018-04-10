@@ -10,8 +10,15 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 
 public class ChunkGeneratorVoidIslands extends Compat.ChunkGeneratorCompatOverworld {
+	private static final IForgeRegistry<Biome> BIOME_REGISTRY =
+			GameRegistry.findRegistry(Biome.class);
+
+	private static String biomeName;
+	private static Biome biome;
+
 	private final World world;
 	private final Random random;
 
@@ -30,16 +37,23 @@ public class ChunkGeneratorVoidIslands extends Compat.ChunkGeneratorCompatOverwo
 
 		final Chunk chunk = new Chunk(world, x, z);
 
-		Biome biome = GameRegistry.findRegistry(Biome.class).getValue(
-				new ResourceLocation(RTConfig.world.voidIslandsWorldBiome));
-		if(biome == null) {
-			biome = Biomes.PLAINS;
-		}
-
 		final byte[] biomeArray = new byte[256];
-		Arrays.fill(biomeArray, (byte) Biome.getIdForBiome(biome));
+		Arrays.fill(biomeArray, (byte) Biome.getIdForBiome(getBiome()));
 		chunk.setBiomeArray(biomeArray);
 
 		return chunk;
+	}
+
+	public static Biome getBiome() {
+		if(biome == null || !RTConfig.world.voidIslandsWorldBiome.equals(biomeName)) {
+			biomeName = RTConfig.world.voidIslandsWorldBiome;
+			biome = BIOME_REGISTRY.getValue(new ResourceLocation(biomeName));
+
+			if(biome == null) {
+				biome = Biomes.PLAINS;
+			}
+		}
+
+		return biome;
 	}
 }

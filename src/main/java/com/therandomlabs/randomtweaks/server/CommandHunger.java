@@ -32,7 +32,9 @@ public class CommandHunger extends CommandBase {
 
 		final EntityPlayer player = getPlayer(server, sender, args[0]);
 		final FoodStats stats = player.getFoodStats();
+
 		stats.setFoodLevel(parseInt(args[1]));
+
 		if(args.length > 2) {
 			try {
 				Utils.setSaturation(stats, (float) parseDouble(args[2]));
@@ -52,7 +54,7 @@ public class CommandHunger extends CommandBase {
 			String[] args, BlockPos targetPos) {
 		return args.length == 1 ?
 				getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames()) :
-					Collections.<String>emptyList();
+				Collections.emptyList();
 	}
 
 	@Override

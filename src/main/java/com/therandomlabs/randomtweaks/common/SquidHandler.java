@@ -50,14 +50,14 @@ public final class SquidHandler {
 
 	public static boolean tooManySquids(LivingSpawnEvent.CheckSpawn event) {
 		switch(RTConfig.squids.chunkLimit) {
-		case SQUID_SPAWNING_DISABLED:
-			return true;
-		case CHUNK_LIMIT_DISABLED:
-			return false;
-		default:
-			return event.getWorld().getEntities(EntitySquid.class,
-					entity -> isInChunk(entity, event)).
-					size() >= RTConfig.squids.chunkLimit;
+			case SQUID_SPAWNING_DISABLED:
+				return true;
+			case CHUNK_LIMIT_DISABLED:
+				return false;
+			default:
+				return event.getWorld().getEntities(EntitySquid.class,
+						entity -> isInChunk(entity, event)).
+						size() >= RTConfig.squids.chunkLimit;
 		}
 	}
 

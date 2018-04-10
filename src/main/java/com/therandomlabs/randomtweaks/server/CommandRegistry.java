@@ -29,7 +29,7 @@ public final class CommandRegistry {
 
 	public static void serverStarted(FMLServerStartedEvent event) {
 		if(RTConfig.commands.helpTweaks) {
-			CommandRTHelp.serverStarted(event);
+			CommandRTHelp.serverStarted();
 		}
 	}
 }

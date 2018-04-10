@@ -38,7 +38,27 @@ public final class Compat {
 			findMethod(ConfigManager.class, "load", "load", String.class, Config.Type.class);
 	private static Method CLEAR_CHAT_MESSAGES;
 
-	public static interface ICompatChunkGenerator extends IChunkGenerator {
+	public static abstract class CreativeTab extends CreativeTabs {
+		public CreativeTab(String label) {
+			super(label);
+		}
+
+		@SideOnly(Side.CLIENT)
+		@Override
+		public abstract ItemStack getTabIconItem();
+
+		@SideOnly(Side.CLIENT)
+		public abstract Item getTabIconItem110();
+
+		//In 1.10, getTabIconItem returns an Item, not an ItemStack, so we use the obfuscated name
+		//Hacky, I know, and this will cause a crash in a 1.10 development environment
+		@SideOnly(Side.CLIENT)
+		public final Item func_78016_d() {
+			return getTabIconItem110();
+		}
+	}
+
+	public interface ICompatChunkGenerator extends IChunkGenerator {
 		boolean isInsideStructure(World world, String structureName, BlockPos pos);
 	}
 
@@ -90,22 +110,6 @@ public final class Compat {
 		} else {
 			player.sendStatusMessage(message, true);
 		}
-	}
-
-	public static Field findField(Class<?> clazz, String... fieldNames) {
-		try {
-			for(String fieldName : fieldNames) {
-				try {
-					final Field field = clazz.getDeclaredField(fieldName);
-					field.setAccessible(true);
-					return field;
-				} catch(NoSuchFieldException ex) {}
-			}
-		} catch(Exception ex) {
-			throw new UnableToFindFieldException(fieldNames, ex);
-		}
-
-		return null;
 	}
 
 	public static Method findMethod(Class<?> clazz, String methodName, String obfuscatedName,
@@ -194,7 +198,7 @@ public final class Compat {
 			return ((String) MinecraftForge.class.getDeclaredField("MC_VERSION").get(null)).
 					startsWith("1.10");
 		} catch(Exception ex) {
-			Utils.crashReport("RandomTweaks could not get the current Minecraft version", ex);
+			Utils.crashReport("RandomTweaks could not retrieve the current Minecraft version", ex);
 		}
 		return false;
 	}

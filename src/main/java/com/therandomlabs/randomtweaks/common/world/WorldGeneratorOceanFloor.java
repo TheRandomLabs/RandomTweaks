@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.common.world;
 
+import java.util.Random;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.block.state.pattern.BlockMatcher;
@@ -10,7 +11,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraft.world.gen.feature.WorldGenerator;
-import java.util.Random;
 
 public class WorldGeneratorOceanFloor extends Compat.ICompatWorldGenerator {
 	private static final BlockMatcher GRAVEL = BlockMatcher.forBlock(Blocks.GRAVEL);
@@ -39,7 +39,7 @@ public class WorldGeneratorOceanFloor extends Compat.ICompatWorldGenerator {
 	}
 
 	private void generate(WorldGenerator generator, int chance, Random random, int chunkX,
-						  int chunkZ, World world) {
+			int chunkZ, World world) {
 		final int yDifference = RTConfig.oceanFloor.maxY - RTConfig.oceanFloor.minY;
 		final int x = chunkX * 16;
 		final int z = chunkZ * 16;
@@ -50,6 +50,7 @@ public class WorldGeneratorOceanFloor extends Compat.ICompatWorldGenerator {
 					RTConfig.oceanFloor.minY + random.nextInt(yDifference),
 					z + random.nextInt(16)
 			);
+
 			final Biome biome = world.getBiome(pos);
 			if(biome.getRegistryName().getResourcePath().contains("ocean")) {
 				generator.generate(world, random, pos);

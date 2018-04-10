@@ -52,12 +52,12 @@ public enum Alignment {
 		x += defaultX;
 
 		switch(alignment & MASK_X) {
-		case LEFT:
-			return x;
-		case CENTER:
-			return x + (screenWidth - textWidth) / 2;
-		case RIGHT:
-			return x + screenWidth - textWidth;
+			case LEFT:
+				return x;
+			case CENTER:
+				return x + (screenWidth - textWidth) / 2;
+			case RIGHT:
+				return x + screenWidth - textWidth;
 		}
 		return 0;
 	}
@@ -66,12 +66,12 @@ public enum Alignment {
 		y += defaultY;
 
 		switch(alignment & MASK_Y) {
-		case TOP:
-			return y;
-		case MIDDLE:
-			return y + (screenHeight - textHeight) / 2;
-		case BOTTOM:
-			return y + screenHeight - textHeight;
+			case TOP:
+				return y;
+			case MIDDLE:
+				return y + (screenHeight - textHeight) / 2;
+			case BOTTOM:
+				return y + screenHeight - textHeight;
 		}
 		return 0;
 	}

@@ -1,4 +1,4 @@
-package com.therandomlabs.randomtweaks.client.command;
+package com.therandomlabs.randomtweaks.client;
 
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.util.Utils;
@@ -7,6 +7,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.client.ClientCommandHandler;
 
 public class CommandRtreloadClient extends CommandBase {
 	@Override
@@ -31,5 +32,9 @@ public class CommandRtreloadClient extends CommandBase {
 			throw new CommandException(Utils.localize("commands.rtreload.failure",
 					ex.getClass().getName() + ": " + ex.getMessage()));
 		}
+	}
+
+	public static void register() {
+		ClientCommandHandler.instance.registerCommand(new CommandRtreloadClient());
 	}
 }

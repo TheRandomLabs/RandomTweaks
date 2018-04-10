@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.server;
 
+import java.util.List;
 import com.therandomlabs.randomtweaks.util.Compat;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandException;
@@ -17,6 +18,7 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.SoundCategory;
+import net.minecraftforge.oredict.OreDictionary;
 
 public class CommandRTGive extends CommandGive {
 	@Override
@@ -29,16 +31,26 @@ public class CommandRTGive extends CommandGive {
 		final EntityPlayer player = getPlayer(server, sender, args[0]);
 
 		Item item = null;
+		int meta = args.length > 3 ? parseInt(args[3]) : 0;
+
+		if(args[1].startsWith("ore:")) {
+			final List<ItemStack> ores = OreDictionary.getOres(args[1].substring(4));
+			if(!ores.isEmpty()) {
+				item = ores.get(0).getItem();
+				meta = ores.get(0).getItemDamage();
+			}
+		}
+
 		try {
 			item = Item.getItemById(parseInt(args[1], 1));
-		} catch(NumberInvalidException ex) {}
+		} catch(NumberInvalidException ignored) {}
 
 		if(item == null) {
 			item = getItemByText(sender, args[1]);
 		}
 
 		final int amount = args.length > 2 ? parseInt(args[2], 1) : 1;
-		final int meta = args.length > 3 ? parseInt(args[3]) : 0;
+
 		final ItemStack stack = new ItemStack(item, amount, meta);
 
 		if(args.length > 4) {
@@ -53,10 +65,11 @@ public class CommandRTGive extends CommandGive {
 
 		final boolean added = player.inventory.addItemStackToInventory(stack);
 		if(added) {
-			player.getEntityWorld().playSound((EntityPlayer) null, player.posX, player.posY,
-					player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
+			player.getEntityWorld().playSound(null, player.posX, player.posY, player.posZ,
+					SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
 					((player.getRNG().nextFloat() - player.getRNG().nextFloat()) * 0.7F + 1.0F) *
-					2.0F);
+							2.0F);
+
 			Compat.detectAndSendChanges(player.inventoryContainer);
 
 			if(Compat.isEmpty(stack)) {
@@ -71,6 +84,7 @@ public class CommandRTGive extends CommandGive {
 				sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS, amount);
 
 				final EntityItem droppedItem = player.dropItem(stack, false);
+
 				if(droppedItem != null) {
 					droppedItem.makeFakeItem();
 				}
@@ -85,6 +99,7 @@ public class CommandRTGive extends CommandGive {
 				}
 
 				final EntityItem droppedItem = player.dropItem(stack, false);
+
 				if(droppedItem != null) {
 					droppedItem.setNoPickupDelay();
 					droppedItem.setOwner(player.getName());

@@ -16,7 +16,7 @@ public final class PetProtectionHandler {
 		final EntityLivingBase entity = event.getEntityLiving();
 		final DamageSource source = event.getSource();
 
-		if(entity == null || !(entity instanceof IEntityOwnable) || source == null) {
+		if(!(entity instanceof IEntityOwnable) || source == null) {
 			return;
 		}
 
