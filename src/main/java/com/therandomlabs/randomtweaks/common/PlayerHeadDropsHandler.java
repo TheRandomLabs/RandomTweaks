@@ -27,12 +27,12 @@ public final class PlayerHeadDropsHandler {
 		if(source instanceof EntityCreeper) {
 			final EntityCreeper creeper = (EntityCreeper) source;
 
-			if(creeper.getPowered() && Compat.ableToCauseSkullDrop(creeper) &&
-					dropSkull(player, RTConfig.playerHeadDrops.chanceWhenKilledByChargedCreeper)) {
-				creeper.incrementDroppedSkulls();
+			if(creeper.getPowered() && Compat.ableToCauseSkullDrop(creeper)) {
+				if(dropSkull(player, RTConfig.playerHeadDrops.chanceWhenKilledByChargedCreeper)) {
+					creeper.incrementDroppedSkulls();
+					return;
+				}
 			}
-
-			return;
 		}
 
 		if(source != player && source instanceof EntityPlayer) {

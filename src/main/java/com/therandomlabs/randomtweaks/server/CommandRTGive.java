@@ -1,6 +1,9 @@
 package com.therandomlabs.randomtweaks.server;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import javax.annotation.Nullable;
 import com.therandomlabs.randomtweaks.util.Compat;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandException;
@@ -18,6 +21,7 @@ import net.minecraft.nbt.JsonToNBT;
 import net.minecraft.nbt.NBTException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.SoundCategory;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.oredict.OreDictionary;
 
 public class CommandRTGive extends CommandGive {
@@ -109,5 +113,20 @@ public class CommandRTGive extends CommandGive {
 			notifyCommandListener(sender, this, "commands.give.success", stack.getTextComponent(),
 					amount, player.getName());
 		}
+	}
+
+	@Override
+	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender,
+			String[] args, @Nullable BlockPos targetPos) {
+		final List<String> tabCompletions =
+				super.getTabCompletions(server, sender, args, targetPos);
+		if(args.length == 2) {
+			tabCompletions.addAll(
+					Arrays.stream(OreDictionary.getOreNames()).
+							map(name -> "ore:" + name).
+							collect(Collectors.toList())
+			);
+		}
+		return tabCompletions;
 	}
 }

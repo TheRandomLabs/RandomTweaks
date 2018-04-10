@@ -89,6 +89,10 @@ public class RTConfig {
 
 		@Config.Comment("Whether FoV changes are enabled by default.")
 		public boolean fovChangesEnabledByDefault = true;
+
+		@Config.Comment("Whether the shortened versions of the gamemode commands (/gms, /gmc, " +
+				"/gma and /gmsp) should be replaced by the longer ones before being sent.")
+		public boolean shortGamemodeCommands = true;
 	}
 
 	public static class Commands {
