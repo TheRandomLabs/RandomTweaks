@@ -125,7 +125,7 @@ public class RTConfig {
 
 	public static class General {
 		@Config.RequiresMcRestart
-		@Config.Comment("Enables more Roman numerals (Roman numerals from -32768 to 32767).")
+		@Config.Comment("Enables Roman numerals from -32768 to 32767.")
 		public boolean moreRomanNumerals = true;
 
 		@Config.Comment("Ocelots can be healed with fish.")
@@ -196,6 +196,23 @@ public class RTConfig {
 		@Config.RangeInt(min = 0)
 		@Config.Comment("The maximum Y value.")
 		public int maxY = 128;
+	}
+
+	public static class PlayerHeadDrops {
+		@Config.Comment("Whether players should drop their heads when they die.")
+		public boolean enabled = true;
+
+		@Config.RangeDouble(min = 0.0, max = 1.0)
+		@Config.Comment("The normal player head drop chance.")
+		public double normalChance = 1.0;
+
+		@Config.RangeDouble(min = 0.0, max = 1.0)
+		@Config.Comment("The player head drop chance when a player is killed by another player.")
+		public double chanceWhenKilledByPlayer = 1.0;
+
+		@Config.RangeDouble(min = 0.0, max = 1.0)
+		@Config.Comment("The player head drop chance when a player is killed by a charged creeper.")
+		public double chanceWhenKilledByChargedCreeper = 1.0;
 	}
 
 	public static class World {
@@ -334,6 +351,8 @@ public class RTConfig {
 	public static General general = new General();
 	@Config.Comment("Ocean Floor")
 	public static OceanFloor oceanFloor = new OceanFloor();
+	@Config.Comment("Player Head Drops")
+	public static PlayerHeadDrops playerHeadDrops = new PlayerHeadDrops();
 	@Config.Comment("World")
 	public static World world = new World();
 	@Config.Comment("Respawn behavior")

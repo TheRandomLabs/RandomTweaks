@@ -21,7 +21,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
-public class MiscClientEventHandler {
+public final class MiscClientEventHandler {
 	public static final KeyBinding CLEAR_CHAT =
 			new KeyBinding("key.clearChat", Keyboard.KEY_I, "key.categories.randomtweaks");
 	public static final KeyBinding NOCLIP =
