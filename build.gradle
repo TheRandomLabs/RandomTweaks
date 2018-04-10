@@ -5,6 +5,7 @@ buildscript {
 			url = "http://files.minecraftforge.net/maven"
 		}
 	}
+
 	dependencies {
 		classpath "net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT"
 	}
@@ -17,6 +18,7 @@ group = "com.therandomlabs.randomtweaks"
 archivesBaseName = "randomtweaks"
 
 sourceCompatibility = targetCompatibility = "1.8"
+
 compileJava {
 	sourceCompatibility = targetCompatibility = "1.8"
 }
@@ -31,7 +33,7 @@ minecraft {
 }
 
 processResources {
-	//This will ensure that this task is redone when the versions change.
+	//Ensure this task is redone when the versions change
 	inputs.property "version", project.version
 	inputs.property "mcversion", project.minecraft.version
 
