@@ -3,17 +3,22 @@ package com.therandomlabs.randomtweaks.util;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Random;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiNewChat;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.world.World;
+import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderOverworld;
@@ -21,22 +26,32 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.common.IWorldGenerator;
-import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindFieldException;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.fml.common.registry.IForgeRegistry;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindMethodException;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 
 public final class Compat {
 	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.10,1.12)";
 	public static final boolean IS_ONE_POINT_TEN = isOnePointTen();
 	public static final String CHICKEN_ENTITY_NAME = IS_ONE_POINT_TEN ? "Chicken" : "chicken";
 
-	private static final Field STACK_SIZE =
-			findField(ItemStack.class, "stackSize", "field_77994_a");
-	private static final Method ADD_CHAT_COMPONENT_MESSAGE =
+	public static final IForgeRegistry<Block> BLOCK_REGISTRY =
+			GameRegistry.findRegistry(Block.class);
+	public static final IForgeRegistry<Biome> BIOME_REGISTRY =
+			GameRegistry.findRegistry(Biome.class);
+
+	public static final Field STACK_SIZE =
+			ReflectionHelper.findField(ItemStack.class, "stackSize", "field_77994_a");
+	public static final Method ADD_CHAT_COMPONENT_MESSAGE =
 			findMethod(EntityPlayer.class, "addChatComponentMessage", "func_146105_b",
 					ITextComponent.class);
-	private static final Method LOAD =
+	public static final Method LOAD =
 			findMethod(ConfigManager.class, "load", "load", String.class, Config.Type.class);
-	private static Method CLEAR_CHAT_MESSAGES;
+	public static final Method CLEAR_CHAT_MESSAGES = isOnePointTen() ?
+			findMethod(GuiNewChat.class, "clearChatMessages", "func_146231_a") : null;
 
 	public static abstract class CreativeTab extends CreativeTabs {
 		public CreativeTab(String label) {
@@ -65,7 +80,7 @@ public final class Compat {
 	public static abstract class ICompatWorldGenerator implements IWorldGenerator {
 		@Override
 		public void generate(Random random, int chunkX, int chunkZ, World world,
-							 IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+				IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
 			generate(random, chunkX, chunkZ, world);
 		}
 
@@ -147,10 +162,6 @@ public final class Compat {
 	public static void clearChatMessages(GuiNewChat chat) {
 		if(IS_ONE_POINT_TEN) {
 			try {
-				if(CLEAR_CHAT_MESSAGES == null) {
-					CLEAR_CHAT_MESSAGES =
-							findMethod(GuiNewChat.class, "clearChatMessages", "func_146231_a");
-				}
 				CLEAR_CHAT_MESSAGES.invoke(chat);
 			} catch(Exception ex) {
 				Utils.crashReport("Could not clear chat mesages", ex);
@@ -173,11 +184,11 @@ public final class Compat {
 						position.getZ()
 				).expand(8.0, 5.0, 8.0),
 				mob -> isZombiePigmanAngry(mob) && !mob.hasCustomName()).
-		isEmpty();
+				isEmpty();
 	}
 
 	private static boolean isZombiePigmanAngry(Entity pigman) {
-		return pigman instanceof EntityPigZombie ? ((EntityPigZombie) pigman).isAngry() : true;
+		return !(pigman instanceof EntityPigZombie) || ((EntityPigZombie) pigman).isAngry();
 	}
 
 	public static String buildString(String[] args, int startIndex) {
@@ -192,6 +203,16 @@ public final class Compat {
 	}
 
 	public static void detectAndSendChanges(Container container) {}
+
+	public static Block getBlock(String blockName, Block defaultBlock) {
+		final Block block = BLOCK_REGISTRY.getValue(new ResourceLocation(blockName));
+		return block == null ? defaultBlock : block;
+	}
+
+	public static Biome getBiome(String biomeName, Biome defaultBiome) {
+		final Biome biome = BIOME_REGISTRY.getValue(new ResourceLocation(biomeName));
+		return biome == null ? defaultBiome : biome;
+	}
 
 	private static boolean isOnePointTen() {
 		try {

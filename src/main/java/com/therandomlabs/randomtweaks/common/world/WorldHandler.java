@@ -4,11 +4,11 @@ import java.util.Map;
 import java.util.Map.Entry;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
+import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.DimensionType;
@@ -18,14 +18,9 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.registries.IForgeRegistry;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class WorldHandler {
-	private static final IForgeRegistry<Block> BLOCK_REGISTRY =
-			GameRegistry.findRegistry(Block.class);
-
 	@SubscribeEvent
 	public static void onCreateSpawn(WorldEvent.CreateSpawnPosition event) throws Exception {
 		final World world = event.getWorld();
@@ -87,11 +82,7 @@ public final class WorldHandler {
 			return;
 		}
 
-		Block block = BLOCK_REGISTRY.getValue(new ResourceLocation(RTConfig.world.voidWorldBlock));
-		if(block == null) {
-			block = Blocks.GLASS;
-		}
-
+		final Block block = Compat.getBlock(RTConfig.world.voidWorldBlock, Blocks.GLASS);
 		world.setBlockState(spawnBlock, block.getDefaultState());
 	}
 
