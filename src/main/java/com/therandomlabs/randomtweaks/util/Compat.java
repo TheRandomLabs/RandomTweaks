@@ -7,6 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
@@ -212,6 +213,10 @@ public final class Compat {
 	public static Biome getBiome(String biomeName, Biome defaultBiome) {
 		final Biome biome = BIOME_REGISTRY.getValue(new ResourceLocation(biomeName));
 		return biome == null ? defaultBiome : biome;
+	}
+
+	public static boolean ableToCauseSkullDrop(EntityCreeper creeper) {
+		return creeper.isAIEnabled();
 	}
 
 	private static boolean isOnePointTen() {

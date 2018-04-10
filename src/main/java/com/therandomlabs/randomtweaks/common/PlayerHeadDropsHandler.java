@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.common;
 
+import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,7 +27,7 @@ public final class PlayerHeadDropsHandler {
 		if(source instanceof EntityCreeper) {
 			final EntityCreeper creeper = (EntityCreeper) source;
 
-			if(creeper.getPowered() && creeper.ableToCauseSkullDrop() &&
+			if(creeper.getPowered() && Compat.ableToCauseSkullDrop(creeper) &&
 					dropSkull(player, RTConfig.playerHeadDrops.chanceWhenKilledByChargedCreeper)) {
 				creeper.incrementDroppedSkulls();
 			}
