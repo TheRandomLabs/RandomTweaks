@@ -1,6 +1,5 @@
 package com.therandomlabs.randomtweaks.client;
 
-import com.therandomlabs.randomtweaks.client.command.ClientCommandRegistry;
 import com.therandomlabs.randomtweaks.common.CommonProxy;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.util.Compat;
@@ -29,7 +28,9 @@ public final class ClientProxy extends CommonProxy {
 			createSpawnEggsCreativeTab();
 		}
 
-		ClientCommandRegistry.register();
+		if(RTConfig.commands.rtreloadclient) {
+			CommandRtreloadClient.register();
+		}
 	}
 
 	@Override
