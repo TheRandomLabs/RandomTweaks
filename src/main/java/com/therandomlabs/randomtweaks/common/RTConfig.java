@@ -81,7 +81,8 @@ public class RTConfig {
 		public boolean hunger = true;
 
 		@Config.RequiresWorldRestart
-		@Config.Comment("Allows /give to accept integer IDs and amounts higher than 64.")
+		@Config.Comment("Allows /give to accept integer IDs, amounts higher than 64, and " +
+				"ore dictionary names prefixed by \"ore:\".")
 		public boolean giveTweaks = true;
 
 		@Config.RequiresWorldRestart
