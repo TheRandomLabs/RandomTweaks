@@ -8,6 +8,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
@@ -74,6 +75,27 @@ public final class MiscClientEventHandler {
 		if(RTConfig.client.toggleFoVChangesKeybind) {
 			ClientRegistry.registerKeyBinding(TOGGLE_FOV_CHANGES);
 		}
+	}
+
+	@SubscribeEvent
+	public static void onChat(ClientChatEvent event) {
+		if(!RTConfig.client.shortGamemodeCommands) {
+			return;
+		}
+
+		String message = event.getMessage();
+
+		if(message.startsWith("/gms")) {
+			message = message.replace("/gms", "/gamemode 0");
+		} else if(message.startsWith("/gmc")) {
+			message = message.replace("/gmc", "/gamemode 1");
+		} else if(message.startsWith("/gma")) {
+			message = message.replace("/gma", "/gamemode 2");
+		} else if(message.startsWith("/gmsp")) {
+			message = message.replace("/gmsp", "/gamemode 3");
+		}
+
+		event.setMessage(message);
 	}
 
 	@SubscribeEvent
