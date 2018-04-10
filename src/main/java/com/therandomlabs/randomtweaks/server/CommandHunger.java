@@ -1,5 +1,7 @@
 package com.therandomlabs.randomtweaks.server;
 
+import java.util.Collections;
+import java.util.List;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -9,8 +11,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.FoodStats;
 import net.minecraft.util.math.BlockPos;
-import java.util.Collections;
-import java.util.List;
 
 public class CommandHunger extends CommandBase {
 	@Override
@@ -32,7 +32,9 @@ public class CommandHunger extends CommandBase {
 
 		final EntityPlayer player = getPlayer(server, sender, args[0]);
 		final FoodStats stats = player.getFoodStats();
+
 		stats.setFoodLevel(parseInt(args[1]));
+
 		if(args.length > 2) {
 			try {
 				Utils.setSaturation(stats, (float) parseDouble(args[2]));
@@ -52,7 +54,7 @@ public class CommandHunger extends CommandBase {
 			String[] args, BlockPos targetPos) {
 		return args.length == 1 ?
 				getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames()) :
-					Collections.<String>emptyList();
+				Collections.emptyList();
 	}
 
 	@Override

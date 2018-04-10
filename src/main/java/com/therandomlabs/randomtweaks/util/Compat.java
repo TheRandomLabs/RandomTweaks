@@ -1,5 +1,7 @@
 package com.therandomlabs.randomtweaks.util;
 
+import java.lang.reflect.Method;
+import java.util.Random;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,11 +17,7 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.common.IWorldGenerator;
-import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindFieldException;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindMethodException;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.Random;
 
 public final class Compat {
 	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12,1.13)";
@@ -29,12 +27,12 @@ public final class Compat {
 	private static final Method SPAWN_SHOULDER_ENTITIES =
 			findMethod(EntityPlayer.class, "spawnShoulderEntities", "func_192030_dh");
 
-	public static interface ICompatChunkGenerator extends IChunkGenerator {}
+	public interface ICompatChunkGenerator extends IChunkGenerator {}
 
 	public static abstract class ICompatWorldGenerator implements IWorldGenerator {
 		@Override
 		public void generate(Random random, int chunkX, int chunkZ, World world,
-							 IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
+				IChunkGenerator chunkGenerator, IChunkProvider chunkProvider) {
 			generate(random, chunkX, chunkZ, world);
 		}
 
@@ -67,22 +65,6 @@ public final class Compat {
 	public static void sendStatusMessage(EntityPlayer player, ITextComponent message)
 			throws Exception {
 		player.sendStatusMessage(message, true);
-	}
-
-	public static Field findField(Class<?> clazz, String... fieldNames) {
-		try {
-			for(String fieldName : fieldNames) {
-				try {
-					final Field field = clazz.getDeclaredField(fieldName);
-					field.setAccessible(true);
-					return field;
-				} catch(NoSuchFieldException ex) {}
-			}
-		} catch(Exception ex) {
-			throw new UnableToFindFieldException(fieldNames, ex);
-		}
-
-		return null;
 	}
 
 	public static Method findMethod(Class<?> clazz, String methodName, String obfuscatedName,
@@ -132,7 +114,7 @@ public final class Compat {
 						position.getZ()
 				).expand(8.0, 5.0, 8.0),
 				mob -> mob.isPreventingPlayerRest(player) && !mob.hasCustomName()).
-		isEmpty();
+				isEmpty();
 	}
 
 	public static String buildString(String[] args, int startIndex) {

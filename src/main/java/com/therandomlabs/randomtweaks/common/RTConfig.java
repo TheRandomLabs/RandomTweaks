@@ -1,6 +1,17 @@
 package com.therandomlabs.randomtweaks.common;
 
-import com.google.gson.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.stream.MalformedJsonException;
 import com.therandomlabs.randomtweaks.util.Alignment;
 import com.therandomlabs.randomtweaks.util.Compat;
@@ -10,13 +21,6 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.lang3.StringUtils;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.regex.Pattern;
-import java.util.regex.PatternSyntaxException;
 
 @EventBusSubscriber
 @Config(modid = RandomTweaks.MODID, name = RandomTweaks.MODID + "/" + RandomTweaks.MODID)
@@ -285,6 +289,7 @@ public class RTConfig {
 
 		public static final Map<String, Boolean> worlds = new HashMap<>();
 
+		@SuppressWarnings("unchecked")
 		public static void loadWorlds() {
 			try {
 				worlds.clear();
@@ -303,7 +308,7 @@ public class RTConfig {
 		public static void saveWorlds() {
 			try {
 				Files.write(getJson("timeofdayoverlayworlds"),
-						Arrays.asList(new Gson().toJson(worlds)));
+						Collections.singletonList(new Gson().toJson(worlds)));
 			} catch(IOException ex) {
 				Utils.crashReport("Failed to save time of day overlay worlds", ex);
 			}
@@ -329,116 +334,8 @@ public class RTConfig {
 	@Config.Comment("Time of day overlay")
 	public static TimeOfDay timeofday = new TimeOfDay();
 
-	private static final List<String> LOG_FILTER_KEYS = Arrays.asList(
-			"disableLogging",
-			"levelFilter",
-			"nameFilter",
-			"messageFilter",
-			"classFilter",
-			"threadFilter",
-			"throwableClassFilter",
-			"throwableMessageFilter"
-	);
-	private static boolean disableLogging;
-	private static Map<String, Pattern> logFilters;
-
 	static {
-		loadLogFilters();
 		TimeOfDay.loadWorlds();
-	}
-
-	public static void createLogFilters() throws IOException {
-		final Path path = getJson("logfilters");
-
-		if(Files.exists(path)) {
-			Files.move(path, Paths.get(path.toString() + "_backup" + System.nanoTime()));
-		}
-
-		Files.write(path, Arrays.asList(
-				"{",
-				"\t\"disableLogging\": false, //Set this to true to disable logging.",
-				"\t\"levelFilter\": \"\", //A regex that matches the level. Example: TRACE|DEBUG",
-				"\t\"nameFilter\": \"\", //A regex that matches the logger name. Example: ^FML$",
-				"\t\"messageFilter\": \"\", //A regex that matches the message. " +
-						"Example: ^Skipping bad option: lastServer: $",
-				"\t\"classFilter\": \"\", //A regex that matches the caller class name. " +
-						"No example yet.",
-				"\t\"throwableClassFilter\": \"\", //A regex that matches the throwable class " +
-						"name, if there is a throwable. " +
-						"Example: ^java.lang.ArrayIndexOutOfBoundsException$",
-				"\t\"throwableMessageFilter\": \"\", //A regex that matches the throwable's " +
-						"message, if there is a throwable. No example yet.",
-				"\t\"threadFilter\": \"\" //A regex that matches the thread name. " +
-						"Example: ^Server thread$",
-				"}"
-		));
-	}
-
-	public static void loadLogFilters() {
-		try {
-			final Path path = getJson("logfilters");
-
-			if(!Files.exists(path)) {
-				final Path alternativePath = Paths.get("logfilters.json");
-				if(Files.exists(alternativePath)) {
-					Files.move(alternativePath, path);
-				} else {
-					createLogFilters();
-				}
-			}
-
-			logFilters = new HashMap<>();
-
-			JsonObject object = null;
-			try {
-				object = readJson(path);
-			} catch(JsonSyntaxException ex) {
-				ex.printStackTrace();
-				err("Invalid JSON. Resetting log filters...");
-
-				createLogFilters();
-				object = readJson(path);
-			}
-
-			for(String key : LOG_FILTER_KEYS) {
-				if(!object.has(key)) {
-					err("\"%s\" is a required value. Resetting log filters...", key);
-
-					createLogFilters();
-					object = readJson(path);
-				}
-
-				try {
-					logFilters.put(key, Pattern.compile(object.get(key).getAsString()));
-				} catch(PatternSyntaxException ex) {
-					err("Invalid pattern specified for \"%s\". Resetting log filters...", key);
-
-					createLogFilters();
-					object = readJson(path);
-
-					logFilters.put(key, Pattern.compile(""));
-				}
-			}
-
-			if(!isBoolean(object.get("disableLogging"))) {
-				err("\"disableLogging\" must be a boolean. Resetting log filters...");
-
-				createLogFilters();
-				object = readJson(path);
-			}
-
-			disableLogging = object.get("disableLogging").getAsBoolean();
-		} catch(IOException ex) {
-			Utils.crashReport("Failed to read log filters", ex);
-		}
-	}
-
-	public static boolean disableLogging() {
-		return disableLogging;
-	}
-
-	public static Map<String, Pattern> logFilters() {
-		return logFilters;
 	}
 
 	public static void createDefaultGamerules() throws IOException {
@@ -475,10 +372,11 @@ public class RTConfig {
 			return Collections.emptyMap();
 		}
 
-		JsonObject object = null;
+		JsonObject object;
 		try {
 			object = readJson(path);
 		} catch(MalformedJsonException ex) {
+			ex.printStackTrace();
 			//WorldCreateHandler sends a server message if this is null saying that the
 			//JSON was invalid, so there's no need to crash the game
 			return null;
@@ -580,7 +478,6 @@ public class RTConfig {
 
 	public static void reloadConfig() {
 		Compat.syncConfig(RandomTweaks.MODID, Config.Type.INSTANCE);
-		loadLogFilters();
 		TimeOfDay.loadWorlds();
 	}
 
@@ -588,15 +485,11 @@ public class RTConfig {
 		try {
 			Files.deleteIfExists(getConfig("../randomtweaks.cfg"));
 			Files.deleteIfExists(getConfig("dontresetconfig.txt"));
+			Files.deleteIfExists(getJson("logfilters"));
 		} catch(IOException ex) {
 			Utils.crashReport("Failed to delete old RandomTweaks files", ex);
 		}
 
 		reloadConfig();
-	}
-
-	private static void err(String message, Object... args) {
-		System.err.printf("[" + RandomTweaks.MODID + "] " + message + System.lineSeparator(),
-				args);
 	}
 }

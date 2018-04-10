@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.common;
 
+import java.util.List;
 import com.therandomlabs.randomtweaks.common.world.WorldGeneratorOceanFloor;
 import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
 import com.therandomlabs.randomtweaks.util.Utils;
@@ -9,7 +10,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import org.apache.logging.log4j.Logger;
-import java.util.List;
 
 public class CommonProxy {
 	public static final Logger LOGGER = RandomTweaks.LOGGER;
@@ -18,6 +18,7 @@ public class CommonProxy {
 		RTConfig.preInit();
 
 		if(Utils.isDeobfuscated()) {
+			//Defaults for testing
 			RTConfig.timeofday.enabledByDefault = true;
 			RTConfig.general.attackSpeed = 24.0;
 			RTConfig.general.dropTESulfur = true;
@@ -30,8 +31,8 @@ public class CommonProxy {
 			try {
 				RTLanguageMap.replaceLanguageMaps();
 			} catch(Exception ex) {
-				LOGGER.error("Failed to replace LanguageMap instances - more Roman numerals " +
-						"feature disabled", ex);
+				LOGGER.error("Failed to replace LanguageMap instances. More Roman numerals " +
+						"feature disabled!", ex);
 			}
 		}
 	}
@@ -45,19 +46,23 @@ public class CommonProxy {
 
 		if(Loader.isModLoaded("surge")) {
 			try {
-				final List<?> features =
-						(List<?>) Class.forName("org.epoxide.surge.features.FeatureManager").
-						getDeclaredField("FEATURES").get(null);
-				for(Object feature : features) {
-					if(feature.getClass().getName().equals(
-							"org.epoxide.surge.features.pigsleep.FeaturePigmanSleep")) {
-						MinecraftForge.EVENT_BUS.unregister(feature);
-						LOGGER.info("Successfully disabled Surge's pigman sleep fix feature!");
-						return;
-					}
-				}
+				disableSurgePigmanSleep();
 			} catch(Exception ex) {
-				LOGGER.error("Failed to disable Surge's pigman sleep fix feature", ex);
+				LOGGER.error("Failed to disable Surge's pigman sleep fix feature!", ex);
+			}
+		}
+	}
+
+	private static void disableSurgePigmanSleep() throws Exception {
+		final Class<?> clazz = Class.forName("org.epoxide.surge.features.FeatureManager");
+		final List<?> features = (List<?>) clazz.getDeclaredField("FEATURES").get(null);
+
+		for(Object feature : features) {
+			final String className = feature.getClass().getName();
+			if(className.equals("org.epoxide.surge.features.pigsleep.FeaturePigmanSleep")) {
+				MinecraftForge.EVENT_BUS.unregister(feature);
+				LOGGER.debug("Successfully disabled Surge's pigman sleep fix feature!");
+				return;
 			}
 		}
 	}

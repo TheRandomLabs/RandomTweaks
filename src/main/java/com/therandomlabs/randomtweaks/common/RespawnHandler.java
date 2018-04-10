@@ -12,15 +12,17 @@ public final class RespawnHandler {
 	public enum HungerBehavior {
 		RESET,
 		DONT_RESET,
-		RESET_UNLESS_KEEPINVENTORY;
+		RESET_UNLESS_KEEPINVENTORY
 	}
 
 	@SubscribeEvent
 	public static void onRespawn(PlayerEvent.Clone event) throws Exception {
-		final boolean keepInventory =
-				event.getOriginal().getEntityWorld().getGameRules().getBoolean("keepInventory");
+		final EntityPlayer original = event.getOriginal();
 
-		if(!dontResetHungerOnRespawn(event.getOriginal(), keepInventory)) {
+		final boolean keepInventory =
+				original.getEntityWorld().getGameRules().getBoolean("keepInventory");
+
+		if(resetHungerOnRespawn(original, keepInventory)) {
 			return;
 		}
 
@@ -45,15 +47,21 @@ public final class RespawnHandler {
 		Utils.setSaturation(player.getFoodStats(), oldSaturationLevel);
 	}
 
-	public static boolean dontResetHungerOnRespawn(EntityPlayer player, boolean keepInventory) {
-		switch(RTConfig.respawn.hungerBehavior) {
-		case RESET:
-			return keepInventory && RTConfig.respawn.deathPunishmentsIfKeepInventory;
-		case DONT_RESET:
-			return true;
-		case RESET_UNLESS_KEEPINVENTORY:
-			return keepInventory && !player.capabilities.isCreativeMode;
+	public static boolean resetHungerOnRespawn(EntityPlayer player, boolean keepInventory) {
+		if(keepInventory && RTConfig.respawn.deathPunishmentsIfKeepInventory) {
+			return false;
 		}
-		return false;
+
+		switch(RTConfig.respawn.hungerBehavior) {
+			case RESET:
+				return true;
+			case DONT_RESET:
+				return false;
+			case RESET_UNLESS_KEEPINVENTORY:
+				//In creative mode, hunger doesn't matter anyway
+				return player.capabilities.isCreativeMode || keepInventory;
+		}
+
+		throw new UnsupportedOperationException("This should never happen");
 	}
 }

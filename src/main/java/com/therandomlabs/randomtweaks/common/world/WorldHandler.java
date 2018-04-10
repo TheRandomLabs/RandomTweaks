@@ -1,5 +1,7 @@
 package com.therandomlabs.randomtweaks.common.world;
 
+import java.util.Map;
+import java.util.Map.Entry;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import net.minecraft.block.Block;
@@ -17,16 +19,18 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import java.util.Map;
-import java.util.Map.Entry;
+import net.minecraftforge.registries.IForgeRegistry;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class WorldHandler {
+	private static final IForgeRegistry<Block> BLOCK_REGISTRY =
+			GameRegistry.findRegistry(Block.class);
+
 	@SubscribeEvent
 	public static void onCreateSpawn(WorldEvent.CreateSpawnPosition event) throws Exception {
 		final World world = event.getWorld();
 		if(!world.isRemote && world.provider.getDimensionType() == DimensionType.OVERWORLD) {
-			initializeWorld(event, world);
+			initializeWorld(world);
 		}
 	}
 
@@ -48,56 +52,64 @@ public final class WorldHandler {
 			return;
 		}
 
-		BlockPos spawnPoint = player.getBedLocation(DimensionType.OVERWORLD.getId());
-		boolean setWorldSpawn = false;
-		if(spawnPoint == null) {
-			spawnPoint = world.getSpawnPoint();
-			setWorldSpawn = true;
-		}
-
-		final BlockPos topBlock = world.getTopSolidOrLiquidBlock(spawnPoint);
-		IBlockState state = world.getBlockState(topBlock);
-		if(!state.getMaterial().blocksMovement() || state.getBlock().isFoliage(world, topBlock)) {
-			final BlockPos newSpawn = new BlockPos(0.5, RTConfig.world.voidWorldYSpawn, 0.5);
-
-			player.setPosition(0.5, RTConfig.world.voidWorldYSpawn, 0.5);
-			player.setSpawnPoint(newSpawn, true);
-
-			if(setWorldSpawn) {
-				world.setSpawnPoint(newSpawn);
-			}
-
-			final BlockPos spawnBlock = newSpawn.down();
-			final IBlockState spawnBlockState = world.getBlockState(spawnBlock);
-
-			if(!spawnBlockState.getMaterial().blocksMovement() ||
-					spawnBlockState.getBlock().isFoliage(world, spawnBlock)) {
-				Block block = GameRegistry.findRegistry(Block.class).getValue(
-						new ResourceLocation(RTConfig.world.voidWorldBlock));
-				if(block == null) {
-					block = Blocks.GLASS;
-				}
-
-				world.setBlockState(new BlockPos(0, RTConfig.world.voidWorldYSpawn - 1, 0),
-						block.getDefaultState());
-			}
-		}
+		onPlayerSpawnInVoidWorld(player);
 	}
 
-	private static void initializeWorld(WorldEvent.CreateSpawnPosition event,
-			World world) throws Exception {
-		if(world.getWorldType() instanceof WorldTypeVoid) {
-			world.setSpawnPoint(new BlockPos(0.5, RTConfig.world.voidWorldYSpawn, 0.5));
-			event.setCanceled(true);
+	private static void onPlayerSpawnInVoidWorld(EntityPlayer player) {
+		final World world = player.getEntityWorld();
+
+		BlockPos playerSpawnPoint = player.getBedLocation(DimensionType.OVERWORLD.getId());
+		boolean shouldSetWorldSpawn = false;
+
+		if(playerSpawnPoint == null) {
+			playerSpawnPoint = world.getSpawnPoint();
+			shouldSetWorldSpawn = true;
 		}
 
+		//Return if there is a block that the player can spawn on
+		if(isSpawnable(world, world.getTopSolidOrLiquidBlock(playerSpawnPoint))) {
+			return;
+		}
+
+		final BlockPos newSpawn = new BlockPos(0.5, RTConfig.world.voidWorldYSpawn, 0.5);
+
+		player.setPosition(0.5, RTConfig.world.voidWorldYSpawn, 0.5);
+		player.setSpawnPoint(newSpawn, true);
+
+		//If the player doesn't have a bed, i.e. this is the world spawn point
+		if(shouldSetWorldSpawn) {
+			world.setSpawnPoint(newSpawn);
+		}
+
+		final BlockPos spawnBlock = new BlockPos(0, RTConfig.world.voidWorldYSpawn - 1, 0);
+
+		if(isSpawnable(world, spawnBlock)) {
+			return;
+		}
+
+		Block block = BLOCK_REGISTRY.getValue(new ResourceLocation(RTConfig.world.voidWorldBlock));
+		if(block == null) {
+			block = Blocks.GLASS;
+		}
+
+		world.setBlockState(spawnBlock, block.getDefaultState());
+	}
+
+	private static boolean isSpawnable(World world, BlockPos pos) {
+		final IBlockState state = world.getBlockState(pos);
+		return state.getMaterial().blocksMovement() && !state.getBlock().isFoliage(world, pos);
+	}
+
+	private static void initializeWorld(World world) throws Exception {
 		final GameRules gamerules = world.getGameRules();
-		final Map<String, String> defaultGamerules = RTConfig.getDefaultGamerules(
-				world.getWorldInfo().getGameType().getID(), world.getWorldType().getName());
+
+		final int gamemode = world.getWorldInfo().getGameType().getID();
+		final String type = world.getWorldType().getName();
+
+		final Map<String, String> defaultGamerules = RTConfig.getDefaultGamerules(gamemode, type);
 
 		if(defaultGamerules == null) {
-			world.getMinecraftServer().sendMessage(
-					new TextComponentTranslation("defaultGamerules.parseFailure"));
+			failedToParseGamerules(world);
 			return;
 		}
 
@@ -105,10 +117,20 @@ public final class WorldHandler {
 			if(entry.getKey().equals("rtWorldBorderSize")) {
 				try {
 					world.getWorldBorder().setSize(Integer.parseInt(entry.getValue()));
-					continue;
-				} catch(NumberFormatException ex) {}
+				} catch(NumberFormatException ex) {
+					ex.printStackTrace();
+					failedToParseGamerules(world);
+				}
+
+				continue;
 			}
+
 			gamerules.setOrCreateGameRule(entry.getKey(), entry.getValue());
 		}
+	}
+
+	private static void failedToParseGamerules(World world) {
+		world.getMinecraftServer().sendMessage(
+				new TextComponentTranslation("defaultGamerules.parseFailure"));
 	}
 }

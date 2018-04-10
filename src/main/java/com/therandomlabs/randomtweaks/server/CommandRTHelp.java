@@ -1,5 +1,9 @@
 package com.therandomlabs.randomtweaks.server;
 
+import java.util.Collection;
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.List;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandHelp;
@@ -7,13 +11,9 @@ import net.minecraft.command.ICommand;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.List;
 
-//Taken and adapted from https://github.com/matthewprenger/HelpFixer
+//Taken and adapted from https://github.com/matthewprenger/HelpFixer, which is licensed
+//under the WTFPL
 public class CommandRTHelp extends CommandHelp {
 	private static final ICommand testCommand1 = new TestCommand("a");
 	private static final ICommand testCommand2 = new TestCommand("z");
@@ -67,7 +67,7 @@ public class CommandRTHelp extends CommandHelp {
 		return commands;
 	}
 
-	static void serverStarted(FMLServerStartedEvent event) {
+	static void serverStarted() {
 		final Collection<ICommand> commands = FMLCommonHandler.instance().
 				getMinecraftServerInstance().getCommandManager().getCommands().values();
 		for(ICommand command : commands) {

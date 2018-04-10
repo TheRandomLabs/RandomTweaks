@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.client;
 
+import java.io.File;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Utils;
@@ -17,7 +18,6 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
-import java.io.File;
 
 //Some code has been taken and adapted from here:
 //https://github.com/Lunatrius/InGame-Info-XML
@@ -27,16 +27,17 @@ public final class TimeOfDayHandler {
 			"key.toggleTimeOfDayOverlay", Keyboard.KEY_BACKSLASH, "key.categories.randomtweaks");
 
 	private static final Minecraft mc = Minecraft.getMinecraft();
-	private static boolean shouldDraw;
+
+	private static boolean shouldHide;
 
 	@SubscribeEvent
 	public static void onClientTick(TickEvent.ClientTickEvent event) {
-		shouldDraw = !mc.gameSettings.showDebugInfo && !mc.gameSettings.hideGUI;
+		shouldHide = mc.gameSettings.showDebugInfo || mc.gameSettings.hideGUI;
 	}
 
 	@SubscribeEvent
 	public static void onRenderTick(TickEvent.RenderTickEvent event) {
-		if(!shouldDraw() || !isEnabled()) {
+		if(shouldHide() || isDisabledForCurrentWorld()) {
 			return;
 		}
 
@@ -104,15 +105,15 @@ public final class TimeOfDayHandler {
 	public static void onKeyInput(KeyInputEvent event) {
 		if(Keyboard.getEventKeyState() &&
 				TOGGLE_TIME_OF_DAY_OVERLAY.isActiveAndMatches(Keyboard.getEventKey())) {
-			if(!shouldDraw()) {
+			if(shouldHide()) {
 				return;
 			}
 
 			final File saveDirectory = DimensionManager.getCurrentSaveRootDirectory();
 			if(saveDirectory != null) {
-				RTConfig.TimeOfDay.worlds.put(saveDirectory.getName(), !isEnabled());
+				RTConfig.TimeOfDay.worlds.put(saveDirectory.getName(), isDisabledForCurrentWorld());
 			} else {
-				RTConfig.TimeOfDay.worlds.put(mc.getCurrentServerData().serverIP, !isEnabled());
+				RTConfig.TimeOfDay.worlds.put(mc.getCurrentServerData().serverIP, isDisabledForCurrentWorld());
 			}
 
 			RTConfig.TimeOfDay.saveWorlds();
@@ -123,55 +124,56 @@ public final class TimeOfDayHandler {
 		ClientRegistry.registerKeyBinding(TOGGLE_TIME_OF_DAY_OVERLAY);
 	}
 
-	public static boolean shouldDraw() {
-		if(!RTConfig.timeofday.enabled || !shouldDraw || mc.player == null) {
-			return false;
+	public static boolean shouldHide() {
+		if(!RTConfig.timeofday.enabled || shouldHide || mc.player == null) {
+			return true;
 		}
 
 		final World world = mc.player.getEntityWorld();
 
 		if(world == null) {
-			return false;
+			return true;
 		}
 
 		if(RTConfig.timeofday.disableIfNoDaylightCycle &&
 				!world.getGameRules().getBoolean("doDaylightCycle")) {
-			return false;
+			return true;
 		}
 
-		if(RTConfig.timeofday.disableInAdventureMode &&
-				world.getWorldInfo().getGameType() == GameType.ADVENTURE) {
-			return false;
-		}
-
-		return true;
+		return RTConfig.timeofday.disableInAdventureMode &&
+				world.getWorldInfo().getGameType() == GameType.ADVENTURE;
 	}
 
-	public static boolean isEnabled() {
+	public static boolean isDisabledForCurrentWorld() {
 		final File saveDirectory = DimensionManager.getCurrentSaveRootDirectory();
 		if(saveDirectory != null) {
 			final String name = saveDirectory.getName();
+
 			if(!RTConfig.TimeOfDay.worlds.containsKey(name)) {
 				RTConfig.TimeOfDay.worlds.put(name, RTConfig.timeofday.enabledByDefault);
 				RTConfig.TimeOfDay.saveWorlds();
 			}
+
 			return RTConfig.TimeOfDay.worlds.get(name);
 		}
 
-		final ServerData serverData = Minecraft.getMinecraft().getCurrentServerData();
+		final ServerData serverData = mc.getCurrentServerData();
+
 		if(serverData == null) {
-			return false;
+			return true;
 		}
 
 		final String ip = serverData.serverIP;
+
 		if(ip == null) {
-			return false;
+			return true;
 		}
 
 		if(!RTConfig.TimeOfDay.worlds.containsKey(ip)) {
 			RTConfig.TimeOfDay.worlds.put(ip, RTConfig.timeofday.enabledByDefault);
 			RTConfig.TimeOfDay.saveWorlds();
 		}
+
 		return RTConfig.TimeOfDay.worlds.get(ip);
 	}
 }

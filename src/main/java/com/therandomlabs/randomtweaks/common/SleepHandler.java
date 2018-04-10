@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.common;
 
+import java.lang.reflect.Field;
 import com.therandomlabs.randomtweaks.util.Compat;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.block.BlockHorizontal;
@@ -15,7 +16,6 @@ import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import java.lang.reflect.Field;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class SleepHandler {

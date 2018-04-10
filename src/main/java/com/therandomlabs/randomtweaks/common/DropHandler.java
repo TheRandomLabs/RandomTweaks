@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.common;
 
+import java.util.List;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.world.BlockEvent;
@@ -7,7 +8,6 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import java.util.List;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class DropHandler {

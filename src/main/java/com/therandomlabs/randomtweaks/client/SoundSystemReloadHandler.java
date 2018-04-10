@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.client;
 
+import java.lang.reflect.Field;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
@@ -14,7 +15,6 @@ import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
-import java.lang.reflect.Field;
 
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class SoundSystemReloadHandler {

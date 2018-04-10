@@ -2,7 +2,12 @@ package com.therandomlabs.randomtweaks.server;
 
 import com.therandomlabs.randomtweaks.util.Compat;
 import com.therandomlabs.randomtweaks.util.Utils;
-import net.minecraft.command.*;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.CommandGive;
+import net.minecraft.command.CommandResultStats;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.command.NumberInvalidException;
+import net.minecraft.command.WrongUsageException;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.SoundEvents;
@@ -48,10 +53,11 @@ public class CommandRTGive extends CommandGive {
 
 		final boolean added = player.inventory.addItemStackToInventory(stack);
 		if(added) {
-			player.getEntityWorld().playSound((EntityPlayer) null, player.posX, player.posY,
-					player.posZ, SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
+			player.getEntityWorld().playSound(null, player.posX, player.posY, player.posZ,
+					SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
 					((player.getRNG().nextFloat() - player.getRNG().nextFloat()) * 0.7F + 1.0F) *
-					2.0F);
+							2.0F);
+
 			Compat.detectAndSendChanges(player.inventoryContainer);
 
 			if(Compat.isEmpty(stack)) {
@@ -66,6 +72,7 @@ public class CommandRTGive extends CommandGive {
 				sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS, amount);
 
 				final EntityItem droppedItem = player.dropItem(stack, false);
+
 				if(droppedItem != null) {
 					droppedItem.makeFakeItem();
 				}
@@ -80,6 +87,7 @@ public class CommandRTGive extends CommandGive {
 				}
 
 				final EntityItem droppedItem = player.dropItem(stack, false);
+
 				if(droppedItem != null) {
 					droppedItem.setNoPickupDelay();
 					droppedItem.setOwner(player.getName());

@@ -45,14 +45,14 @@ public class WorldTypeRealistic extends WorldType {
 	}
 
 	@Override
-	public float getCloudHeight() {
-		return 260.0F;
+	public Compat.ChunkGeneratorCompatOverworld getChunkGenerator(World world,
+			String generatorOptions) {
+		return new Compat.ChunkGeneratorCompatOverworld(world, world.getSeed(),
+				world.getWorldInfo().isMapFeaturesEnabled(), PRESET);
 	}
 
 	@Override
-	public Compat.ChunkGeneratorCompatOverworld getChunkGenerator(
-			World world, String generatorOptions) {
-		return new Compat.ChunkGeneratorCompatOverworld(world, world.getSeed(),
-				world.getWorldInfo().isMapFeaturesEnabled(), PRESET);
+	public float getCloudHeight() {
+		return 260.0F;
 	}
 }

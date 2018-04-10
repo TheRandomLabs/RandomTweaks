@@ -1,5 +1,12 @@
 package com.therandomlabs.randomtweaks.client;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.therandomlabs.randomtweaks.common.RTConfig;
@@ -15,22 +22,16 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import org.apache.commons.io.IOUtils;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
-import java.util.Map;
 
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class CapeHandler {
 	public static final Method GET_PLAYER_INFO = Compat.findMethod(
 			AbstractClientPlayer.class, "getPlayerInfo", "func_175155_b");
-	public static final Field PLAYER_TEXTURES = Compat.findField(NetworkPlayerInfo.class,
-					"playerTextures", "field_187107_a");
+	public static final Field PLAYER_TEXTURES = ReflectionHelper.findField(NetworkPlayerInfo.class,
+			"playerTextures", "field_187107_a");
 	public static final String CONTRIBUTORS_URL =
 			"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/misc/contributors.txt";
 	public static final ResourceLocation CAPE_LOCATION =
@@ -110,7 +111,6 @@ public final class CapeHandler {
 		playerTextures.put(MinecraftProfileTexture.Type.CAPE, CAPE_LOCATION);
 		playerTextures.put(MinecraftProfileTexture.Type.ELYTRA, CAPE_LOCATION);
 
-		//Success!
 		return true;
 	}
 

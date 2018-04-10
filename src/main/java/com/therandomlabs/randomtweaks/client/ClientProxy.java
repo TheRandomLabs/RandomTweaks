@@ -43,14 +43,6 @@ public final class ClientProxy extends CommonProxy {
 			SoundSystemReloadHandler.registerKeyBinding();
 		}
 
-		if(RTConfig.client.clearChatKeybind) {
-			ClearChatHandler.registerKeyBinding();
-		}
-
-		if(RTConfig.client.noclipKeybind) {
-			NoclipHandler.registerKeyBinding();
-		}
-
 		if(RTConfig.timeofday.enableKeybind) {
 			TimeOfDayHandler.registerKeyBinding();
 		}

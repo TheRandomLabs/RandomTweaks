@@ -1,5 +1,8 @@
 package com.therandomlabs.randomtweaks.util;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -9,9 +12,6 @@ import net.minecraft.util.FoodStats;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 
 public final class Utils {
 	public static final Method SET_SIZE = ReflectionHelper.findMethod(
