@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 @Mod(modid = RandomTweaks.MODID, version = RandomTweaks.VERSION,
 		acceptedMinecraftVersions = Compat.ACCEPTED_MINECRAFT_VERSIONS,
 		acceptableRemoteVersions = RandomTweaks.ACCEPTABLE_REMOTE_VEERSIONS,
-		updateJSON = RandomTweaks.UPDATE_JSON,
+		guiFactory = Compat.GUI_FACTORY, updateJSON = RandomTweaks.UPDATE_JSON,
 		certificateFingerprint = RandomTweaks.CERTIFICATE_FINGERPRINT)
 public final class RandomTweaks {
 	public static final String MODID = "randomtweaks";

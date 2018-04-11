@@ -42,12 +42,11 @@ public final class WorldHandler {
 	private static void onPlayerSpawn(EntityPlayer player) {
 		final World world = player.getEntityWorld();
 
-		if(world.provider.getDimensionType() != DimensionType.OVERWORLD ||
-				!(world.getWorldType() instanceof WorldTypeVoid)) {
-			return;
+		if(world.provider.getDimensionType() == DimensionType.OVERWORLD &&
+				(world.getWorldType() instanceof WorldTypeVoid ||
+						world.getWorldType() instanceof WorldTypeVoidIslands)) {
+			onPlayerSpawnInVoidWorld(player);
 		}
-
-		onPlayerSpawnInVoidWorld(player);
 	}
 
 	private static void onPlayerSpawnInVoidWorld(EntityPlayer player) {
@@ -66,9 +65,17 @@ public final class WorldHandler {
 			return;
 		}
 
-		final BlockPos newSpawn = new BlockPos(0.5, RTConfig.world.voidWorldYSpawn, 0.5);
+		final int newSpawnY;
+		if(world.getWorldType() instanceof WorldTypeVoid) {
+			newSpawnY = RTConfig.world.voidWorldYSpawn;
+		} else {
+			final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(0, 0, 0));
+			newSpawnY = pos.getY() + 1;
+		}
 
-		player.setPosition(0.5, RTConfig.world.voidWorldYSpawn, 0.5);
+		final BlockPos newSpawn = new BlockPos(0.5, newSpawnY, 0.5);
+
+		player.setPosition(0.5, newSpawnY, 0.5);
 		player.setSpawnPoint(newSpawn, true);
 
 		//If the player doesn't have a bed, i.e. this is the world spawn point
@@ -76,7 +83,11 @@ public final class WorldHandler {
 			world.setSpawnPoint(newSpawn);
 		}
 
-		final BlockPos spawnBlock = new BlockPos(0, RTConfig.world.voidWorldYSpawn - 1, 0);
+		if(!(world.getWorldType() instanceof WorldTypeVoid)) {
+			return;
+		}
+
+		final BlockPos spawnBlock = new BlockPos(0, newSpawnY, 0);
 
 		if(isSpawnable(world, spawnBlock)) {
 			return;

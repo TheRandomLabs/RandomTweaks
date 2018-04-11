@@ -1,7 +1,10 @@
 package com.therandomlabs.randomtweaks.util;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import java.util.Random;
+import com.therandomlabs.randomtweaks.client.MiscClientEventHandler;
+import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiNewChat;
 import net.minecraft.creativetab.CreativeTabs;
@@ -20,18 +23,24 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkGeneratorOverworld;
 import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindMethodException;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.registries.IForgeRegistry;
 
+@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class Compat {
-	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12,1.13)";
 	public static final boolean IS_ONE_POINT_TEN = false;
+	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12,1.13)";
+	public static final String GUI_FACTORY = "";
 	public static final String CHICKEN_ENTITY_NAME = "chicken";
 
 	public static final IForgeRegistry<Block> BLOCK_REGISTRY =
@@ -179,5 +188,16 @@ public final class Compat {
 
 	public static boolean ableToCauseSkullDrop(EntityCreeper creeper) {
 		return creeper.ableToCauseSkullDrop();
+	}
+
+	public static List<ItemStack> getOres(String oreName) {
+		return OreDictionary.getOres(oreName);
+	}
+
+	public static void clientInit() {}
+
+	@SubscribeEvent
+	public static void onChat(ClientChatEvent event) {
+		event.setMessage(MiscClientEventHandler.onChat(event.getMessage()));
 	}
 }

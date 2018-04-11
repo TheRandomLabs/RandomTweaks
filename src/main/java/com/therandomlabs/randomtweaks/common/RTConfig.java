@@ -91,7 +91,8 @@ public class RTConfig {
 		public boolean fovChangesEnabledByDefault = true;
 
 		@Config.Comment("Whether the shortened versions of the gamemode commands (/gms, /gmc, " +
-				"/gma and /gmsp) should be replaced by the longer ones before being sent.")
+				"/gma and /gmsp) should be replaced by the longer ones before being sent. " +
+				"This does not work in 1.10.")
 		public boolean shortGamemodeCommands = true;
 	}
 
@@ -450,6 +451,7 @@ public class RTConfig {
 			if(entry.getValue().isJsonObject() &&
 					matchesGamemodeAndWorldType(entry.getKey(), gamemode, worldType)) {
 				putGamerules(gamerules, entry.getValue().getAsJsonObject());
+				continue;
 			}
 
 			gamerules.put(entry.getKey(), entry.getValue().toString());

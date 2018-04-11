@@ -25,7 +25,7 @@ public class ChunkGeneratorVoidIslands extends Compat.ChunkGeneratorCompatOverwo
 
 	@Override
 	public Chunk generateChunk(int x, int z) {
-		if(random.nextInt(RTConfig.world.voidIslandsChunkRarity) == 0) {
+		if((x == 0 && z == 0) || random.nextInt(RTConfig.world.voidIslandsChunkRarity) == 0) {
 			return super.generateChunk(x, z);
 		}
 

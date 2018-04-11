@@ -14,7 +14,7 @@ import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 public final class Utils {
-	public static final Method SET_SIZE = ReflectionHelper.findMethod(
+	public static final Method SET_SIZE = Compat.findMethod(
 			Entity.class, "setSize", "func_70105_a", float.class, float.class);
 	public static final Field SATURATION_LEVEL =
 			ReflectionHelper.findField(FoodStats.class, "foodSaturationLevel", "field_75125_b");

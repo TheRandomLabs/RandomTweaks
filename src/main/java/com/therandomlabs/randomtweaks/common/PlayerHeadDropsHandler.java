@@ -6,6 +6,7 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -49,8 +50,13 @@ public final class PlayerHeadDropsHandler {
 		}
 
 		final ItemStack stack = new ItemStack(Items.SKULL, 1, 3);
-		NBTUtil.writeGameProfile(stack.getOrCreateSubCompound("SkullOwner"),
-				player.getGameProfile());
+		stack.setTagCompound(new NBTTagCompound());
+
+		final NBTTagCompound skullOwner = new NBTTagCompound();
+		NBTUtil.writeGameProfile(skullOwner, player.getGameProfile());
+
+		stack.getTagCompound().setTag("SkullOwner", skullOwner);
+
 		player.dropItem(stack, true, false);
 
 		return true;
