@@ -43,6 +43,8 @@ public final class ClientProxy extends CommonProxy {
 		if(RTConfig.timeofday.enableKeybind) {
 			TimeOfDayHandler.registerKeyBinding();
 		}
+
+		Compat.clientInit();
 	}
 
 	private static void createSpawnEggsCreativeTab() {

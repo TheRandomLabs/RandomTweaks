@@ -1,10 +1,16 @@
 package com.therandomlabs.randomtweaks.util;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import com.therandomlabs.randomtweaks.client.MiscClientEventHandler;
+import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiNewChat;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
@@ -23,20 +29,31 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.IChunkGenerator;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.ChunkProviderOverworld;
+import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigCategory;
+import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.fml.client.config.GuiConfig;
+import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.ReflectionHelper.UnableToFindMethodException;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
+import net.minecraftforge.oredict.OreDictionary;
 
 public final class Compat {
-	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.10,1.12)";
 	public static final boolean IS_ONE_POINT_TEN = isOnePointTen();
+
+	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.10,1.12)";
+	public static final String GUI_FACTORY =
+			"com.therandomlabs.randomtweaks.util.GuiConfigFactoryRandomTweaks";
 	public static final String CHICKEN_ENTITY_NAME = IS_ONE_POINT_TEN ? "Chicken" : "chicken";
 
 	public static final IForgeRegistry<Block> BLOCK_REGISTRY =
@@ -44,15 +61,60 @@ public final class Compat {
 	public static final IForgeRegistry<Biome> BIOME_REGISTRY =
 			GameRegistry.findRegistry(Biome.class);
 
+	public static final Field CONFIGS = ReflectionHelper.findField(ConfigManager.class, "CONFIGS");
 	public static final Field STACK_SIZE =
 			ReflectionHelper.findField(ItemStack.class, "stackSize", "field_77994_a");
-	public static final Method ADD_CHAT_COMPONENT_MESSAGE =
-			findMethod(EntityPlayer.class, "addChatComponentMessage", "func_146105_b",
-					ITextComponent.class);
+	public static final Method ADD_CHAT_COMPONENT_MESSAGE = findMethod(EntityPlayer.class,
+			"addChatComponentMessage", "func_146105_b", ITextComponent.class);
 	public static final Method LOAD =
 			findMethod(ConfigManager.class, "load", "load", String.class, Config.Type.class);
-	public static final Method CLEAR_CHAT_MESSAGES = isOnePointTen() ?
+	public static final Method CLEAR_CHAT_MESSAGES = IS_ONE_POINT_TEN ?
 			findMethod(GuiNewChat.class, "clearChatMessages", "func_146231_a") : null;
+	public static final Method GET_ORES = IS_ONE_POINT_TEN ?
+			findMethod(OreDictionary.class, "getOres", "getOres", String.class) : null;
+
+	public static class GuiConfigRandomTweaks extends GuiConfig {
+		public GuiConfigRandomTweaks(GuiScreen parentScreen) {
+			super(parentScreen, getConfigElements(), RandomTweaks.MODID, false, false,
+					Utils.localize(RandomTweaks.MODID + ".config.title"));
+		}
+
+		public static List<IConfigElement> getConfigElements() {
+			final Configuration configuration = getConfiguration();
+
+			final ConfigCategory topLevelCategory =
+					configuration.getCategory(Configuration.CATEGORY_GENERAL);
+			topLevelCategory.getChildren().forEach(configCategory ->
+					configCategory.setLanguageKey(RandomTweaks.MODID + ".category." +
+							configCategory.getName()));
+
+			return new ConfigElement(topLevelCategory).getChildElements();
+		}
+
+		public static Configuration getConfiguration() {
+			try {
+				@SuppressWarnings("unchecked")
+				final Map<String, Configuration> configs =
+						(Map<String, Configuration>) CONFIGS.get(null);
+				for(Map.Entry<String, Configuration> config : configs.entrySet()) {
+					if((RandomTweaks.MODID + ".cfg").equals(new File(config.getKey()).getName())) {
+						return config.getValue();
+					}
+				}
+			} catch(Exception ex) {
+				Utils.crashReport("Could not get configuration", ex);
+			}
+
+			return null;
+		}
+	}
+
+	public static class ClientChatHandler {
+		@SubscribeEvent
+		public void onChat(ClientChatEvent event) {
+			event.setMessage(MiscClientEventHandler.onChat(event.getMessage()));
+		}
+	}
 
 	public static abstract class CreativeTab extends CreativeTabs {
 		public CreativeTab(String label) {
@@ -219,12 +281,31 @@ public final class Compat {
 		return creeper.isAIEnabled();
 	}
 
+	@SuppressWarnings("unchecked")
+	public static List<ItemStack> getOres(String oreName) {
+		if(IS_ONE_POINT_TEN) {
+			try {
+				return (List<ItemStack>) GET_ORES.invoke(null, oreName);
+			} catch(Exception ex) {
+				Utils.crashReport("Could not retrieve ore dictionary entries", ex);
+			}
+		}
+
+		return OreDictionary.getOres(oreName);
+	}
+
+	public static void clientInit() {
+		if(!IS_ONE_POINT_TEN) {
+			MinecraftForge.EVENT_BUS.register(new ClientChatHandler());
+		}
+	}
+
 	private static boolean isOnePointTen() {
 		try {
 			return ((String) MinecraftForge.class.getDeclaredField("MC_VERSION").get(null)).
 					startsWith("1.10");
 		} catch(Exception ex) {
-			Utils.crashReport("RandomTweaks could not retrieve the current Minecraft version", ex);
+			Utils.crashReport("Could not retrieve Minecraft version", ex);
 		}
 		return false;
 	}

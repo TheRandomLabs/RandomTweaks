@@ -38,7 +38,7 @@ public class CommandRTGive extends CommandGive {
 		int meta = args.length > 3 ? parseInt(args[3]) : 0;
 
 		if(args[1].startsWith("ore:")) {
-			final List<ItemStack> ores = OreDictionary.getOres(args[1].substring(4));
+			final List<ItemStack> ores = Compat.getOres(args[1].substring(4));
 			if(!ores.isEmpty()) {
 				item = ores.get(0).getItem();
 				meta = ores.get(0).getItemDamage();

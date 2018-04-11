@@ -103,22 +103,25 @@ public final class TimeOfDayHandler {
 
 	@SubscribeEvent
 	public static void onKeyInput(KeyInputEvent event) {
-		if(Keyboard.getEventKeyState() &&
-				TOGGLE_TIME_OF_DAY_OVERLAY.isActiveAndMatches(Keyboard.getEventKey())) {
-			if(shouldHide()) {
-				return;
-			}
-
-			final File saveDirectory = DimensionManager.getCurrentSaveRootDirectory();
-			if(saveDirectory != null) {
-				RTConfig.TimeOfDay.worlds.put(saveDirectory.getName(), isDisabledForCurrentWorld());
-			} else {
-				RTConfig.TimeOfDay.worlds.put(mc.getCurrentServerData().serverIP, isDisabledForCurrentWorld());
-			}
-
-			RTConfig.TimeOfDay.saveWorlds();
+		if(!Keyboard.getEventKeyState() ||
+				!TOGGLE_TIME_OF_DAY_OVERLAY.isActiveAndMatches(Keyboard.getEventKey()) ||
+				shouldHide()) {
+			return;
 		}
+
+		final File saveDirectory = DimensionManager.getCurrentSaveRootDirectory();
+
+		if(saveDirectory != null) {
+			RTConfig.TimeOfDay.worlds.put(saveDirectory.getName(),
+					!isDisabledForCurrentWorld());
+		} else {
+			RTConfig.TimeOfDay.worlds.put(mc.getCurrentServerData().serverIP,
+					!isDisabledForCurrentWorld());
+		}
+
+		RTConfig.TimeOfDay.saveWorlds();
 	}
+
 
 	public static void registerKeyBinding() {
 		ClientRegistry.registerKeyBinding(TOGGLE_TIME_OF_DAY_OVERLAY);

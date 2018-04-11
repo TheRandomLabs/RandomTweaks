@@ -77,13 +77,10 @@ public final class MiscClientEventHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public static void onChat(ClientChatEvent event) {
+	public static String onChat(String message) {
 		if(!RTConfig.client.shortGamemodeCommands) {
-			return;
+			return message;
 		}
-
-		String message = event.getMessage();
 
 		if(message.startsWith("/gms")) {
 			message = message.replace("/gms", "/gamemode 0");
@@ -95,7 +92,7 @@ public final class MiscClientEventHandler {
 			message = message.replace("/gmsp", "/gamemode 3");
 		}
 
-		event.setMessage(message);
+		return message;
 	}
 
 	@SubscribeEvent
