@@ -2,6 +2,7 @@ package com.therandomlabs.randomtweaks.client;
 
 import java.lang.reflect.Field;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
+import com.therandomlabs.randomtweaks.common.RTConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.audio.SoundManager;
@@ -25,7 +26,7 @@ public final class SoundSystemReloadHandler {
 
 	@SubscribeEvent
 	public static void onKeyInput(KeyInputEvent event) {
-		if(Keyboard.getEventKeyState() &&
+		if(RTConfig.client.reloadSoundSystemKeybind && Keyboard.getEventKeyState() &&
 				RELOAD_SOUND_SYSTEM.isActiveAndMatches(Keyboard.getEventKey())) {
 			final EntityPlayerSP player = Minecraft.getMinecraft().player;
 
