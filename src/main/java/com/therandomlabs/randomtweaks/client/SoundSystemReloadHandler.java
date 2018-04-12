@@ -25,7 +25,7 @@ public final class SoundSystemReloadHandler {
 
 	@SubscribeEvent
 	public static void onKeyInput(KeyInputEvent event) {
-		if(Keyboard.getEventKeyState() &&
+		if(RTConfig.client.reloadSoundSystemKeybind && Keyboard.getEventKeyState() &&
 				RELOAD_SOUND_SYSTEM.isActiveAndMatches(Keyboard.getEventKey())) {
 			final EntityPlayerSP player = Minecraft.getMinecraft().player;
 

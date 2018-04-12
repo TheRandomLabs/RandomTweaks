@@ -40,25 +40,33 @@ public final class MiscClientEventHandler {
 		final int key = Keyboard.getEventKey();
 
 		if(CLEAR_CHAT.isActiveAndMatches(key)) {
-			final GuiIngame ingameGUI = Minecraft.getMinecraft().ingameGUI;
+			if(RTConfig.client.clearChatKeybind) {
+				final GuiIngame ingameGUI = Minecraft.getMinecraft().ingameGUI;
 
-			if(ingameGUI != null) {
-				Compat.clearChatMessages(ingameGUI.getChatGUI());
+				if(ingameGUI != null) {
+					Compat.clearChatMessages(ingameGUI.getChatGUI());
+				}
 			}
 
 			return;
 		}
 
 		if(NOCLIP.isActiveAndMatches(key)) {
-			final EntityPlayerSP player = Minecraft.getMinecraft().player;
-			final String gamemode = player.isCreative() ? "sp" : "c";
-			player.sendChatMessage("/gamemode " + gamemode);
+			if(RTConfig.client.noclipKeybind) {
+				final EntityPlayerSP player = Minecraft.getMinecraft().player;
+				final String gamemode = player.isCreative() ? "sp" : "c";
+				player.sendChatMessage("/gamemode " + gamemode);
+			}
 
 			return;
 		}
 
 		if(TOGGLE_FOV_CHANGES.isActiveAndMatches(key)) {
-			fovChangesEnabled = !fovChangesEnabled;
+			if(RTConfig.client.toggleFoVChangesKeybind) {
+				fovChangesEnabled = !fovChangesEnabled;
+			}
+
+			return;
 		}
 	}
 
@@ -111,15 +119,20 @@ public final class MiscClientEventHandler {
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void onSoundPlay(PlaySoundEvent event) {
-		if(RTConfig.client.disableWitherSpawnSound &&
-				event.getName().equals("entity.wither.spawn")) {
-			event.setResultSound(null);
+		if(event.getName().equals("entity.wither.spawn")) {
+			if(RTConfig.client.disableWitherSpawnSound) {
+				event.setResultSound(null);
+			}
+
 			return;
 		}
 
-		if(RTConfig.client.disableEnderDragonDeathSound &&
-				event.getName().equals("entity.enderdragon.death")) {
-			event.setResultSound(null);
+		if(event.getName().equals("entity.enderdragon.death")) {
+			if(RTConfig.client.disableEnderDragonDeathSound) {
+				event.setResultSound(null);
+			}
+
+			return;
 		}
 	}
 
