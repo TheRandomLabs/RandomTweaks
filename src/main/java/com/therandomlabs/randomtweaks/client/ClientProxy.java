@@ -44,6 +44,7 @@ public final class ClientProxy extends CommonProxy {
 			TimeOfDayHandler.registerKeyBinding();
 		}
 
+		MiscClientEventHandler.registerKeyBindings();
 		Compat.clientInit();
 	}
 
