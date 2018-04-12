@@ -2,6 +2,7 @@ package com.therandomlabs.randomtweaks.client;
 
 import java.lang.reflect.Field;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
+import com.therandomlabs.randomtweaks.common.RTConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.client.audio.SoundManager;
