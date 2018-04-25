@@ -12,6 +12,8 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+//IntelliJ gives a warning on 1.12 because Compat.GUI_FACTORY is empty, which is the default value
+@SuppressWarnings("all")
 @Mod(modid = RandomTweaks.MODID, version = RandomTweaks.VERSION,
 		acceptedMinecraftVersions = Compat.ACCEPTED_MINECRAFT_VERSIONS,
 		acceptableRemoteVersions = RandomTweaks.ACCEPTABLE_REMOTE_VEERSIONS,

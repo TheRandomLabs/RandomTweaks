@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import com.therandomlabs.randomtweaks.client.MiscClientEventHandler;
+import com.therandomlabs.randomtweaks.common.ArrowSpawnHandler;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiNewChat;
@@ -17,6 +18,7 @@ import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.monster.EntityPigZombie;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -36,6 +38,7 @@ import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.ConfigElement;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.event.entity.ThrowableImpactEvent;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.common.IWorldGenerator;
@@ -297,6 +300,13 @@ public final class Compat {
 	public static void clientInit() {
 		if(!IS_ONE_POINT_TEN) {
 			MinecraftForge.EVENT_BUS.register(new ClientChatHandler());
+		}
+	}
+
+	@SubscribeEvent
+	public static void onArrowImpact(ThrowableImpactEvent event) {
+		if(event.getEntity() instanceof EntityArrow) {
+			ArrowSpawnHandler.onArrowImpact((EntityArrow) event.getEntity());
 		}
 	}
 
