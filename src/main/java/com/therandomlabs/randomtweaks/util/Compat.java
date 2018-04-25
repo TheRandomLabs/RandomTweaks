@@ -4,6 +4,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 import java.util.Random;
 import com.therandomlabs.randomtweaks.client.MiscClientEventHandler;
+import com.therandomlabs.randomtweaks.common.ArrowSpawnHandler;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiNewChat;
@@ -26,6 +27,7 @@ import net.minecraft.world.gen.IChunkGenerator;
 import net.minecraftforge.client.event.ClientChatEvent;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
+import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -199,5 +201,10 @@ public final class Compat {
 	@SubscribeEvent
 	public static void onChat(ClientChatEvent event) {
 		event.setMessage(MiscClientEventHandler.onChat(event.getMessage()));
+	}
+
+	@SubscribeEvent
+	public static void onArrowImpact(ProjectileImpactEvent.Arrow event) {
+		ArrowSpawnHandler.onArrowImpact(event.getArrow());
 	}
 }

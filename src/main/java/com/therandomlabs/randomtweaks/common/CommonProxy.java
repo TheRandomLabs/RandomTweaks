@@ -40,7 +40,7 @@ public class CommonProxy {
 	public void init(FMLInitializationEvent event) {
 		WorldTypeRegistry.registerWorldTypes();
 
-		if(RTConfig.oceanFloor.enabled) {
+		if(RTConfig.oceanFloor.enabled && !Loader.isModLoaded("samsocean")) {
 			GameRegistry.registerWorldGenerator(new WorldGeneratorOceanFloor(), 0);
 		}
 

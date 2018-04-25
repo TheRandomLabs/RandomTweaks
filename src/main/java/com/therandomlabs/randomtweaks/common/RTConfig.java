@@ -85,7 +85,7 @@ public class RTConfig {
 		public boolean clearWater = true;
 
 		@Config.Comment("Enables a keybind to disable FoV changes.")
-		public boolean toggleFoVChangesKeybind;
+		public boolean toggleFoVChangesKeybind = true;
 
 		@Config.Comment("Whether FoV changes are enabled by default.")
 		public boolean fovChangesEnabledByDefault = true;
@@ -183,12 +183,15 @@ public class RTConfig {
 
 		@Config.Comment("Disables the cumulative anvil cost.")
 		public boolean disableCumulativeAnvilCost = true;
+
+		@Config.Comment("Allows skeleton arrows to be picked up.")
+		public boolean pickupSkeletonArrows;
 	}
 
 	public static class OceanFloor {
 		@Config.RequiresMcRestart
 		@Config.Comment("Enables the ocean floor worldgen.")
-		public boolean enabled;
+		public boolean enabled = true;
 
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
