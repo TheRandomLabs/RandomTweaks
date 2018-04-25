@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12.2": {
+		"1.12.2-1.18.1.0": "Added the option to allow skeleton arrows to be picked up (disabled by default).",
 		"1.12.2-1.18.0.1": "Fixed keybinds.\nFixed /give's order of precedence.",
 		"1.12.2-1.18.0.0": "Major code cleanup.\nBug fixes.\nRemoved log filters.\nMultiple \"ding\" sounds are now supported.\nAdded a keybind to toggle FoV changes.\n/give now supports ore dictionary names prefixed by \"ore:\".\nPlayers now have a configurable head drop chance.\nAdded auto third person.\nUnused dimensions can now be automatically unloaded.\nCumulative anvil costs can now be disabled.\nAdded shortened gamemode commands.",
 		"1.12.2-1.17.1.0": "Added the config option to replace NuclearCraft Sulfur drops with Thermal Foundation Sulfur.\nAdded ocean floor worldgen (disabled by default).",
@@ -24,6 +25,7 @@
 		"1.12.1-2.0.0.0": "Updated to 1.12.1.\nContributor capes are now always shown in development environments.\nFixed the \"Could not set cape\" error message.\nFixed configuration location.\nFixed URLs for versions.json and contributors.txt.\nFixed some issues with log filters."
 	},
 	"1.12.1": {
+		"1.12.2-1.18.1.0": "Added the option to allow skeleton arrows to be picked up (disabled by default).",
 		"1.12.2-1.18.0.1": "Fixed keybinds.\nFixed /give's order of precedence.",
 		"1.12.2-1.18.0.0": "Major code cleanup.\nBug fixes.\nRemoved log filters.\nMultiple \"ding\" sounds are now supported.\nAdded a keybind to toggle FoV changes.\n/give now supports ore dictionary names prefixed by \"ore:\".\nPlayers now have a configurable head drop chance.\nAdded auto third person.\nUnused dimensions can now be automatically unloaded.\nCumulative anvil costs can now be disabled.\nAdded shortened gamemode commands.",
 		"1.12.2-1.17.1.0": "Added the config option to replace NuclearCraft Sulfur drops with Thermal Foundation Sulfur.\nAdded ocean floor worldgen (disabled by default).",
@@ -47,6 +49,7 @@
 		"1.12.1-2.0.0.0": "Updated to 1.12.1.\nContributor capes are now always shown in development environments.\nFixed the \"Could not set cape\" error message.\nFixed configuration location.\nFixed URLs for versions.json and contributors.txt.\nFixed some issues with log filters."
 	},
 	"1.12": {
+		"1.12.2-1.18.1.0": "Added the option to allow skeleton arrows to be picked up (disabled by default).",
 		"1.12.2-1.18.0.1": "Fixed keybinds.\nFixed /give's order of precedence.",
 		"1.12.2-1.18.0.0": "Major code cleanup.\nBug fixes.\nRemoved log filters.\nMultiple \"ding\" sounds are now supported.\nAdded a keybind to toggle FoV changes.\n/give now supports ore dictionary names prefixed by \"ore:\".\nPlayers now have a configurable head drop chance.\nAdded auto third person.\nUnused dimensions can now be automatically unloaded.\nCumulative anvil costs can now be disabled.\nAdded shortened gamemode commands.",
 		"1.12.2-1.17.1.0": "Added the config option to replace NuclearCraft Sulfur drops with Thermal Foundation Sulfur.\nAdded ocean floor worldgen (disabled by default).",
@@ -70,6 +73,7 @@
 		"1.12.1-2.0.0.0": "Updated to 1.12.1.\nContributor capes are now always shown in development environments.\nFixed the \"Could not set cape\" error message.\nFixed configuration location.\nFixed URLs for versions.json and contributors.txt.\nFixed some issues with log filters."
 	},
 	"1.11.2": {
+		"1.11.2-1.18.1.0": "Added the option to allow skeleton arrows to be picked up (disabled by default).",
 		"1.11.2-1.18.0.1": "Fixed keybinds.\nFixed /give's order of precedence.",
 		"1.11.2-1.18.0.0": "Major code cleanup.\nBug fixes, including 1.10 and 1.11-specific fixes.\nRemoved log filters.\nMultiple \"ding\" sounds are now supported.\nAdded a keybind to toggle FoV changes.\n/give now supports ore dictionary names prefixed by \"ore:\".\nPlayers now have a configurable head drop chance.\nAdded auto third person.\nUnused dimensions can now be automatically unloaded.\nCumulative anvil costs can now be disabled.\nAdded shortened gamemode commands.",
 		"1.11.2-1.17.1.0": "Added the config option to replace NuclearCraft Sulfur drops with Thermal Foundation Sulfur.\nAdded ocean floor worldgen (disabled by default).",
@@ -112,6 +116,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.11": {
+		"1.11.2-1.18.1.0": "Added the option to allow skeleton arrows to be picked up (disabled by default).",
 		"1.11.2-1.18.0.1": "Fixed keybinds.\nFixed /give's order of precedence.",
 		"1.11.2-1.18.0.0": "Major code cleanup.\nBug fixes, including 1.10 and 1.11-specific fixes.\nRemoved log filters.\nMultiple \"ding\" sounds are now supported.\nAdded a keybind to toggle FoV changes.\n/give now supports ore dictionary names prefixed by \"ore:\".\nPlayers now have a configurable head drop chance.\nAdded auto third person.\nUnused dimensions can now be automatically unloaded.\nCumulative anvil costs can now be disabled.\nAdded shortened gamemode commands.",
 		"1.11.2-1.17.1.0": "Added the config option to replace NuclearCraft Sulfur drops with Thermal Foundation Sulfur.\nAdded ocean floor worldgen (disabled by default).",
@@ -154,6 +159,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.10.2": {
+		"1.11.2-1.18.1.0": "Added the option to allow skeleton arrows to be picked up (disabled by default).",
 		"1.11.2-1.18.0.1": "Fixed keybinds.\nFixed /give's order of precedence.",
 		"1.11.2-1.18.0.0": "Major code cleanup.\nBug fixes, including 1.10 and 1.11-specific fixes.\nRemoved log filters.\nMultiple \"ding\" sounds are now supported.\nAdded a keybind to toggle FoV changes.\n/give now supports ore dictionary names prefixed by \"ore:\".\nPlayers now have a configurable head drop chance.\nAdded auto third person.\nUnused dimensions can now be automatically unloaded.\nCumulative anvil costs can now be disabled.\nAdded shortened gamemode commands.",
 		"1.11.2-1.17.1.0": "Added the config option to replace NuclearCraft Sulfur drops with Thermal Foundation Sulfur.\nAdded ocean floor worldgen (disabled by default).",
@@ -196,6 +202,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.10": {
+		"1.11.2-1.18.1.0": "Added the option to allow skeleton arrows to be picked up (disabled by default).",
 		"1.11.2-1.18.0.1": "Fixed keybinds.\nFixed /give's order of precedence.",
 		"1.11.2-1.18.0.0": "Major code cleanup.\nBug fixes, including 1.10 and 1.11-specific fixes.\nRemoved log filters.\nMultiple \"ding\" sounds are now supported.\nAdded a keybind to toggle FoV changes.\n/give now supports ore dictionary names prefixed by \"ore:\".\nPlayers now have a configurable head drop chance.\nAdded auto third person.\nUnused dimensions can now be automatically unloaded.\nCumulative anvil costs can now be disabled.\nAdded shortened gamemode commands.",
 		"1.11.2-1.17.1.0": "Added the config option to replace NuclearCraft Sulfur drops with Thermal Foundation Sulfur.\nAdded ocean floor worldgen (disabled by default).",
@@ -238,19 +245,19 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"promos": {
-		"1.12.2-latest": "1.12.2-1.18.0.1",
-		"1.12.2-recommended": "1.12.2-1.18.0.1",
-		"1.12.1-latest": "1.12.2-1.18.0.1",
-		"1.12.1-recommended": "1.12.2-1.18.0.1",
-		"1.12-latest": "1.12.2-1.18.0.1",
-		"1.12-recommended": "1.12.2-1.18.0.1",
-		"1.11.2-latest": "1.11.2-1.18.0.1",
-		"1.11.2-recommended": "1.11.2-1.18.0.1",
-		"1.11-latest": "1.11.2-1.18.0.1",
-		"1.11-recommended": "1.11.2-1.18.0.1",
-		"1.10.2-latest": "1.11.2-1.18.0.1",
-		"1.10.2-recommended": "1.11.2-1.18.0.1",
-		"1.10-latest": "1.11.2-1.18.0.1",
-		"1.10-recommended": "1.11.2-1.18.0.1"
+		"1.12.2-latest": "1.12.2-1.18.1.0",
+		"1.12.2-recommended": "1.12.2-1.18.1.0",
+		"1.12.1-latest": "1.12.2-1.18.1.0",
+		"1.12.1-recommended": "1.12.2-1.18.1.0",
+		"1.12-latest": "1.12.2-1.18.1.0",
+		"1.12-recommended": "1.12.2-1.18.1.0",
+		"1.11.2-latest": "1.11.2-1.18.1.0",
+		"1.11.2-recommended": "1.11.2-1.18.1.0",
+		"1.11-latest": "1.11.2-1.18.1.0",
+		"1.11-recommended": "1.11.2-1.18.1.0",
+		"1.10.2-latest": "1.11.2-1.18.1.0",
+		"1.10.2-recommended": "1.11.2-1.18.1.0",
+		"1.10-latest": "1.11.2-1.18.1.0",
+		"1.10-recommended": "1.11.2-1.18.1.0"
 	}
 }
