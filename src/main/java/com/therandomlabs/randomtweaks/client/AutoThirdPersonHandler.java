@@ -31,10 +31,15 @@ public final class AutoThirdPersonHandler {
 			return;
 		}
 
-		if(mc.player.isElytraFlying() && RTConfig.autoThirdPerson.elytra && lastID != ELYTRA) {
+		if(mc.player.isElytraFlying()) {
+			if(!RTConfig.autoThirdPerson.elytra || lastID == ELYTRA) {
+				return;
+			}
+
 			lastID = ELYTRA;
 			originalPerspective = mc.gameSettings.thirdPersonView;
 			mc.gameSettings.thirdPersonView = THIRD_PERSON;
+
 			return;
 		}
 
@@ -68,6 +73,7 @@ public final class AutoThirdPersonHandler {
 					return;
 				}
 			} else {
+				lastID = NO_ENTITY;
 				mc.gameSettings.thirdPersonView = originalPerspective;
 				return;
 			}

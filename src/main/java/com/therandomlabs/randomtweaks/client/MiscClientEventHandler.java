@@ -8,10 +8,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiIngame;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
+import net.minecraftforge.client.settings.KeyConflictContext;
+import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -22,12 +25,15 @@ import org.lwjgl.input.Keyboard;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class MiscClientEventHandler {
-	public static final KeyBinding CLEAR_CHAT =
-			new KeyBinding("key.clearChat", Keyboard.KEY_I, "key.categories.randomtweaks");
-	public static final KeyBinding NOCLIP =
-			new KeyBinding("key.noclip", Keyboard.KEY_F4, "key.categories.randomtweaks");
+	public static final KeyBinding CLEAR_CHAT = new KeyBinding("key.clearChat",
+			KeyConflictContext.UNIVERSAL, KeyModifier.CONTROL, Keyboard.KEY_I,
+			"key.categories.randomtweaks");
+	public static final KeyBinding NOCLIP = new KeyBinding("key.noclip",
+			KeyConflictContext.UNIVERSAL, KeyModifier.SHIFT, Keyboard.KEY_F4,
+			"key.categories.randomtweaks");
 	public static final KeyBinding TOGGLE_FOV_CHANGES = new KeyBinding("key.toggleFoVChanges",
-			Keyboard.KEY_RMENU, "key.categories.randomtweaks");
+			KeyConflictContext.UNIVERSAL, KeyModifier.SHIFT, Keyboard.KEY_COMMA,
+			"key.categories.randomtweaks");
 
 	private static boolean fovChangesEnabled = RTConfig.client.fovChangesEnabledByDefault;
 
@@ -64,6 +70,13 @@ public final class MiscClientEventHandler {
 		if(TOGGLE_FOV_CHANGES.isActiveAndMatches(key)) {
 			if(RTConfig.client.toggleFoVChangesKeybind) {
 				fovChangesEnabled = !fovChangesEnabled;
+
+				if(RTConfig.client.fovChangesStatusMessage) {
+					final EntityPlayerSP player = Minecraft.getMinecraft().player;
+					Compat.sendStatusMessage(player, new TextComponentTranslation(
+							"toggleFoVChanges." + (fovChangesEnabled ? "enabled" : "disabled")
+					));
+				}
 			}
 
 			return;

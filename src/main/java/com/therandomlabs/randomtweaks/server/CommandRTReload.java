@@ -6,16 +6,24 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.text.TextComponentString;
+import net.minecraftforge.client.ClientCommandHandler;
 
-public class CommandRtreload extends CommandBase {
+public class CommandRTReload extends CommandBase {
+	private final boolean client;
+
+	public CommandRTReload(boolean client) {
+		this.client = client;
+	}
+
 	@Override
 	public String getName() {
-		return "rtreload";
+		return client ? "rtreloadclient" : "rtreload";
 	}
 
 	@Override
 	public String getUsage(ICommandSender sender) {
-		return Utils.localize("commands.rtreload.usage");
+		return Utils.localize("commands." + getName() + ".usage");
 	}
 
 	@Override
@@ -23,11 +31,20 @@ public class CommandRtreload extends CommandBase {
 			throws CommandException {
 		try {
 			RTConfig.reloadConfig();
-			notifyCommandListener(sender, this, Utils.localize("commands.rtreload.success"));
+			if(client) {
+				sender.sendMessage(
+						new TextComponentString(Utils.localize("commands.rtreload.success")));
+			} else {
+				notifyCommandListener(sender, this, Utils.localize("commands.rtreload.success"));
+			}
 		} catch(Exception ex) {
 			ex.printStackTrace();
 			throw new CommandException(Utils.localize("commands.rtreload.failure",
 					ex.getClass().getName() + ": " + ex.getMessage()));
 		}
+	}
+
+	public static void registerClientCommand() {
+		ClientCommandHandler.instance.registerCommand(new CommandRTReload(true));
 	}
 }

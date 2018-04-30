@@ -90,10 +90,14 @@ public class RTConfig {
 		@Config.Comment("Whether FoV changes are enabled by default.")
 		public boolean fovChangesEnabledByDefault = true;
 
+		@Config.Comment("Whether a status message should be displayed when FoV changes are " +
+				"toggled.")
+		public boolean fovChangesStatusMessage = true;
+
 		@Config.Comment("Whether the shortened versions of the gamemode commands (/gms, /gmc, " +
 				"/gma and /gmsp) should be replaced by the longer ones before being sent. " +
 				"This does not work in 1.10.")
-		public boolean shortGamemodeCommands = true;
+		public boolean shortGamemodeCommands;
 	}
 
 	public static class Commands {

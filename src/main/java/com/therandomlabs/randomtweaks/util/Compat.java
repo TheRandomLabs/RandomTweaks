@@ -184,10 +184,13 @@ public final class Compat {
 		}
 	}
 
-	public static void sendStatusMessage(EntityPlayer player, ITextComponent message)
-			throws Exception {
+	public static void sendStatusMessage(EntityPlayer player, ITextComponent message) {
 		if(IS_ONE_POINT_TEN) {
-			ADD_CHAT_COMPONENT_MESSAGE.invoke(player, message);
+			try {
+				ADD_CHAT_COMPONENT_MESSAGE.invoke(player, message);
+			} catch(Exception ex) {
+				Utils.crashReport("Failed to send status message", ex);
+			}
 		} else {
 			player.sendStatusMessage(message, true);
 		}
