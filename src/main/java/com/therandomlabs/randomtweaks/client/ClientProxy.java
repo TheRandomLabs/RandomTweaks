@@ -2,6 +2,7 @@ package com.therandomlabs.randomtweaks.client;
 
 import com.therandomlabs.randomtweaks.common.CommonProxy;
 import com.therandomlabs.randomtweaks.common.RTConfig;
+import com.therandomlabs.randomtweaks.server.CommandRTReload;
 import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -28,7 +29,7 @@ public final class ClientProxy extends CommonProxy {
 		}
 
 		if(RTConfig.commands.rtreloadclient) {
-			CommandRtreloadClient.register();
+			CommandRTReload.registerClientCommand();
 		}
 	}
 

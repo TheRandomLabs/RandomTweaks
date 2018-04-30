@@ -108,8 +108,7 @@ public final class Compat {
 		stack.shrink(quantity);
 	}
 
-	public static void sendStatusMessage(EntityPlayer player, ITextComponent message)
-			throws Exception {
+	public static void sendStatusMessage(EntityPlayer player, ITextComponent message) {
 		player.sendStatusMessage(message, true);
 	}
 

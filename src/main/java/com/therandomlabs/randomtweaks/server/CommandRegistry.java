@@ -23,7 +23,7 @@ public final class CommandRegistry {
 		}
 
 		if(RTConfig.commands.rtreload) {
-			event.registerServerCommand(new CommandRtreload());
+			event.registerServerCommand(new CommandRTReload(false));
 		}
 	}
 
