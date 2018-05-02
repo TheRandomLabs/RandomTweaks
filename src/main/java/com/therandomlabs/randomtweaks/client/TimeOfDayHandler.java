@@ -24,7 +24,8 @@ import org.lwjgl.input.Keyboard;
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class TimeOfDayHandler {
 	public static final KeyBinding TOGGLE_TIME_OF_DAY_OVERLAY = new KeyBinding(
-			"key.toggleTimeOfDayOverlay", Keyboard.KEY_BACKSLASH, "key.categories.randomtweaks");
+			"key.toggleTimeOfDayOverlay", KeyConflictContext.UNIVERSAL, KeyModifier.CONTROL,
+			Keyboard.KEY_BACKSLASH, "key.categories.randomtweaks");
 
 	private static final Minecraft mc = Minecraft.getMinecraft();
 
