@@ -197,6 +197,8 @@ public final class Compat {
 
 	public static void clientInit() {}
 
+	public static void disableSurgePigmanSleep() {}
+
 	@SubscribeEvent
 	public static void onChat(ClientChatEvent event) {
 		event.setMessage(MiscClientEventHandler.onChat(event.getMessage()));
