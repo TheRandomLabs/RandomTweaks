@@ -42,6 +42,7 @@ import net.minecraftforge.event.entity.ThrowableImpactEvent;
 import net.minecraftforge.fml.client.config.GuiConfig;
 import net.minecraftforge.fml.client.config.IConfigElement;
 import net.minecraftforge.fml.common.IWorldGenerator;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.fml.common.registry.IForgeRegistry;
@@ -303,6 +304,29 @@ public final class Compat {
 	public static void clientInit() {
 		if(!IS_ONE_POINT_TEN) {
 			MinecraftForge.EVENT_BUS.register(new ClientChatHandler());
+		}
+	}
+
+	public static void disableSurgePigmanSleep() {
+		if(!IS_ONE_POINT_TEN || !Loader.isModLoaded("surge")) {
+			return;
+		}
+
+		try {
+			final Class<?> clazz = Class.forName("org.epoxide.surge.features.FeatureManager");
+			final List<?> features = (List<?>) clazz.getDeclaredField("FEATURES").get(null);
+
+			for(Object feature : features) {
+				final String className = feature.getClass().getName();
+				if(className.equals("org.epoxide.surge.features.pigsleep.FeaturePigmanSleep")) {
+					MinecraftForge.EVENT_BUS.unregister(feature);
+					RandomTweaks.LOGGER.debug(
+							"Successfully disabled Surge's pigman sleep fix feature!");
+					return;
+				}
+			}
+		} catch(Exception ex) {
+			RandomTweaks.LOGGER.error("Failed to disable Surge's pigman sleep fix feature!", ex);
 		}
 	}
 

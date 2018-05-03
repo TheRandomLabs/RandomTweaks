@@ -10,6 +10,8 @@ import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
+import net.minecraftforge.client.settings.KeyConflictContext;
+import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
@@ -24,7 +26,8 @@ import org.lwjgl.input.Keyboard;
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class TimeOfDayHandler {
 	public static final KeyBinding TOGGLE_TIME_OF_DAY_OVERLAY = new KeyBinding(
-			"key.toggleTimeOfDayOverlay", Keyboard.KEY_BACKSLASH, "key.categories.randomtweaks");
+			"key.toggleTimeOfDayOverlay", KeyConflictContext.UNIVERSAL, KeyModifier.CONTROL,
+			Keyboard.KEY_BACKSLASH, "key.categories.randomtweaks");
 
 	private static final Minecraft mc = Minecraft.getMinecraft();
 

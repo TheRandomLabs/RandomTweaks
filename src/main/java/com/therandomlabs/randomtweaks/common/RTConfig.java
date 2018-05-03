@@ -98,6 +98,9 @@ public class RTConfig {
 				"/gma and /gmsp) should be replaced by the longer ones before being sent. " +
 				"This does not work in 1.10.")
 		public boolean shortGamemodeCommands;
+
+		@Config.Comment("Whether to enable stepup autojump.")
+		public boolean autojump;
 	}
 
 	public static class Commands {

@@ -30,21 +30,23 @@ public final class SoundSystemReloadHandler {
 
 	@SubscribeEvent
 	public static void onKeyInput(KeyInputEvent event) {
-		if(RTConfig.client.reloadSoundSystemKeybind && Keyboard.getEventKeyState() &&
-				RELOAD_SOUND_SYSTEM.isActiveAndMatches(Keyboard.getEventKey())) {
-			final EntityPlayerSP player = Minecraft.getMinecraft().player;
+		if(!RTConfig.client.reloadSoundSystemKeybind || !Keyboard.getEventKeyState() ||
+				!RELOAD_SOUND_SYSTEM.isActiveAndMatches(Keyboard.getEventKey())) {
+			return;
+		}
 
-			try {
-				reloadSoundSystem();
-				Compat.sendStatusMessage(player,
-						new TextComponentTranslation("reloadSoundSystem.success"));
-			} catch(Exception ex) {
-				player.sendMessage(new TextComponentTranslation("reloadSoundSystem.failure.1"));
-				player.sendMessage(new TextComponentTranslation("reloadSoundSystem.failure.2",
-						ex.getClass().getName(), ex.getMessage()));
-				player.sendMessage(new TextComponentTranslation("reloadSoundSystem.failure.3"));
-				ex.printStackTrace();
-			}
+		final EntityPlayerSP player = Minecraft.getMinecraft().player;
+
+		try {
+			reloadSoundSystem();
+			Compat.sendStatusMessage(player,
+					new TextComponentTranslation("reloadSoundSystem.success"));
+		} catch(Exception ex) {
+			player.sendMessage(new TextComponentTranslation("reloadSoundSystem.failure.1"));
+			player.sendMessage(new TextComponentTranslation("reloadSoundSystem.failure.2",
+					ex.getClass().getName(), ex.getMessage()));
+			player.sendMessage(new TextComponentTranslation("reloadSoundSystem.failure.3"));
+			ex.printStackTrace();
 		}
 	}
 

@@ -6,17 +6,25 @@ timeOfDayOverlay.pm=PM
 timeOfDayOverlay.dayTime=Tag
 timeOfDayOverlay.nightTime=Nacht
 
+toggleFoVChanges.enabled=FoV changes enabled
+toggleFoVChanges.disabled=FoV changes disabled
+
 key.categories.randomtweaks=RandomTweaks
 key.reloadSoundSystem=Soundsystem Neuladen
 key.clearChat=Clear Chat
 key.noclip=Noclip
 key.toggleFoVChanges=Toggle FoV Changes
 key.toggleTimeOfDayOverlay=Toggle Time of Day Overlay
+key.toggleAutoJump=Toggle Auto Jump
 
 reloadSoundSystem.success=§eSoundsystem erfolgreich neugeladen!
 reloadSoundSystem.failure.1=§cNeuladen des Soundsystems fehlgeschlagen:
 reloadSoundSystem.failure.2=§c%s: %s
 reloadSoundSystem.failure.3=§cLogdatei überprüfen für mehr Informationen
+
+autoJump.disabled=Auto Jump Disabled
+autoJump.enabled=Auto Jump Enabled
+autoJump.enabledStepup=Stepup Enabled
 
 defaultGamerules.parseFailure=§cFehler in der Datei defaultgamerules.json. Logdatei überprüfen für mehr Informationen
 
