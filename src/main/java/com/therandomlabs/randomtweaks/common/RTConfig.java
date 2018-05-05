@@ -99,8 +99,8 @@ public class RTConfig {
 				"This does not work in 1.10.")
 		public boolean shortGamemodeCommands;
 
-		@Config.Comment("Whether to enable stepup autojump.")
-		public boolean autojump;
+		@Config.Comment("Whether to enable stepup auto jump.")
+		public boolean autoJump;
 	}
 
 	public static class Commands {
@@ -518,6 +518,10 @@ public class RTConfig {
 		final Path path = Paths.get("config", RandomTweaks.MODID, name);
 		final Path parent = path.getParent();
 		if(parent != null) {
+			if(Files.exists(parent) && !Files.isDirectory(parent)) {
+				Files.delete(parent);
+			}
+
 			Files.createDirectories(parent);
 		}
 		return path;
@@ -557,7 +561,7 @@ public class RTConfig {
 
 	static void preInit() {
 		try {
-			Files.deleteIfExists(getConfig("../randomtweaks.cfg"));
+			Files.deleteIfExists(Paths.get("config", "randomtweaks.cfg"));
 			Files.deleteIfExists(getConfig("dontresetconfig.txt"));
 			Files.deleteIfExists(getJson("logfilters"));
 		} catch(IOException ex) {
