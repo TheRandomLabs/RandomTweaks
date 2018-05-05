@@ -95,7 +95,7 @@ public final class AutoJumpHandler {
 		} else {
 			mc.player.stepHeight = mode.stepHeight;
 
-			if(mode.enabled) {
+			if(mode == Mode.STEPUP_AUTO_JUMP) {
 				final PotionEffect jumpBoost = mc.player.getActivePotionEffect(JUMP_BOOST);
 				if(jumpBoost != null) {
 					mc.player.stepHeight += (jumpBoost.getAmplifier() + 1) * 0.75F;
