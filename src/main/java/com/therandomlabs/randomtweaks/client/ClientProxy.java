@@ -45,7 +45,7 @@ public final class ClientProxy extends CommonProxy {
 			TimeOfDayHandler.registerKeyBinding();
 		}
 
-		if(RTConfig.client.autojump) {
+		if(RTConfig.client.autoJump) {
 			AutoJumpHandler.registerKeyBinding();
 		}
 
