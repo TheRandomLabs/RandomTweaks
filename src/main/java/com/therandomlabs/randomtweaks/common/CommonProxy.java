@@ -18,7 +18,7 @@ public class CommonProxy {
 
 		if(Utils.isDeobfuscated()) {
 			//Defaults for testing
-			RTConfig.client.autojump = true;
+			RTConfig.client.autoJump = true;
 			RTConfig.timeofday.enabledByDefault = true;
 			RTConfig.general.attackSpeed = 24.0;
 			RTConfig.general.dropTESulfur = true;

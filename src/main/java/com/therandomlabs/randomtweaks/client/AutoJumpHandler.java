@@ -48,7 +48,7 @@ public final class AutoJumpHandler {
 
 	@SubscribeEvent
 	public static void onKeyInput(InputEvent.KeyInputEvent event) {
-		if(!RTConfig.client.autojump || !Keyboard.getEventKeyState() ||
+		if(!RTConfig.client.autoJump || !Keyboard.getEventKeyState() ||
 				!TOGGLE_AUTO_JUMP.isActiveAndMatches(Keyboard.getEventKey()) ||
 				mc.player == null) {
 			return;
@@ -86,7 +86,7 @@ public final class AutoJumpHandler {
 
 	@SubscribeEvent
 	public static void onClientTick(TickEvent.ClientTickEvent event) {
-		if(!RTConfig.client.autojump || mode == null || mc.player == null) {
+		if(!RTConfig.client.autoJump || mode == null || mc.player == null) {
 			return;
 		}
 
