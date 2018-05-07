@@ -18,14 +18,12 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
-public final class AutoJumpHandler {
+public final class StepupHandler {
 	public static final KeyBinding TOGGLE_AUTO_JUMP = new KeyBinding("key.toggleAutoJump",
 			Keyboard.KEY_B, "key.categories.randomtweaks");
 
 	public static final float VANILLA_STEP_HEIGHT = 0.6F;
 	public static final float STEPUP_STEP_HEIGHT = 1.2F;
-
-	private static final Potion JUMP_BOOST = Potion.getPotionFromResourceLocation("jump_boost");
 
 	private static final Minecraft mc = Minecraft.getMinecraft();
 	private static Mode mode;
@@ -48,17 +46,62 @@ public final class AutoJumpHandler {
 
 	@SubscribeEvent
 	public static void onKeyInput(InputEvent.KeyInputEvent event) {
-		if(!RTConfig.client.autoJump || !Keyboard.getEventKeyState() ||
+		if(!RTConfig.client.stepup || !Keyboard.getEventKeyState() ||
 				!TOGGLE_AUTO_JUMP.isActiveAndMatches(Keyboard.getEventKey()) ||
 				mc.player == null) {
 			return;
 		}
 
+		toggle(true);
+	}
+
+	@SubscribeEvent
+	public static void onClientTick(TickEvent.ClientTickEvent event) {
+		if(!RTConfig.client.stepup || mc.player == null) {
+			return;
+		}
+
+		if(mode == null) {
+			final RTConfig.Data data = RTConfig.Data.get();
+			if(data.stepup) {
+				//This will be set to STEPUP_AUTO_JUMP
+				mode = Mode.VANILLA_AUTO_JUMP;
+				toggle(false);
+			} else {
+				return;
+			}
+		}
+
+		if(mc.player.isSneaking()) {
+			mc.player.stepHeight = VANILLA_STEP_HEIGHT;
+		} else {
+			mc.player.stepHeight = mode.stepHeight;
+
+			if(mode == Mode.STEPUP_AUTO_JUMP) {
+				final PotionEffect jumpBoost =
+						mc.player.getActivePotionEffect(Potion.getPotionById(8));
+				if(jumpBoost != null) {
+					mc.player.stepHeight += (jumpBoost.getAmplifier() + 1) * 0.75F;
+				}
+			}
+		}
+	}
+
+	public static void registerKeyBinding() {
+		ClientRegistry.registerKeyBinding(TOGGLE_AUTO_JUMP);
+	}
+
+	public static void toggle(boolean sendStatusMessage) {
+		final RTConfig.Data data = RTConfig.Data.get();
 		final boolean autojump =
 				mc.gameSettings.getOptionOrdinalValue(GameSettings.Options.AUTO_JUMP);
 
 		if(mode == null) {
-			mode = autojump ? Mode.VANILLA_AUTO_JUMP : Mode.NO_AUTO_JUMP;
+			if(data.stepup) {
+				mode = Mode.STEPUP_AUTO_JUMP;
+			} else {
+				mode = autojump ? Mode.VANILLA_AUTO_JUMP : Mode.NO_AUTO_JUMP;
+			}
 		}
 
 		if(mode == Mode.NO_AUTO_JUMP) {
@@ -68,6 +111,9 @@ public final class AutoJumpHandler {
 		} else {
 			mode = Mode.NO_AUTO_JUMP;
 		}
+
+		data.stepup = mode == Mode.STEPUP_AUTO_JUMP;
+		RTConfig.Data.save();
 
 		if(autojump) {
 			if(!mode.enabled) {
@@ -81,30 +127,8 @@ public final class AutoJumpHandler {
 			}
 		}
 
-		Compat.sendStatusMessage(mc.player, new TextComponentTranslation(mode.message));
-	}
-
-	@SubscribeEvent
-	public static void onClientTick(TickEvent.ClientTickEvent event) {
-		if(!RTConfig.client.autoJump || mode == null || mc.player == null) {
-			return;
+		if(sendStatusMessage) {
+			Compat.sendStatusMessage(mc.player, new TextComponentTranslation(mode.message));
 		}
-
-		if(mc.player.isSneaking()) {
-			mc.player.stepHeight = VANILLA_STEP_HEIGHT;
-		} else {
-			mc.player.stepHeight = mode.stepHeight;
-
-			if(mode == Mode.STEPUP_AUTO_JUMP) {
-				final PotionEffect jumpBoost = mc.player.getActivePotionEffect(JUMP_BOOST);
-				if(jumpBoost != null) {
-					mc.player.stepHeight += (jumpBoost.getAmplifier() + 1) * 0.75F;
-				}
-			}
-		}
-	}
-
-	public static void registerKeyBinding() {
-		ClientRegistry.registerKeyBinding(TOGGLE_AUTO_JUMP);
 	}
 }

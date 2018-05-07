@@ -35,8 +35,6 @@ public final class MiscClientEventHandler {
 			KeyConflictContext.UNIVERSAL, KeyModifier.SHIFT, Keyboard.KEY_COMMA,
 			"key.categories.randomtweaks");
 
-	private static boolean fovChangesEnabled = RTConfig.client.fovChangesEnabledByDefault;
-
 	@SubscribeEvent
 	public static void onKeyInput(InputEvent.KeyInputEvent event) {
 		if(!Keyboard.getEventKeyState()) {
@@ -46,7 +44,7 @@ public final class MiscClientEventHandler {
 		final int key = Keyboard.getEventKey();
 
 		if(CLEAR_CHAT.isActiveAndMatches(key)) {
-			if(RTConfig.client.clearChatKeybind) {
+			if(RTConfig.keybinds.clearChat) {
 				final GuiIngame ingameGUI = Minecraft.getMinecraft().ingameGUI;
 
 				if(ingameGUI != null) {
@@ -58,7 +56,7 @@ public final class MiscClientEventHandler {
 		}
 
 		if(NOCLIP.isActiveAndMatches(key)) {
-			if(RTConfig.client.noclipKeybind) {
+			if(RTConfig.keybinds.noclip) {
 				final EntityPlayerSP player = Minecraft.getMinecraft().player;
 				final String gamemode = player.isCreative() ? "sp" : "c";
 				player.sendChatMessage("/gamemode " + gamemode);
@@ -68,37 +66,37 @@ public final class MiscClientEventHandler {
 		}
 
 		if(TOGGLE_FOV_CHANGES.isActiveAndMatches(key)) {
-			if(RTConfig.client.toggleFoVChangesKeybind) {
-				fovChangesEnabled = !fovChangesEnabled;
+			if(RTConfig.keybinds.toggleFoVChanges) {
+				final RTConfig.Data data = RTConfig.Data.get();
+				data.fovChanges = !data.fovChanges;
+				RTConfig.Data.save();
 
-				if(RTConfig.client.fovChangesStatusMessage) {
+				if(RTConfig.keybinds.fovChangesStatusMessage) {
 					final EntityPlayerSP player = Minecraft.getMinecraft().player;
 					Compat.sendStatusMessage(player, new TextComponentTranslation(
-							"toggleFoVChanges." + (fovChangesEnabled ? "enabled" : "disabled")
+							"toggleFoVChanges." + (data.fovChanges ? "enabled" : "disabled")
 					));
 				}
 			}
-
-			return;
 		}
 	}
 
 	public static void registerKeyBindings() {
-		if(RTConfig.client.clearChatKeybind) {
+		if(RTConfig.keybinds.clearChat) {
 			ClientRegistry.registerKeyBinding(CLEAR_CHAT);
 		}
 
-		if(RTConfig.client.noclipKeybind) {
+		if(RTConfig.keybinds.noclip) {
 			ClientRegistry.registerKeyBinding(NOCLIP);
 		}
 
-		if(RTConfig.client.toggleFoVChangesKeybind) {
+		if(RTConfig.keybinds.toggleFoVChanges) {
 			ClientRegistry.registerKeyBinding(TOGGLE_FOV_CHANGES);
 		}
 	}
 
 	public static String onChat(String message) {
-		if(!RTConfig.client.shortGamemodeCommands) {
+		if(!RTConfig.commands.shortGamemodeCommands) {
 			return message;
 		}
 
@@ -144,14 +142,12 @@ public final class MiscClientEventHandler {
 			if(RTConfig.client.disableEnderDragonDeathSound) {
 				event.setResultSound(null);
 			}
-
-			return;
 		}
 	}
 
 	@SubscribeEvent
 	public static void onFoVUpdate(FOVUpdateEvent event) {
-		if(!fovChangesEnabled) {
+		if(!RTConfig.Data.get().fovChanges) {
 			event.setNewfov(1.0F);
 		}
 	}

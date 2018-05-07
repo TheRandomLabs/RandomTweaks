@@ -1,6 +1,6 @@
 package com.therandomlabs.randomtweaks.common;
 
-import com.therandomlabs.randomtweaks.server.CommandRegistry;
+import com.therandomlabs.randomtweaks.command.CommandRegistry;
 import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;

@@ -44,6 +44,9 @@ commands.rtreload.success=Configuration reloaded!
 
 commands.rtreloadclient.usage=/rtreloadclient
 
+commands.disconnect.usage=/disconnect
+commands.disconnect.failure=§cAn error occurred while attempting to disconnect: %s
+
 tile.bed.tooFarAway=You may not rest now, the bed is too far away
 
 generator.realistic=Realistic

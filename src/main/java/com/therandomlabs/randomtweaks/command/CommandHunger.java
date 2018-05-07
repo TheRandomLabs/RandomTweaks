@@ -1,4 +1,4 @@
-package com.therandomlabs.randomtweaks.server;
+package com.therandomlabs.randomtweaks.command;
 
 import java.util.Collections;
 import java.util.List;

@@ -48,24 +48,11 @@ public class RTConfig {
 
 	public static class Client {
 		@Config.RequiresMcRestart
-		@Config.Comment("Enables the Reload Sound System keybind.")
-		public boolean reloadSoundSystemKeybind = true;
-
-		@Config.RequiresMcRestart
-		@Config.Comment("Enables the Clear Chat keybind.")
-		public boolean clearChatKeybind = true;
-
-		@Config.RequiresMcRestart
-		@Config.Comment("Enables the Noclip keybind, which toggles between /gamemode c " +
-				"and /gamemode sp.")
-		public boolean noclipKeybind = true;
-
-		@Config.RequiresMcRestart
 		@Config.Comment("Moves the Bucket to the Tools creative tab.")
 		public boolean moveBucketCreativeTab = true;
 
 		@Config.RequiresMcRestart
-		@Config.Comment("Moves the spawn eggs to their own creative tab.")
+		@Config.Comment("Moves spawn eggs to their own creative tab.")
 		public boolean spawnEggsCreativeTab = true;
 
 		@Config.RequiresMcRestart
@@ -84,23 +71,11 @@ public class RTConfig {
 		@Config.Comment("Removes underwater fog.")
 		public boolean clearWater = true;
 
-		@Config.Comment("Enables a keybind to disable FoV changes.")
-		public boolean toggleFoVChangesKeybind = true;
-
-		@Config.Comment("Whether FoV changes are enabled by default.")
-		public boolean fovChangesEnabledByDefault = true;
-
-		@Config.Comment("Whether a status message should be displayed when FoV changes are " +
-				"toggled.")
-		public boolean fovChangesStatusMessage = true;
-
-		@Config.Comment("Whether the shortened versions of the gamemode commands (/gms, /gmc, " +
-				"/gma and /gmsp) should be replaced by the longer ones before being sent. " +
-				"This does not work in 1.10.")
-		public boolean shortGamemodeCommands;
-
 		@Config.Comment("Whether to enable stepup auto jump.")
-		public boolean autoJump;
+		public boolean stepup;
+
+		@Config.Comment("Whether stepup auto jump is enabled by default.")
+		public boolean stepupEnabledByDefault;
 	}
 
 	public static class Commands {
@@ -130,6 +105,17 @@ public class RTConfig {
 		@Config.Comment("Enables the /rtreloadclient command, which is the client-sided " +
 				"version of /rtreload.")
 		public boolean rtreloadclient = true;
+
+		@Config.RequiresMcRestart
+		@Config.Comment("Enables the client-sided /disconnect command, which leaves the " +
+				"current world.")
+		public boolean disconnect = true;
+
+		@Config.Comment("Whether the shortened versions of the gamemode commands (/gms, /gmc, " +
+				"/gma and /gmsp) should be replaced by the longer ones before being sent. " +
+				"This is client-sided and does not support tab completion. This does not work in " +
+				"1.10.")
+		public boolean shortGamemodeCommands;
 	}
 
 	public static class Ding {
@@ -183,16 +169,36 @@ public class RTConfig {
 		@Config.Comment("Replaces NuclearCraft Sulfur drops with Thermal Expansion Sulfur.")
 		public boolean dropTESulfur;
 
-		@Config.RangeInt(min = 0)
-		@Config.Comment("The interval between every check for unused dimensions in ticks. " +
-				"Set this to 0 to disable the check.")
-		public int dimensionUnloadCheckInterval = 600;
-
 		@Config.Comment("Disables the cumulative anvil cost.")
 		public boolean disableCumulativeAnvilCost = true;
 
 		@Config.Comment("Allows skeleton arrows to be picked up.")
 		public boolean pickupSkeletonArrows;
+	}
+
+	public static class Keybinds {
+		@Config.RequiresMcRestart
+		@Config.Comment("Enables the Reload Sound System keybind.")
+		public boolean reloadSoundSystem = true;
+
+		@Config.RequiresMcRestart
+		@Config.Comment("Enables the Clear Chat keybind.")
+		public boolean clearChat = true;
+
+		@Config.RequiresMcRestart
+		@Config.Comment("Enables the Noclip keybind, which toggles between /gamemode c " +
+				"and /gamemode sp.")
+		public boolean noclip = true;
+
+		@Config.Comment("Enables a keybind to disable FoV changes.")
+		public boolean toggleFoVChanges = true;
+
+		@Config.Comment("Whether FoV changes are enabled by default.")
+		public boolean fovChangesEnabledByDefault = true;
+
+		@Config.Comment("Whether a status message should be displayed when FoV changes are " +
+				"toggled.")
+		public boolean fovChangesStatusMessage = true;
 	}
 
 	public static class OceanFloor {
@@ -355,31 +361,159 @@ public class RTConfig {
 
 		@Config.Comment("The Y offset of the time of day overlay.")
 		public int y = 0;
+	}
 
-		public static final Map<String, Boolean> worlds = new HashMap<>();
+	public static class DefaultGamerules {
+		public static void create() throws IOException {
+			final Path path = Paths.get("config", RandomTweaks.MODID, "defaultgamerules.json");
 
-		@SuppressWarnings("unchecked")
-		public static void loadWorlds() {
+			if(Files.exists(path)) {
+				Files.move(path, Paths.get(path.toString() + "_backup" + System.nanoTime()));
+			}
+
+			Files.write(path, Arrays.asList(
+					"//Example configuration - game does not need to be restarted when changing this",
+					"{",
+					"//\t\"commandBlockOutput\": false, //These are for all game modes",
+					"//\t\"keepInventory\": true,",
+					"//\t\"1:flat,void\": { //Creative flat/void world. Game modes and world types " +
+							"can be separated with commas (no spaces). These are the same as the " +
+							"world types in command.properties.",
+					"//\t\t\"doDaylightCycle\": false,",
+					"//\t\t\"doWeatherCycle\": false,",
+					"//\t\t\"doMobSpawning\": false,",
+					"//\t\t\"rtWorldBorderSize\": 10000 //Sets the world border (in blocks) " +
+							"from chunk (0, 0)",
+					"//\t}",
+					"}"
+			));
+		}
+
+		public static Map<String, String> get(int gamemode, String worldType) throws IOException {
+			final Path path = getJson("defaultgamerules");
+
+			if(!Files.exists(path)) {
+				create();
+				return Collections.emptyMap();
+			}
+
+			JsonObject object;
 			try {
-				worlds.clear();
+				object = readJson(path);
+			} catch(MalformedJsonException ex) {
+				ex.printStackTrace();
+				//WorldCreateHandler sends a command message if this is null saying that the
+				//JSON was invalid, so there's no need to crash the game
+				return null;
+			}
 
-				final Path path = getJson("timeofdayoverlayworlds");
-				if(!Files.exists(path)) {
-					return;
+			final Map<String, String> gamerules = new HashMap<>();
+
+			for(Map.Entry<String, JsonElement> entry : object.entrySet()) {
+				if(entry.getValue().isJsonObject() &&
+						matchesGamemodeAndWorldType(entry.getKey(), gamemode, worldType)) {
+					putGamerules(gamerules, entry.getValue().getAsJsonObject());
+					continue;
 				}
 
-				worlds.putAll(new Gson().fromJson(readFile(path), Map.class));
-			} catch(IOException ex) {
-				Utils.crashReport("Failed to read time of day overlay worlds", ex);
+				gamerules.put(entry.getKey(), entry.getValue().toString());
+			}
+
+			return gamerules;
+		}
+
+		private static void putGamerules(Map<String, String> gamerules, JsonObject object) {
+			for(Map.Entry<String, JsonElement> entry : object.entrySet()) {
+				gamerules.put(entry.getKey(), entry.getValue().toString());
 			}
 		}
 
-		public static void saveWorlds() {
+		//Format: comma-separated integer gamemodes (optional):comma-separated world types (optional)
+		//Examples: 0,1:flat	realistic	2:void,flat
+		public static boolean matchesGamemodeAndWorldType(String string, int gamemode,
+				String worldType) {
+			final String[] split = string.split(":");
+			final String[] gamemodes = split[0].split(",");
+
+			boolean gamemodeFound = false;
+
+			for(String mode : gamemodes) {
+				try {
+					if(Integer.parseInt(mode) == gamemode) {
+						gamemodeFound = true;
+						break;
+					}
+				} catch(NumberFormatException ex) {
+					if(split.length == 1 && mode.equals(worldType)) {
+						//Then it's a world type, not a mode.
+						return true;
+					}
+				}
+			}
+
+			if(!gamemodeFound) {
+				return false;
+			}
+
+			if(split.length > 1) {
+				for(String type : split[1].split(",")) {
+					if(type.equals(worldType)) {
+						return true;
+					}
+				}
+			}
+
+			return false;
+		}
+	}
+
+	public static class Data {
+		private static Data data;
+
+		public Map<String, Boolean> timeOfDayOverlay;
+		public boolean stepup;
+		public boolean fovChanges;
+
+		public static Data get() {
+			if(data == null) {
+				try {
+					final Path path = getJson("data");
+
+					if(Files.exists(path)) {
+						try {
+							data = new Gson().fromJson(readFile(path), Data.class);
+						} catch(MalformedJsonException ex) {
+							RandomTweaks.LOGGER.error("Replacing invalid data file...");
+						}
+					}
+				} catch(IOException ex) {
+					Utils.crashReport("Error while loading RandomTweaks data", ex);
+				}
+
+				if(data == null) {
+					data = new Data();
+
+					data.timeOfDayOverlay = new HashMap<>();
+					data.stepup = client.stepupEnabledByDefault;
+					data.fovChanges = keybinds.fovChangesEnabledByDefault;
+				}
+
+				if(data.timeOfDayOverlay == null) {
+					data.timeOfDayOverlay = new HashMap<>();
+				}
+			}
+
+			return data;
+		}
+
+		public static void save() {
+			//Ensure non-null
+			get();
+
 			try {
-				Files.write(getJson("timeofdayoverlayworlds"),
-						Collections.singletonList(new Gson().toJson(worlds)));
+				Files.write(getJson("data"), Collections.singletonList(new Gson().toJson(data)));
 			} catch(IOException ex) {
-				Utils.crashReport("Failed to save time of day overlay worlds", ex);
+				Utils.crashReport("Error while saving RandomTweaks data", ex);
 			}
 		}
 	}
@@ -394,6 +528,8 @@ public class RTConfig {
 	public static Ding ding = new Ding();
 	@Config.Comment("General")
 	public static General general = new General();
+	@Config.Comment("Keybinds")
+	public static Keybinds keybinds = new Keybinds();
 	@Config.Comment("Ocean floor")
 	public static OceanFloor oceanFloor = new OceanFloor();
 	@Config.Comment("Player head drops")
@@ -406,113 +542,6 @@ public class RTConfig {
 	public static Squids squids = new Squids();
 	@Config.Comment("Time of day overlay")
 	public static TimeOfDay timeofday = new TimeOfDay();
-
-	static {
-		TimeOfDay.loadWorlds();
-	}
-
-	public static void createDefaultGamerules() throws IOException {
-		final Path path = Paths.get("config", RandomTweaks.MODID, "defaultgamerules.json");
-
-		if(Files.exists(path)) {
-			Files.move(path, Paths.get(path.toString() + "_backup" + System.nanoTime()));
-		}
-
-		Files.write(path, Arrays.asList(
-				"//Example configuration - game does not need to be restarted when changing this",
-				"{",
-				"//\t\"commandBlockOutput\": false, //These are for all game modes",
-				"//\t\"keepInventory\": true,",
-				"//\t\"1:flat,void\": { //Creative flat/void world. Game modes and world types " +
-						"can be separated with commas (no spaces). These are the same as the " +
-						"world types in server.properties.",
-				"//\t\t\"doDaylightCycle\": false,",
-				"//\t\t\"doWeatherCycle\": false,",
-				"//\t\t\"doMobSpawning\": false,",
-				"//\t\t\"rtWorldBorderSize\": 10000 //Sets the world border (in blocks) " +
-						"from chunk (0, 0)",
-				"//\t}",
-				"}"
-		));
-	}
-
-	public static Map<String, String> getDefaultGamerules(int gamemode, String worldType)
-			throws IOException {
-		final Path path = getJson("defaultgamerules");
-
-		if(!Files.exists(path)) {
-			createDefaultGamerules();
-			return Collections.emptyMap();
-		}
-
-		JsonObject object;
-		try {
-			object = readJson(path);
-		} catch(MalformedJsonException ex) {
-			ex.printStackTrace();
-			//WorldCreateHandler sends a server message if this is null saying that the
-			//JSON was invalid, so there's no need to crash the game
-			return null;
-		}
-
-		final Map<String, String> gamerules = new HashMap<>();
-
-		for(Map.Entry<String, JsonElement> entry : object.entrySet()) {
-			if(entry.getValue().isJsonObject() &&
-					matchesGamemodeAndWorldType(entry.getKey(), gamemode, worldType)) {
-				putGamerules(gamerules, entry.getValue().getAsJsonObject());
-				continue;
-			}
-
-			gamerules.put(entry.getKey(), entry.getValue().toString());
-		}
-
-		return gamerules;
-	}
-
-	private static void putGamerules(Map<String, String> gamerules, JsonObject object) {
-		for(Map.Entry<String, JsonElement> entry : object.entrySet()) {
-			gamerules.put(entry.getKey(), entry.getValue().toString());
-		}
-	}
-
-	//Format: comma-separated integer gamemodes (optional):comma-separated world types (optional)
-	//Examples: 0,1:flat	realistic	2:void,flat
-	public static boolean matchesGamemodeAndWorldType(String string, int gamemode,
-			String worldType) {
-		final String[] split = string.split(":");
-		final String[] gamemodes = split[0].split(",");
-
-		boolean gamemodeFound = false;
-
-		for(String mode : gamemodes) {
-			try {
-				if(Integer.parseInt(mode) == gamemode) {
-					gamemodeFound = true;
-					break;
-				}
-			} catch(NumberFormatException ex) {
-				if(split.length == 1 && mode.equals(worldType)) {
-					//Then it's a world type, not a mode.
-					return true;
-				}
-			}
-		}
-
-		if(!gamemodeFound) {
-			return false;
-		}
-
-		if(split.length > 1) {
-			for(String type : split[1].split(",")) {
-				if(type.equals(worldType)) {
-					return true;
-				}
-			}
-		}
-
-		return false;
-	}
 
 	public static Path getConfig(String name) throws IOException {
 		final Path path = Paths.get("config", RandomTweaks.MODID, name);
@@ -556,7 +585,7 @@ public class RTConfig {
 
 	public static void reloadConfig() {
 		Compat.syncConfig(RandomTweaks.MODID, Config.Type.INSTANCE);
-		TimeOfDay.loadWorlds();
+		Data.data = null;
 	}
 
 	static void preInit() {
@@ -564,6 +593,7 @@ public class RTConfig {
 			Files.deleteIfExists(Paths.get("config", "randomtweaks.cfg"));
 			Files.deleteIfExists(getConfig("dontresetconfig.txt"));
 			Files.deleteIfExists(getJson("logfilters"));
+			Files.deleteIfExists(getJson("timeofdayoverlayworlds"));
 		} catch(IOException ex) {
 			Utils.crashReport("Failed to delete old RandomTweaks files", ex);
 		}

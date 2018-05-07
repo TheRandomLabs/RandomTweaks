@@ -1,4 +1,4 @@
-package com.therandomlabs.randomtweaks.server;
+package com.therandomlabs.randomtweaks.command;
 
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.util.Utils;
@@ -7,7 +7,6 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.client.ClientCommandHandler;
 
 public class CommandRTReload extends CommandBase {
 	private final boolean client;
@@ -19,6 +18,11 @@ public class CommandRTReload extends CommandBase {
 	@Override
 	public String getName() {
 		return client ? "rtreloadclient" : "rtreload";
+	}
+
+	@Override
+	public int getRequiredPermissionLevel() {
+		return client ? 0 : 4;
 	}
 
 	@Override
@@ -42,9 +46,5 @@ public class CommandRTReload extends CommandBase {
 			throw new CommandException(Utils.localize("commands.rtreload.failure",
 					ex.getClass().getName() + ": " + ex.getMessage()));
 		}
-	}
-
-	public static void registerClientCommand() {
-		ClientCommandHandler.instance.registerCommand(new CommandRTReload(true));
 	}
 }
