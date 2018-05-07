@@ -54,7 +54,7 @@ public class CommandRTGive extends CommandGive {
 		}
 
 		if(item == null) {
-			throw new NumberInvalidException(/*TODO*/);
+			throw new NumberInvalidException("commands.give.item.notFound", args[1]);
 		}
 
 		final int amount = args.length > 2 ? parseInt(args[2], 1) : 1;
