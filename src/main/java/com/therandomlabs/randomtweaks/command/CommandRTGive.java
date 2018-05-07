@@ -37,20 +37,24 @@ public class CommandRTGive extends CommandGive {
 		Item item = null;
 		int meta = args.length > 3 ? parseInt(args[3]) : 0;
 
-		if(args[1].startsWith("ore:")) {
-			final List<ItemStack> ores = Compat.getOres(args[1].substring(4));
-			if(!ores.isEmpty()) {
-				item = ores.get(0).getItem();
-				meta = ores.get(0).getItemDamage();
+		try {
+			item = getItemByText(sender, args[1]);
+		} catch(NumberInvalidException ex) {
+			if(args[1].startsWith("ore:")) {
+				final List<ItemStack> ores = Compat.getOres(args[1].substring(4));
+				if(!ores.isEmpty()) {
+					item = ores.get(0).getItem();
+					meta = ores.get(0).getItemDamage();
+				}
+			} else {
+				try {
+					item = Item.getItemById(parseInt(args[1], 1));
+				} catch(NumberInvalidException ignored) {}
 			}
 		}
 
-		try {
-			item = Item.getItemById(parseInt(args[1], 1));
-		} catch(NumberInvalidException ignored) {}
-
 		if(item == null) {
-			item = getItemByText(sender, args[1]);
+			throw new NumberInvalidException(/*TODO*/);
 		}
 
 		final int amount = args.length > 2 ? parseInt(args[2], 1) : 1;
