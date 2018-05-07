@@ -108,7 +108,7 @@ public final class WorldHandler {
 		final int gamemode = world.getWorldInfo().getGameType().getID();
 		final String type = world.getWorldType().getName();
 
-		final Map<String, String> defaultGamerules = RTConfig.getDefaultGamerules(gamemode, type);
+		final Map<String, String> defaultGamerules = RTConfig.DefaultGamerules.get(gamemode, type);
 
 		if(defaultGamerules == null) {
 			failedToParseGamerules(world);

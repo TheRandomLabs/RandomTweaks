@@ -1,8 +1,8 @@
 package com.therandomlabs.randomtweaks.client;
 
+import com.therandomlabs.randomtweaks.command.CommandRegistry;
 import com.therandomlabs.randomtweaks.common.CommonProxy;
 import com.therandomlabs.randomtweaks.common.RTConfig;
-import com.therandomlabs.randomtweaks.server.CommandRTReload;
 import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -28,16 +28,14 @@ public final class ClientProxy extends CommonProxy {
 			createSpawnEggsCreativeTab();
 		}
 
-		if(RTConfig.commands.rtreloadclient) {
-			CommandRTReload.registerClientCommand();
-		}
+		CommandRegistry.registerClient();
 	}
 
 	@Override
 	public void init(FMLInitializationEvent event) {
 		super.init(event);
 
-		if(RTConfig.client.reloadSoundSystemKeybind) {
+		if(RTConfig.keybinds.reloadSoundSystem) {
 			SoundSystemReloadHandler.registerKeyBinding();
 		}
 
@@ -45,8 +43,8 @@ public final class ClientProxy extends CommonProxy {
 			TimeOfDayHandler.registerKeyBinding();
 		}
 
-		if(RTConfig.client.autoJump) {
-			AutoJumpHandler.registerKeyBinding();
+		if(RTConfig.client.stepup) {
+			StepupHandler.registerKeyBinding();
 		}
 
 		MiscClientEventHandler.registerKeyBindings();

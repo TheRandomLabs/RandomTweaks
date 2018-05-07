@@ -1,6 +1,7 @@
 package com.therandomlabs.randomtweaks.client;
 
 import java.io.File;
+import java.util.Map;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Utils;
@@ -40,7 +41,7 @@ public final class TimeOfDayHandler {
 
 	@SubscribeEvent
 	public static void onRenderTick(TickEvent.RenderTickEvent event) {
-		if(shouldHide() || isDisabledForCurrentWorld()) {
+		if(shouldHide() || !isEnabledForCurrentWorld()) {
 			return;
 		}
 
@@ -112,19 +113,8 @@ public final class TimeOfDayHandler {
 			return;
 		}
 
-		final File saveDirectory = DimensionManager.getCurrentSaveRootDirectory();
-
-		if(saveDirectory != null) {
-			RTConfig.TimeOfDay.worlds.put(saveDirectory.getName(),
-					!isDisabledForCurrentWorld());
-		} else {
-			RTConfig.TimeOfDay.worlds.put(mc.getCurrentServerData().serverIP,
-					!isDisabledForCurrentWorld());
-		}
-
-		RTConfig.TimeOfDay.saveWorlds();
+		toggle();
 	}
-
 
 	public static void registerKeyBinding() {
 		ClientRegistry.registerKeyBinding(TOGGLE_TIME_OF_DAY_OVERLAY);
@@ -150,36 +140,53 @@ public final class TimeOfDayHandler {
 				world.getWorldInfo().getGameType() == GameType.ADVENTURE;
 	}
 
-	public static boolean isDisabledForCurrentWorld() {
+	public static boolean isEnabledForCurrentWorld() {
+		final Map<String, Boolean> worlds = RTConfig.Data.get().timeOfDayOverlay;
+
 		final File saveDirectory = DimensionManager.getCurrentSaveRootDirectory();
 		if(saveDirectory != null) {
 			final String name = saveDirectory.getName();
 
-			if(!RTConfig.TimeOfDay.worlds.containsKey(name)) {
-				RTConfig.TimeOfDay.worlds.put(name, RTConfig.timeofday.enabledByDefault);
-				RTConfig.TimeOfDay.saveWorlds();
+			if(!worlds.containsKey(name)) {
+				worlds.put(name, RTConfig.timeofday.enabledByDefault);
+				RTConfig.Data.save();
 			}
 
-			return RTConfig.TimeOfDay.worlds.get(name);
+			return worlds.get(name);
 		}
 
 		final ServerData serverData = mc.getCurrentServerData();
 
 		if(serverData == null) {
-			return true;
+			return false;
 		}
 
 		final String ip = serverData.serverIP;
 
 		if(ip == null) {
-			return true;
+			return false;
 		}
 
-		if(!RTConfig.TimeOfDay.worlds.containsKey(ip)) {
-			RTConfig.TimeOfDay.worlds.put(ip, RTConfig.timeofday.enabledByDefault);
-			RTConfig.TimeOfDay.saveWorlds();
+		if(!RTConfig.Data.get().timeOfDayOverlay.containsKey(ip)) {
+			worlds.put(ip, RTConfig.timeofday.enabledByDefault);
+			RTConfig.Data.save();
 		}
 
-		return RTConfig.TimeOfDay.worlds.get(ip);
+		return worlds.get(ip);
+	}
+
+	public static boolean toggle() {
+		final File saveDirectory = DimensionManager.getCurrentSaveRootDirectory();
+		final Map<String, Boolean> worlds = RTConfig.Data.get().timeOfDayOverlay;
+		final String name = saveDirectory != null ?
+				saveDirectory.getName() : mc.getCurrentServerData().serverIP;
+
+		if(!worlds.containsKey(name)) {
+			worlds.put(name, !RTConfig.timeofday.enabledByDefault);
+		} else {
+			worlds.put(name, !worlds.get(name));
+		}
+
+		return worlds.get(name);
 	}
 }

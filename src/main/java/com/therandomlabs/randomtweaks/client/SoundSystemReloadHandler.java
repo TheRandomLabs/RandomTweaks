@@ -30,7 +30,7 @@ public final class SoundSystemReloadHandler {
 
 	@SubscribeEvent
 	public static void onKeyInput(KeyInputEvent event) {
-		if(!RTConfig.client.reloadSoundSystemKeybind || !Keyboard.getEventKeyState() ||
+		if(!RTConfig.keybinds.reloadSoundSystem || !Keyboard.getEventKeyState() ||
 				!RELOAD_SOUND_SYSTEM.isActiveAndMatches(Keyboard.getEventKey())) {
 			return;
 		}

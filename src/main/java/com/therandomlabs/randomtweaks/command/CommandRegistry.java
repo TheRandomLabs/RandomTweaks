@@ -1,6 +1,7 @@
-package com.therandomlabs.randomtweaks.server;
+package com.therandomlabs.randomtweaks.command;
 
 import com.therandomlabs.randomtweaks.common.RTConfig;
+import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
@@ -24,6 +25,16 @@ public final class CommandRegistry {
 
 		if(RTConfig.commands.rtreload) {
 			event.registerServerCommand(new CommandRTReload(false));
+		}
+	}
+
+	public static void registerClient() {
+		if(RTConfig.commands.disconnect) {
+			ClientCommandHandler.instance.registerCommand(new CommandDisconnect());
+		}
+
+		if(RTConfig.commands.rtreloadclient) {
+			ClientCommandHandler.instance.registerCommand(new CommandRTReload(true));
 		}
 	}
 

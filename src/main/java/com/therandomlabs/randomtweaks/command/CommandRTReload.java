@@ -1,4 +1,4 @@
-package com.therandomlabs.randomtweaks.client;
+package com.therandomlabs.randomtweaks.command;
 
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.util.Utils;
@@ -7,17 +7,27 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.text.TextComponentString;
-import net.minecraftforge.client.ClientCommandHandler;
 
-public class CommandRtreloadClient extends CommandBase {
+public class CommandRTReload extends CommandBase {
+	private final boolean client;
+
+	public CommandRTReload(boolean client) {
+		this.client = client;
+	}
+
 	@Override
 	public String getName() {
-		return "rtreloadclient";
+		return client ? "rtreloadclient" : "rtreload";
+	}
+
+	@Override
+	public int getRequiredPermissionLevel() {
+		return client ? 0 : 4;
 	}
 
 	@Override
 	public String getUsage(ICommandSender sender) {
-		return Utils.localize("commands.rtreload.usage");
+		return Utils.localize("commands." + getName() + ".usage");
 	}
 
 	@Override
@@ -25,16 +35,16 @@ public class CommandRtreloadClient extends CommandBase {
 			throws CommandException {
 		try {
 			RTConfig.reloadConfig();
-			sender.sendMessage(
-					new TextComponentString(Utils.localize("commands.rtreload.success")));
+			if(client) {
+				sender.sendMessage(
+						new TextComponentString(Utils.localize("commands.rtreload.success")));
+			} else {
+				notifyCommandListener(sender, this, Utils.localize("commands.rtreload.success"));
+			}
 		} catch(Exception ex) {
 			ex.printStackTrace();
 			throw new CommandException(Utils.localize("commands.rtreload.failure",
 					ex.getClass().getName() + ": " + ex.getMessage()));
 		}
-	}
-
-	public static void register() {
-		ClientCommandHandler.instance.registerCommand(new CommandRtreloadClient());
 	}
 }

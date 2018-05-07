@@ -18,7 +18,8 @@ public class CommonProxy {
 
 		if(Utils.isDeobfuscated()) {
 			//Defaults for testing
-			RTConfig.client.autoJump = true;
+			RTConfig.client.stepup = true;
+			RTConfig.commands.shortGamemodeCommands = true;
 			RTConfig.timeofday.enabledByDefault = true;
 			RTConfig.general.attackSpeed = 24.0;
 			RTConfig.general.dropTESulfur = true;
