@@ -27,7 +27,8 @@ public final class DingHandler {
 
 	@SubscribeEvent
 	public static void onGuiOpen(GuiOpenEvent event) {
-		if(event.getGui() instanceof GuiMainMenu && !mainMenuPlayed) {
+		if(RTConfig.ding.soundNames.length != 0 &&
+				event.getGui() instanceof GuiMainMenu && !mainMenuPlayed) {
 			final int index = random.nextInt(RTConfig.ding.soundNames.length);
 			playSound(RTConfig.ding.soundNames[index], RTConfig.ding.soundPitch);
 
@@ -37,7 +38,7 @@ public final class DingHandler {
 
 	@SubscribeEvent
 	public static void onConnectToServer(FMLNetworkEvent.ClientConnectedToServerEvent event) {
-		if(!RTConfig.ding.worldSoundName.isEmpty()) {
+		if(RTConfig.ding.worldSoundNames.length != 0) {
 			playWorld = true;
 		}
 	}
@@ -49,18 +50,16 @@ public final class DingHandler {
 			final EntityPlayer player = mc.player;
 
 			if(player != null && (player.ticksExisted > 20 || mc.isGamePaused())) {
-				playSound(RTConfig.ding.worldSoundName, RTConfig.ding.worldSoundPitch);
+				final int index = random.nextInt(RTConfig.ding.worldSoundNames.length);
+				playSound(RTConfig.ding.worldSoundNames[index], RTConfig.ding.worldSoundPitch);
+
 				playWorld = false;
 			}
 		}
 	}
 
 	public static void playSound(String soundName, double pitch) {
-		if(RTConfig.ding.disableIfDingIsInstalled && Loader.isModLoaded("ding")) {
-			return;
-		}
-
-		if(soundName.isEmpty()) {
+		if(Loader.isModLoaded("ding") || soundName.isEmpty()) {
 			return;
 		}
 
