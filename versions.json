@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12.2": {
+		"1.12.2-1.19.1.0": "The \"ding\" sound can now be disabled without crashing.\nAdded support for multiple world join \"ding\" sounds.",
 		"1.12.2-1.19.0.0": "Reorganized the configuration.\nThe stepup and FoV change toggle states are now stored on disk.\nAdded the disconnect command.\nRemoved the dimension unloader.\nFixed bugs.",
 		"1.12.2-1.18.3.0": "Added auto jump.\nFixed a crash related to the configuration.",
 		"1.12.2-1.18.2.0": "Fixed auto third person.\nMinor tweaks.",
@@ -28,6 +29,7 @@
 		"1.12.1-2.0.0.0": "Updated to 1.12.1.\nContributor capes are now always shown in development environments.\nFixed the \"Could not set cape\" error message.\nFixed configuration location.\nFixed URLs for versions.json and contributors.txt.\nFixed some issues with log filters."
 	},
 	"1.12.1": {
+		"1.12.2-1.19.1.0": "The \"ding\" sound can now be disabled without crashing.\nAdded support for multiple world join \"ding\" sounds.",
 		"1.12.2-1.19.0.0": "Reorganized the configuration.\nThe stepup and FoV change toggle states are now stored on disk.\nAdded the disconnect command.\nRemoved the dimension unloader.\nFixed bugs.",
 		"1.12.2-1.18.3.0": "Added auto jump.\nFixed a crash related to the configuration.",
 		"1.12.2-1.18.2.0": "Fixed auto third person.\nMinor tweaks.",
@@ -55,6 +57,7 @@
 		"1.12.1-2.0.0.0": "Updated to 1.12.1.\nContributor capes are now always shown in development environments.\nFixed the \"Could not set cape\" error message.\nFixed configuration location.\nFixed URLs for versions.json and contributors.txt.\nFixed some issues with log filters."
 	},
 	"1.12": {
+		"1.12.2-1.19.1.0": "The \"ding\" sound can now be disabled without crashing.\nAdded support for multiple world join \"ding\" sounds.",
 		"1.12.2-1.19.0.0": "Reorganized the configuration.\nThe stepup and FoV change toggle states are now stored on disk.\nAdded the disconnect command.\nRemoved the dimension unloader.\nFixed bugs.",
 		"1.12.2-1.18.3.0": "Added auto jump.\nFixed a crash related to the configuration.",
 		"1.12.2-1.18.2.0": "Fixed auto third person.\nMinor tweaks.",
@@ -82,6 +85,7 @@
 		"1.12.1-2.0.0.0": "Updated to 1.12.1.\nContributor capes are now always shown in development environments.\nFixed the \"Could not set cape\" error message.\nFixed configuration location.\nFixed URLs for versions.json and contributors.txt.\nFixed some issues with log filters."
 	},
 	"1.11.2": {
+		"1.11.2-1.19.1.0": "The \"ding\" sound can now be disabled without crashing.\nAdded support for multiple world join \"ding\" sounds.",
 		"1.11.2-1.19.0.0": "Reorganized the configuration.\nThe stepup and FoV change toggle states are now stored on disk.\nAdded the disconnect command.\nRemoved the dimension unloader.\nFixed bugs.",
 		"1.11.2-1.18.3.0": "Added auto jump.\nFixed a crash related to the configuration.",
 		"1.11.2-1.18.2.0": "Fixed auto third person.\nMinor tweaks.",
@@ -128,6 +132,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.11": {
+		"1.11.2-1.19.1.0": "The \"ding\" sound can now be disabled without crashing.\nAdded support for multiple world join \"ding\" sounds.",
 		"1.11.2-1.19.0.0": "Reorganized the configuration.\nThe stepup and FoV change toggle states are now stored on disk.\nAdded the disconnect command.\nRemoved the dimension unloader.\nFixed bugs.",
 		"1.11.2-1.18.3.0": "Added auto jump.\nFixed a crash related to the configuration.",
 		"1.11.2-1.18.2.0": "Fixed auto third person.\nMinor tweaks.",
@@ -174,6 +179,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.10.2": {
+		"1.11.2-1.19.1.0": "The \"ding\" sound can now be disabled without crashing.\nAdded support for multiple world join \"ding\" sounds.",
 		"1.11.2-1.19.0.0": "Reorganized the configuration.\nThe stepup and FoV change toggle states are now stored on disk.\nAdded the disconnect command.\nRemoved the dimension unloader.\nFixed bugs.",
 		"1.11.2-1.18.3.0": "Added auto jump.\nFixed a crash related to the configuration.",
 		"1.11.2-1.18.2.0": "Fixed auto third person.\nMinor tweaks.",
@@ -220,6 +226,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.10": {
+		"1.11.2-1.19.1.0": "The \"ding\" sound can now be disabled without crashing.\nAdded support for multiple world join \"ding\" sounds.",
 		"1.11.2-1.19.0.0": "Reorganized the configuration.\nThe stepup and FoV change toggle states are now stored on disk.\nAdded the disconnect command.\nRemoved the dimension unloader.\nFixed bugs.",
 		"1.11.2-1.18.3.0": "Added auto jump.\nFixed a crash related to the configuration.",
 		"1.11.2-1.18.2.0": "Fixed auto third person.\nMinor tweaks.",
@@ -266,19 +273,19 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"promos": {
-		"1.12.2-latest": "1.12.2-1.19.0.0",
-		"1.12.2-recommended": "1.12.2-1.19.0.0",
-		"1.12.1-latest": "1.12.2-1.19.0.0",
-		"1.12.1-recommended": "1.12.2-1.19.0.0",
-		"1.12-latest": "1.12.2-1.19.0.0",
-		"1.12-recommended": "1.12.2-1.19.0.0",
-		"1.11.2-latest": "1.11.2-1.19.0.0",
-		"1.11.2-recommended": "1.11.2-1.19.0.0",
-		"1.11-latest": "1.11.2-1.19.0.0",
-		"1.11-recommended": "1.11.2-1.19.0.0",
-		"1.10.2-latest": "1.11.2-1.19.0.0",
-		"1.10.2-recommended": "1.11.2-1.19.0.0",
-		"1.10-latest": "1.11.2-1.19.0.0",
-		"1.10-recommended": "1.11.2-1.19.0.0"
+		"1.12.2-latest": "1.12.2-1.19.1.0",
+		"1.12.2-recommended": "1.12.2-1.19.1.0",
+		"1.12.1-latest": "1.12.2-1.19.1.0",
+		"1.12.1-recommended": "1.12.2-1.19.1.0",
+		"1.12-latest": "1.12.2-1.19.1.0",
+		"1.12-recommended": "1.12.2-1.19.1.0",
+		"1.11.2-latest": "1.11.2-1.19.1.0",
+		"1.11.2-recommended": "1.11.2-1.19.1.0",
+		"1.11-latest": "1.11.2-1.19.1.0",
+		"1.11-recommended": "1.11.2-1.19.1.0",
+		"1.10.2-latest": "1.11.2-1.19.1.0",
+		"1.10.2-recommended": "1.11.2-1.19.1.0",
+		"1.10-latest": "1.11.2-1.19.1.0",
+		"1.10-recommended": "1.11.2-1.19.1.0"
 	}
 }
