@@ -119,9 +119,6 @@ public class RTConfig {
 	}
 
 	public static class Ding {
-		@Config.Comment("Disables this feature if iChun's Ding is installed.")
-		public boolean disableIfDingIsInstalled = true;
-
 		@Config.Comment("The names of the sounds to play when Minecraft starts. " +
 				"Leave this empty to disable it.")
 		public String[] soundNames = new String[] {
@@ -134,7 +131,9 @@ public class RTConfig {
 
 		@Config.Comment("The name of the sound to play when a world loads." +
 				"Leave this empty to disable it.")
-		public String worldSoundName = "entity.experience_orb.pickup";
+		public String[] worldSoundNames = new String[] {
+				"entity.experience_orb.pickup"
+		};
 
 		@Config.RangeDouble(min = 0.0, max = 10.0)
 		@Config.Comment("The pitch of the sound to play when a world starts.")
