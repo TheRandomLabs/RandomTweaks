@@ -16,13 +16,13 @@ import org.apache.logging.log4j.Logger;
 @SuppressWarnings("all")
 @Mod(modid = RandomTweaks.MODID, version = RandomTweaks.VERSION,
 		acceptedMinecraftVersions = Compat.ACCEPTED_MINECRAFT_VERSIONS,
-		acceptableRemoteVersions = RandomTweaks.ACCEPTABLE_REMOTE_VEERSIONS,
+		acceptableRemoteVersions = RandomTweaks.ACCEPTABLE_REMOTE_VERSIONS,
 		guiFactory = Compat.GUI_FACTORY, updateJSON = RandomTweaks.UPDATE_JSON,
 		certificateFingerprint = RandomTweaks.CERTIFICATE_FINGERPRINT)
 public final class RandomTweaks {
 	public static final String MODID = "randomtweaks";
 	public static final String VERSION = "@VERSION@";
-	public static final String ACCEPTABLE_REMOTE_VEERSIONS = "*";
+	public static final String ACCEPTABLE_REMOTE_VERSIONS = "*";
 	public static final String UPDATE_JSON =
 			"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/misc/versions.json";
 	public static final String CERTIFICATE_FINGERPRINT = "@FINGERPRINT@";
