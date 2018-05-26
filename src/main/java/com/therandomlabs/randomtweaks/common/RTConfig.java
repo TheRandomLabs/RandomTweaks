@@ -367,7 +367,7 @@ public class RTConfig {
 			final Path path = Paths.get("config", RandomTweaks.MODID, "defaultgamerules.json");
 
 			if(Files.exists(path)) {
-				Files.move(path, Paths.get(path.toString() + "_backup" + System.nanoTime()));
+				Files.move(path, Paths.get(path.toString() + "_old" + System.nanoTime()));
 			}
 
 			Files.write(path, Arrays.asList(
