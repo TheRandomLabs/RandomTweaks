@@ -1,6 +1,7 @@
 package com.therandomlabs.randomtweaks.common;
 
 import java.lang.reflect.Field;
+import java.util.IllegalFormatException;
 import java.util.Map;
 import com.therandomlabs.randomtweaks.util.RomanNumeralHandler;
 import net.minecraft.util.text.translation.I18n;
@@ -45,7 +46,11 @@ public class RTLanguageMap extends LanguageMap {
 
 	@Override
 	public synchronized String translateKeyFormat(String key, Object... args) {
-		return String.format(translateKey(key), args);
+		try {
+			return String.format(translateKey(key), args);
+		} catch(IllegalFormatException ex) {
+			return "Format error: " + key;
+		}
 	}
 
 	@Override
