@@ -396,7 +396,7 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.disableIfNoDaylightCycle")
 		@Config.Comment("Disables the time of day overlay if doDaylightCycle is false.")
-		public boolean disableIfNoDaylightCycle = true;
+		public boolean disableIfNoDaylightCycle = !Utils.isDeobfuscated();
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.disableInAdventureMode")
 		@Config.Comment("Disables the time of day overlay in Adventure Mode.")
@@ -404,7 +404,7 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.twentyFourHourTime")
 		@Config.Comment("Enables 24-hour time.")
-		public boolean twentyFourHourTime;
+		public boolean twentyFourHourTime = Utils.isDeobfuscated();
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.alignment")
 		@Config.Comment("The alignment of the time of day overlay.")
