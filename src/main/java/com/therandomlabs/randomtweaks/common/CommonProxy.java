@@ -3,7 +3,6 @@ package com.therandomlabs.randomtweaks.common;
 import java.io.IOException;
 import com.therandomlabs.randomtweaks.common.world.WorldGeneratorOceanFloor;
 import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
-import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
