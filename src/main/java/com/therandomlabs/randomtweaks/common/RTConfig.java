@@ -28,98 +28,115 @@ import org.apache.commons.lang3.StringUtils;
 @Config.LangKey("randomtweaks.config.title")
 public class RTConfig {
 	public static class AutoThirdPerson {
+		@Config.LangKey("randomtweaks.config.autoThirdPerson.enabled")
 		@Config.Comment("Whether auto third person is enabled.")
 		public boolean enabled = true;
 
+		@Config.LangKey("randomtweaks.config.autoThirdPerson.elytra")
 		@Config.Comment("Whether auto third person is enabled when flying with elytra.")
 		public boolean elytra = true;
 
+		@Config.LangKey("randomtweaks.config.autoThirdPerson.horse")
 		@Config.Comment("Whether auto third person is enabled when riding a horse.")
 		public boolean horse = true;
 
+		@Config.LangKey("randomtweaks.config.autoThirdPerson.pig")
 		@Config.Comment("Whether auto third person is enabled when riding a pig.")
 		public boolean pig = true;
 
+		@Config.LangKey("randomtweaks.config.autoThirdPerson.boat")
 		@Config.Comment("Whether auto third person is enabled when riding a boat.")
 		public boolean boat = true;
 
+		@Config.LangKey("randomtweaks.config.autoThirdPerson.minecart")
 		@Config.Comment("Whether auto third person is enabled when riding a minecart.")
 		public boolean minecart = true;
 	}
 
 	public static class Client {
 		@Config.RequiresMcRestart
+		@Config.LangKey("randomtweaks.config.client.moveBucketCreativeTab")
 		@Config.Comment("Moves the Bucket to the Tools creative tab.")
 		public boolean moveBucketCreativeTab = true;
 
 		@Config.RequiresMcRestart
+		@Config.LangKey("randomtweaks.config.client.spawnEggsCreativeTab")
 		@Config.Comment("Moves spawn eggs to their own creative tab.")
 		public boolean spawnEggsCreativeTab = true;
 
 		@Config.RequiresMcRestart
+		@Config.LangKey("randomtweaks.config.client.contributorCapes")
 		@Config.Comment("Enables contributor capes.")
 		public boolean contributorCapes = true;
 
+		@Config.LangKey("randomtweaks.config.client.disableWitherSpawnSound")
 		@Config.Comment("Disables the Wither spawn sound.")
 		public boolean disableWitherSpawnSound;
 
+		@Config.LangKey("randomtweaks.config.client.disableEnderDragonDeathSound")
 		@Config.Comment("Disables the Ender Dragon death sound.")
 		public boolean disableEnderDragonDeathSound;
 
+		@Config.LangKey("randomtweaks.config.client.disablePotionShift")
 		@Config.Comment("Stops potion effects from moving GUIs to the right.")
 		public boolean disablePotionShift = true;
 
+		@Config.LangKey("randomtweaks.config.client.clearWater")
 		@Config.Comment("Removes underwater fog.")
 		public boolean clearWater = true;
 
+		@Config.LangKey("randomtweaks.config.client.stepup")
 		@Config.Comment("Whether to enable stepup auto jump.")
 		public boolean stepup;
 
+		@Config.LangKey("randomtweaks.config.client.stepupEnabledByDefault")
 		@Config.Comment("Whether stepup auto jump is enabled by default.")
 		public boolean stepupEnabledByDefault;
 	}
 
 	public static class Commands {
 		@Config.RequiresWorldRestart
+		@Config.LangKey("randomtweaks.config.commands.deletegamerule")
 		@Config.Comment("Enables the /deletegamerule command.")
 		public boolean deletegamerule = true;
 
 		@Config.RequiresWorldRestart
+		@Config.LangKey("randomtweaks.config.commands.hunger")
 		@Config.Comment("Enables the /hunger command, which sets a player's hunger level.")
 		public boolean hunger = true;
 
 		@Config.RequiresWorldRestart
+		@Config.LangKey("randomtweaks.config.commands.giveTweaks")
 		@Config.Comment("Allows /give to accept integer IDs, amounts higher than 64, and " +
 				"ore dictionary names prefixed by \"ore:\".")
 		public boolean giveTweaks = true;
 
 		@Config.RequiresWorldRestart
+		@Config.LangKey("randomtweaks.config.commands.helpTweaks")
 		@Config.Comment("Changes the /help command to make sure that sorting commands " +
 				"doesn't cause an error.")
 		public boolean helpTweaks = true;
 
 		@Config.RequiresWorldRestart
+		@Config.LangKey("randomtweaks.config.commands.rtreload")
 		@Config.Comment("Enables the /rtreload command, which reloads this configuration.")
 		public boolean rtreload = true;
 
 		@Config.RequiresMcRestart
+		@Config.LangKey("randomtweaks.config.commands.rtreloadclient")
 		@Config.Comment("Enables the /rtreloadclient command, which is the client-sided " +
 				"version of /rtreload.")
 		public boolean rtreloadclient = true;
 
 		@Config.RequiresMcRestart
+		@Config.LangKey("randomtweaks.config.commands.disconnect")
 		@Config.Comment("Enables the client-sided /disconnect command, which leaves the " +
 				"current world.")
 		public boolean disconnect = true;
-
-		@Config.Comment("Whether the shortened versions of the gamemode commands (/gms, /gmc, " +
-				"/gma and /gmsp) should be replaced by the longer ones before being sent. " +
-				"This is client-sided and does not support tab completion. This does not work in " +
-				"1.10.")
-		public boolean shortGamemodeCommands;
 	}
 
 	public static class Ding {
+		@Config.LangKey("randomtweaks.config.ding.soundNames")
 		@Config.Comment("The names of the sounds to play when Minecraft starts. " +
 				"Leave this empty to disable it.")
 		public String[] soundNames = new String[] {
@@ -127,9 +144,11 @@ public class RTConfig {
 		};
 
 		@Config.RangeDouble(min = 0.0, max = 10.0)
+		@Config.LangKey("randomtweaks.config.ding.soundPitch")
 		@Config.Comment("The pitch of the sound to play when Minecraft starts.")
 		public double soundPitch = 1.0;
 
+		@Config.LangKey("randomtweaks.config.ding.worldSoundNames")
 		@Config.Comment("The name of the sound to play when a world loads." +
 				"Leave this empty to disable it.")
 		public String[] worldSoundNames = new String[] {
@@ -137,65 +156,70 @@ public class RTConfig {
 		};
 
 		@Config.RangeDouble(min = 0.0, max = 10.0)
+		@Config.LangKey("randomtweaks.config.ding.worldSoundPitch")
 		@Config.Comment("The pitch of the sound to play when a world starts.")
 		public double worldSoundPitch = 1.0;
 	}
 
 	public static class General {
 		@Config.RequiresMcRestart
+		@Config.LangKey("randomtweaks.config.general.moreRomanNumerals")
 		@Config.Comment("Enables Roman numerals from -32768 to 32767.")
 		public boolean moreRomanNumerals = true;
 
+		@Config.LangKey("randomtweaks.config.general.ocelotsCanBeHealed")
 		@Config.Comment("Ocelots can be healed with fish.")
 		public boolean ocelotsCanBeHealed = true;
 
-		@Config.Comment("Players can sleep around non-aggressive zombie pigmen " +
-				"(this is a default feature in 1.12) and mobs with custom names. On 1.10, " +
-				"adds the \"bed is too far away\" message present in later versions of Minecraft.")
+		@Config.LangKey("randomtweaks.config.general.sleepTweaks")
+		@Config.Comment("Allows players to sleep near mobs with custom names.")
 		public boolean sleepTweaks = true;
 
 		@Config.RangeDouble(min = 0.0, max = 1024.0)
+		@Config.LangKey("randomtweaks.config.general.attackSpeed")
 		@Config.Comment("Sets the base attack speed for players. Set this to 16.0 or higher " +
 				"to remove the attack cooldown. 4.0 is the default value.")
 		public double attackSpeed = 4.0;
 
+		@Config.LangKey("randomtweaks.config.general.protectPetsFromOwners")
 		@Config.Comment("Prevents pets from being attacked by their owners " +
 				"(unless they're sneaking).")
 		public boolean protectPetsFromOwners = true;
 
+		@Config.LangKey("randomtweaks.config.general.protectPetsFromOtherPets")
 		@Config.Comment("Prevents pets from being attacked by their owner's other pets.")
 		public boolean protectPetsFromOtherPets = true;
 
-		@Config.Comment("Replaces NuclearCraft Sulfur drops with Thermal Expansion Sulfur.")
-		public boolean dropTESulfur;
-
+		@Config.LangKey("randomtweaks.config.general.disableCumulativeAnvilCost")
 		@Config.Comment("Disables the cumulative anvil cost.")
 		public boolean disableCumulativeAnvilCost = true;
 
+		@Config.LangKey("randomtweaks.config.general.pickupSkeletonArrows")
 		@Config.Comment("Allows skeleton arrows to be picked up.")
 		public boolean pickupSkeletonArrows;
 	}
 
 	public static class Keybinds {
 		@Config.RequiresMcRestart
+		@Config.LangKey("randomtweaks.config.keybinds.reloadSoundSystem")
 		@Config.Comment("Enables the Reload Sound System keybind.")
 		public boolean reloadSoundSystem = true;
 
 		@Config.RequiresMcRestart
-		@Config.Comment("Enables the Clear Chat keybind.")
-		public boolean clearChat = true;
-
-		@Config.RequiresMcRestart
+		@Config.LangKey("randomtweaks.config.keybinds.noclip")
 		@Config.Comment("Enables the Noclip keybind, which toggles between /gamemode c " +
 				"and /gamemode sp.")
 		public boolean noclip = true;
 
+		@Config.LangKey("randomtweaks.config.keybinds.toggleFoVChanges")
 		@Config.Comment("Enables a keybind to disable FoV changes.")
 		public boolean toggleFoVChanges = true;
 
+		@Config.LangKey("randomtweaks.config.keybinds.fovChangesEnabledByDefault")
 		@Config.Comment("Whether FoV changes are enabled by default.")
 		public boolean fovChangesEnabledByDefault = true;
 
+		@Config.LangKey("randomtweaks.config.keybinds.fovChangesStatusMessage")
 		@Config.Comment("Whether a status message should be displayed when FoV changes are " +
 				"toggled.")
 		public boolean fovChangesStatusMessage = true;
@@ -203,113 +227,133 @@ public class RTConfig {
 
 	public static class OceanFloor {
 		@Config.RequiresMcRestart
+		@Config.LangKey("randomtweaks.config.oceanFloor.enabled")
 		@Config.Comment("Enables the ocean floor worldgen.")
 		public boolean enabled = true;
 
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.oceanFloor.clayVeinSize")
 		@Config.Comment("The amount of clay in a vein.")
 		public int clayVeinSize = 32;
 
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.oceanFloor.clayChance")
 		@Config.Comment("The clay spawn chance.")
 		public int clayChance = 65;
 
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.oceanFloor.sandVeinSize")
 		@Config.Comment("The amount of sand in a vein.")
 		public int sandVeinSize = 22;
 
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.oceanFloor.sandChance")
 		@Config.Comment("The sand spawn chance.")
 		public int sandChance = 45;
 
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.oceanFloor.dirtVeinSize")
 		@Config.Comment("The amount of dirt in a vein.")
 		public int dirtVeinSize = 18;
 
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.oceanFloor.dirtChance")
 		@Config.Comment("The dirt spawn chance.")
 		public int dirtChance = 30;
 
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.oceanFloor.minY")
 		@Config.Comment("The minimum Y value.")
 		public int minY = 20;
 
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.oceanFloor.maxY")
 		@Config.Comment("The maximum Y value.")
 		public int maxY = 128;
 	}
 
 	public static class PlayerHeadDrops {
+		@Config.LangKey("randomtweaks.config.playerHeadDrops.enabled")
 		@Config.Comment("Whether players should drop their heads when they die.")
 		public boolean enabled = true;
 
 		@Config.RangeDouble(min = 0.0, max = 1.0)
+		@Config.LangKey("randomtweaks.config.playerHeadDrops.normalChance")
 		@Config.Comment("The normal player head drop chance.")
 		public double normalChance = 1.0;
 
 		@Config.RangeDouble(min = 0.0, max = 1.0)
+		@Config.LangKey("randomtweaks.config.playerHeadDrops.chanceWhenKilledByPlayer")
 		@Config.Comment("The player head drop chance when a player is killed by another player.")
 		public double chanceWhenKilledByPlayer = 1.0;
 
 		@Config.RangeDouble(min = 0.0, max = 1.0)
+		@Config.LangKey("randomtweaks.config.playerHeadDrops.chanceWhenKilledByChargedCreeper")
 		@Config.Comment("The player head drop chance when a player is killed by a charged creeper.")
 		public double chanceWhenKilledByChargedCreeper = 1.0;
 	}
 
 	public static class World {
 		@Config.RequiresMcRestart
-		@Config.Comment("Disables the Realistic world type if Quark is detected.")
-		public boolean disableRealisticWorldTypeWithQuark = true;
-
-		@Config.RequiresMcRestart
+		@Config.LangKey("randomtweaks.config.world.realisticWorldType")
 		@Config.Comment("Enables the Realistic world type. Name: realistic")
 		public boolean realisticWorldType = true;
 
 		@Config.RequiresMcRestart
+		@Config.LangKey("randomtweaks.config.world.voidWorldType")
 		@Config.Comment("Enables the Void world type. Name: void")
 		public boolean voidWorldType = true;
 
 		@Config.RangeInt(min = 1, max = 255)
+		@Config.LangKey("randomtweaks.config.world.voidWorldYSpawn")
 		@Config.Comment("The Y coordinate of the default spawn point in a Void world.")
 		public int voidWorldYSpawn = 17;
 
+		@Config.LangKey("randomtweaks.config.world.voidWorldBlock")
 		@Config.Comment("The block placed in a Void world for players to stand on.")
 		public String voidWorldBlock = "minecraft:glass";
 
+		@Config.LangKey("randomtweaks.config.world.voidWorldBiome")
 		@Config.Comment("The biome of a Void world. Leave this empty to randomize the biomes.")
 		public String voidWorldBiome = "minecraft:plains";
 
 		@Config.RequiresMcRestart
+		@Config.LangKey("randomtweaks.config.world.voidIslandsWorldType")
 		@Config.Comment("Enables the Void Islands world type. Name: voidislands")
 		public boolean voidIslandsWorldType = true;
 
+		@Config.LangKey("randomtweaks.config.world.voidIslandsWorldBiome")
 		@Config.Comment("The biome of the void chunks of a Void Islands world. " +
 				"Leave this empty to randomize the biomes.")
 		public String voidIslandsWorldBiome = "minecraft:plains";
 
 		@Config.RangeInt(min = 2)
+		@Config.LangKey("randomtweaks.config.world.voidIslandsChunkRarity")
 		@Config.Comment("The rarity of non-empty chunks in a Void Islands world. " +
 				"If n, there is a 1 in n chance of a chunk being non-empty.")
 		public int voidIslandsChunkRarity = 10;
 	}
 
 	public static class Respawn {
+		@Config.LangKey("randomtweaks.config.respawn.hungerBehavior")
 		@Config.Comment("What happens to a player's hunger when they respawn.")
 		public RespawnHandler.HungerBehavior hungerBehavior =
 				RespawnHandler.HungerBehavior.RESET_UNLESS_KEEPINVENTORY;
 
 		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.respawn.minimumHungerLevel")
 		@Config.Comment("The minimum hunger level on respawn.")
 		public int minimumHungerLevel = 3;
 
+		@Config.LangKey("randomtweaks.config.respawn.deathPunishmentsIfKeepInventory")
 		@Config.Comment("Enables punishments on death if keepInventory is enabled so it's not " +
 				"too overpowered. All XP and 3 hunger points are removed. This " +
 				"overrides hungerBehavior if keepInventory is true.")
@@ -318,50 +362,110 @@ public class RTConfig {
 
 	public static class Squids {
 		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.squids.spawnRadiusLimit")
 		@Config.Comment("Disables squid spawning when a player is not within the specified " +
 				"radius. Set to 0 to disable this limit.")
 		public int spawnRadiusLimit = 64;
 
 		@Config.RangeInt(min = -1)
+		@Config.LangKey("randomtweaks.config.squids.chunkLimit")
 		@Config.Comment("The amount of squids allowed in one chunk. 0 disables squid spawning, " +
 				"and -1 disables this limit.")
 		public int chunkLimit = 12;
 
 		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.squids.maxPackSize")
 		@Config.Comment("The maximum number of squids that can be spawned in a pack. " +
 				"Set to 0 to use vanilla behavior.")
 		public int maxPackSize = 2;
 	}
 
 	public static class TimeOfDay {
+		@Config.LangKey("randomtweaks.config.timeOfDay.enabled")
 		@Config.Comment("Enables the time of day overlay.")
 		public boolean enabled = true;
 
 		@Config.RequiresMcRestart
+		@Config.LangKey("randomtweaks.config.timeOfDay.enableKeybind")
 		@Config.Comment("Enables the time of day overlay keybind.")
 		public boolean enableKeybind = true;
 
+		@Config.LangKey("randomtweaks.config.timeOfDay.enabledByDefault")
 		@Config.Comment("Enables the time of day overlay by default.")
 		public boolean enabledByDefault;
 
+		@Config.LangKey("randomtweaks.config.timeOfDay.disableIfNoDaylightCycle")
 		@Config.Comment("Disables the time of day overlay if doDaylightCycle is false.")
 		public boolean disableIfNoDaylightCycle = true;
 
+		@Config.LangKey("randomtweaks.config.timeOfDay.disableInAdventureMode")
 		@Config.Comment("Disables the time of day overlay in Adventure Mode.")
 		public boolean disableInAdventureMode = true;
 
+		@Config.LangKey("randomtweaks.config.timeOfDay.twentyFourHourTime")
 		@Config.Comment("Enables 24-hour time.")
 		public boolean twentyFourHourTime;
 
+		@Config.LangKey("randomtweaks.config.timeOfDay.alignment")
 		@Config.Comment("The alignment of the time of day overlay.")
 		public Alignment alignment = Alignment.TOPLEFT;
 
+		@Config.LangKey("randomtweaks.config.timeOfDay.x")
 		@Config.Comment("The X offset of the time of day overlay.")
 		public int x = 0;
 
+		@Config.LangKey("randomtweaks.config.timeOfDay.y")
 		@Config.Comment("The Y offset of the time of day overlay.")
 		public int y = 0;
 	}
+
+	@Config.LangKey("randomtweaks.config.autoThirdPerson")
+	@Config.Comment("Options related to the auto third person feature.")
+	public static AutoThirdPerson autoThirdPerson = new AutoThirdPerson();
+
+	@Config.LangKey("randomtweaks.config.client")
+	@Config.Comment("Client-sided options that don't fit into any other categories.")
+	public static Client client = new Client();
+
+	@Config.LangKey("randomtweaks.config.commands")
+	@Config.Comment("Options related to commands.")
+	public static Commands commands = new Commands();
+
+	@Config.LangKey("randomtweaks.config.ding")
+	@Config.Comment("Options related to the 'ding' feature.")
+	public static Ding ding = new Ding();
+
+	@Config.LangKey("randomtweaks.config.general")
+	@Config.Comment("Options that don't fit into any other categories.")
+	public static General general = new General();
+
+	@Config.LangKey("randomtweaks.config.keybinds")
+	@Config.Comment("Keybinds that don't fit into any other categories.")
+	public static Keybinds keybinds = new Keybinds();
+
+	@Config.LangKey("randomtweaks.config.oceanFloor")
+	@Config.Comment("Options related to ocean floor generation.")
+	public static OceanFloor oceanFloor = new OceanFloor();
+
+	@Config.LangKey("randomtweaks.config.playerHeadDrops")
+	@Config.Comment("Options related to player head drops.")
+	public static PlayerHeadDrops playerHeadDrops = new PlayerHeadDrops();
+
+	@Config.LangKey("randomtweaks.config.world")
+	@Config.Comment("World-related options that don't fit into any other categories.")
+	public static World world = new World();
+
+	@Config.LangKey("randomtweaks.config.respawn")
+	@Config.Comment("Options related to respawn behavior.")
+	public static Respawn respawn = new Respawn();
+
+	@Config.LangKey("randomtweaks.config.squids")
+	@Config.Comment("Options related to squid spawning behavior.")
+	public static Squids squids = new Squids();
+
+	@Config.LangKey("randomtweaks.config.timeOfDay")
+	@Config.Comment("Options related to the time of day overlay.")
+	public static TimeOfDay timeofday = new TimeOfDay();
 
 	public static class DefaultGamerules {
 		public static final List<String> DEFAULT = Arrays.asList(
@@ -524,31 +628,6 @@ public class RTConfig {
 			}
 		}
 	}
-
-	@Config.Comment("Auto third person")
-	public static AutoThirdPerson autoThirdPerson = new AutoThirdPerson();
-	@Config.Comment("Client-sided")
-	public static Client client = new Client();
-	@Config.Comment("Commands")
-	public static Commands commands = new Commands();
-	@Config.Comment("Ding")
-	public static Ding ding = new Ding();
-	@Config.Comment("General")
-	public static General general = new General();
-	@Config.Comment("Keybinds")
-	public static Keybinds keybinds = new Keybinds();
-	@Config.Comment("Ocean floor")
-	public static OceanFloor oceanFloor = new OceanFloor();
-	@Config.Comment("Player head drops")
-	public static PlayerHeadDrops playerHeadDrops = new PlayerHeadDrops();
-	@Config.Comment("World")
-	public static World world = new World();
-	@Config.Comment("Respawn behavior")
-	public static Respawn respawn = new Respawn();
-	@Config.Comment("Squid spawning")
-	public static Squids squids = new Squids();
-	@Config.Comment("Time of day overlay")
-	public static TimeOfDay timeofday = new TimeOfDay();
 
 	public static Path getConfig(String name) throws IOException {
 		final Path path = Paths.get("config", RandomTweaks.MODID, name);

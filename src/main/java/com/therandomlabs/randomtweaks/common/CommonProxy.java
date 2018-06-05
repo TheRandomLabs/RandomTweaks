@@ -20,10 +20,8 @@ public class CommonProxy {
 			//Defaults for testing
 
 			RTConfig.client.stepup = true;
-			RTConfig.commands.shortGamemodeCommands = true;
 			RTConfig.timeofday.enabledByDefault = true;
 			RTConfig.general.attackSpeed = 24.0;
-			RTConfig.general.dropTESulfur = true;
 			RTConfig.general.pickupSkeletonArrows = true;
 			RTConfig.respawn.deathPunishmentsIfKeepInventory = true;
 
