@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.client;
 
+import java.lang.reflect.Field;
 import java.security.SecureRandom;
 import java.util.Random;
 import com.therandomlabs.randomtweaks.common.RTConfig;
@@ -28,7 +29,8 @@ public final class DingHandler {
 	@SubscribeEvent
 	public static void onGuiOpen(GuiOpenEvent event) {
 		if(RTConfig.ding.soundNames.length != 0 &&
-				event.getGui() instanceof GuiMainMenu && !mainMenuPlayed) {
+				event.getGui() instanceof GuiMainMenu && !mainMenuPlayed &&
+				isDsurroundStartupSoundDisabled()) {
 			final int index = random.nextInt(RTConfig.ding.soundNames.length);
 			playSound(RTConfig.ding.soundNames[index], RTConfig.ding.soundPitch);
 
@@ -72,5 +74,24 @@ public final class DingHandler {
 		} else {
 			RandomTweaks.LOGGER.error("Could not find sound: %s", resource);
 		}
+	}
+
+	public static boolean isDsurroundStartupSoundDisabled() {
+		if(!Loader.isModLoaded("dsurround")) {
+			return true;
+		}
+
+		try {
+			final Class<?> general =
+					Class.forName("org.blockartistry.DynSurround.ModOptions.general");
+			final Field startupSoundListField = general.getDeclaredField("startupSoundList");
+			final String[] startupSoundList = (String[]) startupSoundListField.get(null);
+
+			return startupSoundList.length != 0;
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
+
+		return true;
 	}
 }
