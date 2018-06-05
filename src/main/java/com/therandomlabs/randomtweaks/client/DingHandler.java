@@ -83,7 +83,7 @@ public final class DingHandler {
 
 		try {
 			final Class<?> general =
-					Class.forName("org.blockartistry.DynSurround.ModOptions.general");
+					Class.forName("org.blockartistry.DynSurround.ModOptions$general");
 			final Field startupSoundListField = general.getDeclaredField("startupSoundList");
 			final String[] startupSoundList = (String[]) startupSoundListField.get(null);
 
