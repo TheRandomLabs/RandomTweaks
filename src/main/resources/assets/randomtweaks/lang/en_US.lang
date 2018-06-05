@@ -110,7 +110,6 @@ toggleFoVChanges.disabled=FoV changes disabled
 
 key.categories.randomtweaks=RandomTweaks
 key.reloadSoundSystem=Reload Sound System
-key.clearChat=Clear Chat
 key.noclip=Noclip
 key.toggleFoVChanges=Toggle FoV Changes
 key.toggleTimeOfDayOverlay=Toggle Time of Day Overlay
@@ -135,8 +134,6 @@ commands.hunger.usage=/hunger <player> <level> [saturation]
 commands.hunger.failure=§cAn error occurred while attempting to set saturation: %s
 commands.hunger.success=%s's new hunger level: %s New saturation: %s
 
-commands.rtgive.failure=§cAn error occurred while giving item: %s
-
 commands.rtreload.usage=/rtreload
 commands.rtreload.failure=§cAn error occurred while reloading configuration: %s
 commands.rtreload.success=Configuration reloaded!
@@ -146,13 +143,11 @@ commands.rtreloadclient.usage=/rtreloadclient
 commands.disconnect.usage=/disconnect
 commands.disconnect.failure=§cAn error occurred while attempting to disconnect: %s
 
-tile.bed.tooFarAway=You may not rest now, the bed is too far away
-
 generator.realistic=Realistic
 generator.realistic.info=Realistic world type by /u/Soniop
 generator.void=Void
-generator.void.info=A completely empty void world with only a block to stand on
+generator.void.info=An empty void world with only a block to stand on
 generator.voidislands=Void Islands
-generator.voidislands.info=I wonder what this could be...
+generator.voidislands.info=Islands in the void
 
 itemGroup.spawnEggs=Spawn Eggs
