@@ -3,7 +3,7 @@ package com.therandomlabs.randomtweaks.common;
 import java.lang.reflect.Field;
 import java.util.IllegalFormatException;
 import java.util.Map;
-import com.therandomlabs.randomtweaks.util.RomanNumeralHandler;
+import com.therandomlabs.randomtweaks.util.RomanNumerals;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.util.text.translation.LanguageMap;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -41,7 +41,7 @@ public class RTLanguageMap extends LanguageMap {
 			}
 		} catch(NumberFormatException ignored) {}
 
-		return isLevel ? RomanNumeralHandler.getRomanNumeral(level) : key;
+		return isLevel ? RomanNumerals.get(level) : key;
 	}
 
 	@Override

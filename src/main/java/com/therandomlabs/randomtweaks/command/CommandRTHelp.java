@@ -85,6 +85,7 @@ public class CommandRTHelp extends CommandHelp {
 			RandomTweaks.LOGGER.warn("Failed to test the command %s for a valid compareTo!",
 					command, ex);
 		}
+
 		//We don't know if the implementation is bad, just that it throws an exception
 		return true;
 	}

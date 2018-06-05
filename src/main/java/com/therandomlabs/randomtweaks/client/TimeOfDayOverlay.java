@@ -8,30 +8,18 @@ import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
-import net.minecraftforge.client.settings.KeyConflictContext;
-import net.minecraftforge.client.settings.KeyModifier;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent.KeyInputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import org.lwjgl.input.Keyboard;
 
-//Some code has been taken and adapted from here:
-//https://github.com/Lunatrius/InGame-Info-XML
+//Some code has been taken and adapted from https://github.com/Lunatrius/InGame-Info-XML
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
-public final class TimeOfDayHandler {
-	public static final KeyBinding TOGGLE_TIME_OF_DAY_OVERLAY = new KeyBinding(
-			"key.toggleTimeOfDayOverlay", KeyConflictContext.UNIVERSAL, KeyModifier.CONTROL,
-			Keyboard.KEY_BACKSLASH, "key.categories.randomtweaks");
-
+public final class TimeOfDayOverlay {
 	private static final Minecraft mc = Minecraft.getMinecraft();
-
 	private static boolean shouldHide;
 
 	@SubscribeEvent
@@ -105,21 +93,6 @@ public final class TimeOfDayHandler {
 		mc.fontRenderer.drawStringWithShadow(timeString, actualX, actualY, 0xFFFFFF);
 	}
 
-	@SubscribeEvent
-	public static void onKeyInput(KeyInputEvent event) {
-		if(!Keyboard.getEventKeyState() ||
-				!TOGGLE_TIME_OF_DAY_OVERLAY.isActiveAndMatches(Keyboard.getEventKey()) ||
-				shouldHide()) {
-			return;
-		}
-
-		toggle();
-	}
-
-	public static void registerKeyBinding() {
-		ClientRegistry.registerKeyBinding(TOGGLE_TIME_OF_DAY_OVERLAY);
-	}
-
 	public static boolean shouldHide() {
 		if(!RTConfig.timeofday.enabled || shouldHide || mc.player == null) {
 			return true;
@@ -175,7 +148,11 @@ public final class TimeOfDayHandler {
 		return worlds.get(ip);
 	}
 
-	public static boolean toggle() {
+	public static void toggle() {
+		if(shouldHide()) {
+			return;
+		}
+
 		final File saveDirectory = DimensionManager.getCurrentSaveRootDirectory();
 		final Map<String, Boolean> worlds = RTConfig.Data.get().timeOfDayOverlay;
 		final String name = saveDirectory != null ?
@@ -186,7 +163,5 @@ public final class TimeOfDayHandler {
 		} else {
 			worlds.put(name, !worlds.get(name));
 		}
-
-		return worlds.get(name);
 	}
 }

@@ -4,8 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
-import com.therandomlabs.randomtweaks.util.Compat;
-import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.CommandGive;
 import net.minecraft.command.CommandResultStats;
@@ -41,7 +39,7 @@ public class CommandRTGive extends CommandGive {
 			item = getItemByText(sender, args[1]);
 		} catch(NumberInvalidException ex) {
 			if(args[1].startsWith("ore:")) {
-				final List<ItemStack> ores = Compat.getOres(args[1].substring(4));
+				final List<ItemStack> ores = OreDictionary.getOres(args[1].substring(4));
 				if(!ores.isEmpty()) {
 					item = ores.get(0).getItem();
 					meta = ores.get(0).getItemDamage();
@@ -62,7 +60,7 @@ public class CommandRTGive extends CommandGive {
 		final ItemStack stack = new ItemStack(item, amount, meta);
 
 		if(args.length > 4) {
-			final String tag = Compat.buildString(args, 4);
+			final String tag = buildString(args, 4);
 			try {
 				stack.setTagCompound(JsonToNBT.getTagFromJson(tag));
 			} catch(NBTException ex) {
@@ -77,18 +75,10 @@ public class CommandRTGive extends CommandGive {
 					SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
 					((player.getRNG().nextFloat() - player.getRNG().nextFloat()) * 0.7F + 1.0F) *
 							2.0F);
+			player.inventoryContainer.detectAndSendChanges();
 
-			Compat.detectAndSendChanges(player.inventoryContainer);
-
-			if(Compat.isEmpty(stack)) {
-				try {
-					Compat.setStackSize(stack, 1);
-				} catch(Exception ex) {
-					ex.printStackTrace();
-					throw new CommandException(Utils.localize("commands.rtgive.failure",
-							ex.getClass().getName() + ": " + ex.getMessage()));
-				}
-
+			if(stack.isEmpty()) {
+				stack.setCount(1);
 				sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS, amount);
 
 				final EntityItem droppedItem = player.dropItem(stack, false);
@@ -97,14 +87,8 @@ public class CommandRTGive extends CommandGive {
 					droppedItem.makeFakeItem();
 				}
 			} else {
-				try {
-					sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS,
-							amount - Compat.getStackSize(stack));
-				} catch(Exception ex) {
-					ex.printStackTrace();
-					throw new CommandException(Utils.localize("commands.rtgive.failure",
-							ex.getClass().getName() + ": " + ex.getMessage()));
-				}
+				sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS,
+						amount - stack.getCount());
 
 				final EntityItem droppedItem = player.dropItem(stack, false);
 
@@ -124,6 +108,7 @@ public class CommandRTGive extends CommandGive {
 			String[] args, @Nullable BlockPos targetPos) {
 		final List<String> tabCompletions =
 				super.getTabCompletions(server, sender, args, targetPos);
+
 		if(args.length == 2) {
 			tabCompletions.addAll(getListOfStringsMatchingLastWord(args,
 					Arrays.stream(OreDictionary.getOreNames()).
@@ -131,6 +116,7 @@ public class CommandRTGive extends CommandGive {
 							collect(Collectors.toList()))
 			);
 		}
+
 		return tabCompletions;
 	}
 }

@@ -23,7 +23,6 @@ public final class WorldTypeRegistry {
 			return false;
 		}
 
-		return !RTConfig.world.disableRealisticWorldTypeWithQuark ||
-				(!Loader.isModLoaded("Quark") && !Loader.isModLoaded("quark"));
+		return !RTConfig.world.disableRealisticWorldTypeWithQuark || !Loader.isModLoaded("quark");
 	}
 }

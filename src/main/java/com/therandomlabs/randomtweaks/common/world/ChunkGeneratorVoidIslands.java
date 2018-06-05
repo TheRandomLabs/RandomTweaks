@@ -3,13 +3,14 @@ package com.therandomlabs.randomtweaks.common.world;
 import java.util.Arrays;
 import java.util.Random;
 import com.therandomlabs.randomtweaks.common.RTConfig;
-import com.therandomlabs.randomtweaks.util.Compat;
+import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.init.Biomes;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.ChunkGeneratorOverworld;
 
-public class ChunkGeneratorVoidIslands extends Compat.ChunkGeneratorCompatOverworld {
+public class ChunkGeneratorVoidIslands extends ChunkGeneratorOverworld {
 	private static String biomeName;
 	private static Biome biome;
 
@@ -41,7 +42,7 @@ public class ChunkGeneratorVoidIslands extends Compat.ChunkGeneratorCompatOverwo
 	public static Biome getBiome() {
 		if(biome == null || !RTConfig.world.voidIslandsWorldBiome.equals(biomeName)) {
 			biomeName = RTConfig.world.voidIslandsWorldBiome;
-			biome = Compat.getBiome(biomeName, Biomes.PLAINS);
+			biome = Utils.getBiome(biomeName, Biomes.PLAINS);
 		}
 
 		return biome;

@@ -2,26 +2,18 @@ package com.therandomlabs.randomtweaks.client;
 
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
-import com.therandomlabs.randomtweaks.util.Compat;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
-import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.text.TextComponentTranslation;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
-import org.lwjgl.input.Keyboard;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class StepupHandler {
-	public static final KeyBinding TOGGLE_AUTO_JUMP = new KeyBinding("key.toggleAutoJump",
-			Keyboard.KEY_B, "key.categories.randomtweaks");
-
 	public static final float VANILLA_STEP_HEIGHT = 0.6F;
 	public static final float STEPUP_STEP_HEIGHT = 1.2F;
 
@@ -42,17 +34,6 @@ public final class StepupHandler {
 			this.enabled = enabled;
 			this.message = message;
 		}
-	}
-
-	@SubscribeEvent
-	public static void onKeyInput(InputEvent.KeyInputEvent event) {
-		if(!RTConfig.client.stepup || !Keyboard.getEventKeyState() ||
-				!TOGGLE_AUTO_JUMP.isActiveAndMatches(Keyboard.getEventKey()) ||
-				mc.player == null) {
-			return;
-		}
-
-		toggle(true);
 	}
 
 	@SubscribeEvent
@@ -87,8 +68,10 @@ public final class StepupHandler {
 		}
 	}
 
-	public static void registerKeyBinding() {
-		ClientRegistry.registerKeyBinding(TOGGLE_AUTO_JUMP);
+	public static void toggle() {
+		if(mc.player != null) {
+			toggle(true);
+		}
 	}
 
 	public static void toggle(boolean sendStatusMessage) {
@@ -128,7 +111,7 @@ public final class StepupHandler {
 		}
 
 		if(sendStatusMessage) {
-			Compat.sendStatusMessage(mc.player, new TextComponentTranslation(mode.message));
+			mc.player.sendStatusMessage(new TextComponentTranslation(mode.message), true);
 		}
 	}
 }

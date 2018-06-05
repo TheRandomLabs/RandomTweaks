@@ -9,7 +9,6 @@ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture.Type;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
-import com.therandomlabs.randomtweaks.util.Compat;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -24,7 +23,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class CapeHandler {
-	public static final Method GET_PLAYER_INFO = Compat.findMethod(
+	public static final Method GET_PLAYER_INFO = ReflectionHelper.findMethod(
 			AbstractClientPlayer.class, "getPlayerInfo", "func_175155_b");
 	public static final Field PLAYER_TEXTURES = ReflectionHelper.findField(NetworkPlayerInfo.class,
 			"playerTextures", "field_187107_a");
@@ -45,13 +44,13 @@ public final class CapeHandler {
 		}
 
 		final Entity entity = event.getEntity();
-		if(entity instanceof AbstractClientPlayer &&
-				shouldHaveCape((AbstractClientPlayer) entity)) {
+
+		if(entity instanceof AbstractClientPlayer && hasCape((AbstractClientPlayer) entity)) {
 			Minecraft.getMinecraft().addScheduledTask(() -> setCape(entity));
 		}
 	}
 
-	public static boolean shouldHaveCape(AbstractClientPlayer player) {
+	public static boolean hasCape(AbstractClientPlayer player) {
 		return Utils.isDeobfuscated() || CONTRIBUTORS.contains(player.getUniqueID().toString());
 	}
 
@@ -60,7 +59,7 @@ public final class CapeHandler {
 			final NetworkPlayerInfo info = (NetworkPlayerInfo) GET_PLAYER_INFO.invoke(entity);
 
 			//Usually because the client has sent too many requests within a certain amount of time
-			//or because the player UUID is invalid (e.g. if you're in a development environment)
+			//or because the player UUID is invalid
 			if(info == null) {
 				return;
 			}

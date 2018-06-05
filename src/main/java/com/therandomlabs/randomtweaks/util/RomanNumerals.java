@@ -3,7 +3,7 @@ package com.therandomlabs.randomtweaks.util;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class RomanNumeralHandler {
+public final class RomanNumerals {
 	private static final String[] ROMAN_NUMERALS = {
 			"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"
 	};
@@ -12,9 +12,9 @@ public final class RomanNumeralHandler {
 	};
 	private static final Map<Integer, String> cachedRomanNumerals = new HashMap<>();
 
-	private RomanNumeralHandler() {}
+	private RomanNumerals() {}
 
-	public static String getRomanNumeral(int number) {
+	public static String get(int number) {
 		if(number == 0) {
 			return "Nulla";
 		}
@@ -39,7 +39,7 @@ public final class RomanNumeralHandler {
 							String.valueOf(number).substring(0, 1 + (digits - 4)));
 
 					//In Roman numerals, brackets mean "multiply by 1000"
-					romanNumeral.append('(').append(getRomanNumeral(nested)).append(')');
+					romanNumeral.append('(').append(get(nested)).append(')');
 					number -= nested * 1000;
 				} else {
 					romanNumeral.append(ROMAN_NUMERALS[i]);

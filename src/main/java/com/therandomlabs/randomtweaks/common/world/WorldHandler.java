@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
-import com.therandomlabs.randomtweaks.util.Compat;
+import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -93,7 +93,7 @@ public final class WorldHandler {
 			return;
 		}
 
-		final Block block = Compat.getBlock(RTConfig.world.voidWorldBlock, Blocks.GLASS);
+		final Block block = Utils.getBlock(RTConfig.world.voidWorldBlock, Blocks.GLASS);
 		world.setBlockState(spawnBlock, block.getDefaultState());
 	}
 

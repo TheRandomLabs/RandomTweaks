@@ -1,8 +1,8 @@
 package com.therandomlabs.randomtweaks.common;
 
+import java.io.IOException;
 import com.therandomlabs.randomtweaks.common.world.WorldGeneratorOceanFloor;
 import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
-import com.therandomlabs.randomtweaks.util.Compat;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -13,11 +13,12 @@ import org.apache.logging.log4j.Logger;
 public class CommonProxy {
 	public static final Logger LOGGER = RandomTweaks.LOGGER;
 
-	public void preInit(FMLPreInitializationEvent event) throws Exception {
-		RTConfig.preInit();
+	public void preInit(FMLPreInitializationEvent event) throws IOException {
+		RTConfig.reloadConfig();
 
 		if(Utils.isDeobfuscated()) {
 			//Defaults for testing
+
 			RTConfig.client.stepup = true;
 			RTConfig.commands.shortGamemodeCommands = true;
 			RTConfig.timeofday.enabledByDefault = true;
@@ -25,6 +26,7 @@ public class CommonProxy {
 			RTConfig.general.dropTESulfur = true;
 			RTConfig.general.pickupSkeletonArrows = true;
 			RTConfig.respawn.deathPunishmentsIfKeepInventory = true;
+
 			RTConfig.reloadConfig();
 		}
 
@@ -32,8 +34,7 @@ public class CommonProxy {
 			try {
 				RTLanguageMap.replaceLanguageMaps();
 			} catch(Exception ex) {
-				LOGGER.error("Failed to replace LanguageMap instances. More Roman numerals " +
-						"feature disabled!", ex);
+				Utils.crashReport("Failed to replace LanguageMap instances.", ex);
 			}
 		}
 	}
@@ -44,7 +45,5 @@ public class CommonProxy {
 		if(RTConfig.oceanFloor.enabled && !Loader.isModLoaded("samsocean")) {
 			GameRegistry.registerWorldGenerator(new WorldGeneratorOceanFloor(), 0);
 		}
-
-		Compat.disableSurgePigmanSleep();
 	}
 }

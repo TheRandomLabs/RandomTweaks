@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -14,9 +15,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.MalformedJsonException;
 import com.therandomlabs.randomtweaks.util.Alignment;
-import com.therandomlabs.randomtweaks.util.Compat;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraftforge.common.config.Config;
+import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -363,6 +364,24 @@ public class RTConfig {
 	}
 
 	public static class DefaultGamerules {
+		public static final List<String> DEFAULT = Arrays.asList(
+				"//Example configuration." +
+						"The game does not need to be restarted after changing this.",
+				"{",
+				"//\t\"commandBlockOutput\": false, //These are for all game modes.",
+				"//\t\"keepInventory\": true,",
+				"//\t\"1:flat,void\": { //Affects creative flat and void worlds. " +
+						"Game modes and world types can be separated with commas without spaces. " +
+						"These are the same as the world types in server.properties.",
+				"//\t\t\"doDaylightCycle\": false,",
+				"//\t\t\"doWeatherCycle\": false,",
+				"//\t\t\"doMobSpawning\": false,",
+				"//\t\t\"rtWorldBorderSize\": 10000 //This is not actually a gamerule, but is " +
+						"used to set the world border in blocks from the chunk (0, 0).",
+				"//\t}",
+				"}"
+		);
+
 		public static void create() throws IOException {
 			final Path path = Paths.get("config", RandomTweaks.MODID, "defaultgamerules.json");
 
@@ -370,22 +389,13 @@ public class RTConfig {
 				Files.move(path, Paths.get(path.toString() + "_old" + System.nanoTime()));
 			}
 
-			Files.write(path, Arrays.asList(
-					"//Example configuration - game does not need to be restarted when changing this",
-					"{",
-					"//\t\"commandBlockOutput\": false, //These are for all game modes",
-					"//\t\"keepInventory\": true,",
-					"//\t\"1:flat,void\": { //Creative flat/void world. Game modes and world types " +
-							"can be separated with commas (no spaces). These are the same as the " +
-							"world types in command.properties.",
-					"//\t\t\"doDaylightCycle\": false,",
-					"//\t\t\"doWeatherCycle\": false,",
-					"//\t\t\"doMobSpawning\": false,",
-					"//\t\t\"rtWorldBorderSize\": 10000 //Sets the world border (in blocks) " +
-							"from chunk (0, 0)",
-					"//\t}",
-					"}"
-			));
+			Files.write(path, DEFAULT);
+		}
+
+		public static void ensureExists() throws IOException {
+			if(!Files.exists(getJson("defaultgamerules"))) {
+				create();
+			}
 		}
 
 		public static Map<String, String> get(int gamemode, String worldType) throws IOException {
@@ -401,8 +411,6 @@ public class RTConfig {
 				object = readJson(path);
 			} catch(MalformedJsonException ex) {
 				ex.printStackTrace();
-				//WorldCreateHandler sends a command message if this is null saying that the
-				//JSON was invalid, so there's no need to crash the game
 				return null;
 			}
 
@@ -578,25 +586,17 @@ public class RTConfig {
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
 		if(event.getModID().equals(RandomTweaks.MODID)) {
-			reloadConfig();
+			try {
+				reloadConfig();
+			} catch(IOException ex) {
+				Utils.crashReport("Failed to reload config", ex);
+			}
 		}
 	}
 
-	public static void reloadConfig() {
-		Compat.syncConfig(RandomTweaks.MODID, Config.Type.INSTANCE);
+	public static void reloadConfig() throws IOException {
+		ConfigManager.sync(RandomTweaks.MODID, Config.Type.INSTANCE);
 		Data.data = null;
-	}
-
-	static void preInit() {
-		try {
-			Files.deleteIfExists(Paths.get("config", "randomtweaks.cfg"));
-			Files.deleteIfExists(getConfig("dontresetconfig.txt"));
-			Files.deleteIfExists(getJson("logfilters"));
-			Files.deleteIfExists(getJson("timeofdayoverlayworlds"));
-		} catch(IOException ex) {
-			Utils.crashReport("Failed to delete old RandomTweaks files", ex);
-		}
-
-		reloadConfig();
+		DefaultGamerules.ensureExists();
 	}
 }

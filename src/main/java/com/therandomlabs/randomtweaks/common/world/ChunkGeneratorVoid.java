@@ -4,17 +4,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import com.therandomlabs.randomtweaks.common.RTConfig;
-import com.therandomlabs.randomtweaks.util.Compat;
+import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.gen.IChunkGenerator;
 
-public class ChunkGeneratorVoid implements Compat.ICompatChunkGenerator {
+public class ChunkGeneratorVoid implements IChunkGenerator {
 	private static String biomeName;
 	private static Biome biome;
 
@@ -67,7 +67,7 @@ public class ChunkGeneratorVoid implements Compat.ICompatChunkGenerator {
 	public static Biome getBiome() {
 		if(biome == null || !RTConfig.world.voidWorldBiome.equals(biomeName)) {
 			biomeName = RTConfig.world.voidWorldBiome;
-			biome = Compat.getBiome(biomeName, Biomes.PLAINS);
+			biome = Utils.getBiome(biomeName, Biomes.PLAINS);
 		}
 
 		return biome;

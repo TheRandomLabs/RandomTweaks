@@ -1,15 +1,16 @@
 package com.therandomlabs.randomtweaks.common;
 
 import java.lang.reflect.Field;
-import com.therandomlabs.randomtweaks.util.Compat;
+import java.lang.reflect.Method;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.Loader;
@@ -19,6 +20,8 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class SleepHandler {
+	public static final Method SPAWN_SHOULDER_ENTITIES = ReflectionHelper.findMethod(
+			EntityPlayer.class, "spawnShoulderEntities", "func_192030_dh");
 	public static final Field SLEEPING = ReflectionHelper.findField(EntityPlayer.class,
 			"sleeping", "field_71083_bS");
 	public static final Field SLEEP_TIMER = ReflectionHelper.findField(EntityPlayer.class,
@@ -63,20 +66,16 @@ public final class SleepHandler {
 
 			if(!bedInRange(player, location, facing)) {
 				event.setResult(SleepResult.TOO_FAR_AWAY);
-				if(Compat.IS_ONE_POINT_TEN) {
-					Compat.sendStatusMessage(player,
-							new TextComponentTranslation("tile.bed.tooFarAway"));
-				}
 				return;
 			}
 
-			if(Compat.isMobInRange(player, world, location)) {
+			if(isMobInRange(player, world, location)) {
 				event.setResult(SleepResult.NOT_SAFE);
 				return;
 			}
 		}
 
-		Compat.spawnShoulderEntities(player);
+		spawnShoulderEntities(player);
 		if(player.isRiding()) {
 			player.dismountRidingEntity();
 		}
@@ -131,6 +130,28 @@ public final class SleepHandler {
 		return Math.abs(player.posX - position.getX()) <= 3.0 &&
 				Math.abs(player.posY - position.getY()) <= 2.0 &&
 				Math.abs(player.posZ - position.getZ()) <= 3.0;
+	}
+
+	public static boolean isMobInRange(EntityPlayer player, World world, BlockPos position) {
+		return !world.getEntitiesWithinAABB(EntityMob.class,
+				new AxisAlignedBB(
+						position.getX(),
+						position.getY(),
+						position.getZ(),
+						position.getX(),
+						position.getY(),
+						position.getZ()
+				).expand(8.0, 5.0, 8.0),
+				mob -> mob.isPreventingPlayerRest(player) && !mob.hasCustomName()).
+				isEmpty();
+	}
+
+	public static void spawnShoulderEntities(EntityPlayer player) {
+		try {
+			SPAWN_SHOULDER_ENTITIES.invoke(player);
+		} catch(Exception ex) {
+			Utils.crashReport("Could not spawn shoulder entities", ex);
+		}
 	}
 
 	public static void setRenderOffsetForSleep(EntityPlayer player, EnumFacing facing) {

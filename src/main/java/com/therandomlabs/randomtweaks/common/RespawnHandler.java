@@ -62,6 +62,6 @@ public final class RespawnHandler {
 				return player.capabilities.isCreativeMode || keepInventory;
 		}
 
-		throw new UnsupportedOperationException("This should never happen");
+		throw new UnsupportedOperationException("This is impossible");
 	}
 }
