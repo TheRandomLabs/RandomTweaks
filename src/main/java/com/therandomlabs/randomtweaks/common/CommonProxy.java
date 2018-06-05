@@ -17,11 +17,7 @@ public class CommonProxy {
 		RTConfig.reloadConfig();
 
 		if(RTConfig.general.moreRomanNumerals) {
-			try {
-				RTLanguageMap.replaceLanguageMaps();
-			} catch(Exception ex) {
-				Utils.crashReport("Failed to replace LanguageMap instances.", ex);
-			}
+			RTLanguageMap.replaceLanguageMaps();
 		}
 	}
 
