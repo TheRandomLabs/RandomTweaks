@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class MiscEventHandler {
 	@SubscribeEvent
 	public static void onArrowImpact(ProjectileImpactEvent.Arrow event) {
-		if(!RTConfig.general.pickupSkeletonArrows) {
+		if(!RTConfig.general.pickUpSkeletonArrows) {
 			return;
 		}
 

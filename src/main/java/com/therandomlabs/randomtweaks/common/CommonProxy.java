@@ -16,18 +16,6 @@ public class CommonProxy {
 	public void preInit(FMLPreInitializationEvent event) throws IOException {
 		RTConfig.reloadConfig();
 
-		if(Utils.isDeobfuscated()) {
-			//Defaults for testing
-
-			RTConfig.client.stepup = true;
-			RTConfig.timeofday.enabledByDefault = true;
-			RTConfig.general.attackSpeed = 24.0;
-			RTConfig.general.pickupSkeletonArrows = true;
-			RTConfig.respawn.deathPunishmentsIfKeepInventory = true;
-
-			RTConfig.reloadConfig();
-		}
-
 		if(RTConfig.general.moreRomanNumerals) {
 			try {
 				RTLanguageMap.replaceLanguageMaps();

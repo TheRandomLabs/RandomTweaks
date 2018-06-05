@@ -87,7 +87,7 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.client.stepup")
 		@Config.Comment("Whether to enable stepup auto jump.")
-		public boolean stepup;
+		public boolean stepup = Utils.isDeobfuscated();
 
 		@Config.LangKey("randomtweaks.config.client.stepupEnabledByDefault")
 		@Config.Comment("Whether stepup auto jump is enabled by default.")
@@ -179,7 +179,7 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.general.attackSpeed")
 		@Config.Comment("Sets the base attack speed for players. Set this to 16.0 or higher " +
 				"to remove the attack cooldown. 4.0 is the default value.")
-		public double attackSpeed = 4.0;
+		public double attackSpeed = Utils.isDeobfuscated() ? 24.0 : 4.0;
 
 		@Config.LangKey("randomtweaks.config.general.protectPetsFromOwners")
 		@Config.Comment("Prevents pets from being attacked by their owners " +
@@ -194,9 +194,9 @@ public class RTConfig {
 		@Config.Comment("Disables the cumulative anvil cost.")
 		public boolean disableCumulativeAnvilCost = true;
 
-		@Config.LangKey("randomtweaks.config.general.pickupSkeletonArrows")
+		@Config.LangKey("randomtweaks.config.general.pickUpSkeletonArrows")
 		@Config.Comment("Allows skeleton arrows to be picked up.")
-		public boolean pickupSkeletonArrows;
+		public boolean pickUpSkeletonArrows = Utils.isDeobfuscated();
 	}
 
 	public static class Keybinds {
@@ -270,13 +270,13 @@ public class RTConfig {
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
 		@Config.LangKey("randomtweaks.config.oceanFloor.minY")
-		@Config.Comment("The minimum Y value.")
+		@Config.Comment("The minimum Y coordinate.")
 		public int minY = 20;
 
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
 		@Config.LangKey("randomtweaks.config.oceanFloor.maxY")
-		@Config.Comment("The maximum Y value.")
+		@Config.Comment("The maximum Y coordinate.")
 		public int maxY = 128;
 	}
 
@@ -357,7 +357,7 @@ public class RTConfig {
 		@Config.Comment("Enables punishments on death if keepInventory is enabled so it's not " +
 				"too overpowered. All XP and 3 hunger points are removed. This " +
 				"overrides hungerBehavior if keepInventory is true.")
-		public boolean deathPunishmentsIfKeepInventory;
+		public boolean deathPunishmentsIfKeepInventory = Utils.isDeobfuscated();
 	}
 
 	public static class Squids {
@@ -392,7 +392,7 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.enabledByDefault")
 		@Config.Comment("Enables the time of day overlay by default.")
-		public boolean enabledByDefault;
+		public boolean enabledByDefault = Utils.isDeobfuscated();
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.disableIfNoDaylightCycle")
 		@Config.Comment("Disables the time of day overlay if doDaylightCycle is false.")
