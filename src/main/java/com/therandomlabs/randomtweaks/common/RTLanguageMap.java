@@ -5,7 +5,7 @@ import net.minecraft.util.text.translation.I18n;
 import net.minecraft.util.text.translation.LanguageMap;
 
 public class RTLanguageMap extends LanguageMap {
-	public RTLanguageMap(LanguageMap languageMap) throws Exception {
+	public RTLanguageMap(LanguageMap languageMap) {
 		this.languageList = languageMap.languageList;
 	}
 
@@ -34,7 +34,7 @@ public class RTLanguageMap extends LanguageMap {
 	}
 
 	@SuppressWarnings("deprecation")
-	public static void replaceLanguageMaps() throws Exception {
+	public static void replaceLanguageMaps() {
 		final RTLanguageMap instance = new RTLanguageMap(I18n.localizedName);
 		I18n.localizedName = instance;
 		LanguageMap.instance = instance;
