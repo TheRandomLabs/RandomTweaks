@@ -6,10 +6,10 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@EventBusSubscriber(modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class OcelotHandler {
 	@SubscribeEvent
 	public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {

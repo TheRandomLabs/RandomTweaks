@@ -7,12 +7,12 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.entity.living.LivingPackSizeEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-import net.minecraftforge.fml.common.eventhandler.Event.Result;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@EventBusSubscriber(modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class SquidHandler {
 	public static final int RADIUS_LIMIT_DISABLED = 0;
 	public static final int CHUNK_LIMIT_DISABLED = -1;
@@ -23,7 +23,7 @@ public final class SquidHandler {
 	public static void onLivingEntitySpawn(LivingSpawnEvent.CheckSpawn event) {
 		if(event.getEntity().getClass() == EntitySquid.class) {
 			if(!isInRadiusOfPlayer(event) || tooManySquids(event)) {
-				event.setResult(Result.DENY);
+				event.setResult(Event.Result.DENY);
 			}
 		}
 	}

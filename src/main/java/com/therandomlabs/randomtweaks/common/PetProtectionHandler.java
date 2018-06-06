@@ -6,10 +6,10 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@EventBusSubscriber(modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class PetProtectionHandler {
 	@SubscribeEvent
 	public static void onLivingHurt(LivingHurtEvent event) {

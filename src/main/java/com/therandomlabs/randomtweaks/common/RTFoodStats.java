@@ -23,7 +23,7 @@ public class RTFoodStats extends FoodStats {
 			this.foodLevel = RTConfig.hunger.maximumHungerLevel;
 		}
 
-		foodSaturationLevel = Math.min(newSaturation,
-				this.foodLevel + RTConfig.hunger.saturationLimit);
+		foodSaturationLevel =
+				Math.min(newSaturation, this.foodLevel + (float) RTConfig.hunger.saturationLimit);
 	}
 }

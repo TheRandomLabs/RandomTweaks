@@ -10,7 +10,6 @@ import net.minecraft.init.Biomes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
-import net.minecraft.world.biome.Biome.SpawnListEntry;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.IChunkGenerator;
 
@@ -46,7 +45,8 @@ public class ChunkGeneratorVoid implements IChunkGenerator {
 	}
 
 	@Override
-	public List<SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType, BlockPos pos) {
+	public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType,
+			BlockPos pos) {
 		return Collections.emptyList();
 	}
 

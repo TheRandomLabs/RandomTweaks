@@ -12,11 +12,11 @@ import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-@EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class CapeHandler {
 	public static final ResourceLocation CAPE_LOCATION =
 			new ResourceLocation(RandomTweaks.MODID, "textures/cape.png");

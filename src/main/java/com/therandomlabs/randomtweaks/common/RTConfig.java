@@ -19,11 +19,11 @@ import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.lang3.StringUtils;
 
-@EventBusSubscriber
+@Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
 @Config(modid = RandomTweaks.MODID, name = RandomTweaks.MODID + "/" + RandomTweaks.MODID)
 @Config.LangKey("randomtweaks.config.title")
 public class RTConfig {
@@ -208,7 +208,7 @@ public class RTConfig {
 	public static class Hunger {
 		@Config.LangKey("randomtweaks.config.hunger.respawnBehavior")
 		@Config.Comment("What happens to a player's hunger when they respawn.")
-		public RespawnHandler.HungerBehavior respawnhBehavior =
+		public RespawnHandler.HungerBehavior respawnBehavior =
 				RespawnHandler.HungerBehavior.RESET_UNLESS_KEEPINVENTORY;
 
 		@Config.RangeInt(min = 0)

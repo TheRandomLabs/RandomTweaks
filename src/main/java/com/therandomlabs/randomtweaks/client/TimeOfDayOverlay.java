@@ -11,13 +11,13 @@ import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.world.GameType;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 //Some code has been taken and adapted from https://github.com/Lunatrius/InGame-Info-XML
-@EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class TimeOfDayOverlay {
 	private static final Minecraft mc = Minecraft.getMinecraft();
 	private static boolean shouldHide;

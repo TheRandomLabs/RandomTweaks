@@ -13,12 +13,12 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
-@EventBusSubscriber(modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class SleepHandler {
 	public static final Method SET_SIZE = ReflectionHelper.findMethod(Entity.class, "setSize",
 			"func_70105_a", float.class, float.class);

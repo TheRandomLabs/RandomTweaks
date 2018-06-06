@@ -16,10 +16,10 @@ import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@EventBusSubscriber(modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class WorldHandler {
 	@SubscribeEvent
 	public static void onCreateSpawn(WorldEvent.CreateSpawnPosition event) throws Exception {

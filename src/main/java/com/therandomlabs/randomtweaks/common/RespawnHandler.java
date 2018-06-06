@@ -3,10 +3,10 @@ package com.therandomlabs.randomtweaks.common;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@EventBusSubscriber(modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class RespawnHandler {
 	public enum HungerBehavior {
 		RESET,
@@ -34,14 +34,14 @@ public final class RespawnHandler {
 		int newFoodLevel = oldFoodLevel;
 
 		if(keepInventory && !player.capabilities.isCreativeMode &&
-				RTConfig.respawn.deathPunishmentsIfKeepInventory) {
+				RTConfig.general.deathPunishmentsIfKeepInventory) {
 			newFoodLevel -= 3;
 			player.experience = 0;
 			player.experienceLevel = 0;
 			player.experienceTotal = 0;
 		}
 
-		final int minimum = RTConfig.respawn.minimumHungerLevel;
+		final int minimum = RTConfig.hunger.minimumRespawnHungerLevel;
 
 		final FoodStats newStats = player.getFoodStats();
 		newStats.setFoodLevel(newFoodLevel < minimum ? minimum : newFoodLevel);
@@ -49,11 +49,11 @@ public final class RespawnHandler {
 	}
 
 	public static boolean resetHungerOnRespawn(EntityPlayer player, boolean keepInventory) {
-		if(keepInventory && RTConfig.respawn.deathPunishmentsIfKeepInventory) {
+		if(keepInventory && RTConfig.general.deathPunishmentsIfKeepInventory) {
 			return false;
 		}
 
-		switch(RTConfig.respawn.hungerBehavior) {
+		switch(RTConfig.hunger.respawnBehavior) {
 			case RESET:
 				return true;
 			case DONT_RESET:
