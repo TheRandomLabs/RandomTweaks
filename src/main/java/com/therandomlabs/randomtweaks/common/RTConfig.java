@@ -181,6 +181,12 @@ public class RTConfig {
 				"to remove the attack cooldown. 4.0 is the default value.")
 		public double attackSpeed = Utils.isDeobfuscated() ? 24.0 : 4.0;
 
+		@Config.LangKey("randomtweaks.config.general.deathPunishmentsIfKeepInventory")
+		@Config.Comment("Enables punishments on death if keepInventory is enabled so it's not " +
+				"too overpowered. All XP and 3 hunger points are removed. This " +
+				"overrides hungerBehavior if keepInventory is true.")
+		public boolean deathPunishmentsIfKeepInventory = Utils.isDeobfuscated();
+
 		@Config.LangKey("randomtweaks.config.general.protectPetsFromOwners")
 		@Config.Comment("Prevents pets from being attacked by their owners " +
 				"(unless they're sneaking).")
@@ -197,6 +203,34 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.general.pickUpSkeletonArrows")
 		@Config.Comment("Allows skeleton arrows to be picked up.")
 		public boolean pickUpSkeletonArrows = Utils.isDeobfuscated();
+	}
+
+	public static class Hunger {
+		@Config.LangKey("randomtweaks.config.hunger.respawnBehavior")
+		@Config.Comment("What happens to a player's hunger when they respawn.")
+		public RespawnHandler.HungerBehavior respawnhBehavior =
+				RespawnHandler.HungerBehavior.RESET_UNLESS_KEEPINVENTORY;
+
+		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.hunger.minimumRespawnHungerLevel")
+		@Config.Comment("The minimum hunger level on respawn.")
+		public int minimumRespawnHungerLevel = 3;
+
+		@Config.RangeInt(min = 1)
+		@Config.LangKey("randomtweaks.config.hunger.maximumHungerLevel")
+		@Config.Comment("The maximum hunger level.")
+		public int maximumHungerLevel = 20;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("randomtweaks.config.hunger.saturationLimit")
+		@Config.Comment("This value is added to the player's food level to calculate the maximum " +
+				"saturation level.")
+		public double saturationLimit = 0.0;
+
+		@Config.LangKey("randomtweaks.config.hunger.carryExcessHungerToSaturation")
+		@Config.Comment("If this is enabled, any excess hunger level gained by eating will be " +
+				"added to the saturation.")
+		public boolean carryExcessHungerToSaturation;
 	}
 
 	public static class Keybinds {
@@ -342,24 +376,6 @@ public class RTConfig {
 		public int voidIslandsChunkRarity = 10;
 	}
 
-	public static class Respawn {
-		@Config.LangKey("randomtweaks.config.respawn.hungerBehavior")
-		@Config.Comment("What happens to a player's hunger when they respawn.")
-		public RespawnHandler.HungerBehavior hungerBehavior =
-				RespawnHandler.HungerBehavior.RESET_UNLESS_KEEPINVENTORY;
-
-		@Config.RangeInt(min = 0)
-		@Config.LangKey("randomtweaks.config.respawn.minimumHungerLevel")
-		@Config.Comment("The minimum hunger level on respawn.")
-		public int minimumHungerLevel = 3;
-
-		@Config.LangKey("randomtweaks.config.respawn.deathPunishmentsIfKeepInventory")
-		@Config.Comment("Enables punishments on death if keepInventory is enabled so it's not " +
-				"too overpowered. All XP and 3 hunger points are removed. This " +
-				"overrides hungerBehavior if keepInventory is true.")
-		public boolean deathPunishmentsIfKeepInventory = Utils.isDeobfuscated();
-	}
-
 	public static class Squids {
 		@Config.RangeInt(min = 0)
 		@Config.LangKey("randomtweaks.config.squids.spawnRadiusLimit")
@@ -439,6 +455,10 @@ public class RTConfig {
 	@Config.Comment("Options that don't fit into any other categories.")
 	public static General general = new General();
 
+	@Config.LangKey("randomtweaks.config.hunger")
+	@Config.Comment("Options related to hunger.")
+	public static Hunger hunger = new Hunger();
+
 	@Config.LangKey("randomtweaks.config.keybinds")
 	@Config.Comment("Keybinds that don't fit into any other categories.")
 	public static Keybinds keybinds = new Keybinds();
@@ -454,10 +474,6 @@ public class RTConfig {
 	@Config.LangKey("randomtweaks.config.world")
 	@Config.Comment("World-related options that don't fit into any other categories.")
 	public static World world = new World();
-
-	@Config.LangKey("randomtweaks.config.respawn")
-	@Config.Comment("Options related to respawn behavior.")
-	public static Respawn respawn = new Respawn();
 
 	@Config.LangKey("randomtweaks.config.squids")
 	@Config.Comment("Options related to squid spawning behavior.")
@@ -632,6 +648,7 @@ public class RTConfig {
 	public static Path getConfig(String name) throws IOException {
 		final Path path = Paths.get("config", RandomTweaks.MODID, name);
 		final Path parent = path.getParent();
+
 		if(parent != null) {
 			if(Files.exists(parent) && !Files.isDirectory(parent)) {
 				Files.delete(parent);
@@ -639,6 +656,7 @@ public class RTConfig {
 
 			Files.createDirectories(parent);
 		}
+
 		return path;
 	}
 
@@ -675,7 +693,7 @@ public class RTConfig {
 
 	public static void reloadConfig() throws IOException {
 		ConfigManager.sync(RandomTweaks.MODID, Config.Type.INSTANCE);
-		Data.data = null;
 		DefaultGamerules.ensureExists();
+		Data.data = null;
 	}
 }

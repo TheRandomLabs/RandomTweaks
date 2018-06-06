@@ -31,11 +31,15 @@ public final class MiscEventHandler {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
-		if(event.getEntity() instanceof EntityPlayer) {
-			((EntityPlayer) event.getEntity()).
-					getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).
-					setBaseValue(RTConfig.general.attackSpeed);
+		if(!(event.getEntity() instanceof EntityPlayer)) {
+			return;
 		}
+
+		final EntityPlayer player = (EntityPlayer) event.getEntity();
+
+		player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).
+				setBaseValue(RTConfig.general.attackSpeed);
+		player.foodStats = new RTFoodStats(player.foodStats);
 	}
 
 	@SubscribeEvent

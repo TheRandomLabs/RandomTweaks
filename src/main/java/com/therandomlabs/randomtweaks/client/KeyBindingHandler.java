@@ -1,11 +1,8 @@
 package com.therandomlabs.randomtweaks.client;
 
-import java.lang.reflect.Field;
 import com.therandomlabs.randomtweaks.common.RTConfig;
 import com.therandomlabs.randomtweaks.common.RandomTweaks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.SoundHandler;
-import net.minecraft.client.audio.SoundManager;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -15,15 +12,11 @@ import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import org.lwjgl.input.Keyboard;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class KeyBindingHandler {
-	public static final Field SOUND_MANAGER =
-			ReflectionHelper.findField(SoundHandler.class, "sndManager", "field_147694_f");
-
 	public static final KeyBinding NOCLIP = new KeyBinding("key.noclip",
 			KeyConflictContext.IN_GAME, KeyModifier.SHIFT, Keyboard.KEY_F4,
 			"key.categories.randomtweaks");
@@ -111,19 +104,9 @@ public final class KeyBindingHandler {
 			return;
 		}
 
-		final EntityPlayerSP player = Minecraft.getMinecraft().player;
+		Minecraft.getMinecraft().getSoundHandler().sndManager.reloadSoundSystem();
 
-		try {
-			((SoundManager) SOUND_MANAGER.get(Minecraft.getMinecraft().getSoundHandler())).
-					reloadSoundSystem();
-			player.sendStatusMessage(new TextComponentTranslation("reloadSoundSystem.success"),
-					true);
-		} catch(Exception ex) {
-			player.sendMessage(new TextComponentTranslation("reloadSoundSystem.failure.1"));
-			player.sendMessage(new TextComponentTranslation("reloadSoundSystem.failure.2",
-					ex.getClass().getName(), ex.getMessage()));
-			player.sendMessage(new TextComponentTranslation("reloadSoundSystem.failure.3"));
-			ex.printStackTrace();
-		}
+		final EntityPlayerSP player = Minecraft.getMinecraft().player;
+		player.sendStatusMessage(new TextComponentTranslation("reloadSoundSystem.success"), true);
 	}
 }

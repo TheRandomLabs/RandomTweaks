@@ -1,8 +1,5 @@
 package com.therandomlabs.randomtweaks.common;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.monster.EntityMob;
@@ -16,19 +13,11 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class SleepHandler {
-	public static final Method SPAWN_SHOULDER_ENTITIES = ReflectionHelper.findMethod(
-			EntityPlayer.class, "spawnShoulderEntities", "func_192030_dh");
-	public static final Field SLEEPING = ReflectionHelper.findField(EntityPlayer.class,
-			"sleeping", "field_71083_bS");
-	public static final Field SLEEP_TIMER = ReflectionHelper.findField(EntityPlayer.class,
-			"sleepTimer", "field_71076_b");
-
 	@SubscribeEvent
-	public static void onSleep(PlayerSleepInBedEvent event) throws Exception {
+	public static void onSleep(PlayerSleepInBedEvent event) {
 		if(!RTConfig.general.sleepTweaks || Loader.isModLoaded("comforts")) {
 			return;
 		}
@@ -75,12 +64,13 @@ public final class SleepHandler {
 			}
 		}
 
-		spawnShoulderEntities(player);
+		player.spawnShoulderEntities();
+
 		if(player.isRiding()) {
 			player.dismountRidingEntity();
 		}
 
-		Utils.setSize(player, 0.2F, 0.2F);
+		player.setSize(0.2F, 0.2F);
 
 		if(state != null && state.getBlock().isBed(state, world, location, player)) {
 			setRenderOffsetForSleep(player, facing);
@@ -101,8 +91,8 @@ public final class SleepHandler {
 			);
 		}
 
-		SLEEPING.set(player, true);
-		SLEEP_TIMER.set(player, 0);
+		player.sleeping = true;
+		player.sleepTimer = 0;
 		player.bedLocation = event.getPos();
 		player.motionX = 0.0;
 		player.motionY = 0.0;
@@ -142,16 +132,8 @@ public final class SleepHandler {
 						position.getY(),
 						position.getZ()
 				).expand(8.0, 5.0, 8.0),
-				mob -> mob.isPreventingPlayerRest(player) && !mob.hasCustomName()).
-				isEmpty();
-	}
-
-	public static void spawnShoulderEntities(EntityPlayer player) {
-		try {
-			SPAWN_SHOULDER_ENTITIES.invoke(player);
-		} catch(Exception ex) {
-			Utils.crashReport("Could not spawn shoulder entities", ex);
-		}
+				mob -> mob.isPreventingPlayerRest(player) && !mob.hasCustomName()
+		).isEmpty();
 	}
 
 	public static void setRenderOffsetForSleep(EntityPlayer player, EnumFacing facing) {

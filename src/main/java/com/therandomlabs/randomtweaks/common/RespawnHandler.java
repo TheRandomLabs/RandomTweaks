@@ -1,6 +1,5 @@
 package com.therandomlabs.randomtweaks.common;
 
-import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -43,8 +42,10 @@ public final class RespawnHandler {
 		}
 
 		final int minimum = RTConfig.respawn.minimumHungerLevel;
-		player.getFoodStats().setFoodLevel(newFoodLevel < minimum ? minimum : newFoodLevel);
-		Utils.setSaturation(player.getFoodStats(), oldSaturationLevel);
+
+		final FoodStats newStats = player.getFoodStats();
+		newStats.setFoodLevel(newFoodLevel < minimum ? minimum : newFoodLevel);
+		newStats.foodSaturationLevel = oldSaturationLevel;
 	}
 
 	public static boolean resetHungerOnRespawn(EntityPlayer player, boolean keepInventory) {
@@ -62,6 +63,6 @@ public final class RespawnHandler {
 				return player.capabilities.isCreativeMode || keepInventory;
 		}
 
-		throw new UnsupportedOperationException("This is impossible");
+		throw new UnsupportedOperationException("This should be impossible");
 	}
 }

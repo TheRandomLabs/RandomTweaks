@@ -2,6 +2,7 @@ package com.therandomlabs.randomtweaks.command;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 import javax.annotation.Nullable;
 import net.minecraft.command.CommandException;
@@ -70,11 +71,13 @@ public class CommandRTGive extends CommandGive {
 		}
 
 		final boolean added = player.inventory.addItemStackToInventory(stack);
+
 		if(added) {
+			final Random rng = player.getRNG();
 			player.getEntityWorld().playSound(null, player.posX, player.posY, player.posZ,
 					SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
-					((player.getRNG().nextFloat() - player.getRNG().nextFloat()) * 0.7F + 1.0F) *
-							2.0F);
+					((rng.nextFloat() - rng.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+
 			player.inventoryContainer.detectAndSendChanges();
 
 			if(stack.isEmpty()) {

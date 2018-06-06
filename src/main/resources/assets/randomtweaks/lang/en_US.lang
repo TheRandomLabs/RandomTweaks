@@ -39,10 +39,18 @@ randomtweaks.config.general.moreRomanNumerals=More Roman numerals
 randomtweaks.config.general.ocelotsCanBeHealed=Enable ocelot healing with fish
 randomtweaks.config.general.sleepTweaks=Sleep tweaks
 randomtweaks.config.general.attackSpeed=Attack speed
+randomtweaks.config.general.deathPunishmentsIfKeepInventory=Death punishments if keepInventory is true
 randomtweaks.config.general.protectPetsFromOwners=Protect pets from their owners
 randomtweaks.config.general.protectPetsFromOtherPets=Protect pets from their owners' other pets
 randomtweaks.config.general.disableCumulativeAnvilCost=Disable cumulative Anvil cost
-randomtweaks.config.general.pickUpSkeletonArrows=Allow Arrows Skeletons shoot to be picked up
+randomtweaks.config.general.pickUpSkeletonArrows=Allow Arrows shot by Skeletons to be picked up
+
+randomtweaks.config.hunger=Hunger
+randomtweaks.config.hunger.respawnBehavior=Hunger respawn behavior
+randomtweaks.config.hunger.minimumRespawnHungerLevel=Minimum respawn hunger level
+randomtweaks.config.hunger.maximumHungerLevel=Maximum hunger level
+randomtweaks.config.hunger.saturationLimit=Saturation limit (added to current food level)
+randomtweaks.config.hunger.carryExcessHungerToSaturation=Carry excess hunger to saturation
 
 randomtweaks.config.keybinds=Keybinds
 randomtweaks.config.keybinds.reloadSoundSystem=Reload sound system
@@ -78,11 +86,6 @@ randomtweaks.config.world.voidIslandsWorldType=Enable Void Islands world type
 randomtweaks.config.world.voidIslandsWorldBiome=Void Islands world biome
 randomtweaks.config.world.voidIslandsChunkRarity=Void Islands world chunk rarity
 
-randomtweaks.config.respawn=Respawn Behavior
-randomtweaks.config.respawn.hungerBehavior=Hunger behavior
-randomtweaks.config.respawn.minimumHungerLevel=Minimum hunger level
-randomtweaks.config.respawn.deathPunishmentsIfKeepInventory=Death punishments if keepInventory is true
-
 randomtweaks.config.squids=Squid Spawn Behavior
 randomtweaks.config.squids.spawnRadiusLimit=Maxiumum squid spawn radius from player
 randomtweaks.config.squids.chunkLimit=Amount of squids allowed in one chunk
@@ -116,9 +119,6 @@ key.toggleTimeOfDayOverlay=Toggle Time of Day Overlay
 key.toggleAutoJump=Toggle Auto Jump
 
 reloadSoundSystem.success=§eSuccessfully reloaded sound system!
-reloadSoundSystem.failure.1=§cFailed to reload sound system:
-reloadSoundSystem.failure.2=§c%s: %s
-reloadSoundSystem.failure.3=§cCheck the log for more information
 
 autoJump.disabled=Auto Jump Disabled
 autoJump.enabled=Auto Jump Enabled
@@ -127,11 +127,10 @@ autoJump.enabledStepup=Stepup Enabled
 defaultGamerules.parseFailure=§cError in defaultgamerules.json. Check the log for more information
 
 commands.deletegamerule.usage=/deletegamerule <gamerule>
-commands.deletegamerule.failure=§cAn error occurred while attempting to delete gamerule: %s
+commands.deletegamerule.noSuchGameruleExists=§cNo such gamerule exists: %s
 commands.deletegamerule.success=Gamerule %s successfully deleted!
 
 commands.hunger.usage=/hunger <player> <level> [saturation]
-commands.hunger.failure=§cAn error occurred while attempting to set saturation: %s
 commands.hunger.success=%s's new hunger level: %s New saturation: %s
 
 commands.rtreload.usage=/rtreload

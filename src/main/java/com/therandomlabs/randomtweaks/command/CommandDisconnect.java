@@ -37,8 +37,8 @@ public class CommandDisconnect extends CommandBase {
 			boolean forceTitleScreenOnDisconnect = false;
 
 			if(Loader.isModLoaded("randompatches")) {
-				final Class<?> rpconfig = Class.forName("com.therandomlabs.randompatches.RPConfig");
-				final Field field = rpconfig.getDeclaredField("forceTitleScreenOnDisconnect");
+				final Class<?> rpConfig = Class.forName("com.therandomlabs.randompatches.RPConfig");
+				final Field field = rpConfig.getDeclaredField("forceTitleScreenOnDisconnect");
 				forceTitleScreenOnDisconnect = (boolean) field.get(null);
 			}
 

@@ -33,20 +33,14 @@ public class CommandHunger extends CommandBase {
 		final EntityPlayer player = getPlayer(server, sender, args[0]);
 		final FoodStats stats = player.getFoodStats();
 
-		stats.setFoodLevel(parseInt(args[1]));
+		stats.foodLevel = parseInt(args[1]);
 
 		if(args.length > 2) {
-			try {
-				Utils.setSaturation(stats, (float) parseDouble(args[2]));
-			} catch(Exception ex) {
-				ex.printStackTrace();
-				throw new CommandException(Utils.localize("commands.hunger.failure",
-						ex.getClass().getName() + ": " + ex.getMessage()));
-			}
+			stats.foodSaturationLevel = (float) parseDouble(args[2]);
 		}
 
 		notifyCommandListener(sender, this, Utils.localize("commands.hunger.success",
-				player.getDisplayNameString(), stats.getFoodLevel(), stats.getSaturationLevel()));
+				player.getDisplayNameString(), stats.foodLevel, stats.foodSaturationLevel));
 	}
 
 	@Override
