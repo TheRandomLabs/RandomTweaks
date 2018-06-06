@@ -1,10 +1,12 @@
 package com.therandomlabs.randomtweaks.common;
 
+import java.lang.reflect.Method;
+import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.EntityPlayer.SleepResult;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
@@ -12,14 +14,29 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
+import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 @EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class SleepHandler {
-	@SubscribeEvent
+	public static final Method SET_SIZE = ReflectionHelper.findMethod(Entity.class, "setSize",
+			"func_70105_a", float.class, float.class);
+
+	private static Method comfortsOnSleep;
+
+	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onSleep(PlayerSleepInBedEvent event) {
-		if(!RTConfig.general.sleepTweaks || Loader.isModLoaded("comforts")) {
+		if(!RTConfig.general.sleepTweaks) {
 			return;
+		}
+
+		if(Loader.isModLoaded("comforts")) {
+			callComfortsOnSleep(event);
+
+			if(event.getResultStatus() == EntityPlayer.SleepResult.OTHER_PROBLEM) {
+				return;
+			}
 		}
 
 		final EntityPlayer player = event.getEntityPlayer();
@@ -39,27 +56,27 @@ public final class SleepHandler {
 
 		if(!world.isRemote) {
 			if(player.isPlayerSleeping() || !player.isEntityAlive()) {
-				event.setResult(SleepResult.OTHER_PROBLEM);
+				event.setResult(EntityPlayer.SleepResult.OTHER_PROBLEM);
 				return;
 			}
 
 			if(!world.provider.isSurfaceWorld()) {
-				event.setResult(SleepResult.NOT_POSSIBLE_HERE);
+				event.setResult(EntityPlayer.SleepResult.NOT_POSSIBLE_HERE);
 				return;
 			}
 
 			if(world.isDaytime()) {
-				event.setResult(SleepResult.NOT_POSSIBLE_NOW);
+				event.setResult(EntityPlayer.SleepResult.NOT_POSSIBLE_NOW);
 				return;
 			}
 
 			if(!bedInRange(player, location, facing)) {
-				event.setResult(SleepResult.TOO_FAR_AWAY);
+				event.setResult(EntityPlayer.SleepResult.TOO_FAR_AWAY);
 				return;
 			}
 
 			if(isMobInRange(player, world, location)) {
-				event.setResult(SleepResult.NOT_SAFE);
+				event.setResult(EntityPlayer.SleepResult.NOT_SAFE);
 				return;
 			}
 		}
@@ -70,7 +87,11 @@ public final class SleepHandler {
 			player.dismountRidingEntity();
 		}
 
-		player.setSize(0.2F, 0.2F);
+		try {
+			SET_SIZE.invoke(player, 0.2F, 0.2F);
+		} catch(Exception ex) {
+			Utils.crashReport("Error while setting player size", ex);
+		}
 
 		if(state != null && state.getBlock().isBed(state, world, location, player)) {
 			setRenderOffsetForSleep(player, facing);
@@ -102,7 +123,21 @@ public final class SleepHandler {
 			player.getEntityWorld().updateAllPlayersSleepingFlag();
 		}
 
-		event.setResult(SleepResult.OK);
+		event.setResult(EntityPlayer.SleepResult.OK);
+	}
+
+	public static void callComfortsOnSleep(PlayerSleepInBedEvent event) {
+		try {
+			if(comfortsOnSleep == null) {
+				final Class<?> eventHandler = Class.forName("c4.comforts.common.EventHandler");
+				comfortsOnSleep = eventHandler.getDeclaredMethod("onPlayerSleep",
+						PlayerSleepInBedEvent.class);
+			}
+
+			comfortsOnSleep.invoke(null, event);
+		} catch(Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	public static boolean bedInRange(EntityPlayer player, BlockPos position, EnumFacing facing) {
