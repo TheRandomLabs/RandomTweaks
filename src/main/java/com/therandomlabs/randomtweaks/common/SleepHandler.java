@@ -33,6 +33,13 @@ public final class SleepHandler {
 			return;
 		}
 
+		final EntityPlayer player = event.getEntityPlayer();
+		final World world = player.getEntityWorld();
+
+		if(world.isRemote) {
+			return;
+		}
+
 		if(Loader.isModLoaded("comforts")) {
 			callComfortsOnSleep(event);
 
@@ -41,8 +48,6 @@ public final class SleepHandler {
 			}
 		}
 
-		final EntityPlayer player = event.getEntityPlayer();
-		final World world = player.getEntityWorld();
 		final BlockPos location = event.getPos();
 
 		IBlockState state;

@@ -1,7 +1,9 @@
 package com.therandomlabs.randomtweaks.client;
 
+import java.lang.reflect.Field;
 import com.therandomlabs.randomtweaks.base.RTConfig;
 import com.therandomlabs.randomtweaks.base.RandomTweaks;
+import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
@@ -11,6 +13,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
@@ -26,6 +29,9 @@ public final class CreativeTabHandler {
 			return stack;
 		}
 	};
+
+	public static final Field TAB_PAGE =
+			ReflectionHelper.findField(GuiContainerCreative.class, "tabPage");
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
@@ -59,10 +65,12 @@ public final class CreativeTabHandler {
 			if(index != ArrayUtils.INDEX_NOT_FOUND) {
 				CreativeTabs.CREATIVE_TAB_ARRAY =
 						ArrayUtils.remove(CreativeTabs.CREATIVE_TAB_ARRAY, index);
+				GuiContainerCreative.selectedTabIndex = CreativeTabs.BUILDING_BLOCKS.getTabIndex();
 
-				if(GuiContainerCreative.selectedTabIndex ==
-						CreativeTabs.CREATIVE_TAB_ARRAY.length) {
-					GuiContainerCreative.selectedTabIndex--;
+				try {
+					TAB_PAGE.set(null, 0);
+				} catch(Exception ex) {
+					Utils.crashReport("Error while disabling creative tab", ex);
 				}
 			}
 

@@ -23,7 +23,8 @@ public final class SquidHandler {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLivingEntitySpawn(LivingSpawnEvent.CheckSpawn event) {
-		if(event.getEntity().getClass() == EntitySquid.class) {
+		final Entity entity = event.getEntity();
+		if(!entity.getEntityWorld().isRemote && event.getEntity().getClass() == EntitySquid.class) {
 			if(!isInRadiusOfPlayer(event) || tooManySquids(event)) {
 				event.setResult(Event.Result.DENY);
 			}
@@ -32,7 +33,8 @@ public final class SquidHandler {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLivingEntityPackSpawn(LivingPackSizeEvent event) {
-		if(RTConfig.squids.maxPackSize != VANILLA_PACK_SIZE &&
+		final Entity entity = event.getEntity();
+		if(!entity.getEntityWorld().isRemote &&RTConfig.squids.maxPackSize != VANILLA_PACK_SIZE &&
 				event.getEntity().getClass() == EntitySquid.class) {
 			event.setMaxPackSize(RTConfig.squids.maxPackSize);
 		}

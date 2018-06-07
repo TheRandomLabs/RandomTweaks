@@ -2,6 +2,7 @@ package com.therandomlabs.randomtweaks.common;
 
 import com.therandomlabs.randomtweaks.base.RTConfig;
 import com.therandomlabs.randomtweaks.base.RandomTweaks;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.player.EntityPlayer;
@@ -25,7 +26,7 @@ public final class MiscEventHandler {
 
 		final EntityArrow arrow = event.getArrow();
 
-		if(arrow.shootingEntity instanceof EntitySkeleton &&
+		if(!arrow.getEntityWorld().isRemote && arrow.shootingEntity instanceof EntitySkeleton &&
 				arrow.pickupStatus == EntityArrow.PickupStatus.DISALLOWED) {
 			arrow.pickupStatus = EntityArrow.PickupStatus.ALLOWED;
 		}
@@ -33,7 +34,9 @@ public final class MiscEventHandler {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
-		if(!(event.getEntity() instanceof EntityPlayer)) {
+		final Entity entity = event.getEntity();
+
+		if(entity.getEntityWorld().isRemote || !(entity instanceof EntityPlayer)) {
 			return;
 		}
 

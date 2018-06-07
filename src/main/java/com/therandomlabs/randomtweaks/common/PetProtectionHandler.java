@@ -16,6 +16,11 @@ public final class PetProtectionHandler {
 	@SubscribeEvent
 	public static void onLivingHurt(LivingHurtEvent event) {
 		final EntityLivingBase entity = event.getEntityLiving();
+
+		if(entity.getEntityWorld().isRemote) {
+			return;
+		}
+
 		final DamageSource source = event.getSource();
 
 		if(!(entity instanceof IEntityOwnable) || source == null) {

@@ -6,7 +6,6 @@ import net.minecraft.util.FoodStats;
 public class RTFoodStats extends FoodStats {
 	public RTFoodStats(FoodStats stats) {
 		foodLevel = stats.foodLevel;
-		System.out.println(stats.foodLevel);
 		foodExhaustionLevel = stats.foodExhaustionLevel;
 		foodSaturationLevel = stats.foodSaturationLevel;
 		foodTimer = stats.foodTimer;
