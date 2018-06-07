@@ -60,8 +60,9 @@ public final class CreativeTabHandler {
 				CreativeTabs.CREATIVE_TAB_ARRAY =
 						ArrayUtils.remove(CreativeTabs.CREATIVE_TAB_ARRAY, index);
 
-				if(GuiContainerCreative.selectedIndex == CreativeTabs.CREATIVE_TAB_ARRAY.length) {
-					GuiContainerCreative.selectedIndex--;
+				if(GuiContainerCreative.selectedTabIndex ==
+						CreativeTabs.CREATIVE_TAB_ARRAY.length) {
+					GuiContainerCreative.selectedTabIndex--;
 				}
 			}
 
