@@ -1,13 +1,11 @@
 package com.therandomlabs.randomtweaks.common.world;
 
 import net.minecraft.world.World;
-import net.minecraft.world.WorldType;
 import net.minecraft.world.gen.ChunkGeneratorOverworld;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class WorldTypeRealistic extends WorldType {
+public class WorldTypeRealistic extends RTWorldType {
 	public static final String NAME = "realistic";
+
 	//Thanks to /u/Soniop
 	public static final String PRESET = "{\"coordinateScale\":175.0,\"heightScale\":75.0," +
 			"\"lowerLimitScale\":512.0,\"upperLimitScale\":512.0,\"depthNoiseScaleX\":200.0," +
@@ -38,10 +36,9 @@ public class WorldTypeRealistic extends WorldType {
 		super(NAME);
 	}
 
-	@SideOnly(Side.CLIENT)
 	@Override
-	public boolean hasInfoNotice() {
-		return true;
+	public boolean isEnabled() {
+		return WorldTypeRegistry.shouldRegisterRealisticWorldType();
 	}
 
 	@Override

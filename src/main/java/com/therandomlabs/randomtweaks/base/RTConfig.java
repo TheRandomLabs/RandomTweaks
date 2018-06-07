@@ -1,4 +1,4 @@
-package com.therandomlabs.randomtweaks.common;
+package com.therandomlabs.randomtweaks.base;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -14,6 +14,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.MalformedJsonException;
+import com.therandomlabs.randomtweaks.common.RespawnHandler;
 import com.therandomlabs.randomtweaks.util.Alignment;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraftforge.common.config.Config;
@@ -162,7 +163,6 @@ public class RTConfig {
 	}
 
 	public static class General {
-		@Config.RequiresMcRestart
 		@Config.LangKey("randomtweaks.config.general.moreRomanNumerals")
 		@Config.Comment("Enables Roman numerals from -32768 to 32767.")
 		public boolean moreRomanNumerals = true;
@@ -234,19 +234,17 @@ public class RTConfig {
 	}
 
 	public static class Keybinds {
-		@Config.RequiresMcRestart
 		@Config.LangKey("randomtweaks.config.keybinds.reloadSoundSystem")
 		@Config.Comment("Enables the Reload Sound System keybind.")
 		public boolean reloadSoundSystem = true;
 
-		@Config.RequiresMcRestart
 		@Config.LangKey("randomtweaks.config.keybinds.noclip")
 		@Config.Comment("Enables the Noclip keybind, which toggles between /gamemode c " +
 				"and /gamemode sp.")
 		public boolean noclip = true;
 
 		@Config.LangKey("randomtweaks.config.keybinds.toggleFoVChanges")
-		@Config.Comment("Enables a keybind to disable FoV changes.")
+		@Config.Comment("Enables the Toggle FoV Changes keybind.")
 		public boolean toggleFoVChanges = true;
 
 		@Config.LangKey("randomtweaks.config.keybinds.fovChangesEnabledByDefault")
@@ -257,6 +255,10 @@ public class RTConfig {
 		@Config.Comment("Whether a status message should be displayed when FoV changes are " +
 				"toggled.")
 		public boolean fovChangesStatusMessage = true;
+
+		@Config.LangKey("randomtweaks.config.keybinds.toggleTimeOfDayOverlay")
+		@Config.Comment("Enables the Toggle Time of Day Overlay keybind.")
+		public boolean toggleTimeOfDayOverlay = true;
 	}
 
 	public static class OceanFloor {
@@ -336,12 +338,10 @@ public class RTConfig {
 	}
 
 	public static class World {
-		@Config.RequiresMcRestart
 		@Config.LangKey("randomtweaks.config.world.realisticWorldType")
 		@Config.Comment("Enables the Realistic world type. Name: realistic")
 		public boolean realisticWorldType = true;
 
-		@Config.RequiresMcRestart
 		@Config.LangKey("randomtweaks.config.world.voidWorldType")
 		@Config.Comment("Enables the Void world type. Name: void")
 		public boolean voidWorldType = true;
@@ -359,7 +359,6 @@ public class RTConfig {
 		@Config.Comment("The biome of a Void world. Leave this empty to randomize the biomes.")
 		public String voidWorldBiome = "minecraft:plains";
 
-		@Config.RequiresMcRestart
 		@Config.LangKey("randomtweaks.config.world.voidIslandsWorldType")
 		@Config.Comment("Enables the Void Islands world type. Name: voidislands")
 		public boolean voidIslandsWorldType = true;
@@ -400,11 +399,6 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.timeOfDay.enabled")
 		@Config.Comment("Enables the time of day overlay.")
 		public boolean enabled = true;
-
-		@Config.RequiresMcRestart
-		@Config.LangKey("randomtweaks.config.timeOfDay.enableKeybind")
-		@Config.Comment("Enables the time of day overlay keybind.")
-		public boolean enableKeybind = true;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.enabledByDefault")
 		@Config.Comment("Enables the time of day overlay by default.")
@@ -460,7 +454,7 @@ public class RTConfig {
 	public static Hunger hunger = new Hunger();
 
 	@Config.LangKey("randomtweaks.config.keybinds")
-	@Config.Comment("Keybinds that don't fit into any other categories.")
+	@Config.Comment("Toggles for keybinds.")
 	public static Keybinds keybinds = new Keybinds();
 
 	@Config.LangKey("randomtweaks.config.oceanFloor")
@@ -555,7 +549,7 @@ public class RTConfig {
 			}
 		}
 
-		//Format: comma-separated integer gamemodes (optional):comma-separated world types (optional)
+		//Format: comma-separated integer gamemodes:comma-separated world types
 		//Examples: 0,1:flat	realistic	2:void,flat
 		public static boolean matchesGamemodeAndWorldType(String string, int gamemode,
 				String worldType) {
@@ -683,17 +677,17 @@ public class RTConfig {
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
 		if(event.getModID().equals(RandomTweaks.MODID)) {
-			try {
-				reloadConfig();
-			} catch(IOException ex) {
-				Utils.crashReport("Failed to reload config", ex);
-			}
+			reloadConfig();
 		}
 	}
 
-	public static void reloadConfig() throws IOException {
-		ConfigManager.sync(RandomTweaks.MODID, Config.Type.INSTANCE);
-		DefaultGamerules.ensureExists();
-		Data.data = null;
+	public static void reloadConfig() {
+		try {
+			ConfigManager.sync(RandomTweaks.MODID, Config.Type.INSTANCE);
+			DefaultGamerules.ensureExists();
+			Data.data = null;
+		} catch(IOException ex) {
+			Utils.crashReport("Failed to reload config", ex);
+		}
 	}
 }

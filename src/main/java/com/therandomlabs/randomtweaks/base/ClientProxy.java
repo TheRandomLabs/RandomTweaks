@@ -1,14 +1,14 @@
-package com.therandomlabs.randomtweaks.client;
+package com.therandomlabs.randomtweaks.base;
 
-import java.io.IOException;
-import com.therandomlabs.randomtweaks.command.CommandRegistry;
-import com.therandomlabs.randomtweaks.common.CommonProxy;
+import com.therandomlabs.randomtweaks.client.CreativeTabHandler;
+import com.therandomlabs.randomtweaks.client.KeyBindingHandler;
+import com.therandomlabs.randomtweaks.common.command.CommandRegistry;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 
 public final class ClientProxy extends CommonProxy {
 	@Override
-	public void preInit(FMLPreInitializationEvent event) throws IOException {
+	public void preInit(FMLPreInitializationEvent event) {
 		super.preInit(event);
 		CreativeTabHandler.init();
 		CommandRegistry.registerClient();

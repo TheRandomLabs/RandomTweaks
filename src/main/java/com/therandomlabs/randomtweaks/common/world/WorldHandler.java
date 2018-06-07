@@ -2,8 +2,8 @@ package com.therandomlabs.randomtweaks.common.world;
 
 import java.util.Map;
 import java.util.Map.Entry;
-import com.therandomlabs.randomtweaks.common.RTConfig;
-import com.therandomlabs.randomtweaks.common.RandomTweaks;
+import com.therandomlabs.randomtweaks.base.RTConfig;
+import com.therandomlabs.randomtweaks.base.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

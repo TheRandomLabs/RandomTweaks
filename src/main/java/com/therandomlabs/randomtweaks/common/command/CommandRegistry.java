@@ -1,6 +1,6 @@
-package com.therandomlabs.randomtweaks.command;
+package com.therandomlabs.randomtweaks.common.command;
 
-import com.therandomlabs.randomtweaks.common.RTConfig;
+import com.therandomlabs.randomtweaks.base.RTConfig;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;

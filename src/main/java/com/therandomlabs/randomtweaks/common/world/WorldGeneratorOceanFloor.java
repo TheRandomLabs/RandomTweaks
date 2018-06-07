@@ -1,7 +1,7 @@
 package com.therandomlabs.randomtweaks.common.world;
 
 import java.util.Random;
-import com.therandomlabs.randomtweaks.common.RTConfig;
+import com.therandomlabs.randomtweaks.base.RTConfig;
 import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;

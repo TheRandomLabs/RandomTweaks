@@ -1,5 +1,7 @@
 package com.therandomlabs.randomtweaks.common;
 
+import com.therandomlabs.randomtweaks.base.RTConfig;
+import com.therandomlabs.randomtweaks.base.RandomTweaks;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;

@@ -2,8 +2,8 @@ package com.therandomlabs.randomtweaks.client;
 
 import java.io.File;
 import java.util.Map;
-import com.therandomlabs.randomtweaks.common.RTConfig;
-import com.therandomlabs.randomtweaks.common.RandomTweaks;
+import com.therandomlabs.randomtweaks.base.RTConfig;
+import com.therandomlabs.randomtweaks.base.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;

@@ -1,11 +1,15 @@
 package com.therandomlabs.randomtweaks.common;
 
+import com.therandomlabs.randomtweaks.base.RTConfig;
 import com.therandomlabs.randomtweaks.util.RomanNumerals;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.util.text.translation.LanguageMap;
 
 public class RTLanguageMap extends LanguageMap {
-	public RTLanguageMap(LanguageMap languageMap) {
+	@SuppressWarnings("deprecation")
+	public static final RTLanguageMap INSTANCE = new RTLanguageMap(I18n.localizedName);
+
+	private RTLanguageMap(LanguageMap languageMap) {
 		this.languageList = languageMap.languageList;
 	}
 
@@ -13,6 +17,10 @@ public class RTLanguageMap extends LanguageMap {
 	public synchronized String translateKey(String key) {
 		if(languageList.get(key) != null) {
 			return languageList.get(key);
+		}
+
+		if(!RTConfig.general.moreRomanNumerals) {
+			return key;
 		}
 
 		boolean isLevel = false;
@@ -35,8 +43,7 @@ public class RTLanguageMap extends LanguageMap {
 
 	@SuppressWarnings("deprecation")
 	public static void replaceLanguageMaps() {
-		final RTLanguageMap instance = new RTLanguageMap(I18n.localizedName);
-		I18n.localizedName = instance;
-		LanguageMap.instance = instance;
+		I18n.localizedName = INSTANCE;
+		LanguageMap.instance = INSTANCE;
 	}
 }

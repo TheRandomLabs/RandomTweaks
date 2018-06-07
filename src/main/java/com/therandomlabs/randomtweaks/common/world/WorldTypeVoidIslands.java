@@ -1,21 +1,18 @@
 package com.therandomlabs.randomtweaks.common.world;
 
+import com.therandomlabs.randomtweaks.base.RTConfig;
 import net.minecraft.world.World;
-import net.minecraft.world.WorldType;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 
-public class WorldTypeVoidIslands extends WorldType {
+public class WorldTypeVoidIslands extends RTWorldType {
 	public static final String NAME = "voidislands";
 
 	public WorldTypeVoidIslands() {
 		super(NAME);
 	}
 
-	@SideOnly(Side.CLIENT)
 	@Override
-	public boolean hasInfoNotice() {
-		return true;
+	public boolean isEnabled() {
+		return RTConfig.world.voidIslandsWorldType;
 	}
 
 	@Override

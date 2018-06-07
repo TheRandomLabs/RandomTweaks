@@ -1,6 +1,6 @@
 package com.therandomlabs.randomtweaks.client;
 
-import com.therandomlabs.randomtweaks.common.RTConfig;
+import com.therandomlabs.randomtweaks.base.RTConfig;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemMonsterPlacer;

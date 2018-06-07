@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.common;
 
+import com.therandomlabs.randomtweaks.base.RTConfig;
 import net.minecraft.util.FoodStats;
 
 public class RTFoodStats extends FoodStats {

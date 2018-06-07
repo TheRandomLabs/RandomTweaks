@@ -1,4 +1,4 @@
-package com.therandomlabs.randomtweaks.command;
+package com.therandomlabs.randomtweaks.common.command;
 
 import java.lang.reflect.Field;
 import com.therandomlabs.randomtweaks.util.Utils;

@@ -1,6 +1,8 @@
 package com.therandomlabs.randomtweaks.common;
 
 import java.util.UUID;
+import com.therandomlabs.randomtweaks.base.RTConfig;
+import com.therandomlabs.randomtweaks.base.RandomTweaks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;

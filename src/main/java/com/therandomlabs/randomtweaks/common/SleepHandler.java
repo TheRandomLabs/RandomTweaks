@@ -1,6 +1,8 @@
 package com.therandomlabs.randomtweaks.common;
 
 import java.lang.reflect.Method;
+import com.therandomlabs.randomtweaks.base.RTConfig;
+import com.therandomlabs.randomtweaks.base.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;

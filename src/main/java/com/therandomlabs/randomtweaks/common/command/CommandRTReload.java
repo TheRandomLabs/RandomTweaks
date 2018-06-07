@@ -1,6 +1,6 @@
-package com.therandomlabs.randomtweaks.command;
+package com.therandomlabs.randomtweaks.common.command;
 
-import com.therandomlabs.randomtweaks.common.RTConfig;
+import com.therandomlabs.randomtweaks.base.RTConfig;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;

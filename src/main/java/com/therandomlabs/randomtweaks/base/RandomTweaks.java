@@ -1,8 +1,6 @@
-package com.therandomlabs.randomtweaks.common;
+package com.therandomlabs.randomtweaks.base;
 
-import java.io.IOException;
-import com.therandomlabs.randomtweaks.command.CommandRegistry;
-import com.therandomlabs.randomtweaks.util.Utils;
+import com.therandomlabs.randomtweaks.common.command.CommandRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -28,17 +26,13 @@ public final class RandomTweaks {
 
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
-	@SidedProxy(clientSide = "com.therandomlabs.randomtweaks.client.ClientProxy",
-			serverSide = "com.therandomlabs.randomtweaks.common.CommonProxy")
+	@SidedProxy(clientSide = "com.therandomlabs.randomtweaks.base.ClientProxy",
+			serverSide = "com.therandomlabs.randomtweaks.base.CommonProxy")
 	public static CommonProxy proxy;
 
 	@Mod.EventHandler
 	public static void preInit(FMLPreInitializationEvent event) {
-		try {
-			proxy.preInit(event);
-		} catch(IOException ex) {
-			Utils.crashReport("Error occurred during PreInitialization", ex);
-		}
+		proxy.preInit(event);
 	}
 
 	@Mod.EventHandler

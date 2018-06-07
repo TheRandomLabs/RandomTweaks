@@ -1,6 +1,6 @@
-package com.therandomlabs.randomtweaks.common;
+package com.therandomlabs.randomtweaks.base;
 
-import java.io.IOException;
+import com.therandomlabs.randomtweaks.common.RTLanguageMap;
 import com.therandomlabs.randomtweaks.common.world.WorldGeneratorOceanFloor;
 import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
 import net.minecraftforge.fml.common.Loader;
@@ -9,12 +9,9 @@ import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class CommonProxy {
-	public void preInit(FMLPreInitializationEvent event) throws IOException {
+	public void preInit(FMLPreInitializationEvent event) {
 		RTConfig.reloadConfig();
-
-		if(RTConfig.general.moreRomanNumerals) {
-			RTLanguageMap.replaceLanguageMaps();
-		}
+		RTLanguageMap.replaceLanguageMaps();
 	}
 
 	public void init(FMLInitializationEvent event) {

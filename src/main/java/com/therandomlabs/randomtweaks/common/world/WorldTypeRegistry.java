@@ -1,22 +1,25 @@
 package com.therandomlabs.randomtweaks.common.world;
 
 import java.lang.reflect.Method;
-import com.therandomlabs.randomtweaks.common.RTConfig;
+import java.util.ArrayList;
+import java.util.List;
+import com.therandomlabs.randomtweaks.base.RTConfig;
+import com.therandomlabs.randomtweaks.base.RandomTweaks;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
+@Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class WorldTypeRegistry {
+	static final List<RTWorldType> WORLD_TYPES = new ArrayList<>();
+
+	public static final WorldTypeRealistic REALISTIC = new WorldTypeRealistic();
+	public static final WorldTypeVoid VOID = new WorldTypeVoid();
+	public static final WorldTypeVoidIslands VOID_IOSLANDS = new WorldTypeVoidIslands();
+
 	public static void registerWorldTypes() {
-		if(shouldRegisterRealisticWorldType()) {
-			new WorldTypeRealistic();
-		}
-
-		if(RTConfig.world.voidWorldType) {
-			new WorldTypeVoid();
-		}
-
-		if(RTConfig.world.voidIslandsWorldType) {
-			new WorldTypeVoidIslands();
-		}
+		WORLD_TYPES.forEach(RTWorldType::onConfigReload);
 	}
 
 	public static boolean shouldRegisterRealisticWorldType() {
@@ -39,5 +42,12 @@ public final class WorldTypeRegistry {
 		}
 
 		return true;
+	}
+
+	@SubscribeEvent
+	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
+		if(event.getModID().equals(RandomTweaks.MODID)) {
+			registerWorldTypes();
+		}
 	}
 }

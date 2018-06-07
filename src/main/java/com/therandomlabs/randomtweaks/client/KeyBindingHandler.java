@@ -1,18 +1,20 @@
 package com.therandomlabs.randomtweaks.client;
 
-import com.therandomlabs.randomtweaks.common.RTConfig;
-import com.therandomlabs.randomtweaks.common.RandomTweaks;
+import com.therandomlabs.randomtweaks.base.RTConfig;
+import com.therandomlabs.randomtweaks.base.RandomTweaks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.client.settings.KeyModifier;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
+import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
 import net.minecraftforge.fml.relauncher.Side;
+import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.input.Keyboard;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
@@ -36,13 +38,31 @@ public final class KeyBindingHandler {
 		register(RTConfig.keybinds.noclip, NOCLIP);
 		register(RTConfig.keybinds.toggleFoVChanges, TOGGLE_FOV_CHANGES);
 		register(RTConfig.keybinds.reloadSoundSystem, RELOAD_SOUND_SYSTEM);
-		register(RTConfig.timeofday.enableKeybind, TOGGLE_TIME_OF_DAY_OVERLAY);
+		register(RTConfig.timeofday.enabled && RTConfig.keybinds.toggleTimeOfDayOverlay,
+				TOGGLE_TIME_OF_DAY_OVERLAY);
 		register(RTConfig.client.stepup, TOGGLE_AUTO_JUMP);
 	}
 
 	private static void register(boolean flag, KeyBinding keyBinding) {
+		final GameSettings gameSettings = Minecraft.getMinecraft().gameSettings;
+
 		if(flag) {
-			ClientRegistry.registerKeyBinding(keyBinding);
+			if(!ArrayUtils.contains(gameSettings.keyBindings, keyBinding)) {
+				gameSettings.keyBindings = ArrayUtils.add(gameSettings.keyBindings, keyBinding);
+			}
+		} else {
+			final int index = ArrayUtils.indexOf(gameSettings.keyBindings, keyBinding);
+
+			if(index != ArrayUtils.INDEX_NOT_FOUND) {
+				gameSettings.keyBindings = ArrayUtils.remove(gameSettings.keyBindings, index);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
+		if(event.getModID().equals(RandomTweaks.MODID)) {
+			registerKeyBindings();
 		}
 	}
 
@@ -67,7 +87,7 @@ public final class KeyBindingHandler {
 				reloadSoundSystem();
 			}
 		} else if(TOGGLE_TIME_OF_DAY_OVERLAY.isActiveAndMatches(key)) {
-			if(RTConfig.timeofday.enableKeybind) {
+			if(RTConfig.timeofday.enabled && RTConfig.keybinds.toggleTimeOfDayOverlay) {
 				TimeOfDayOverlay.toggle();
 			}
 		} else if(TOGGLE_AUTO_JUMP.isActiveAndMatches(key)) {

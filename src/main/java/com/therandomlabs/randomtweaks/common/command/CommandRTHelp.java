@@ -1,10 +1,10 @@
-package com.therandomlabs.randomtweaks.command;
+package com.therandomlabs.randomtweaks.common.command;
 
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
-import com.therandomlabs.randomtweaks.common.RandomTweaks;
+import com.therandomlabs.randomtweaks.base.RandomTweaks;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandHelp;
 import net.minecraft.command.ICommand;
