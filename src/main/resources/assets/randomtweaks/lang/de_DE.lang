@@ -144,7 +144,7 @@ commands.disconnect.usage=/disconnect
 commands.disconnect.failure=§cAn error occurred while attempting to disconnect: %s
 
 generator.realistic=Realistisch
-generator.realistic.info=Realistischer Welttyp von /u/Soniop
+generator.realistic.info=Realistischer Welttyp von u/Soniop
 generator.void=Void
 generator.void.info=An empty void world with only a block to stand on
 generator.voidislands=Void Islands
