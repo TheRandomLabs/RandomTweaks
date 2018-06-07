@@ -5,13 +5,17 @@ import com.therandomlabs.randomtweaks.base.RandomTweaks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.player.AnvilRepairEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -66,5 +70,32 @@ public final class MiscEventHandler {
 		if(stack.isEmpty() && stack.hasTagCompound()) {
 			stack.getTagCompound().removeTag("RepairCost");
 		}
+	}
+
+	@SubscribeEvent
+	public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
+		if(!RTConfig.general.ocelotsCanBeHealed) {
+			return;
+		}
+
+		final EntityPlayer player = event.getEntityPlayer();
+		final ItemStack stack = event.getItemStack();
+
+		if(!player.getEntityWorld().isRemote && event.getTarget() instanceof EntityOcelot) {
+			final EntityOcelot ocelot = (EntityOcelot) event.getTarget();
+
+			if(canOcelotBeHealed(ocelot, stack)) {
+				if(!player.capabilities.isCreativeMode) {
+					stack.shrink(1);
+				}
+
+				ocelot.heal(((ItemFood) Items.FISH).getHealAmount(stack));
+			}
+		}
+	}
+
+	public static boolean canOcelotBeHealed(EntityOcelot ocelot, ItemStack stack) {
+		return ocelot.isTamed() && !stack.isEmpty() &&
+				stack.getItem() == Items.FISH && ocelot.getHealth() < ocelot.getMaxHealth();
 	}
 }
