@@ -20,7 +20,7 @@ randomtweaks.config.client.stepup=Enable stepup
 randomtweaks.config.client.stepupEnabledByDefault=Enable stepup by default
 
 randomtweaks.config.commands=Commands
-randomtweaks.config.commands.deletegamerule=/deletegamerulie
+randomtweaks.config.commands.deletegamerule=/deletegamerule
 randomtweaks.config.commands.hunger=/hunger
 randomtweaks.config.commands.giveTweaks=/give tweaks
 randomtweaks.config.commands.helpTweaks=/help tweaks

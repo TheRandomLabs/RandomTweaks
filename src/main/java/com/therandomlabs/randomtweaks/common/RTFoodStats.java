@@ -6,6 +6,7 @@ import net.minecraft.util.FoodStats;
 public class RTFoodStats extends FoodStats {
 	public RTFoodStats(FoodStats stats) {
 		foodLevel = stats.foodLevel;
+		System.out.println(stats.foodLevel);
 		foodExhaustionLevel = stats.foodExhaustionLevel;
 		foodSaturationLevel = stats.foodSaturationLevel;
 		foodTimer = stats.foodTimer;
@@ -24,7 +25,13 @@ public class RTFoodStats extends FoodStats {
 			this.foodLevel = RTConfig.hunger.maximumHungerLevel;
 		}
 
-		foodSaturationLevel =
-				Math.min(newSaturation, this.foodLevel + (float) RTConfig.hunger.saturationLimit);
+		float maxSaturationLevel = this.foodLevel + (float) RTConfig.hunger.saturationLimit;
+
+		//In the unlikely event of overflow
+		if(maxSaturationLevel == Float.NEGATIVE_INFINITY) {
+			maxSaturationLevel = Float.MAX_VALUE;
+		}
+
+		foodSaturationLevel = Math.min(newSaturation, maxSaturationLevel);
 	}
 }

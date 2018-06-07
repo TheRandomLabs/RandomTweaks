@@ -55,17 +55,15 @@ public class RTConfig {
 	}
 
 	public static class Client {
-		@Config.RequiresMcRestart
 		@Config.LangKey("randomtweaks.config.client.moveBucketCreativeTab")
 		@Config.Comment("Moves the Bucket to the Tools creative tab.")
 		public boolean moveBucketCreativeTab = true;
 
-		@Config.RequiresMcRestart
 		@Config.LangKey("randomtweaks.config.client.spawnEggsCreativeTab")
 		@Config.Comment("Moves spawn eggs to their own creative tab.")
 		public boolean spawnEggsCreativeTab = true;
 
-		@Config.RequiresMcRestart
+		@Config.RequiresWorldRestart
 		@Config.LangKey("randomtweaks.config.client.contributorCapes")
 		@Config.Comment("Enables contributor capes.")
 		public boolean contributorCapes = true;
