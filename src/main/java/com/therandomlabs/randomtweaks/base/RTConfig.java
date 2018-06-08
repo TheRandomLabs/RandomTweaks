@@ -55,6 +55,22 @@ public class RTConfig {
 	}
 
 	public static class Client {
+		@Config.LangKey("randomtweaks.config.autoThirdPerson")
+		@Config.Comment("Options related to the auto third person feature.")
+		public AutoThirdPerson autoThirdPerson = new AutoThirdPerson();
+
+		@Config.LangKey("randomtweaks.config.ding")
+		@Config.Comment("Options related to the 'ding' feature.")
+		public Ding ding = new Ding();
+
+		@Config.LangKey("randomtweaks.config.keybinds")
+		@Config.Comment("Options related to keybinds.")
+		public Keybinds keybinds = new Keybinds();
+
+		@Config.LangKey("randomtweaks.config.timeOfDay")
+		@Config.Comment("Options related to the time of day overlay.")
+		public TimeOfDay timeOfDay = new TimeOfDay();
+
 		@Config.LangKey("randomtweaks.config.client.moveBucketCreativeTab")
 		@Config.Comment("Moves the Bucket to the Tools creative tab.")
 		public boolean moveBucketCreativeTab = true;
@@ -336,6 +352,10 @@ public class RTConfig {
 	}
 
 	public static class World {
+		@Config.LangKey("randomtweaks.config.oceanFloor")
+		@Config.Comment("Options related to ocean floor generation.")
+		public OceanFloor oceanFloor = new OceanFloor();
+
 		@Config.LangKey("randomtweaks.config.world.realisticWorldType")
 		@Config.Comment("Enables the Realistic world type. Name: realistic")
 		public boolean realisticWorldType = true;
@@ -377,13 +397,13 @@ public class RTConfig {
 		@Config.RangeInt(min = 0)
 		@Config.LangKey("randomtweaks.config.squids.spawnRadiusLimit")
 		@Config.Comment("Disables squid spawning when a player is not within the specified " +
-				"radius. Set to 0 to disable this limit.")
+				"radius. Set this to 0 to disable this limit.")
 		public int spawnRadiusLimit = 64;
 
 		@Config.RangeInt(min = -1)
 		@Config.LangKey("randomtweaks.config.squids.chunkLimit")
-		@Config.Comment("The amount of squids allowed in one chunk. 0 disables squid spawning, " +
-				"and -1 disables this limit.")
+		@Config.Comment("The amount of squids allowed in one chunk. Set this to 0 to disable " +
+				"squid spawning, and set this to -1 to disable this limit.")
 		public int chunkLimit = 12;
 
 		@Config.RangeInt(min = 0)
@@ -395,19 +415,19 @@ public class RTConfig {
 
 	public static class TimeOfDay {
 		@Config.LangKey("randomtweaks.config.timeOfDay.enabled")
-		@Config.Comment("Enables the time of day overlay.")
+		@Config.Comment("Enables the overlay.")
 		public boolean enabled = true;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.enabledByDefault")
-		@Config.Comment("Enables the time of day overlay by default.")
+		@Config.Comment("Enables the overlay by default.")
 		public boolean enabledByDefault = Utils.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.disableIfNoDaylightCycle")
-		@Config.Comment("Disables the time of day overlay if doDaylightCycle is false.")
+		@Config.Comment("Disables the overlay if doDaylightCycle is false.")
 		public boolean disableIfNoDaylightCycle = !Utils.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.disableInAdventureMode")
-		@Config.Comment("Disables the time of day overlay in Adventure Mode.")
+		@Config.Comment("Disables the overlay in Adventure Mode.")
 		public boolean disableInAdventureMode = true;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.twentyFourHourTime")
@@ -415,65 +435,56 @@ public class RTConfig {
 		public boolean twentyFourHourTime = Utils.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.alignment")
-		@Config.Comment("The alignment of the time of day overlay.")
+		@Config.Comment("The alignment.")
 		public Alignment alignment = Alignment.TOPLEFT;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.x")
-		@Config.Comment("The X offset of the time of day overlay.")
+		@Config.Comment("The X offset.")
 		public int x = 0;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.y")
-		@Config.Comment("The Y offset of the time of day overlay.")
+		@Config.Comment("The Y offset.")
 		public int y = 0;
 	}
 
-	@Config.LangKey("randomtweaks.config.autoThirdPerson")
-	@Config.Comment("Options related to the auto third person feature.")
-	public static AutoThirdPerson autoThirdPerson = new AutoThirdPerson();
-
 	@Config.LangKey("randomtweaks.config.client")
-	@Config.Comment("Client-sided options that don't fit into any other categories.")
+	@Config.Comment("Options related to client-sided features.")
 	public static Client client = new Client();
 
 	@Config.LangKey("randomtweaks.config.commands")
 	@Config.Comment("Options related to commands.")
 	public static Commands commands = new Commands();
 
-	@Config.LangKey("randomtweaks.config.ding")
-	@Config.Comment("Options related to the 'ding' feature.")
-	public static Ding ding = new Ding();
-
 	@Config.LangKey("randomtweaks.config.general")
 	@Config.Comment("Options that don't fit into any other categories.")
 	public static General general = new General();
 
 	@Config.LangKey("randomtweaks.config.hunger")
-	@Config.Comment("Options related to hunger.")
+	@Config.Comment("Options related to hunger behavior.")
 	public static Hunger hunger = new Hunger();
-
-	@Config.LangKey("randomtweaks.config.keybinds")
-	@Config.Comment("Toggles for keybinds.")
-	public static Keybinds keybinds = new Keybinds();
-
-	@Config.LangKey("randomtweaks.config.oceanFloor")
-	@Config.Comment("Options related to ocean floor generation.")
-	public static OceanFloor oceanFloor = new OceanFloor();
 
 	@Config.LangKey("randomtweaks.config.playerHeadDrops")
 	@Config.Comment("Options related to player head drops.")
 	public static PlayerHeadDrops playerHeadDrops = new PlayerHeadDrops();
 
 	@Config.LangKey("randomtweaks.config.world")
-	@Config.Comment("World-related options that don't fit into any other categories.")
+	@Config.Comment("Options related to world generation.")
 	public static World world = new World();
 
 	@Config.LangKey("randomtweaks.config.squids")
 	@Config.Comment("Options related to squid spawning behavior.")
 	public static Squids squids = new Squids();
 
-	@Config.LangKey("randomtweaks.config.timeOfDay")
-	@Config.Comment("Options related to the time of day overlay.")
-	public static TimeOfDay timeofday = new TimeOfDay();
+	@Config.Ignore
+	public static AutoThirdPerson autoThirdPerson = client.autoThirdPerson;
+	@Config.Ignore
+	public static Ding ding = client.ding;
+	@Config.Ignore
+	public static Keybinds keybinds = client.keybinds;
+	@Config.Ignore
+	public static TimeOfDay timeOfDay = client.timeOfDay;
+	@Config.Ignore
+	public static OceanFloor oceanFloor = world.oceanFloor;
 
 	public static class DefaultGamerules {
 		public static final List<String> DEFAULT = Arrays.asList(

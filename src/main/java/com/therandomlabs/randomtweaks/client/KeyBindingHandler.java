@@ -38,7 +38,7 @@ public final class KeyBindingHandler {
 		register(RTConfig.keybinds.noclip, NOCLIP);
 		register(RTConfig.keybinds.toggleFoVChanges, TOGGLE_FOV_CHANGES);
 		register(RTConfig.keybinds.reloadSoundSystem, RELOAD_SOUND_SYSTEM);
-		register(RTConfig.timeofday.enabled && RTConfig.keybinds.toggleTimeOfDayOverlay,
+		register(RTConfig.timeOfDay.enabled && RTConfig.keybinds.toggleTimeOfDayOverlay,
 				TOGGLE_TIME_OF_DAY_OVERLAY);
 		register(RTConfig.client.stepup, TOGGLE_AUTO_JUMP);
 	}
@@ -87,7 +87,7 @@ public final class KeyBindingHandler {
 				reloadSoundSystem();
 			}
 		} else if(TOGGLE_TIME_OF_DAY_OVERLAY.isActiveAndMatches(key)) {
-			if(RTConfig.timeofday.enabled && RTConfig.keybinds.toggleTimeOfDayOverlay) {
+			if(RTConfig.timeOfDay.enabled && RTConfig.keybinds.toggleTimeOfDayOverlay) {
 				TimeOfDayOverlay.toggle();
 			}
 		} else if(TOGGLE_AUTO_JUMP.isActiveAndMatches(key)) {

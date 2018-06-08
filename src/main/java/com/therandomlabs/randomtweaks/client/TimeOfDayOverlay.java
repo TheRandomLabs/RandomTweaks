@@ -42,7 +42,7 @@ public final class TimeOfDayOverlay {
 
 		final String ampm;
 
-		if(RTConfig.timeofday.twentyFourHourTime) {
+		if(RTConfig.timeOfDay.twentyFourHourTime) {
 			ampm = "";
 		} else {
 			if(hour >= 12) {
@@ -80,21 +80,21 @@ public final class TimeOfDayOverlay {
 		final int textWidth = mc.fontRenderer.getStringWidth(timeString);
 		final int textHeight = mc.fontRenderer.FONT_HEIGHT;
 
-		final int x = RTConfig.timeofday.x;
-		final int y = RTConfig.timeofday.y;
+		final int x = RTConfig.timeOfDay.x;
+		final int y = RTConfig.timeOfDay.y;
 
 		final ScaledResolution scaled = new ScaledResolution(mc);
 		final int displayWidth = scaled.getScaledWidth();
 		final int displayHeight = scaled.getScaledHeight();
 
-		final int actualX = RTConfig.timeofday.alignment.getX(x, displayWidth, textWidth);
-		final int actualY = RTConfig.timeofday.alignment.getY(y, displayHeight, textHeight);
+		final int actualX = RTConfig.timeOfDay.alignment.getX(x, displayWidth, textWidth);
+		final int actualY = RTConfig.timeOfDay.alignment.getY(y, displayHeight, textHeight);
 
 		mc.fontRenderer.drawStringWithShadow(timeString, actualX, actualY, 0xFFFFFF);
 	}
 
 	public static boolean shouldHide() {
-		if(!RTConfig.timeofday.enabled || shouldHide || mc.player == null) {
+		if(!RTConfig.timeOfDay.enabled || shouldHide || mc.player == null) {
 			return true;
 		}
 
@@ -104,12 +104,12 @@ public final class TimeOfDayOverlay {
 			return true;
 		}
 
-		if(RTConfig.timeofday.disableIfNoDaylightCycle &&
+		if(RTConfig.timeOfDay.disableIfNoDaylightCycle &&
 				!world.getGameRules().getBoolean("doDaylightCycle")) {
 			return true;
 		}
 
-		return RTConfig.timeofday.disableInAdventureMode &&
+		return RTConfig.timeOfDay.disableInAdventureMode &&
 				world.getWorldInfo().getGameType() == GameType.ADVENTURE;
 	}
 
@@ -121,7 +121,7 @@ public final class TimeOfDayOverlay {
 			final String name = saveDirectory.getName();
 
 			if(!worlds.containsKey(name)) {
-				worlds.put(name, RTConfig.timeofday.enabledByDefault);
+				worlds.put(name, RTConfig.timeOfDay.enabledByDefault);
 				RTConfig.Data.save();
 			}
 
@@ -141,7 +141,7 @@ public final class TimeOfDayOverlay {
 		}
 
 		if(!RTConfig.Data.get().timeOfDayOverlay.containsKey(ip)) {
-			worlds.put(ip, RTConfig.timeofday.enabledByDefault);
+			worlds.put(ip, RTConfig.timeOfDay.enabledByDefault);
 			RTConfig.Data.save();
 		}
 
@@ -159,7 +159,7 @@ public final class TimeOfDayOverlay {
 				saveDirectory.getName() : mc.getCurrentServerData().serverIP;
 
 		if(!worlds.containsKey(name)) {
-			worlds.put(name, !RTConfig.timeofday.enabledByDefault);
+			worlds.put(name, !RTConfig.timeOfDay.enabledByDefault);
 		} else {
 			worlds.put(name, !worlds.get(name));
 		}

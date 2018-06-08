@@ -8,7 +8,7 @@ randomtweaks.config.autoThirdPerson.pig=Pig
 randomtweaks.config.autoThirdPerson.boat=Boat
 randomtweaks.config.autoThirdPerson.minecart=Minecart
 
-randomtweaks.config.client=Client-sided
+randomtweaks.config.client=Client
 randomtweaks.config.client.moveBucketCreativeTab=Move Bucket creative tab
 randomtweaks.config.client.spawnEggsCreativeTab=Move spawn eggs to their own creative tab
 randomtweaks.config.client.contributorCapes=Enable contributor capes
