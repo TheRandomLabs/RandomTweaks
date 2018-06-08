@@ -86,7 +86,7 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.client.stepup")
 		@Config.Comment("Whether to enable stepup auto jump.")
-		public boolean stepup = Utils.isDeobfuscated();
+		public boolean stepup = Utils.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.client.stepupEnabledByDefault")
 		@Config.Comment("Whether stepup auto jump is enabled by default.")
@@ -177,13 +177,13 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.general.attackSpeed")
 		@Config.Comment("Sets the base attack speed for players. Set this to 16.0 or higher " +
 				"to remove the attack cooldown. 4.0 is the default value.")
-		public double attackSpeed = Utils.isDeobfuscated() ? 24.0 : 4.0;
+		public double attackSpeed = Utils.IS_DEOBFUSCATED ? 24.0 : 4.0;
 
 		@Config.LangKey("randomtweaks.config.general.deathPunishmentsIfKeepInventory")
 		@Config.Comment("Enables punishments on death if keepInventory is enabled so it's not " +
 				"too overpowered. All XP and 3 hunger points are removed. This " +
 				"overrides hungerBehavior if keepInventory is true.")
-		public boolean deathPunishmentsIfKeepInventory = Utils.isDeobfuscated();
+		public boolean deathPunishmentsIfKeepInventory = Utils.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.general.protectPetsFromOwners")
 		@Config.Comment("Prevents pets from being attacked by their owners " +
@@ -200,7 +200,7 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.general.pickUpSkeletonArrows")
 		@Config.Comment("Allows skeleton arrows to be picked up.")
-		public boolean pickUpSkeletonArrows = Utils.isDeobfuscated();
+		public boolean pickUpSkeletonArrows = Utils.IS_DEOBFUSCATED;
 	}
 
 	public static class Hunger {
@@ -217,18 +217,18 @@ public class RTConfig {
 		@Config.RangeInt(min = 1)
 		@Config.LangKey("randomtweaks.config.hunger.maximumHungerLevel")
 		@Config.Comment("The maximum hunger level.")
-		public int maximumHungerLevel = 20;
+		public int maximumHungerLevel = Utils.IS_DEOBFUSCATED ? 22 : 20;
 
 		@Config.RangeDouble(min = 0.0)
 		@Config.LangKey("randomtweaks.config.hunger.saturationLimit")
 		@Config.Comment("This value is added to the player's food level to calculate the maximum " +
 				"saturation level.")
-		public double saturationLimit = 0.0;
+		public double saturationLimit = Utils.IS_DEOBFUSCATED ? 100.0 : 0.0;
 
 		@Config.LangKey("randomtweaks.config.hunger.carryExcessHungerToSaturation")
 		@Config.Comment("If this is enabled, any excess hunger level gained by eating will be " +
 				"added to the saturation.")
-		public boolean carryExcessHungerToSaturation;
+		public boolean carryExcessHungerToSaturation = Utils.IS_DEOBFUSCATED;
 	}
 
 	public static class Keybinds {
@@ -400,11 +400,11 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.enabledByDefault")
 		@Config.Comment("Enables the time of day overlay by default.")
-		public boolean enabledByDefault = Utils.isDeobfuscated();
+		public boolean enabledByDefault = Utils.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.disableIfNoDaylightCycle")
 		@Config.Comment("Disables the time of day overlay if doDaylightCycle is false.")
-		public boolean disableIfNoDaylightCycle = !Utils.isDeobfuscated();
+		public boolean disableIfNoDaylightCycle = !Utils.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.disableInAdventureMode")
 		@Config.Comment("Disables the time of day overlay in Adventure Mode.")
@@ -412,7 +412,7 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.twentyFourHourTime")
 		@Config.Comment("Enables 24-hour time.")
-		public boolean twentyFourHourTime = Utils.isDeobfuscated();
+		public boolean twentyFourHourTime = Utils.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.alignment")
 		@Config.Comment("The alignment of the time of day overlay.")

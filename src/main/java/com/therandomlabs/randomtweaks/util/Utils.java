@@ -11,6 +11,9 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public final class Utils {
+	public static final boolean IS_DEOBFUSCATED =
+			(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
+
 	public static final IForgeRegistry<Block> BLOCK_REGISTRY =
 			GameRegistry.findRegistry(Block.class);
 	public static final IForgeRegistry<Biome> BIOME_REGISTRY =
@@ -28,10 +31,6 @@ public final class Utils {
 	public static Biome getBiome(String biomeName, Biome defaultBiome) {
 		final Biome biome = BIOME_REGISTRY.getValue(new ResourceLocation(biomeName));
 		return biome == null ? defaultBiome : biome;
-	}
-
-	public static boolean isDeobfuscated() {
-		return (boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 	}
 
 	public static void crashReport(String message, Throwable throwable) {

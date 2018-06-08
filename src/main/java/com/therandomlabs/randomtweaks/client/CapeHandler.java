@@ -46,7 +46,7 @@ public final class CapeHandler {
 	}
 
 	public static boolean hasCape(AbstractClientPlayer player) {
-		return Utils.isDeobfuscated() || CONTRIBUTORS.contains(player.getUniqueID().toString());
+		return Utils.IS_DEOBFUSCATED || CONTRIBUTORS.contains(player.getUniqueID().toString());
 	}
 
 	private static void setCape(AbstractClientPlayer player) {
