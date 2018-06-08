@@ -39,19 +39,19 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.autoThirdPerson.horse")
 		@Config.Comment("Whether auto third person is enabled when riding a horse.")
-		public boolean horse = true;
+		public boolean horse = Utils.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.autoThirdPerson.pig")
 		@Config.Comment("Whether auto third person is enabled when riding a pig.")
-		public boolean pig = true;
+		public boolean pig = Utils.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.autoThirdPerson.boat")
 		@Config.Comment("Whether auto third person is enabled when riding a boat.")
-		public boolean boat = true;
+		public boolean boat = Utils.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.autoThirdPerson.minecart")
 		@Config.Comment("Whether auto third person is enabled when riding a minecart.")
-		public boolean minecart = true;
+		public boolean minecart = Utils.IS_DEOBFUSCATED;
 	}
 
 	public static class Client {
