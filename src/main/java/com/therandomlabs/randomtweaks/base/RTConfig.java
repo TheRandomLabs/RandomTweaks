@@ -223,7 +223,7 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.hunger.respawnBehavior")
 		@Config.Comment("What happens to a player's hunger when they respawn.")
 		public RespawnHandler.HungerBehavior respawnBehavior =
-				RespawnHandler.HungerBehavior.RESET_UNLESS_KEEPINVENTORY;
+				RespawnHandler.HungerBehavior.RESET_UNLESS_KEEP_INVENTORY;
 
 		@Config.RangeInt(min = 0)
 		@Config.LangKey("randomtweaks.config.hunger.minimumRespawnHungerLevel")

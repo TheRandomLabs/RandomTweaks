@@ -13,7 +13,7 @@ public final class RespawnHandler {
 	public enum HungerBehavior {
 		RESET,
 		DONT_RESET,
-		RESET_UNLESS_KEEPINVENTORY
+		RESET_UNLESS_KEEP_INVENTORY
 	}
 
 	@SubscribeEvent
@@ -64,7 +64,7 @@ public final class RespawnHandler {
 				return true;
 			case DONT_RESET:
 				return false;
-			case RESET_UNLESS_KEEPINVENTORY:
+			case RESET_UNLESS_KEEP_INVENTORY:
 				//In creative mode, hunger doesn't matter anyway
 				return player.capabilities.isCreativeMode || keepInventory;
 		}
