@@ -2,21 +2,28 @@ package com.therandomlabs.randomtweaks.common;
 
 import com.therandomlabs.randomtweaks.base.RTConfig;
 import com.therandomlabs.randomtweaks.base.RandomTweaks;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -97,5 +104,32 @@ public final class MiscEventHandler {
 	public static boolean canOcelotBeHealed(EntityOcelot ocelot, ItemStack stack) {
 		return ocelot.isTamed() && !stack.isEmpty() &&
 				stack.getItem() == Items.FISH && ocelot.getHealth() < ocelot.getMaxHealth();
+	}
+
+	@SubscribeEvent
+	public static void onCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
+		final World world = event.getWorld();
+
+		if(world.isRemote) {
+			return;
+		}
+
+		final Entity entity = event.getEntity();
+
+		//Not using instanceof so we don't affect modded squids
+		if(entity.getClass() == EntitySquid.class) {
+			SquidHandler.onSquidSpawn(event);
+		}
+
+		if(!RTConfig.general.requireFullCubeForSpawns) {
+			return;
+		}
+
+		final BlockPos pos = entity.getPosition().down();
+		final IBlockState state = world.getBlockState(pos);
+
+		if(!state.isFullCube() || state.getCollisionBoundingBox(world, pos) == Block.NULL_AABB) {
+			event.setResult(Event.Result.DENY);
+		}
 	}
 }

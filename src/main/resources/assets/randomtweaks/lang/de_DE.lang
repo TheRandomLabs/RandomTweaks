@@ -44,6 +44,7 @@ randomtweaks.config.general.protectPetsFromOwners=Protect pets from their owners
 randomtweaks.config.general.protectPetsFromOtherPets=Protect pets from their owners' other pets
 randomtweaks.config.general.disableCumulativeAnvilCost=Disable cumulative Anvil cost
 randomtweaks.config.general.pickUpSkeletonArrows=Allow Arrows shot by Skeletons to be picked up
+randomtweaks.config.general.requireFullCubeForSpawns=Require full cubes for mob spawns
 
 randomtweaks.config.hunger=Hunger
 randomtweaks.config.hunger.respawnBehavior=Hunger respawn behavior

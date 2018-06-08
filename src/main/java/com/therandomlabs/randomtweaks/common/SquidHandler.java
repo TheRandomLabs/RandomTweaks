@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.common;
 
+import java.util.List;
 import com.therandomlabs.randomtweaks.base.RTConfig;
 import com.therandomlabs.randomtweaks.base.RandomTweaks;
 import net.minecraft.entity.Entity;
@@ -21,20 +22,17 @@ public final class SquidHandler {
 	public static final int SQUID_SPAWNING_DISABLED = 0;
 	public static final int VANILLA_PACK_SIZE = 0;
 
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
-	public static void onLivingEntitySpawn(LivingSpawnEvent.CheckSpawn event) {
-		final Entity entity = event.getEntity();
-		if(!entity.getEntityWorld().isRemote && event.getEntity().getClass() == EntitySquid.class) {
-			if(!isInRadiusOfPlayer(event) || tooManySquids(event)) {
-				event.setResult(Event.Result.DENY);
-			}
+	public static void onSquidSpawn(LivingSpawnEvent.CheckSpawn event) {
+		if(!isInRadiusOfPlayer(event) || tooManySquids(event)) {
+			event.setResult(Event.Result.DENY);
 		}
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLivingEntityPackSpawn(LivingPackSizeEvent event) {
 		final Entity entity = event.getEntity();
-		if(!entity.getEntityWorld().isRemote &&RTConfig.squids.maxPackSize != VANILLA_PACK_SIZE &&
+
+		if(!entity.getEntityWorld().isRemote && RTConfig.squids.maxPackSize != VANILLA_PACK_SIZE &&
 				event.getEntity().getClass() == EntitySquid.class) {
 			event.setMaxPackSize(RTConfig.squids.maxPackSize);
 		}
@@ -47,9 +45,16 @@ public final class SquidHandler {
 			return true;
 		}
 
-		return event.getWorld().getEntitiesWithinAABB(EntityPlayer.class,
-				new AxisAlignedBB(event.getX(), event.getY(), event.getZ(), event.getX(),
-						event.getY(), event.getZ()).expand(radius, radius, radius)).size() != 0;
+		final AxisAlignedBB aabb = new AxisAlignedBB(
+				event.getX(),
+				event.getY(),
+				event.getZ(),
+				event.getX(),
+				event.getY(),
+				event.getZ()
+		).expand(radius, radius, radius);
+
+		return !event.getWorld().getEntitiesWithinAABB(EntityPlayer.class, aabb).isEmpty();
 	}
 
 	public static boolean tooManySquids(LivingSpawnEvent.CheckSpawn event) {
@@ -59,9 +64,12 @@ public final class SquidHandler {
 			case CHUNK_LIMIT_DISABLED:
 				return false;
 			default:
-				return event.getWorld().getEntities(EntitySquid.class,
-						entity -> isInChunk(entity, event)).
-						size() >= RTConfig.squids.chunkLimit;
+				final List<?> entities = event.getWorld().getEntities(
+						EntitySquid.class,
+						entity -> isInChunk(entity, event)
+				);
+
+				return entities.size() >= RTConfig.squids.chunkLimit;
 		}
 	}
 

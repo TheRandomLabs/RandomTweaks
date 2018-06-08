@@ -217,6 +217,10 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.general.pickUpSkeletonArrows")
 		@Config.Comment("Allows skeleton arrows to be picked up.")
 		public boolean pickUpSkeletonArrows = Utils.IS_DEOBFUSCATED;
+
+		@Config.LangKey("randomtweaks.config.general.requireFullCubeForSpawns")
+		@Config.Comment("Disables mob spawning on non-full cubes.")
+		public boolean requireFullCubeForSpawns = Utils.IS_DEOBFUSCATED;
 	}
 
 	public static class Hunger {
