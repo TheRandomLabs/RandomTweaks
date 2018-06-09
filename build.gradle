@@ -14,7 +14,7 @@ buildscript {
 
 apply plugin: "net.minecraftforge.gradle.forge"
 
-version = "1.12.2-2.0.0.0"
+version = "1.12.2-2.0.0.1"
 group = "com.therandomlabs.randomtweaks"
 archivesBaseName = "randomtweaks"
 
@@ -27,7 +27,7 @@ compileJava {
 minecraft {
 	version = "1.12.2-latest"
 	runDir = "run"
-	mappings = "snapshot_20180606"
+	mappings = "snapshot_20180609"
 
 	replace "@VERSION@", project.version
 	replace "@FINGERPRINT@", project.findProperty("signSHA1")

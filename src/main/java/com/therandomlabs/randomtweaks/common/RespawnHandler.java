@@ -59,7 +59,7 @@ public final class RespawnHandler {
 			return false;
 		}
 
-		switch(RTConfig.hunger.respawnBehavior) {
+		switch(RTConfig.hunger.behaviorOnRespawn) {
 			case RESET:
 				return true;
 			case DONT_RESET:

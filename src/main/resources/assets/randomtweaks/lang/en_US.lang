@@ -47,7 +47,7 @@ randomtweaks.config.general.pickUpSkeletonArrows=Allow Arrows shot by Skeletons 
 randomtweaks.config.general.requireFullCubeForSpawns=Require full cubes for mob spawns
 
 randomtweaks.config.hunger=Hunger
-randomtweaks.config.hunger.respawnBehavior=Hunger respawn behavior
+randomtweaks.config.hunger.behaviorOnRespawn=Hunger respawn behavior
 randomtweaks.config.hunger.minimumRespawnHungerLevel=Minimum respawn hunger level
 randomtweaks.config.hunger.maximumHungerLevel=Maximum hunger level
 randomtweaks.config.hunger.saturationLimit=Saturation limit (added to current food level)
