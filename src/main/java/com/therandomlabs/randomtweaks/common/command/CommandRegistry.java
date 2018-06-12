@@ -2,6 +2,7 @@ package com.therandomlabs.randomtweaks.common.command;
 
 import com.therandomlabs.randomtweaks.base.RTConfig;
 import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 
@@ -19,7 +20,7 @@ public final class CommandRegistry {
 			event.registerServerCommand(new CommandRTGive());
 		}
 
-		if(RTConfig.commands.helpTweaks) {
+		if(RTConfig.commands.helpTweaks && !Loader.isModLoaded("helpfixer")) {
 			event.registerServerCommand(new CommandRTHelp());
 		}
 
