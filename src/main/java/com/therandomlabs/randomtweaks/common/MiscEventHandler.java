@@ -22,6 +22,7 @@ import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -55,7 +56,10 @@ public final class MiscEventHandler {
 
 		player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).
 				setBaseValue(RTConfig.general.attackSpeed);
-		player.foodStats = new RTFoodStats(player.foodStats);
+
+		if(!Loader.isModLoaded("applecore")) {
+			player.foodStats = new RTFoodStats(player.foodStats);
+		}
 	}
 
 	@SubscribeEvent

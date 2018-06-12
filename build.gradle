@@ -33,6 +33,16 @@ minecraft {
 	replace "@FINGERPRINT@", project.findProperty("signSHA1")
 }
 
+repositories {
+	maven {
+		url "http://www.ryanliptak.com/maven/"
+	}
+}
+
+dependencies {
+	deobfCompile "applecore:AppleCore:1.12.2-3.1.1:api"
+}
+
 processResources {
 	//Ensure this task is redone when the versions change
 	inputs.property "version", project.version
