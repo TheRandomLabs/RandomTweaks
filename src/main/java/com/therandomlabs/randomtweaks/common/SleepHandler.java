@@ -1,6 +1,7 @@
 package com.therandomlabs.randomtweaks.common;
 
 import java.lang.reflect.Method;
+import java.util.function.Function;
 import com.therandomlabs.randomtweaks.base.RTConfig;
 import com.therandomlabs.randomtweaks.base.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Utils;
@@ -10,6 +11,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.EnumFacing;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -27,7 +29,7 @@ public final class SleepHandler {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onSleep(PlayerSleepInBedEvent event) {
-		if(!RTConfig.general.sleepTweaks || Loader.isModLoaded("comforts")) {
+		if(!RTConfig.general.sleepTweaks) {
 			return;
 		}
 
@@ -49,6 +51,13 @@ public final class SleepHandler {
 		} catch(IllegalArgumentException ex) {
 			state = null;
 			facing = null;
+		}
+
+		if (Loader.isModLoaded("comforts") && facing != null) {
+			ResourceLocation registry = state.getBlock().getRegistryName();
+			if (registry != null && registry.getResourceDomain().equals("comforts")) {
+				return;
+			}
 		}
 
 		if(player.isPlayerSleeping() || !player.isEntityAlive()) {
@@ -147,13 +156,21 @@ public final class SleepHandler {
 						position.getX(),
 						position.getY(),
 						position.getZ()
-				).expand(8.0, 5.0, 8.0),
-				mob -> mob.isPreventingPlayerRest(player) && !mob.hasCustomName()
+				).grow(8.0, 5.0, 8.0),
+				mob -> mob.isPreventingPlayerRest(player) && new MobFilter().apply(mob)
 		).isEmpty();
 	}
 
 	public static void setRenderOffsetForSleep(EntityPlayer player, EnumFacing facing) {
 		player.renderOffsetX = -1.8F * facing.getFrontOffsetX();
 		player.renderOffsetZ = -1.8F * facing.getFrontOffsetZ();
+	}
+
+	public static class MobFilter implements Function<EntityMob, Boolean> {
+
+		@Override
+		public Boolean apply(EntityMob input) {
+			return !input.hasCustomName();
+		}
 	}
 }

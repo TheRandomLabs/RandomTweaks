@@ -2,11 +2,13 @@ package com.therandomlabs.randomtweaks.base;
 
 import com.therandomlabs.randomtweaks.common.RTFoodStats;
 import com.therandomlabs.randomtweaks.common.RTLanguageMap;
+import com.therandomlabs.randomtweaks.common.SleepHandler;
 import com.therandomlabs.randomtweaks.common.world.WorldGeneratorOceanFloor;
 import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
@@ -25,6 +27,10 @@ public class CommonProxy {
 
 		if(Loader.isModLoaded("applecore")) {
 			MinecraftForge.EVENT_BUS.register(new RTFoodStats.AppleCoreEventHandler());
+		}
+
+		if(Loader.isModLoaded("comforts")) {
+			FMLInterModComms.sendFunctionMessage("comforts", "mobSleepFilter", SleepHandler.MobFilter.class.getName());
 		}
 	}
 }
