@@ -30,7 +30,7 @@ public final class SleepHandler {
 	public static class MobFilter implements Function<EntityMob, Boolean> {
 		@Override
 		public Boolean apply(EntityMob mob) {
-			return !mob.hasCustomName();
+			return !(RTConfig.general.sleepTweaks && mob.hasCustomName());
 		}
 	}
 
@@ -54,17 +54,19 @@ public final class SleepHandler {
 
 		try {
 			state = world.isBlockLoaded(pos) ? world.getBlockState(pos) : null;
-			facing = state != null ? state.getValue(BlockHorizontal.FACING) : null;
+
+			if(state != null) {
+				final ResourceLocation name = state.getBlock().getRegistryName();
+				
+				if(name != null && name.getResourceDomain().equals("comforts")) {
+					return;
+				}
+
+				facing = state.getValue(BlockHorizontal.FACING);
+			}
 		} catch(IllegalArgumentException ex) {
 			state = null;
 			facing = null;
-		}
-
-		if(Loader.isModLoaded("comforts") && facing != null) {
-			final ResourceLocation name = state.getBlock().getRegistryName();
-			if(name != null && name.getResourceDomain().equals("comforts")) {
-				return;
-			}
 		}
 
 		if(player.isPlayerSleeping() || !player.isEntityAlive()) {
