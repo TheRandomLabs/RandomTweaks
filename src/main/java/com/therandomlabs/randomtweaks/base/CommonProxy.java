@@ -30,7 +30,8 @@ public class CommonProxy {
 		}
 
 		if(Loader.isModLoaded("comforts")) {
-			FMLInterModComms.sendFunctionMessage("comforts", "mobSleepFilter", SleepHandler.MobFilter.class.getName());
+			FMLInterModComms.sendFunctionMessage("comforts", "mobSleepFilter",
+					SleepHandler.MobFilter.class.getName());
 		}
 	}
 }

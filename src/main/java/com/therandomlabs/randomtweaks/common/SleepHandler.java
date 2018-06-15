@@ -27,6 +27,13 @@ public final class SleepHandler {
 	public static final Method SET_SIZE = ReflectionHelper.findMethod(Entity.class, "setSize",
 			"func_70105_a", float.class, float.class);
 
+	public static class MobFilter implements Function<EntityMob, Boolean> {
+		@Override
+		public Boolean apply(EntityMob mob) {
+			return !input.hasCustomName();
+		}
+	}
+
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onSleep(PlayerSleepInBedEvent event) {
 		if(!RTConfig.general.sleepTweaks) {
@@ -164,13 +171,5 @@ public final class SleepHandler {
 	public static void setRenderOffsetForSleep(EntityPlayer player, EnumFacing facing) {
 		player.renderOffsetX = -1.8F * facing.getFrontOffsetX();
 		player.renderOffsetZ = -1.8F * facing.getFrontOffsetZ();
-	}
-
-	public static class MobFilter implements Function<EntityMob, Boolean> {
-
-		@Override
-		public Boolean apply(EntityMob input) {
-			return !input.hasCustomName();
-		}
 	}
 }
