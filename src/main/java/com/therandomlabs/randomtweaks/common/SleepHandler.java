@@ -30,7 +30,7 @@ public final class SleepHandler {
 	public static class MobFilter implements Function<EntityMob, Boolean> {
 		@Override
 		public Boolean apply(EntityMob mob) {
-			return !input.hasCustomName();
+			return !mob.hasCustomName();
 		}
 	}
 
@@ -60,9 +60,9 @@ public final class SleepHandler {
 			facing = null;
 		}
 
-		if (Loader.isModLoaded("comforts") && facing != null) {
-			ResourceLocation registry = state.getBlock().getRegistryName();
-			if (registry != null && registry.getResourceDomain().equals("comforts")) {
+		if(Loader.isModLoaded("comforts") && facing != null) {
+			final ResourceLocation name = state.getBlock().getRegistryName();
+			if(name != null && name.getResourceDomain().equals("comforts")) {
 				return;
 			}
 		}
