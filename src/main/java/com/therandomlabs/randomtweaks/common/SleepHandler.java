@@ -47,10 +47,18 @@ public final class SleepHandler {
 			return;
 		}
 
+		if(Loader.isModLoaded("comforts")) {
+			for(StackTraceElement element : Thread.currentThread().getStackTrace()) {
+				if(element.getClassName().equals("c4.comforts.common.items.ItemSleepingBag")) {
+					return;
+				}
+			}
+		}
+
 		final BlockPos pos = event.getPos();
 
 		IBlockState state;
-		EnumFacing facing;
+		EnumFacing facing = null;
 
 		try {
 			state = world.isBlockLoaded(pos) ? world.getBlockState(pos) : null;
