@@ -40,6 +40,7 @@ public final class TrampleHandler {
 
 				if(EnchantmentHelper.getEnchantmentLevel(Enchantments.FEATHER_FALLING, stack) > 0) {
 					event.setCanceled(true);
+					return;
 				}
 			}
 
