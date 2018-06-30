@@ -915,8 +915,11 @@ public class RTConfig {
 			Utils.crashReport("Error while modifying config", ex);
 		}
 
+		if(animals.coloredSheep) {
+			SheepColorWeights.ensureExists();
+		}
+
 		DefaultGamerules.ensureExists();
-		SheepColorWeights.ensureExists();
 		Data.data = null;
 	}
 
