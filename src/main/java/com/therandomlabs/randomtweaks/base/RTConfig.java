@@ -439,14 +439,6 @@ public class RTConfig {
 		public int maximumAge = -6000;
 	}
 
-	public static class Server {
-		@Config.RequiresMcRestart
-		@Config.Comment("Enables catching SIGTERM, SIGINT and SIGHUP signals to trigger a clean " +
-				"shutdown, preventing world corruption. For example, Ctrl+C triggers SIGINT, " +
-				"which triggers a shutdown signal.")
-		public boolean catchTerminationSignals = true;
-	}
-
 	public static class Squids {
 		@Config.RangeInt(min = 0)
 		@Config.LangKey("randomtweaks.config.squids.spawnRadiusLimit")
@@ -582,9 +574,6 @@ public class RTConfig {
 	@Config.LangKey("randomtweaks.config.world")
 	@Config.Comment("Options related to world generation.")
 	public static World world = new World();
-
-	@Config.Comment("Options related to features that only work server-side.")
-	public static Server server = new Server();
 
 	@Config.Ignore
 	public static AutoThirdPerson autoThirdPerson = client.autoThirdPerson;
@@ -963,12 +952,6 @@ public class RTConfig {
 		for(String name : config.getCategoryNames()) {
 			config.getCategory(name).getValues().forEach((key, property) ->
 					property.setComment(comments.get(property)));
-		}
-
-		//Remove the server config if client-sided
-		if(!ServerProxy.enabled) {
-			final ConfigCategory server = config.getCategory("server");
-			config.removeCategory(server);
 		}
 	}
 }
