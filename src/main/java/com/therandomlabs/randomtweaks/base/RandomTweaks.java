@@ -14,13 +14,14 @@ import org.apache.logging.log4j.Logger;
 @Mod(modid = RandomTweaks.MODID, version = RandomTweaks.VERSION,
 		acceptedMinecraftVersions = RandomTweaks.ACCEPTED_MINECRAFT_VERSIONS,
 		acceptableRemoteVersions = RandomTweaks.ACCEPTABLE_REMOTE_VERSIONS,
-		updateJSON = RandomTweaks.UPDATE_JSON,
+		dependencies = RandomTweaks.DEPENDENCIES, updateJSON = RandomTweaks.UPDATE_JSON,
 		certificateFingerprint = RandomTweaks.CERTIFICATE_FINGERPRINT)
 public final class RandomTweaks {
 	public static final String MODID = "randomtweaks";
 	public static final String VERSION = "@VERSION@";
-	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12,1.13)";
+	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12.2,1.13)";
 	public static final String ACCEPTABLE_REMOTE_VERSIONS = "*";
+	public static final String DEPENDENCIES = "required-after:forge@[14.23.4.2718,);";
 	public static final String UPDATE_JSON =
 			"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/misc/versions.json";
 	public static final String CERTIFICATE_FINGERPRINT = "@FINGERPRINT@";
