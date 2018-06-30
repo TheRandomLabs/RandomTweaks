@@ -53,6 +53,10 @@ public final class TerminationHandler {
 	private TerminationHandler() {}
 
 	public static void init() {
-		SIGNALS.forEach(signal -> Signal.handle(new Signal(signal), SIGNAL_HANDLER));
+		SIGNALS.forEach(signal -> {
+			try {
+				Signal.handle(new Signal(signal), SIGNAL_HANDLER);
+			} catch(IllegalArgumentException ignored) {}
+		});
 	}
 }
