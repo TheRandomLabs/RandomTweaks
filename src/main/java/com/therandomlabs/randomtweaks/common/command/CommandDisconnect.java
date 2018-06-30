@@ -1,6 +1,7 @@
 package com.therandomlabs.randomtweaks.common.command;
 
 import java.lang.reflect.Field;
+import com.therandomlabs.randomtweaks.base.Constants;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -10,7 +11,6 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.realms.RealmsBridge;
 import net.minecraft.server.MinecraftServer;
-import net.minecraftforge.fml.common.Loader;
 
 public class CommandDisconnect extends CommandBase {
 	private static final Minecraft mc = Minecraft.getMinecraft();
@@ -36,7 +36,7 @@ public class CommandDisconnect extends CommandBase {
 		try {
 			boolean forceTitleScreenOnDisconnect = false;
 
-			if(Loader.isModLoaded("randompatches")) {
+			if(Constants.RANDOMPATCHES_LOADED) {
 				final Class<?> rpConfig = Class.forName("com.therandomlabs.randompatches.RPConfig");
 				final Field field = rpConfig.getDeclaredField("forceTitleScreenOnDisconnect");
 				forceTitleScreenOnDisconnect = (boolean) field.get(null);

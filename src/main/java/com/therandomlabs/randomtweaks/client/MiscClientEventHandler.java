@@ -6,6 +6,7 @@ import net.minecraft.block.material.Material;
 import net.minecraftforge.client.event.EntityViewRenderEvent;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.GuiScreenEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -50,6 +51,14 @@ public final class MiscClientEventHandler {
 	public static void onFoVUpdate(FOVUpdateEvent event) {
 		if(!RTConfig.Data.get().fovChanges) {
 			event.setNewfov(1.0F);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onRenderGameOverlay(RenderGameOverlayEvent.Pre event) {
+		if(RTConfig.client.disablePotionIcons &&
+				event.getType() == RenderGameOverlayEvent.ElementType.POTION_ICONS) {
+			event.setCanceled(true);
 		}
 	}
 }

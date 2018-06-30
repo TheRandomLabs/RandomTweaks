@@ -6,7 +6,6 @@ import com.therandomlabs.randomtweaks.common.SleepHandler;
 import com.therandomlabs.randomtweaks.common.world.WorldGeneratorOceanFloor;
 import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -21,15 +20,15 @@ public class CommonProxy {
 	public void init(FMLInitializationEvent event) {
 		WorldTypeRegistry.registerWorldTypes();
 
-		if(RTConfig.oceanFloor.enabled && !Loader.isModLoaded("samsocean")) {
+		if(RTConfig.oceanFloor.enabled && !Constants.OCEAN_FLOOR_LOADED) {
 			GameRegistry.registerWorldGenerator(new WorldGeneratorOceanFloor(), 0);
 		}
 
-		if(Loader.isModLoaded("applecore")) {
+		if(Constants.APPLECORE_LOADED) {
 			MinecraftForge.EVENT_BUS.register(new RTFoodStats.AppleCoreEventHandler());
 		}
 
-		if(Loader.isModLoaded("comforts")) {
+		if(Constants.COMFORTS_LOADED) {
 			FMLInterModComms.sendFunctionMessage("comforts", "mobSleepFilter",
 					SleepHandler.MobFilter.class.getName());
 		}

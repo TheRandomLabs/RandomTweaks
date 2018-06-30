@@ -3,9 +3,11 @@ package com.therandomlabs.randomtweaks.common;
 import java.util.AbstractMap;
 import java.util.Map;
 import com.therandomlabs.randomtweaks.base.RTConfig;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import squeek.applecore.api.food.FoodEvent;
+import squeek.applecore.api.hunger.ExhaustionEvent;
 
 public class RTFoodStats extends FoodStats {
 	public static class AppleCoreEventHandler {
@@ -20,6 +22,20 @@ public class RTFoodStats extends FoodStats {
 
 			stats.foodLevel = newStats.getKey();
 			stats.foodSaturationLevel = newStats.getValue();
+		}
+
+		@SubscribeEvent
+		public void onExhaustionAddition(ExhaustionEvent.ExhaustionAddition event) {
+			if(RTConfig.hunger.halveExhaustion) {
+				event.deltaExhaustion /= 2.0F;
+			}
+		}
+
+		@SubscribeEvent
+		public void onExhaustion(ExhaustionEvent.Exhausted event) {
+			if(RTConfig.hunger.halveExhaustion) {
+				event.deltaExhaustion /= 2.0F;
+			}
 		}
 	}
 
@@ -37,6 +53,27 @@ public class RTFoodStats extends FoodStats {
 
 		this.foodLevel = stats.getKey();
 		foodSaturationLevel = stats.getValue();
+	}
+
+	@Override
+	public void addExhaustion(float exhaustion) {
+		if(RTConfig.hunger.halveExhaustion) {
+			exhaustion /= 2.0F;
+		}
+
+		super.addExhaustion(exhaustion);
+	}
+
+	@Override
+	public void onUpdate(EntityPlayer player) {
+		if(!RTConfig.hunger.halveExhaustion) {
+			super.onUpdate(player);
+			return;
+		}
+
+		final float oldExhaustion = foodExhaustionLevel;
+		super.onUpdate(player);
+		foodExhaustionLevel = oldExhaustion + (foodExhaustionLevel - oldExhaustion) / 2.0F;
 	}
 
 	public static Map.Entry<Integer, Float> addStats(int originalFoodLevel,

@@ -5,6 +5,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerAboutToStartEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
@@ -27,7 +28,7 @@ public final class RandomTweaks {
 	public static final Logger LOGGER = LogManager.getLogger(MODID);
 
 	@SidedProxy(clientSide = "com.therandomlabs.randomtweaks.base.ClientProxy",
-			serverSide = "com.therandomlabs.randomtweaks.base.CommonProxy")
+			serverSide = "com.therandomlabs.randomtweaks.base.ServerProxy")
 	public static CommonProxy proxy;
 
 	@Mod.EventHandler
@@ -38,6 +39,11 @@ public final class RandomTweaks {
 	@Mod.EventHandler
 	public static void init(FMLInitializationEvent event) {
 		proxy.init(event);
+	}
+
+	@Mod.EventHandler
+	public static void serverAboutToStart(FMLServerAboutToStartEvent event) {
+		ServerProxy.server = event.getServer();
 	}
 
 	@Mod.EventHandler

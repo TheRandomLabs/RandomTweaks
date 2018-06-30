@@ -33,6 +33,8 @@ public final class CreativeTabHandler {
 	public static final Field TAB_PAGE =
 			ReflectionHelper.findField(GuiContainerCreative.class, "tabPage");
 
+	private static CreativeTabs originalBucketTab;
+
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
 		if(event.getModID().equals(RandomTweaks.MODID)) {
@@ -42,9 +44,10 @@ public final class CreativeTabHandler {
 
 	public static void init() {
 		if(RTConfig.client.moveBucketCreativeTab) {
+			originalBucketTab = Items.BUCKET.getCreativeTab();
 			Items.BUCKET.setCreativeTab(CreativeTabs.TOOLS);
 		} else {
-			Items.BUCKET.setCreativeTab(CreativeTabs.MISC);
+			Items.BUCKET.setCreativeTab(originalBucketTab);
 		}
 
 		registerSpawnEggsTab();
@@ -74,7 +77,7 @@ public final class CreativeTabHandler {
 				}
 			}
 
-			Items.SPAWN_EGG.setCreativeTab(CreativeTabs.MISC);
+			Items.SPAWN_EGG.setCreativeTab(originalBucketTab);
 		}
 	}
 }

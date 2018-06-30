@@ -33,18 +33,12 @@ public class CommandRTReload extends CommandBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args)
 			throws CommandException {
-		try {
-			RTConfig.reloadConfig();
-			if(client) {
-				sender.sendMessage(
-						new TextComponentString(Utils.localize("commands.rtreload.success")));
-			} else {
-				notifyCommandListener(sender, this, Utils.localize("commands.rtreload.success"));
-			}
-		} catch(Exception ex) {
-			ex.printStackTrace();
-			throw new CommandException(Utils.localize("commands.rtreload.failure",
-					ex.getClass().getName() + ": " + ex.getMessage()));
+		RTConfig.reloadConfig();
+		if(client) {
+			sender.sendMessage(new TextComponentString(
+					Utils.localize("commands.rtreload.success")));
+		} else {
+			notifyCommandListener(sender, this, Utils.localize("commands.rtreload.success"));
 		}
 	}
 }

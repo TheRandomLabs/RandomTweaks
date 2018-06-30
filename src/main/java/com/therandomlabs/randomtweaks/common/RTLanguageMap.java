@@ -19,7 +19,7 @@ public class RTLanguageMap extends LanguageMap {
 			return languageList.get(key);
 		}
 
-		if(!RTConfig.general.moreRomanNumerals) {
+		if(!RTConfig.misc.moreRomanNumerals) {
 			return key;
 		}
 

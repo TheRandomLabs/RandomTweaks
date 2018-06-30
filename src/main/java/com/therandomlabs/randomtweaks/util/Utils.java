@@ -2,7 +2,6 @@ package com.therandomlabs.randomtweaks.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -11,9 +10,6 @@ import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
 public final class Utils {
-	public static final boolean IS_DEOBFUSCATED =
-			(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
-
 	public static final IForgeRegistry<Block> BLOCK_REGISTRY =
 			GameRegistry.findRegistry(Block.class);
 	public static final IForgeRegistry<Biome> BIOME_REGISTRY =

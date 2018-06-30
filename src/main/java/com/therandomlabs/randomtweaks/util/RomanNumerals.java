@@ -34,9 +34,9 @@ public final class RomanNumerals {
 				//The largest value that can be represented with Roman numerals without special
 				//characters
 				if(number > 3999) {
-					int digits = String.valueOf(number).length();
-					final int nested = Integer.parseInt(
-							String.valueOf(number).substring(0, 1 + (digits - 4)));
+					final String string = String.valueOf(number);
+					final int nested =
+							Integer.parseInt(string.substring(0, 1 + (string.length() - 4)));
 
 					//In Roman numerals, brackets mean "multiply by 1000"
 					romanNumeral.append('(').append(get(nested)).append(')');
@@ -49,9 +49,11 @@ public final class RomanNumerals {
 		}
 
 		String romanNumeralString = romanNumeral.toString();
+
 		if(negative) {
 			romanNumeralString = "-" + romanNumeralString;
 		}
+
 		cachedRomanNumerals.put(number, romanNumeralString);
 
 		return romanNumeralString;

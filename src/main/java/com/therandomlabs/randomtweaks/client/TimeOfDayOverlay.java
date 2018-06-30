@@ -98,6 +98,10 @@ public final class TimeOfDayOverlay {
 			return true;
 		}
 
+		if(mc.currentScreen != null && RTConfig.timeOfDay.disableInGUIs) {
+			return true;
+		}
+
 		final World world = mc.player.getEntityWorld();
 
 		if(world == null) {

@@ -10,7 +10,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class RespawnHandler {
-	public enum HungerBehavior {
+	public enum HungerResetBehavior {
 		RESET,
 		DONT_RESET,
 		RESET_UNLESS_KEEP_INVENTORY
@@ -40,7 +40,7 @@ public final class RespawnHandler {
 		int newFoodLevel = oldFoodLevel;
 
 		if(keepInventory && !player.capabilities.isCreativeMode &&
-				RTConfig.general.deathPunishmentsIfKeepInventory) {
+				RTConfig.misc.deathPunishmentsIfKeepInventory) {
 			newFoodLevel -= 3;
 			player.experience = 0;
 			player.experienceLevel = 0;
@@ -55,20 +55,18 @@ public final class RespawnHandler {
 	}
 
 	public static boolean resetHungerOnRespawn(EntityPlayer player, boolean keepInventory) {
-		if(keepInventory && RTConfig.general.deathPunishmentsIfKeepInventory) {
+		if(keepInventory && RTConfig.misc.deathPunishmentsIfKeepInventory) {
 			return false;
 		}
 
-		switch(RTConfig.hunger.behaviorOnRespawn) {
+		switch(RTConfig.hunger.respawnResetBehavior) {
 			case RESET:
 				return true;
 			case DONT_RESET:
 				return false;
-			case RESET_UNLESS_KEEP_INVENTORY:
+			default:
 				//In creative mode, hunger doesn't matter anyway
 				return player.capabilities.isCreativeMode || keepInventory;
 		}
-
-		throw new UnsupportedOperationException("This should be impossible");
 	}
 }

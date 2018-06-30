@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.common;
 
+import com.therandomlabs.randomtweaks.base.Constants;
 import com.therandomlabs.randomtweaks.base.RTConfig;
 import com.therandomlabs.randomtweaks.base.RandomTweaks;
 import net.minecraft.entity.Entity;
@@ -10,7 +11,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTUtil;
 import net.minecraftforge.event.entity.player.PlayerDropsEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -18,8 +18,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class PlayerHeadDropHandler {
 	@SubscribeEvent
 	public static void onPlayerDrops(PlayerDropsEvent event) {
-		if(!RTConfig.playerHeadDrops.enabled ||
-				Loader.isModLoaded("playersdropheads") || Loader.isModLoaded("headcrumbs")) {
+		if(!RTConfig.playerHeadDrops.enabled || Constants.PLAYERS_DROP_HEADS_LOADED ||
+				Constants.HEADCRUMBS_LOADED) {
 			return;
 		}
 

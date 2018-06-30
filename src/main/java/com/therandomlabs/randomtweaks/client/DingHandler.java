@@ -3,6 +3,7 @@ package com.therandomlabs.randomtweaks.client;
 import java.lang.reflect.Field;
 import java.security.SecureRandom;
 import java.util.Random;
+import com.therandomlabs.randomtweaks.base.Constants;
 import com.therandomlabs.randomtweaks.base.RTConfig;
 import com.therandomlabs.randomtweaks.base.RandomTweaks;
 import net.minecraft.client.Minecraft;
@@ -12,7 +13,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -61,7 +61,7 @@ public final class DingHandler {
 	}
 
 	public static void playSound(String soundName, double pitch) {
-		if(Loader.isModLoaded("ding") || soundName.isEmpty()) {
+		if(Constants.DING_LOADED || soundName.isEmpty()) {
 			return;
 		}
 
@@ -77,7 +77,7 @@ public final class DingHandler {
 	}
 
 	public static boolean isDsurroundStartupSoundDisabled() {
-		if(!Loader.isModLoaded("dsurround")) {
+		if(!Constants.DYNAMIC_SURROUNDINGS_LOADED) {
 			return true;
 		}
 

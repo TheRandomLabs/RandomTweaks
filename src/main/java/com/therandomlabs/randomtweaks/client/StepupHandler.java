@@ -20,6 +20,8 @@ public final class StepupHandler {
 	private static final Minecraft mc = Minecraft.getMinecraft();
 	private static Mode mode;
 
+	private static Potion jumpBoost;
+
 	private enum Mode {
 		NO_AUTO_JUMP(VANILLA_STEP_HEIGHT, false, "autoJump.disabled"),
 		VANILLA_AUTO_JUMP(VANILLA_STEP_HEIGHT, true, "autoJump.enabled"),
@@ -59,10 +61,14 @@ public final class StepupHandler {
 			mc.player.stepHeight = mode.stepHeight;
 
 			if(mode == Mode.STEPUP_AUTO_JUMP) {
-				final PotionEffect jumpBoost =
-						mc.player.getActivePotionEffect(Potion.getPotionById(8));
-				if(jumpBoost != null) {
-					mc.player.stepHeight += (jumpBoost.getAmplifier() + 1) * 0.75F;
+				if(jumpBoost == null) {
+					jumpBoost = Potion.getPotionFromResourceLocation("jump_boost");
+				}
+
+				final PotionEffect effect = mc.player.getActivePotionEffect(jumpBoost);
+
+				if(effect != null) {
+					mc.player.stepHeight += (effect.getAmplifier() + 1) * 0.75F;
 				}
 			}
 		}

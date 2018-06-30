@@ -1,28 +1,31 @@
 package com.therandomlabs.randomtweaks.common;
 
+import java.util.Random;
+import java.util.UUID;
+import com.therandomlabs.randomtweaks.base.Constants;
 import com.therandomlabs.randomtweaks.base.RTConfig;
 import com.therandomlabs.randomtweaks.base.RandomTweaks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySkeleton;
-import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Items;
-import net.minecraft.item.ItemFood;
-import net.minecraft.item.ItemStack;
+import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
-import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.event.entity.player.AnvilRepairEvent;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fml.common.Loader;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -32,7 +35,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class MiscEventHandler {
 	@SubscribeEvent
 	public static void onArrowImpact(ProjectileImpactEvent.Arrow event) {
-		if(!RTConfig.general.pickUpSkeletonArrows) {
+		if(!RTConfig.misc.pickUpSkeletonArrows) {
 			return;
 		}
 
@@ -46,68 +49,24 @@ public final class MiscEventHandler {
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
+		if(event.getWorld().isRemote) {
+			return;
+		}
+
 		final Entity entity = event.getEntity();
 
-		if(entity.getEntityWorld().isRemote || !(entity instanceof EntityPlayer)) {
+		if(!(entity instanceof EntityPlayer)) {
 			return;
 		}
 
 		final EntityPlayer player = (EntityPlayer) event.getEntity();
 
 		player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).
-				setBaseValue(RTConfig.general.attackSpeed);
+				setBaseValue(RTConfig.misc.attackSpeed);
 
-		if(!Loader.isModLoaded("applecore")) {
+		if(!Constants.APPLECORE_LOADED) {
 			player.foodStats = new RTFoodStats(player.foodStats);
 		}
-	}
-
-	@SubscribeEvent
-	public static void onAnvilUpdate(AnvilUpdateEvent event) {
-		if(RTConfig.general.disableCumulativeAnvilCost) {
-			removeRepairCost(event.getLeft());
-			removeRepairCost(event.getRight());
-		}
-	}
-
-	@SubscribeEvent
-	public static void onAnvilRepair(AnvilRepairEvent event) {
-		if(RTConfig.general.disableCumulativeAnvilCost) {
-			removeRepairCost(event.getItemResult());
-		}
-	}
-
-	public static void removeRepairCost(ItemStack stack) {
-		if(stack.isEmpty() && stack.hasTagCompound()) {
-			stack.getTagCompound().removeTag("RepairCost");
-		}
-	}
-
-	@SubscribeEvent
-	public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
-		if(!RTConfig.general.ocelotsCanBeHealed) {
-			return;
-		}
-
-		final EntityPlayer player = event.getEntityPlayer();
-		final ItemStack stack = event.getItemStack();
-
-		if(!player.getEntityWorld().isRemote && event.getTarget() instanceof EntityOcelot) {
-			final EntityOcelot ocelot = (EntityOcelot) event.getTarget();
-
-			if(canOcelotBeHealed(ocelot, stack)) {
-				if(!player.capabilities.isCreativeMode) {
-					stack.shrink(1);
-				}
-
-				ocelot.heal(((ItemFood) Items.FISH).getHealAmount(stack));
-			}
-		}
-	}
-
-	public static boolean canOcelotBeHealed(EntityOcelot ocelot, ItemStack stack) {
-		return ocelot.isTamed() && !stack.isEmpty() &&
-				stack.getItem() == Items.FISH && ocelot.getHealth() < ocelot.getMaxHealth();
 	}
 
 	@SubscribeEvent
@@ -120,20 +79,113 @@ public final class MiscEventHandler {
 
 		final Entity entity = event.getEntity();
 
-		//Not using instanceof so we don't affect modded squids
-		if(entity.getClass() == EntitySquid.class) {
-			SquidHandler.onSquidSpawn(event);
+		if(RTConfig.misc.requireFullCubeForSpawns) {
+			final BlockPos pos = entity.getPosition().down();
+			final IBlockState state = world.getBlockState(pos);
+
+			if(!state.isFullCube() ||
+					state.getCollisionBoundingBox(world, pos) == Block.NULL_AABB) {
+				event.setResult(Event.Result.DENY);
+				return;
+			}
 		}
 
-		if(!RTConfig.general.requireFullCubeForSpawns) {
+		final Class<?> clazz = entity.getClass();
+
+		if(clazz == EntitySquid.class) {
+			SquidHandler.onSquidSpawn(event);
 			return;
 		}
 
-		final BlockPos pos = entity.getPosition().down();
-		final IBlockState state = world.getBlockState(pos);
+		if(RTConfig.animals.coloredSheep && !Constants.COLORFUL_SHEEP_LOADED &&
+				clazz == EntitySheep.class) {
+			ColoredSheepHandler.onSheepSpawn((EntitySheep) entity);
+		}
 
-		if(!state.isFullCube() || state.getCollisionBoundingBox(world, pos) == Block.NULL_AABB) {
-			event.setResult(Event.Result.DENY);
+		if(RTConfig.randomizedAges.chance != 0.0 && entity instanceof EntityAgeable) {
+			final EntityAgeable ageable = (EntityAgeable) entity;
+
+			if(ageable.isChild()) {
+				return;
+			}
+
+			final Random rng = ageable.getRNG();
+
+			if(rng.nextDouble() < RTConfig.randomizedAges.chance) {
+				final int min = RTConfig.randomizedAges.minimumAge;
+				final int max = RTConfig.randomizedAges.maximumAge;
+
+				if(min == max) {
+					ageable.setGrowingAge(min);
+				} else {
+					ageable.setGrowingAge(rng.nextInt(max + 1 - min) + min);
+				}
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
+		final Entity entity = event.getEntity();
+
+		if(entity.getEntityWorld().isRemote) {
+			return;
+		}
+
+		if(RTConfig.animals.coloredSheep && !Constants.COLORFUL_SHEEP_LOADED &&
+				entity.getClass() == EntitySheep.class) {
+			ColoredSheepHandler.onSheepTick((EntitySheep) entity);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onPortalSpawn(BlockEvent.PortalSpawnEvent event) {
+		if(RTConfig.misc.disableNetherPortalCreationGamerule &&
+				event.getWorld().getGameRules().getBoolean("disableNetherPortalCreation")) {
+			event.setCanceled(true);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onLivingHurt(LivingHurtEvent event) {
+		final EntityLivingBase entity = event.getEntityLiving();
+
+		if(entity.getEntityWorld().isRemote) {
+			return;
+		}
+
+		final DamageSource source = event.getSource();
+
+		if(!(entity instanceof IEntityOwnable) || source == null) {
+			return;
+		}
+
+		final Entity attacker = source.getTrueSource();
+
+		if(attacker == null) {
+			return;
+		}
+
+		final IEntityOwnable pet = ((IEntityOwnable) entity);
+		final UUID owner = pet.getOwnerId();
+
+		if(owner == null) {
+			return;
+		}
+
+		if(RTConfig.animals.protectPetsFromOwners && owner.equals(attacker.getUniqueID()) &&
+				!attacker.isSneaking()) {
+			event.setCanceled(true);
+			return;
+		}
+
+		if(RTConfig.animals.protectPetsFromOtherPets && attacker instanceof IEntityOwnable) {
+			final IEntityOwnable otherPet = (IEntityOwnable) attacker;
+			if(owner.equals(otherPet.getOwnerId())) {
+				entity.setRevengeTarget(null);
+				((EntityLivingBase) attacker).setRevengeTarget(null);
+				event.setCanceled(true);
+			}
 		}
 	}
 }

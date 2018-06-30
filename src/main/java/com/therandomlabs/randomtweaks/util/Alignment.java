@@ -59,6 +59,7 @@ public enum Alignment {
 			case RIGHT:
 				return x + screenWidth - textWidth;
 		}
+
 		return 0;
 	}
 
@@ -73,6 +74,7 @@ public enum Alignment {
 			case BOTTOM:
 				return y + screenHeight - textHeight;
 		}
+
 		return 0;
 	}
 

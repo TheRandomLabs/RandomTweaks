@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.DimensionType;
@@ -22,7 +23,26 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class WorldHandler {
 	@SubscribeEvent
-	public static void onCreateSpawn(WorldEvent.CreateSpawnPosition event) throws Exception {
+	public static void onWorldLoad(WorldEvent.Load event) {
+		if(!RTConfig.misc.disableNetherPortalCreationGamerule) {
+			return;
+		}
+
+		final World world = event.getWorld();
+
+		if(world.isRemote) {
+			return;
+		}
+
+		final GameRules gamerules = world.getGameRules();
+
+		if(!gamerules.hasRule("disableNetherPortalCreation")) {
+			gamerules.setOrCreateGameRule("disableNetherPortalCreation", "false");
+		}
+	}
+
+	@SubscribeEvent
+	public static void onCreateSpawn(WorldEvent.CreateSpawnPosition event) {
 		final World world = event.getWorld();
 		if(!world.isRemote && world.provider.getDimensionType() == DimensionType.OVERWORLD) {
 			initializeWorld(world);
@@ -102,7 +122,7 @@ public final class WorldHandler {
 		return state.getMaterial().blocksMovement() && !state.getBlock().isFoliage(world, pos);
 	}
 
-	private static void initializeWorld(World world) throws Exception {
+	private static void initializeWorld(World world) {
 		final GameRules gamerules = world.getGameRules();
 
 		final int gamemode = world.getWorldInfo().getGameType().getID();
@@ -110,8 +130,10 @@ public final class WorldHandler {
 
 		final Map<String, String> defaultGamerules = RTConfig.DefaultGamerules.get(gamemode, type);
 
+		final MinecraftServer server = world.getMinecraftServer();
+
 		if(defaultGamerules == null) {
-			failedToParseGamerules(world);
+			server.sendMessage(new TextComponentTranslation("defaultGamerules.parseFailure"));
 			return;
 		}
 
@@ -121,7 +143,8 @@ public final class WorldHandler {
 					world.getWorldBorder().setSize(Integer.parseInt(entry.getValue()));
 				} catch(NumberFormatException ex) {
 					ex.printStackTrace();
-					failedToParseGamerules(world);
+					server.sendMessage(
+							new TextComponentTranslation("defaultGamerules.parseFailure"));
 				}
 
 				continue;
@@ -129,10 +152,5 @@ public final class WorldHandler {
 
 			gamerules.setOrCreateGameRule(entry.getKey(), entry.getValue());
 		}
-	}
-
-	private static void failedToParseGamerules(World world) {
-		world.getMinecraftServer().sendMessage(
-				new TextComponentTranslation("defaultGamerules.parseFailure"));
 	}
 }

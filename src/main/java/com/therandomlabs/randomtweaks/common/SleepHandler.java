@@ -2,6 +2,7 @@ package com.therandomlabs.randomtweaks.common;
 
 import java.lang.reflect.Method;
 import java.util.function.Function;
+import com.therandomlabs.randomtweaks.base.Constants;
 import com.therandomlabs.randomtweaks.base.RTConfig;
 import com.therandomlabs.randomtweaks.base.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Utils;
@@ -16,7 +17,6 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
-import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -30,13 +30,13 @@ public final class SleepHandler {
 	public static class MobFilter implements Function<EntityMob, Boolean> {
 		@Override
 		public Boolean apply(EntityMob mob) {
-			return !(RTConfig.general.sleepTweaks && mob.hasCustomName());
+			return !(RTConfig.misc.sleepTweaks && mob.hasCustomName());
 		}
 	}
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onSleep(PlayerSleepInBedEvent event) {
-		if(!RTConfig.general.sleepTweaks) {
+		if(!RTConfig.misc.sleepTweaks) {
 			return;
 		}
 
@@ -47,7 +47,7 @@ public final class SleepHandler {
 			return;
 		}
 
-		if(Loader.isModLoaded("comforts")) {
+		if(Constants.COMFORTS_LOADED) {
 			for(StackTraceElement element : Thread.currentThread().getStackTrace()) {
 				if(element.getClassName().equals("c4.comforts.common.items.ItemSleepingBag")) {
 					return;
