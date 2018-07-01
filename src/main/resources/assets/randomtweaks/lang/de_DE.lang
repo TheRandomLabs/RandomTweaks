@@ -2,8 +2,8 @@ randomtweaks.config.title=RandomTweaks Configuration
 
 randomtweaks.config.animals=Animals
 randomtweaks.config.animals.tooltip=Options related to animals (including villagers).
-randomtweaks.config.animals.ocelotsCanBeHealed=Enable Ocelot healing with Fish
-randomtweaks.config.animals.parrotsCanBeHealed=Enable Parrot healing with Seeds
+randomtweaks.config.animals.ocelotsCanBeHealed=Enable tamed Ocelot healing with Fish
+randomtweaks.config.animals.parrotsCanBeHealed=Enable tamed Parrot healing with Seeds
 randomtweaks.config.animals.protectPetsFromOwners=Protect pets from their owners
 randomtweaks.config.animals.protectPetsFromOtherPets=Protect pets from their owners' other pets
 randomtweaks.config.animals.leashableVillagers=Leashable Villagers

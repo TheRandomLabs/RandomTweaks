@@ -50,11 +50,11 @@ public class RTConfig {
 		public Squids squids = new Squids();
 
 		@Config.LangKey("randomtweaks.config.animals.ocelotsCanBeHealed")
-		@Config.Comment("Ocelots can be healed with fish.")
+		@Config.Comment("Tamed Ocelots can be healed with fish.")
 		public boolean ocelotsCanBeHealed = true;
 
 		@Config.LangKey("randomtweaks.config.animals.parrotsCanBeHealed")
-		@Config.Comment("Parrots can be healed with seeds.")
+		@Config.Comment("Tamed Parrots can be healed with seeds.")
 		public boolean parrotsCanBeHealed = true;
 
 		@Config.LangKey("randomtweaks.config.animals.protectPetsFromOwners")
@@ -191,7 +191,7 @@ public class RTConfig {
 
 		@Config.RequiresWorldRestart
 		@Config.LangKey("randomtweaks.config.commands.giveTweaks")
-		@Config.Comment("Allows /give to accept integer IDs, amounts higher than 64, and " +
+		@Config.Comment("Allows /give to accept integer IDs, amounts higher than 64 and " +
 				"ore dictionary names prefixed by \"ore:\".")
 		public boolean giveTweaks = true;
 
@@ -479,10 +479,6 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.timeOfDay.disableInGUIs")
 		@Config.Comment("Disables the overlay in GUIs.")
 		public boolean disableInGUIs = false;
-
-		@Config.LangKey("randomtweaks.config.timeOfDay.disableInInventory")
-		@Config.Comment("Disables the overlay in the inventory.")
-		public boolean disableInInventory = true;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.twentyFourHourTime")
 		@Config.Comment("Enables 24-hour time.")
