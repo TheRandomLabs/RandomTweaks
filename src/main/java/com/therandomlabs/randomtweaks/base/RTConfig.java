@@ -51,7 +51,7 @@ public class RTConfig {
 		public boolean coloredSheep = true;
 
 		@Config.LangKey("randomtweaks.config.animals.leashableVillagers")
-		@Config.Comment("Allows villagers to be leashed.")
+		@Config.Comment("Whether villagers should be leashable.")
 		public boolean leashableVillagers = true;
 
 		@Config.LangKey("randomtweaks.config.animals.ocelotsCanBeHealed")
