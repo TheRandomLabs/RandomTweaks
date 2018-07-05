@@ -1,44 +1,44 @@
 package com.therandomlabs.randomtweaks.common.command;
 
 import com.therandomlabs.randomtweaks.base.RTConfig;
-import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraftforge.fml.relauncher.Side;
 
 public class CommandRTReload extends CommandBase {
-	private final boolean client;
+	private final boolean isClient;
 
-	public CommandRTReload(boolean client) {
-		this.client = client;
+	public CommandRTReload(Side side) {
+		isClient = side.isClient();
 	}
 
 	@Override
 	public String getName() {
-		return client ? "rtreloadclient" : "rtreload";
+		return isClient ? "rtreloadclient" : "rtreload";
 	}
 
 	@Override
 	public int getRequiredPermissionLevel() {
-		return client ? 0 : 4;
+		return isClient ? 0 : 4;
 	}
 
 	@Override
 	public String getUsage(ICommandSender sender) {
-		return Utils.localize("commands." + getName() + ".usage");
+		return isClient ? "commands.rtreloadclient.usage" : "/rtreload";
 	}
 
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args)
 			throws CommandException {
-		RTConfig.reloadConfig();
-		if(client) {
-			sender.sendMessage(new TextComponentString(
-					Utils.localize("commands.rtreload.success")));
+		RTConfig.reload();
+
+		if(server.isDedicatedServer()) {
+			notifyCommandListener(sender, this, "RandomTweaks configuration reloaded!");
 		} else {
-			notifyCommandListener(sender, this, Utils.localize("commands.rtreload.success"));
+			sender.sendMessage(new TextComponentTranslation("commands.rtreloadclient.success"));
 		}
 	}
 }

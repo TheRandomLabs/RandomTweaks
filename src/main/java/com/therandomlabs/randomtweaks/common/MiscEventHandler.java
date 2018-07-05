@@ -140,8 +140,19 @@ public final class MiscEventHandler {
 
 	@SubscribeEvent
 	public static void onPortalSpawn(BlockEvent.PortalSpawnEvent event) {
-		if(RTConfig.misc.disableNetherPortalCreationGamerule &&
-				event.getWorld().getGameRules().getBoolean("disableNetherPortalCreation")) {
+		final String name = RTConfig.misc.disableNetherPortalCreationGamerule;
+
+		if(name.isEmpty()) {
+			return;
+		}
+
+		final World world = event.getWorld();
+
+		if(world.isRemote) {
+			return;
+		}
+
+		if(world.getGameRules().getBoolean(name)) {
 			event.setCanceled(true);
 		}
 	}

@@ -2,7 +2,6 @@ package com.therandomlabs.randomtweaks.common.command;
 
 import java.util.Collections;
 import java.util.List;
-import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -20,7 +19,7 @@ public class CommandHunger extends CommandBase {
 
 	@Override
 	public String getUsage(ICommandSender sender) {
-		return Utils.localize("commands.hunger.usage");
+		return "/hunger <player> <level> [saturation]";
 	}
 
 	@Override
@@ -39,8 +38,8 @@ public class CommandHunger extends CommandBase {
 			stats.foodSaturationLevel = (float) parseDouble(args[2]);
 		}
 
-		notifyCommandListener(sender, this, Utils.localize("commands.hunger.success",
-				player.getDisplayNameString(), stats.foodLevel, stats.foodSaturationLevel));
+		notifyCommandListener(sender, this, "%s's hunger level is %s and saturation level is %s",
+				player.getDisplayNameString(), stats.foodLevel, stats.foodSaturationLevel);
 	}
 
 	@Override

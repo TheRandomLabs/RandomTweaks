@@ -1,7 +1,5 @@
 package com.therandomlabs.randomtweaks.common.world;
 
-import java.util.Map;
-import java.util.Map.Entry;
 import com.therandomlabs.randomtweaks.base.RTConfig;
 import com.therandomlabs.randomtweaks.base.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Utils;
@@ -9,9 +7,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
@@ -24,7 +20,9 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class WorldHandler {
 	@SubscribeEvent
 	public static void onWorldLoad(WorldEvent.Load event) {
-		if(!RTConfig.misc.disableNetherPortalCreationGamerule) {
+		final String name = RTConfig.misc.disableNetherPortalCreationGamerule;
+
+		if(name.isEmpty()) {
 			return;
 		}
 
@@ -36,16 +34,8 @@ public final class WorldHandler {
 
 		final GameRules gamerules = world.getGameRules();
 
-		if(!gamerules.hasRule("disableNetherPortalCreation")) {
-			gamerules.setOrCreateGameRule("disableNetherPortalCreation", "false");
-		}
-	}
-
-	@SubscribeEvent
-	public static void onCreateSpawn(WorldEvent.CreateSpawnPosition event) {
-		final World world = event.getWorld();
-		if(!world.isRemote && world.provider.getDimensionType() == DimensionType.OVERWORLD) {
-			initializeWorld(world);
+		if(!gamerules.hasRule(name)) {
+			gamerules.setOrCreateGameRule(name, "false");
 		}
 	}
 
@@ -120,37 +110,5 @@ public final class WorldHandler {
 	private static boolean isSpawnable(World world, BlockPos pos) {
 		final IBlockState state = world.getBlockState(pos);
 		return state.getMaterial().blocksMovement() && !state.getBlock().isFoliage(world, pos);
-	}
-
-	private static void initializeWorld(World world) {
-		final GameRules gamerules = world.getGameRules();
-
-		final int gamemode = world.getWorldInfo().getGameType().getID();
-		final String type = world.getWorldType().getName();
-
-		final Map<String, String> defaultGamerules = RTConfig.DefaultGamerules.get(gamemode, type);
-
-		final MinecraftServer server = world.getMinecraftServer();
-
-		if(defaultGamerules == null) {
-			server.sendMessage(new TextComponentTranslation("defaultGamerules.parseFailure"));
-			return;
-		}
-
-		for(Entry<String, String> entry : defaultGamerules.entrySet()) {
-			if(entry.getKey().equals("rtWorldBorderSize")) {
-				try {
-					world.getWorldBorder().setSize(Integer.parseInt(entry.getValue()));
-				} catch(NumberFormatException ex) {
-					ex.printStackTrace();
-					server.sendMessage(
-							new TextComponentTranslation("defaultGamerules.parseFailure"));
-				}
-
-				continue;
-			}
-
-			gamerules.setOrCreateGameRule(entry.getKey(), entry.getValue());
-		}
 	}
 }

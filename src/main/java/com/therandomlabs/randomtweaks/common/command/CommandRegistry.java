@@ -5,6 +5,7 @@ import com.therandomlabs.randomtweaks.base.RTConfig;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+import net.minecraftforge.fml.relauncher.Side;
 
 public final class CommandRegistry {
 	public static void register(FMLServerStartingEvent event) {
@@ -25,17 +26,17 @@ public final class CommandRegistry {
 		}
 
 		if(RTConfig.commands.rtreload) {
-			event.registerServerCommand(new CommandRTReload(false));
+			event.registerServerCommand(new CommandRTReload(Side.SERVER));
 		}
 	}
 
 	public static void registerClient() {
-		if(RTConfig.commands.disconnect) {
-			ClientCommandHandler.instance.registerCommand(new CommandDisconnect());
+		if(RTConfig.commands.rtreloadclient) {
+			ClientCommandHandler.instance.registerCommand(new CommandRTReload(Side.CLIENT));
 		}
 
-		if(RTConfig.commands.rtreloadclient) {
-			ClientCommandHandler.instance.registerCommand(new CommandRTReload(true));
+		if(RTConfig.commands.disconnect) {
+			ClientCommandHandler.instance.registerCommand(new CommandDisconnect());
 		}
 	}
 

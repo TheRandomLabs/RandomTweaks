@@ -16,6 +16,12 @@ public final class RespawnHandler {
 		RESET_UNLESS_KEEP_INVENTORY
 	}
 
+	public enum DeathPunishmentMode {
+		ENABLED,
+		ENABLED_IF_KEEP_INVENTORY,
+		DISABLED
+	}
+
 	@SubscribeEvent
 	public static void onRespawn(PlayerEvent.Clone event) throws Exception {
 		final EntityPlayer original = event.getOriginal();
@@ -39,8 +45,11 @@ public final class RespawnHandler {
 
 		int newFoodLevel = oldFoodLevel;
 
-		if(keepInventory && !player.capabilities.isCreativeMode &&
-				RTConfig.misc.deathPunishmentsIfKeepInventory) {
+		final DeathPunishmentMode mode = RTConfig.misc.deathPunishmentMode;
+
+		if(!player.capabilities.isCreativeMode &&
+				((keepInventory && mode == DeathPunishmentMode.ENABLED_IF_KEEP_INVENTORY) ||
+				mode == DeathPunishmentMode.ENABLED)) {
 			newFoodLevel -= 3;
 			player.experience = 0;
 			player.experienceLevel = 0;
@@ -48,14 +57,22 @@ public final class RespawnHandler {
 		}
 
 		final int minimum = RTConfig.hunger.minimumRespawnHungerLevel;
-
 		final FoodStats newStats = player.getFoodStats();
-		newStats.setFoodLevel(newFoodLevel < minimum ? minimum : newFoodLevel);
+
+		newStats.foodLevel = newFoodLevel < minimum ? minimum : newFoodLevel;
 		newStats.foodSaturationLevel = oldSaturationLevel;
 	}
 
 	public static boolean resetHungerOnRespawn(EntityPlayer player, boolean keepInventory) {
-		if(keepInventory && RTConfig.misc.deathPunishmentsIfKeepInventory) {
+		if(player.capabilities.isCreativeMode) {
+			return true;
+		}
+
+		final DeathPunishmentMode mode = RTConfig.misc.deathPunishmentMode;
+
+		//deathPunishmentMode overrides respawnResetBehavior
+		if((keepInventory && mode == DeathPunishmentMode.ENABLED_IF_KEEP_INVENTORY) ||
+				mode == DeathPunishmentMode.ENABLED) {
 			return false;
 		}
 
@@ -65,8 +82,7 @@ public final class RespawnHandler {
 			case DONT_RESET:
 				return false;
 			default:
-				//In creative mode, hunger doesn't matter anyway
-				return player.capabilities.isCreativeMode || keepInventory;
+				return keepInventory;
 		}
 	}
 }

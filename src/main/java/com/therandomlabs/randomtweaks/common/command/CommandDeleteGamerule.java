@@ -2,13 +2,13 @@ package com.therandomlabs.randomtweaks.common.command;
 
 import java.util.Arrays;
 import java.util.List;
-import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.command.WrongUsageException;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
 
 public class CommandDeleteGamerule extends CommandBase {
 	@Override
@@ -18,7 +18,7 @@ public class CommandDeleteGamerule extends CommandBase {
 
 	@Override
 	public String getUsage(ICommandSender sender) {
-		return Utils.localize("commands.deletegamerule.usage");
+		return "/deletegamerule <gamerule>";
 	}
 
 	@SuppressWarnings("unchecked")
@@ -29,10 +29,15 @@ public class CommandDeleteGamerule extends CommandBase {
 			throw new WrongUsageException(getUsage(sender));
 		}
 
-		final boolean failed = sender.getEntityWorld().getGameRules().rules.remove(args[0]) == null;
-		final String message = failed ? "noSuchGameruleExists" : "success";
-		notifyCommandListener(sender, this, Utils.localize("commands.deletegamerule." + message),
-				args[0]);
+		final boolean success =
+				sender.getEntityWorld().getGameRules().rules.remove(args[0]) != null;
+
+		if(success) {
+			notifyCommandListener(sender, this, "Gamerule \"%s\" successfully deleted!", args[0]);
+		} else {
+			notifyCommandListener(sender, this, TextFormatting.RED + "No such gamerule exists: " +
+					args[0]);
+		}
 	}
 
 	@Override

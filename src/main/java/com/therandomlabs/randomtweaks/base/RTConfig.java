@@ -5,11 +5,9 @@ import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -35,7 +33,6 @@ import org.apache.commons.lang3.StringUtils;
 
 @Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
 @Config(modid = RandomTweaks.MODID, name = RTConfig.NAME, category = "")
-@Config.LangKey("randomtweaks.config.title")
 public class RTConfig {
 	@Config.Ignore
 	public static final String NAME = RandomTweaks.MODID + "/" + RandomTweaks.MODID;
@@ -49,6 +46,14 @@ public class RTConfig {
 		@Config.Comment("Options related to squid spawning behavior.")
 		public Squids squids = new Squids();
 
+		@Config.LangKey("randomtweaks.config.animals.coloredSheep")
+		@Config.Comment("Whether colored sheep should spawn.")
+		public boolean coloredSheep = true;
+
+		@Config.LangKey("randomtweaks.config.animals.leashableVillagers")
+		@Config.Comment("Allows villagers to be leashed.")
+		public boolean leashableVillagers = true;
+
 		@Config.LangKey("randomtweaks.config.animals.ocelotsCanBeHealed")
 		@Config.Comment("Tamed Ocelots can be healed with fish.")
 		public boolean ocelotsCanBeHealed = true;
@@ -57,48 +62,40 @@ public class RTConfig {
 		@Config.Comment("Tamed Parrots can be healed with seeds.")
 		public boolean parrotsCanBeHealed = true;
 
-		@Config.LangKey("randomtweaks.config.animals.protectPetsFromOwners")
-		@Config.Comment("Prevents pets from being attacked by their owners " +
-				"(unless they're sneaking).")
-		public boolean protectPetsFromOwners = true;
-
 		@Config.LangKey("randomtweaks.config.animals.protectPetsFromOtherPets")
 		@Config.Comment("Prevents pets from being attacked by their owner's other pets.")
 		public boolean protectPetsFromOtherPets = true;
 
-		@Config.LangKey("randomtweaks.config.animals.leashableVillagers")
-		@Config.Comment("Allows villagers to be leashed.")
-		public boolean leashableVillagers = true;
-
-		@Config.LangKey("randomtweaks.config.animals.coloredSheep")
-		@Config.Comment("Whether colored sheep should spawn.")
-		public boolean coloredSheep = true;
+		@Config.LangKey("randomtweaks.config.animals.protectPetsFromOwners")
+		@Config.Comment("Prevents pets from being attacked by their owners " +
+				"(unless they're sneaking).")
+		public boolean protectPetsFromOwners = true;
 	}
 
 	public static class AutoThirdPerson {
+		@Config.LangKey("entity.Boat.name")
+		@Config.Comment("Whether auto-third person is enabled when riding a boat.")
+		public boolean boat = Constants.IS_DEOBFUSCATED;
+
+		@Config.LangKey("item.elytra.name")
+		@Config.Comment("Whether auto-third person is enabled when flying with elytra.")
+		public boolean elytra = true;
+
 		@Config.LangKey("randomtweaks.config.autoThirdPerson.enabled")
 		@Config.Comment("Whether auto-third person is enabled.")
 		public boolean enabled = true;
 
-		@Config.LangKey("randomtweaks.config.autoThirdPerson.elytra")
-		@Config.Comment("Whether auto-third person is enabled when flying with elytra.")
-		public boolean elytra = true;
-
-		@Config.LangKey("randomtweaks.config.autoThirdPerson.horse")
+		@Config.LangKey("entity.Horse.name")
 		@Config.Comment("Whether auto-third person is enabled when riding a horse.")
 		public boolean horse = Constants.IS_DEOBFUSCATED;
 
-		@Config.LangKey("randomtweaks.config.autoThirdPerson.pig")
-		@Config.Comment("Whether auto-third person is enabled when riding a pig.")
-		public boolean pig = Constants.IS_DEOBFUSCATED;
-
-		@Config.LangKey("randomtweaks.config.autoThirdPerson.boat")
-		@Config.Comment("Whether auto-third person is enabled when riding a boat.")
-		public boolean boat = Constants.IS_DEOBFUSCATED;
-
-		@Config.LangKey("randomtweaks.config.autoThirdPerson.minecart")
+		@Config.LangKey("item.minecart.name")
 		@Config.Comment("Whether auto-third person is enabled when riding a minecart.")
 		public boolean minecart = Constants.IS_DEOBFUSCATED;
+
+		@Config.LangKey("entity.Pig.name")
+		@Config.Comment("Whether auto-third person is enabled when riding a pig.")
+		public boolean pig = Constants.IS_DEOBFUSCATED;
 	}
 
 	public static class BoneMeal {
@@ -108,15 +105,15 @@ public class RTConfig {
 				"16 is a full block.")
 		public int cacti = 8;
 
+		@Config.LangKey("randomtweaks.config.boneMeal.netherWarts")
+		@Config.Comment("Whether Bone Meal should grow Nether Warts.")
+		public boolean netherWarts = true;
+
 		@Config.RangeInt(min = 0, max = 16)
 		@Config.LangKey("randomtweaks.config.boneMeal.sugarCanes")
 		@Config.Comment("The amount of stages Bone Meal should cause Sugar Canes to grow. " +
 				"16 is a full block.")
 		public int sugarCanes = 8;
-
-		@Config.LangKey("randomtweaks.config.boneMeal.netherWarts")
-		@Config.Comment("Whether Bone Meal should grow Nether Warts.")
-		public boolean netherWarts = true;
 	}
 
 	public static class Client {
@@ -136,6 +133,31 @@ public class RTConfig {
 		@Config.Comment("Options related to the time of day overlay.")
 		public TimeOfDay timeOfDay = new TimeOfDay();
 
+		@Config.LangKey("randomtweaks.config.client.clearWater")
+		@Config.Comment("Removes underwater fog.")
+		public boolean clearWater = true;
+
+		@Config.RequiresWorldRestart
+		@Config.LangKey("randomtweaks.config.client.contributorCapes")
+		@Config.Comment("Enables contributor capes.")
+		public boolean contributorCapes = true;
+
+		@Config.LangKey("randomtweaks.config.client.disableEnderDragonDeathSound")
+		@Config.Comment("Disables the Ender Dragon death sound.")
+		public boolean disableEnderDragonDeathSound;
+
+		@Config.LangKey("randomtweaks.config.client.disablePotionIcons")
+		@Config.Comment("Whether to disable the potion icons at the top right.")
+		public boolean disablePotionIcons = Constants.IS_DEOBFUSCATED;
+
+		@Config.LangKey("randomtweaks.config.client.disablePotionShift")
+		@Config.Comment("Stops potion effects from moving GUIs to the right.")
+		public boolean disablePotionShift = true;
+
+		@Config.LangKey("randomtweaks.config.client.disableWitherSpawnSound")
+		@Config.Comment("Disables the Wither spawn sound.")
+		public boolean disableWitherSpawnSound;
+
 		@Config.LangKey("randomtweaks.config.client.moveBucketCreativeTab")
 		@Config.Comment("Moves the Bucket to the Tools creative tab.")
 		public boolean moveBucketCreativeTab = true;
@@ -144,27 +166,6 @@ public class RTConfig {
 		@Config.Comment("Moves spawn eggs to their own creative tab.")
 		public boolean spawnEggsCreativeTab = true;
 
-		@Config.RequiresWorldRestart
-		@Config.LangKey("randomtweaks.config.client.contributorCapes")
-		@Config.Comment("Enables contributor capes.")
-		public boolean contributorCapes = true;
-
-		@Config.LangKey("randomtweaks.config.client.disableWitherSpawnSound")
-		@Config.Comment("Disables the Wither spawn sound.")
-		public boolean disableWitherSpawnSound;
-
-		@Config.LangKey("randomtweaks.config.client.disableEnderDragonDeathSound")
-		@Config.Comment("Disables the Ender Dragon death sound.")
-		public boolean disableEnderDragonDeathSound;
-
-		@Config.LangKey("randomtweaks.config.client.disablePotionShift")
-		@Config.Comment("Stops potion effects from moving GUIs to the right.")
-		public boolean disablePotionShift = true;
-
-		@Config.LangKey("randomtweaks.config.client.clearWater")
-		@Config.Comment("Removes underwater fog.")
-		public boolean clearWater = true;
-
 		@Config.LangKey("randomtweaks.config.client.stepup")
 		@Config.Comment("Whether to enable stepup.")
 		public boolean stepup = Constants.IS_DEOBFUSCATED;
@@ -172,10 +173,6 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.client.stepupEnabledByDefault")
 		@Config.Comment("Whether stepup is enabled by default.")
 		public boolean stepupEnabledByDefault;
-
-		@Config.LangKey("randomtweaks.config.client.disablePotionIcons")
-		@Config.Comment("Whether to disable the potion icons at the top right.")
-		public boolean disablePotionIcons = Constants.IS_DEOBFUSCATED;
 	}
 
 	public static class Commands {
@@ -184,10 +181,11 @@ public class RTConfig {
 		@Config.Comment("Enables the /deletegamerule command.")
 		public boolean deletegamerule = true;
 
-		@Config.RequiresWorldRestart
-		@Config.LangKey("randomtweaks.config.commands.hunger")
-		@Config.Comment("Enables the /hunger command, which sets a player's hunger level.")
-		public boolean hunger = true;
+		@Config.RequiresMcRestart
+		@Config.LangKey("randomtweaks.config.commands.disconnect")
+		@Config.Comment("Enables the client-sided /disconnect command, which leaves the " +
+				"current world.")
+		public boolean disconnect = true;
 
 		@Config.RequiresWorldRestart
 		@Config.LangKey("randomtweaks.config.commands.giveTweaks")
@@ -202,21 +200,19 @@ public class RTConfig {
 		public boolean helpTweaks = true;
 
 		@Config.RequiresWorldRestart
+		@Config.LangKey("randomtweaks.config.commands.hunger")
+		@Config.Comment("Enables the /hunger command, which sets a player's hunger level.")
+		public boolean hunger = true;
+
+		@Config.RequiresWorldRestart
 		@Config.LangKey("randomtweaks.config.commands.rtreload")
-		@Config.Comment("Enables the /rtreload command, which reloads this configuration.")
+		@Config.Comment("Enables the /rtreload command.")
 		public boolean rtreload = true;
 
 		@Config.RequiresMcRestart
 		@Config.LangKey("randomtweaks.config.commands.rtreloadclient")
-		@Config.Comment("Enables the /rtreloadclient command, which is the client-sided " +
-				"version of /rtreload.")
+		@Config.Comment("Enables the client-sided /rtreloadclient command.")
 		public boolean rtreloadclient = true;
-
-		@Config.RequiresMcRestart
-		@Config.LangKey("randomtweaks.config.commands.disconnect")
-		@Config.Comment("Enables the client-sided /disconnect command, which leaves the " +
-				"current world.")
-		public boolean disconnect = true;
 	}
 
 	public static class Ding {
@@ -246,27 +242,6 @@ public class RTConfig {
 	}
 
 	public static class Hunger {
-		@Config.LangKey("randomtweaks.config.hunger.respawnResetBehavior")
-		@Config.Comment("What happens to a player's hunger when they respawn.")
-		public RespawnHandler.HungerResetBehavior respawnResetBehavior =
-				RespawnHandler.HungerResetBehavior.RESET_UNLESS_KEEP_INVENTORY;
-
-		@Config.RangeInt(min = 0)
-		@Config.LangKey("randomtweaks.config.hunger.minimumRespawnHungerLevel")
-		@Config.Comment("The minimum hunger level on respawn.")
-		public int minimumRespawnHungerLevel = 3;
-
-		@Config.RangeInt(min = 1)
-		@Config.LangKey("randomtweaks.config.hunger.maximumHungerLevel")
-		@Config.Comment("The maximum hunger level.")
-		public int maximumHungerLevel = Constants.IS_DEOBFUSCATED ? 22 : 20;
-
-		@Config.RangeDouble(min = 0.0)
-		@Config.LangKey("randomtweaks.config.hunger.saturationLimit")
-		@Config.Comment("This value is added to the player's food level to calculate the maximum " +
-				"saturation level.")
-		public double saturationLimit = Constants.IS_DEOBFUSCATED ? 100.0 : 0.0;
-
 		@Config.LangKey("randomtweaks.config.hunger.carryExcessHungerToSaturation")
 		@Config.Comment("If this is enabled, any excess hunger level gained by eating will be " +
 				"added to the saturation.")
@@ -275,21 +250,35 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.hunger.halveExhaustion")
 		@Config.Comment("Halves exhaustion values.")
 		public boolean halveExhaustion = Constants.IS_DEOBFUSCATED;
+
+		@Config.RangeInt(min = 1)
+		@Config.LangKey("randomtweaks.config.hunger.maximumHungerLevel")
+		@Config.Comment("The maximum hunger level.")
+		public int maximumHungerLevel = Constants.IS_DEOBFUSCATED ? 22 : 20;
+
+		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.hunger.minimumRespawnHungerLevel")
+		@Config.Comment("The minimum hunger level on respawn.")
+		public int minimumRespawnHungerLevel = 3;
+
+		@Config.LangKey("randomtweaks.config.hunger.respawnResetBehavior")
+		@Config.Comment("What happens to a player's hunger when they respawn. " +
+				"This has no effect in creative mode.")
+		public RespawnHandler.HungerResetBehavior respawnResetBehavior =
+				RespawnHandler.HungerResetBehavior.RESET_UNLESS_KEEP_INVENTORY;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("randomtweaks.config.hunger.saturationLimit")
+		@Config.Comment("This value is added to the player's food level to calculate the maximum " +
+				"saturation level.")
+		public double saturationLimit = Constants.IS_DEOBFUSCATED ? 100.0 : 0.0;
 	}
 
 	public static class Keybinds {
-		@Config.LangKey("randomtweaks.config.keybinds.reloadSoundSystem")
-		@Config.Comment("Enables the Reload Sound System keybind.")
-		public boolean reloadSoundSystem = true;
-
 		@Config.LangKey("randomtweaks.config.keybinds.noclip")
 		@Config.Comment("Enables the Noclip keybind, which toggles between /gamemode c " +
 				"and /gamemode sp.")
 		public boolean noclip = true;
-
-		@Config.LangKey("randomtweaks.config.keybinds.toggleFoVChanges")
-		@Config.Comment("Enables the Toggle FoV Changes keybind.")
-		public boolean toggleFoVChanges = true;
 
 		@Config.LangKey("randomtweaks.config.keybinds.fovChangesEnabledByDefault")
 		@Config.Comment("Whether FoV changes are enabled by default.")
@@ -300,35 +289,50 @@ public class RTConfig {
 				"toggled.")
 		public boolean fovChangesStatusMessage = true;
 
+		@Config.LangKey("randomtweaks.config.keybinds.reloadSoundSystem")
+		@Config.Comment("Enables the Reload Sound System keybind.")
+		public boolean reloadSoundSystem = true;
+
+		@Config.LangKey("randomtweaks.config.keybinds.toggleFoVChanges")
+		@Config.Comment("Enables the Toggle FoV Changes keybind.")
+		public boolean toggleFoVChanges = true;
+
 		@Config.LangKey("randomtweaks.config.keybinds.toggleTimeOfDayOverlay")
 		@Config.Comment("Enables the Toggle Time of Day Overlay keybind.")
 		public boolean toggleTimeOfDayOverlay = true;
 	}
 
 	public static class Misc {
-		@Config.LangKey("randomtweaks.config.misc.moreRomanNumerals")
-		@Config.Comment("Enables Roman numerals from -32768 to 32767.")
-		public boolean moreRomanNumerals = true;
-
-		@Config.LangKey("randomtweaks.config.misc.sleepTweaks")
-		@Config.Comment("Allows players to sleep near mobs with custom names.")
-		public boolean sleepTweaks = true;
-
 		@Config.RangeDouble(min = 0.0, max = 1024.0)
 		@Config.LangKey("randomtweaks.config.misc.attackSpeed")
 		@Config.Comment("Sets the base attack speed for players. Set this to 16.0 or higher " +
 				"to remove the attack cooldown. 4.0 is the default value.")
 		public double attackSpeed = Constants.IS_DEOBFUSCATED ? 24.0 : 4.0;
 
-		@Config.LangKey("randomtweaks.config.misc.deathPunishmentsIfKeepInventory")
-		@Config.Comment("Enables punishments on death if keepInventory is enabled so it's not " +
-				"too overpowered. All XP and 3 hunger points are removed. This " +
-				"overrides hungerBehavior if keepInventory is true.")
-		public boolean deathPunishmentsIfKeepInventory = Constants.IS_DEOBFUSCATED;
+		@Config.LangKey("randomtweaks.config.misc.deathPunishmentMode")
+		@Config.Comment("Sets when death punishments are enabled in which all XP and 3 hunger " +
+				"points are removed. This is always disabled in creative mode and overrides " +
+				"hunger.respawnResetBehavior.")
+		public RespawnHandler.DeathPunishmentMode deathPunishmentMode =
+				RespawnHandler.DeathPunishmentMode.ENABLED_IF_KEEP_INVENTORY;
 
 		@Config.LangKey("randomtweaks.config.misc.disableCumulativeAnvilCost")
 		@Config.Comment("Disables the cumulative anvil cost.")
 		public boolean disableCumulativeAnvilCost = true;
+
+		@Config.LangKey("randomtweaks.config.misc.disableNetherPortalCreationGamerule")
+		@Config.Comment("The name of the gamerule that disables Nether portal creation. " +
+				"Set this to an empty string to disable the gamerule.")
+		public String disableNetherPortalCreationGamerule = "disableNetherPortalCreation";
+
+		@Config.LangKey("randomtweaks.config.misc.farmlandTrampleBehavior")
+		@Config.Comment("The farmland trample behavior.")
+		public TrampleHandler.Behavior farmlandTrampleBehavior =
+				TrampleHandler.Behavior.DONT_TRAMPLE_IF_FEATHER_FALLING;
+
+		@Config.LangKey("randomtweaks.config.misc.moreRomanNumerals")
+		@Config.Comment("Enables Roman numerals from -32768 to 32767.")
+		public boolean moreRomanNumerals = true;
 
 		@Config.LangKey("randomtweaks.config.misc.pickUpSkeletonArrows")
 		@Config.Comment("Allows skeleton arrows to be picked up.")
@@ -338,21 +342,17 @@ public class RTConfig {
 		@Config.Comment("Disables mob spawning on non-full cubes.")
 		public boolean requireFullCubeForSpawns = Constants.IS_DEOBFUSCATED;
 
-		@Config.LangKey("randomtweaks.config.misc.disableNetherPortalCreationGamerule")
-		@Config.Comment("Adds the \"disableNetherPortalCreation\" gamerule.")
-		public boolean disableNetherPortalCreationGamerule = true;
-
-		@Config.LangKey("randomtweaks.config.misc.farmlandTrampleBehavior")
-		@Config.Comment("The farmland trample behavior.")
-		public TrampleHandler.Behavior farmlandTrampleBehavior =
-				TrampleHandler.Behavior.DONT_TRAMPLE_IF_FEATHER_FALLING;
+		@Config.LangKey("randomtweaks.config.misc.sleepTweaks")
+		@Config.Comment("Allows players to sleep near mobs with custom names.")
+		public boolean sleepTweaks = true;
 	}
 
 	public static class OceanFloor {
 		@Config.RequiresMcRestart
-		@Config.LangKey("randomtweaks.config.oceanFloor.enabled")
-		@Config.Comment("Enables the ocean floor worldgen.")
-		public boolean enabled = true;
+		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.oceanFloor.clayChance")
+		@Config.Comment("The clay spawn chance.")
+		public int clayChance = 65;
 
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
@@ -362,21 +362,9 @@ public class RTConfig {
 
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
-		@Config.LangKey("randomtweaks.config.oceanFloor.clayChance")
-		@Config.Comment("The clay spawn chance.")
-		public int clayChance = 65;
-
-		@Config.RequiresMcRestart
-		@Config.RangeInt(min = 0)
-		@Config.LangKey("randomtweaks.config.oceanFloor.sandVeinSize")
-		@Config.Comment("The amount of sand in a vein.")
-		public int sandVeinSize = 22;
-
-		@Config.RequiresMcRestart
-		@Config.RangeInt(min = 0)
-		@Config.LangKey("randomtweaks.config.oceanFloor.sandChance")
-		@Config.Comment("The sand spawn chance.")
-		public int sandChance = 45;
+		@Config.LangKey("randomtweaks.config.oceanFloor.dirtChance")
+		@Config.Comment("The dirt spawn chance.")
+		public int dirtChance = 30;
 
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
@@ -385,10 +373,15 @@ public class RTConfig {
 		public int dirtVeinSize = 18;
 
 		@Config.RequiresMcRestart
+		@Config.LangKey("randomtweaks.config.oceanFloor.enabled")
+		@Config.Comment("Enables the ocean floor worldgen.")
+		public boolean enabled = true;
+
+		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
-		@Config.LangKey("randomtweaks.config.oceanFloor.dirtChance")
-		@Config.Comment("The dirt spawn chance.")
-		public int dirtChance = 30;
+		@Config.LangKey("randomtweaks.config.oceanFloor.maxY")
+		@Config.Comment("The maximum Y coordinate.")
+		public int maxY = 128;
 
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
@@ -398,12 +391,28 @@ public class RTConfig {
 
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
-		@Config.LangKey("randomtweaks.config.oceanFloor.maxY")
-		@Config.Comment("The maximum Y coordinate.")
-		public int maxY = 128;
+		@Config.LangKey("randomtweaks.config.oceanFloor.sandChance")
+		@Config.Comment("The sand spawn chance.")
+		public int sandChance = 45;
+
+		@Config.RequiresMcRestart
+		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.oceanFloor.sandVeinSize")
+		@Config.Comment("The amount of sand in a vein.")
+		public int sandVeinSize = 22;
 	}
 
 	public static class PlayerHeadDrops {
+		@Config.RangeDouble(min = 0.0, max = 1.0)
+		@Config.LangKey("randomtweaks.config.playerHeadDrops.chanceWhenKilledByChargedCreeper")
+		@Config.Comment("The player head drop chance when a player is killed by a charged creeper.")
+		public double chanceWhenKilledByChargedCreeper = 1.0;
+
+		@Config.RangeDouble(min = 0.0, max = 1.0)
+		@Config.LangKey("randomtweaks.config.playerHeadDrops.chanceWhenKilledByPlayer")
+		@Config.Comment("The player head drop chance when a player is killed by another player.")
+		public double chanceWhenKilledByPlayer = 1.0;
+
 		@Config.LangKey("randomtweaks.config.playerHeadDrops.enabled")
 		@Config.Comment("Whether players should drop their heads when they die.")
 		public boolean enabled = true;
@@ -412,16 +421,6 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.playerHeadDrops.normalChance")
 		@Config.Comment("The normal player head drop chance.")
 		public double normalChance = 1.0;
-
-		@Config.RangeDouble(min = 0.0, max = 1.0)
-		@Config.LangKey("randomtweaks.config.playerHeadDrops.chanceWhenKilledByPlayer")
-		@Config.Comment("The player head drop chance when a player is killed by another player.")
-		public double chanceWhenKilledByPlayer = 1.0;
-
-		@Config.RangeDouble(min = 0.0, max = 1.0)
-		@Config.LangKey("randomtweaks.config.playerHeadDrops.chanceWhenKilledByChargedCreeper")
-		@Config.Comment("The player head drop chance when a player is killed by a charged creeper.")
-		public double chanceWhenKilledByChargedCreeper = 1.0;
 	}
 
 	public static class RandomizedAges {
@@ -430,22 +429,16 @@ public class RTConfig {
 		@Config.Comment("The chance that an animal's age is randomized.")
 		public double chance = 0.1;
 
-		@Config.LangKey("randomtweaks.config.randomizedAges.minimumAge")
-		@Config.Comment("The minimum age in ticks.")
-		public int minimumAge = -24000;
-
 		@Config.LangKey("randomtweaks.config.randomizedAges.maximumAge")
 		@Config.Comment("The maximum age in ticks.")
 		public int maximumAge = -6000;
+
+		@Config.LangKey("randomtweaks.config.randomizedAges.minimumAge")
+		@Config.Comment("The minimum age in ticks.")
+		public int minimumAge = -24000;
 	}
 
 	public static class Squids {
-		@Config.RangeInt(min = 0)
-		@Config.LangKey("randomtweaks.config.squids.spawnRadiusLimit")
-		@Config.Comment("Disables squid spawning when a player is not within the specified " +
-				"radius. Set this to 0 to disable this limit.")
-		public int spawnRadiusLimit = 64;
-
 		@Config.RangeInt(min = -1)
 		@Config.LangKey("randomtweaks.config.squids.chunkLimit")
 		@Config.Comment("The amount of squids allowed in one chunk. Set this to 0 to disable " +
@@ -457,16 +450,18 @@ public class RTConfig {
 		@Config.Comment("The maximum number of squids that can be spawned in a pack. " +
 				"Set to 0 to use vanilla behavior.")
 		public int maxPackSize = 2;
+
+		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.squids.spawnRadiusLimit")
+		@Config.Comment("Disables squid spawning when a player is not within the specified " +
+				"radius. Set this to 0 to disable this limit.")
+		public int spawnRadiusLimit = 64;
 	}
 
 	public static class TimeOfDay {
-		@Config.LangKey("randomtweaks.config.timeOfDay.enabled")
-		@Config.Comment("Enables the overlay.")
-		public boolean enabled = true;
-
-		@Config.LangKey("randomtweaks.config.timeOfDay.enabledByDefault")
-		@Config.Comment("Enables the overlay by default.")
-		public boolean enabledByDefault = Constants.IS_DEOBFUSCATED;
+		@Config.LangKey("randomtweaks.config.timeOfDay.alignment")
+		@Config.Comment("The alignment.")
+		public Alignment alignment = Alignment.TOPLEFT;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.disableIfNoDaylightCycle")
 		@Config.Comment("Disables the overlay if doDaylightCycle is false.")
@@ -478,15 +473,19 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.disableInGUIs")
 		@Config.Comment("Disables the overlay in GUIs.")
-		public boolean disableInGUIs = false;
+		public boolean disableInGUIs = true;
+
+		@Config.LangKey("randomtweaks.config.timeOfDay.enabled")
+		@Config.Comment("Enables the overlay.")
+		public boolean enabled = true;
+
+		@Config.LangKey("randomtweaks.config.timeOfDay.enabledByDefault")
+		@Config.Comment("Enables the overlay by default.")
+		public boolean enabledByDefault = Constants.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.twentyFourHourTime")
 		@Config.Comment("Enables 24-hour time.")
 		public boolean twentyFourHourTime = Constants.IS_DEOBFUSCATED;
-
-		@Config.LangKey("randomtweaks.config.timeOfDay.alignment")
-		@Config.Comment("The alignment.")
-		public Alignment alignment = Alignment.TOPLEFT;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.x")
 		@Config.Comment("The X offset.")
@@ -506,6 +505,29 @@ public class RTConfig {
 		@Config.Comment("Enables the Realistic world type. Name: REALISTIC")
 		public boolean realisticWorldType = true;
 
+		@Config.RangeInt(min = 2)
+		@Config.LangKey("randomtweaks.config.world.voidIslandsChunkRarity")
+		@Config.Comment("The rarity of non-empty chunks in a Void Islands world. " +
+				"If n, there is a 1 in n chance of a chunk being non-empty.")
+		public int voidIslandsChunkRarity = 10;
+
+		@Config.LangKey("randomtweaks.config.world.voidIslandsWorldBiome")
+		@Config.Comment("The biome of the void chunks of a Void Islands world. " +
+				"Leave this empty to randomize the biomes.")
+		public String voidIslandsWorldBiome = "minecraft:plains";
+
+		@Config.LangKey("randomtweaks.config.world.voidIslandsWorldType")
+		@Config.Comment("Enables the Void Islands world type. Name: VOIDISLANDS")
+		public boolean voidIslandsWorldType = true;
+
+		@Config.LangKey("randomtweaks.config.world.voidWorldBiome")
+		@Config.Comment("The biome of a Void world. Leave this empty to randomize the biomes.")
+		public String voidWorldBiome = "minecraft:plains";
+
+		@Config.LangKey("randomtweaks.config.world.voidWorldBlock")
+		@Config.Comment("The block placed in a Void world for players to stand on.")
+		public String voidWorldBlock = "minecraft:glass";
+
 		@Config.LangKey("randomtweaks.config.world.voidWorldType")
 		@Config.Comment("Enables the Void world type. Name: VOID")
 		public boolean voidWorldType = true;
@@ -514,29 +536,6 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.world.voidWorldYSpawn")
 		@Config.Comment("The Y coordinate of the default spawn point in a Void world.")
 		public int voidWorldYSpawn = 17;
-
-		@Config.LangKey("randomtweaks.config.world.voidWorldBlock")
-		@Config.Comment("The block placed in a Void world for players to stand on.")
-		public String voidWorldBlock = "minecraft:glass";
-
-		@Config.LangKey("randomtweaks.config.world.voidWorldBiome")
-		@Config.Comment("The biome of a Void world. Leave this empty to randomize the biomes.")
-		public String voidWorldBiome = "minecraft:plains";
-
-		@Config.LangKey("randomtweaks.config.world.voidIslandsWorldType")
-		@Config.Comment("Enables the Void Islands world type. Name: VOIDISLANDS")
-		public boolean voidIslandsWorldType = true;
-
-		@Config.LangKey("randomtweaks.config.world.voidIslandsWorldBiome")
-		@Config.Comment("The biome of the void chunks of a Void Islands world. " +
-				"Leave this empty to randomize the biomes.")
-		public String voidIslandsWorldBiome = "minecraft:plains";
-
-		@Config.RangeInt(min = 2)
-		@Config.LangKey("randomtweaks.config.world.voidIslandsChunkRarity")
-		@Config.Comment("The rarity of non-empty chunks in a Void Islands world. " +
-				"If n, there is a 1 in n chance of a chunk being non-empty.")
-		public int voidIslandsChunkRarity = 10;
 	}
 
 	@Config.LangKey("randomtweaks.config.animals")
@@ -586,134 +585,12 @@ public class RTConfig {
 	@Config.Ignore
 	public static OceanFloor oceanFloor = world.oceanFloor;
 
-	public static class DefaultGamerules {
-		public static final List<String> DEFAULT = Arrays.asList(
-				"//Example configuration." +
-						"The game does not need to be restarted after changing this.",
-				"{",
-				"//\t\"commandBlockOutput\": false, //These are for all game modes.",
-				"//\t\"keepInventory\": true,",
-				"//\t\"1:flat,void\": { //Affects creative flat and void worlds. " +
-						"Game modes and world types can be separated with commas without spaces. " +
-						"These are the same as the world types in server.properties.",
-				"//\t\t\"doDaylightCycle\": false,",
-				"//\t\t\"doWeatherCycle\": false,",
-				"//\t\t\"doMobSpawning\": false,",
-				"//\t\t\"rtWorldBorderSize\": 10000 //This is not actually a gamerule, but is " +
-						"used to set the world border in blocks from the chunk (0, 0).",
-				"//\t}",
-				"}"
-		);
-
-		public static void create() {
-			final Path path = getJson("defaultgamerules");
-
-			try {
-				if(Files.exists(path)) {
-					Files.move(path, Paths.get(path.toString() + "_old" + System.nanoTime()));
-				}
-
-				Files.write(path, DEFAULT);
-			} catch(IOException ex) {
-				Utils.crashReport("Failed to create: " + path, ex);
-			}
-		}
-
-		public static void ensureExists() {
-			if(!Files.exists(getJson("defaultgamerules"))) {
-				create();
-			}
-		}
-
-		public static Map<String, String> get(int gamemode, String worldType) {
-			final Path path = getJson("defaultgamerules");
-
-			if(!Files.exists(path)) {
-				create();
-				return Collections.emptyMap();
-			}
-
-			JsonObject object;
-
-			try {
-				object = readJson(path);
-			} catch(JsonSyntaxException ex) {
-				ex.printStackTrace();
-				create();
-				return get(gamemode, worldType);
-			}
-
-			final Map<String, String> gamerules = new HashMap<>();
-
-			for(Map.Entry<String, JsonElement> entry : object.entrySet()) {
-				if(entry.getValue().isJsonObject() &&
-						matchesGamemodeAndWorldType(entry.getKey(), gamemode, worldType)) {
-					putGamerules(gamerules, entry.getValue().getAsJsonObject());
-					continue;
-				}
-
-				gamerules.put(entry.getKey(), entry.getValue().toString());
-			}
-
-			return gamerules;
-		}
-
-		private static void putGamerules(Map<String, String> gamerules, JsonObject object) {
-			for(Map.Entry<String, JsonElement> entry : object.entrySet()) {
-				gamerules.put(entry.getKey(), entry.getValue().toString());
-			}
-		}
-
-		//Format: comma-separated integer gamemodes:comma-separated world types
-		//Examples: 0,1:flat	realistic	2:void,flat
-		public static boolean matchesGamemodeAndWorldType(String string, int gamemode,
-				String worldType) {
-			final String[] split = string.split(":");
-			final String[] gamemodes = split[0].split(",");
-
-			boolean gamemodeFound = false;
-
-			for(String mode : gamemodes) {
-				try {
-					if(Integer.parseInt(mode) == gamemode) {
-						gamemodeFound = true;
-						break;
-					}
-				} catch(NumberFormatException ex) {
-					if(split.length == 1 && mode.equals(worldType)) {
-						//Then it's a world type, not a mode.
-						return true;
-					}
-				}
-			}
-
-			if(!gamemodeFound) {
-				return false;
-			}
-
-			if(split.length > 1) {
-				for(String type : split[1].split(",")) {
-					if(type.equals(worldType)) {
-						return true;
-					}
-				}
-			}
-
-			return false;
-		}
-	}
-
 	public static class SheepColorWeights {
+		public static final Path PATH = getJson("sheepcolorweights");
 		public static final Map<EnumDyeColor, Double> WEIGHTS = new LinkedHashMap<>();
 
 		public static void create() {
-			final Path path = getJson("sheepcolorweights");
-
 			try {
-				if(Files.exists(path)) {
-					Files.move(path, Paths.get(path.toString() + "_old" + System.nanoTime()));
-				}
-
 				final JsonObject json = new JsonObject();
 
 				json.addProperty(EnumDyeColor.WHITE.getName(), 70.0);
@@ -725,14 +602,14 @@ public class RTConfig {
 				}
 
 				final String string = new GsonBuilder().setPrettyPrinting().create().toJson(json);
-				Files.write(path, Collections.singletonList(string.replaceAll(" {2}", "\t")));
+				Files.write(PATH, Collections.singletonList(string.replaceAll(" {2}", "\t")));
 			} catch(IOException ex) {
-				Utils.crashReport("Failed to create: " + path, ex);
+				Utils.crashReport("Failed to create: " + PATH, ex);
 			}
 		}
 
 		public static void ensureExists() {
-			if(!Files.exists(getJson("sheepcolorweights"))) {
+			if(!Files.exists(PATH)) {
 				create();
 			}
 
@@ -740,9 +617,7 @@ public class RTConfig {
 		}
 
 		public static void get() {
-			final Path path = getJson("sheepcolorweights");
-
-			if(!Files.exists(path)) {
+			if(!Files.exists(PATH)) {
 				create();
 				get();
 				return;
@@ -751,11 +626,14 @@ public class RTConfig {
 			JsonObject object;
 
 			try {
-				object = readJson(path);
+				object = readJson(PATH);
 			} catch(JsonSyntaxException ex) {
-				ex.printStackTrace();
+				RandomTweaks.LOGGER.error("Error in the RandomTweaks sheep color weights JSON. " +
+						"The file will be replaced.", ex);
+
 				create();
 				get();
+
 				return;
 			}
 
@@ -780,7 +658,9 @@ public class RTConfig {
 					}
 				}
 			} catch(NumberFormatException ex) {
-				ex.printStackTrace();
+				RandomTweaks.LOGGER.error("Error in the RandomTweaks sheep color weights JSON. " +
+						"The file will be replaced.", ex);
+
 				create();
 				get();
 			}
@@ -788,6 +668,8 @@ public class RTConfig {
 	}
 
 	public static class Data {
+		public static final Path PATH = getJson("data");
+
 		private static Data data;
 
 		public Map<String, Boolean> timeOfDayOverlay;
@@ -799,13 +681,12 @@ public class RTConfig {
 				return data;
 			}
 
-			final Path path = getJson("data");
-
-			if(Files.exists(path)) {
+			if(Files.exists(PATH)) {
 				try {
-					data = new Gson().fromJson(readFile(path), Data.class);
+					data = new Gson().fromJson(readFile(PATH), Data.class);
 				} catch(JsonSyntaxException ex) {
-					RandomTweaks.LOGGER.error("Replacing invalid data file...");
+					RandomTweaks.LOGGER.error("Error in the RandomTweaks data JSON. " +
+							"The file will be replaced.", ex);
 				}
 			}
 
@@ -815,10 +696,11 @@ public class RTConfig {
 				data.timeOfDayOverlay = new HashMap<>();
 				data.stepup = client.stepupEnabledByDefault;
 				data.fovChanges = keybinds.fovChangesEnabledByDefault;
-			}
 
-			if(data.timeOfDayOverlay == null) {
+				save();
+			} else if(data.timeOfDayOverlay == null) {
 				data.timeOfDayOverlay = new HashMap<>();
+				save();
 			}
 
 			return data;
@@ -829,7 +711,7 @@ public class RTConfig {
 			get();
 
 			try {
-				Files.write(getJson("data"), Collections.singletonList(new Gson().toJson(data)));
+				Files.write(PATH, Collections.singletonList(new Gson().toJson(data)));
 			} catch(IOException ex) {
 				Utils.crashReport("Error while saving RandomTweaks data", ex);
 			}
@@ -876,25 +758,19 @@ public class RTConfig {
 		return new JsonParser().parse(readFile(path)).getAsJsonObject();
 	}
 
-	public static boolean isString(JsonElement element) {
-		return element.isJsonPrimitive() && element.getAsJsonPrimitive().isString();
-	}
-
-	public static boolean isBoolean(JsonElement element) {
-		return element.isJsonPrimitive() && element.getAsJsonPrimitive().isBoolean();
-	}
-
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
 		if(event.getModID().equals(RandomTweaks.MODID)) {
-			reloadConfig();
+			reload();
 		}
 	}
 
-	public static void reloadConfig() {
+	public static void reload() {
 		ConfigManager.sync(RandomTweaks.MODID, Config.Type.INSTANCE);
 
 		try {
+			modifyConfig();
+			ConfigManager.sync(RandomTweaks.MODID, Config.Type.INSTANCE);
 			modifyConfig();
 		} catch(Exception ex) {
 			Utils.crashReport("Error while modifying config", ex);
@@ -904,7 +780,6 @@ public class RTConfig {
 			SheepColorWeights.ensureExists();
 		}
 
-		DefaultGamerules.ensureExists();
 		Data.data = null;
 	}
 
