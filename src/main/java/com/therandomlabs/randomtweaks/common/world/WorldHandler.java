@@ -20,7 +20,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class WorldHandler {
 	@SubscribeEvent
 	public static void onWorldLoad(WorldEvent.Load event) {
-		final String name = RTConfig.misc.disableNetherPortalCreationGamerule;
+		final String name = RTConfig.misc.disableNetherPortalCreationGameruleName;
 
 		if(name.isEmpty()) {
 			return;

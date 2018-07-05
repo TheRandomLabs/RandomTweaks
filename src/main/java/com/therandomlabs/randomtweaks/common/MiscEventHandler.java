@@ -140,7 +140,7 @@ public final class MiscEventHandler {
 
 	@SubscribeEvent
 	public static void onPortalSpawn(BlockEvent.PortalSpawnEvent event) {
-		final String name = RTConfig.misc.disableNetherPortalCreationGamerule;
+		final String name = RTConfig.misc.disableNetherPortalCreationGameruleName;
 
 		if(name.isEmpty()) {
 			return;

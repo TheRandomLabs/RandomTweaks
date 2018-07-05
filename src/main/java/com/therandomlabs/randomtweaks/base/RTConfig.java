@@ -320,10 +320,10 @@ public class RTConfig {
 		@Config.Comment("Disables the cumulative anvil cost.")
 		public boolean disableCumulativeAnvilCost = true;
 
-		@Config.LangKey("randomtweaks.config.misc.disableNetherPortalCreationGamerule")
+		@Config.LangKey("randomtweaks.config.misc.disableNetherPortalCreationGameruleName")
 		@Config.Comment("The name of the gamerule that disables Nether portal creation. " +
 				"Set this to an empty string to disable the gamerule.")
-		public String disableNetherPortalCreationGamerule = "disableNetherPortalCreation";
+		public String disableNetherPortalCreationGameruleName = "disableNetherPortalCreation";
 
 		@Config.LangKey("randomtweaks.config.misc.farmlandTrampleBehavior")
 		@Config.Comment("The farmland trample behavior.")
