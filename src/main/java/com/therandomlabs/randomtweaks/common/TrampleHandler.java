@@ -34,7 +34,7 @@ public final class TrampleHandler {
 				final Item item = stack.getItem();
 
 				if(!(item instanceof ItemArmor &&
-						((ItemArmor) item).getEquipmentSlot() == EntityEquipmentSlot.FEET)) {
+						((ItemArmor) item).armorType == EntityEquipmentSlot.FEET)) {
 					continue;
 				}
 
