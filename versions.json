@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12.2": {
+		"1.12.2-2.1.1.1": "Fixed a server error.",
 		"1.12.2-2.1.1.0": "Removed the default gamerules in favor of RandomConfigs' implementation.\nChanged the death punishment toggle to a death punishment mode enum.\nMade the disableNetherPortalCreation gamerule name configurable.\nFixed some bugs and made some miscellaneous improvements.",
 		"1.12.2-2.1.0.0": "Now requires Forge 1.12.2-14.23.4.2718 or higher.\nAdded the disableNetherPortalCreation gamerule.\nFixed stepup not always working with Jump Boost.\nAdded an option to disable the potion icons on the top right.\nReorganized the configuration and improved configuration management. Old properties are now automatically removed.\nTamed Parrots can now be healed.\nAdded an option to halve hunger exhaustion values.\nVillagers are now leashable.\nColored sheep now spawn naturally in the world. Color chances can be configured in sheepcolorweights.json.\nAnimals now spawn with randomized ages. By default, there is a 1 in 10 chance that an animal will spawn as a baby.\nBone Meal can now be used on Cacti, Sugar Canes and Nether Warts.\nEntities no longer trample farmland if they have Feather Falling on their armor.",
 		"1.12.2-2.0.2.0": "Added Comforts compatibility thanks to TheIllusiveC4.",
@@ -285,8 +286,8 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"promos": {
-		"1.12.2-latest": "1.12.2-2.1.0.0",
-		"1.12.2-recommended": "1.12.2-2.1.0.0",
+		"1.12.2-latest": "1.12.2-2.1.1.1",
+		"1.12.2-recommended": "1.12.2-2.1.1.1",
 		"1.12.1-latest": "1.12.2-2.0.2.0",
 		"1.12.1-recommended": "1.12.2-2.0.2.0",
 		"1.12-latest": "1.12.2-2.0.2.0",
