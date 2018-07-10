@@ -2,7 +2,7 @@ package com.therandomlabs.randomtweaks.common.world;
 
 import java.util.Arrays;
 import java.util.Random;
-import com.therandomlabs.randomtweaks.base.RTConfig;
+import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.init.Biomes;
 import net.minecraft.world.World;

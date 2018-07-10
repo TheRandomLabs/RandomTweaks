@@ -1,7 +1,7 @@
 package com.therandomlabs.randomtweaks.common.world;
 
-import com.therandomlabs.randomtweaks.base.RTConfig;
-import com.therandomlabs.randomtweaks.base.RandomTweaks;
+import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;

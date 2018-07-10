@@ -1,6 +1,6 @@
 package com.therandomlabs.randomtweaks.common.world;
 
-import com.therandomlabs.randomtweaks.base.RTConfig;
+import com.therandomlabs.randomtweaks.RTConfig;
 import net.minecraft.world.World;
 
 public class WorldTypeVoid extends RTWorldType {

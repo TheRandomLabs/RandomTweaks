@@ -1,6 +1,6 @@
 package com.therandomlabs.randomtweaks.common;
 
-import com.therandomlabs.randomtweaks.base.RTConfig;
+import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.util.RomanNumerals;
 import net.minecraft.util.text.translation.I18n;
 import net.minecraft.util.text.translation.LanguageMap;

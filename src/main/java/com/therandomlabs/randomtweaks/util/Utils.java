@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.util;
 
+import com.therandomlabs.randomtweaks.common.RTLanguageMap;
 import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
 import net.minecraft.util.ReportedException;
@@ -16,7 +17,7 @@ public final class Utils {
 			GameRegistry.findRegistry(Biome.class);
 
 	public static String localize(String key, Object... args) {
-		return new TextComponentTranslation(key, args).getFormattedText();
+		return RTLanguageMap.INSTANCE.translateKeyFormat(key, args);
 	}
 
 	public static Block getBlock(String blockName, Block defaultBlock) {

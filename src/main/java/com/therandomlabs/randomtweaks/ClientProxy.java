@@ -1,4 +1,4 @@
-package com.therandomlabs.randomtweaks.base;
+package com.therandomlabs.randomtweaks;
 
 import com.therandomlabs.randomtweaks.client.CreativeTabHandler;
 import com.therandomlabs.randomtweaks.client.KeyBindingHandler;

@@ -1,8 +1,7 @@
 package com.therandomlabs.randomtweaks.common;
 
-import com.therandomlabs.randomtweaks.base.Constants;
-import com.therandomlabs.randomtweaks.base.RTConfig;
-import com.therandomlabs.randomtweaks.base.RandomTweaks;
+import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCactus;
 import net.minecraft.block.BlockNetherWart;
@@ -21,7 +20,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class BoneMealHandler {
 	@SubscribeEvent
 	public static void onBoneMeal(BonemealEvent event) {
-		if(Constants.EXPANDED_BONEMEAL_LOADED) {
+		if(RandomTweaks.EXPANDED_BONEMEAL_LOADED) {
 			return;
 		}
 

@@ -2,7 +2,7 @@ package com.therandomlabs.randomtweaks.common;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import com.therandomlabs.randomtweaks.base.RTConfig;
+import com.therandomlabs.randomtweaks.RTConfig;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 

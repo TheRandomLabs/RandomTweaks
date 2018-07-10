@@ -2,9 +2,8 @@ package com.therandomlabs.randomtweaks.common;
 
 import java.util.Random;
 import java.util.UUID;
-import com.therandomlabs.randomtweaks.base.Constants;
-import com.therandomlabs.randomtweaks.base.RTConfig;
-import com.therandomlabs.randomtweaks.base.RandomTweaks;
+import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -64,7 +63,7 @@ public final class MiscEventHandler {
 		player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).
 				setBaseValue(RTConfig.misc.attackSpeed);
 
-		if(!Constants.APPLECORE_LOADED) {
+		if(!RandomTweaks.APPLECORE_LOADED) {
 			player.foodStats = new RTFoodStats(player.foodStats);
 		}
 	}
@@ -97,7 +96,7 @@ public final class MiscEventHandler {
 			return;
 		}
 
-		if(RTConfig.animals.coloredSheep && !Constants.COLORFUL_SHEEP_LOADED &&
+		if(RTConfig.animals.coloredSheep && !RandomTweaks.COLORFUL_SHEEP_LOADED &&
 				clazz == EntitySheep.class) {
 			ColoredSheepHandler.onSheepSpawn((EntitySheep) entity);
 		}
@@ -132,7 +131,7 @@ public final class MiscEventHandler {
 			return;
 		}
 
-		if(RTConfig.animals.coloredSheep && !Constants.COLORFUL_SHEEP_LOADED &&
+		if(RTConfig.animals.coloredSheep && !RandomTweaks.COLORFUL_SHEEP_LOADED &&
 				entity.getClass() == EntitySheep.class) {
 			ColoredSheepHandler.onSheepTick((EntitySheep) entity);
 		}

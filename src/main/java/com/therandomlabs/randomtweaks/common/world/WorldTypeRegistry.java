@@ -3,9 +3,8 @@ package com.therandomlabs.randomtweaks.common.world;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import com.therandomlabs.randomtweaks.base.Constants;
-import com.therandomlabs.randomtweaks.base.RTConfig;
-import com.therandomlabs.randomtweaks.base.RandomTweaks;
+import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -27,7 +26,7 @@ public final class WorldTypeRegistry {
 			return false;
 		}
 
-		if(Constants.QUARK_LOADED) {
+		if(RandomTweaks.QUARK_LOADED) {
 			try {
 				final Class<?> moduleLoader =
 						Class.forName("vazkii.quark.base.module.ModuleLoader");

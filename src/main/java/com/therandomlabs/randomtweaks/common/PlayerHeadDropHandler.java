@@ -1,8 +1,7 @@
 package com.therandomlabs.randomtweaks.common;
 
-import com.therandomlabs.randomtweaks.base.Constants;
-import com.therandomlabs.randomtweaks.base.RTConfig;
-import com.therandomlabs.randomtweaks.base.RandomTweaks;
+import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -18,8 +17,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class PlayerHeadDropHandler {
 	@SubscribeEvent
 	public static void onPlayerDrops(PlayerDropsEvent event) {
-		if(!RTConfig.playerHeadDrops.enabled || Constants.PLAYERS_DROP_HEADS_LOADED ||
-				Constants.HEADCRUMBS_LOADED) {
+		if(!RTConfig.playerHeadDrops.enabled || RandomTweaks.PLAYERS_DROP_HEADS_LOADED ||
+				RandomTweaks.HEADCRUMBS_LOADED) {
 			return;
 		}
 

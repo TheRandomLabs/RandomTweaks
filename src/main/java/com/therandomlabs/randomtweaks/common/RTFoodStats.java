@@ -2,7 +2,7 @@ package com.therandomlabs.randomtweaks.common;
 
 import java.util.AbstractMap;
 import java.util.Map;
-import com.therandomlabs.randomtweaks.base.RTConfig;
+import com.therandomlabs.randomtweaks.RTConfig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;

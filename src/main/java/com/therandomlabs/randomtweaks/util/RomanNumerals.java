@@ -1,7 +1,7 @@
 package com.therandomlabs.randomtweaks.util;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public final class RomanNumerals {
 	private static final String[] ROMAN_NUMERALS = {
@@ -10,7 +10,8 @@ public final class RomanNumerals {
 	private static final int[] ROMAN_NUMERAL_VALUES = {
 			1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1
 	};
-	private static final Map<Integer, String> cachedRomanNumerals = new HashMap<>();
+
+	private static final Map<Integer, String> CACHE = new ConcurrentHashMap<>();
 
 	private RomanNumerals() {}
 
@@ -19,16 +20,20 @@ public final class RomanNumerals {
 			return "Nulla";
 		}
 
-		if(cachedRomanNumerals.containsKey(number)) {
-			return cachedRomanNumerals.get(number);
+		final String cached = CACHE.get(number);
+
+		if(cached != null) {
+			return cached;
 		}
 
 		final boolean negative = number < 0;
+
 		if(negative) {
 			number = -number;
 		}
 
-		final StringBuilder romanNumeral = new StringBuilder();
+		final StringBuilder builder = new StringBuilder();
+
 		for(int i = 0; i < ROMAN_NUMERALS.length; i++) {
 			while(number >= ROMAN_NUMERAL_VALUES[i]) {
 				//The largest value that can be represented with Roman numerals without special
@@ -39,23 +44,22 @@ public final class RomanNumerals {
 							Integer.parseInt(string.substring(0, 1 + (string.length() - 4)));
 
 					//In Roman numerals, brackets mean "multiply by 1000"
-					romanNumeral.append('(').append(get(nested)).append(')');
+					builder.append('(').append(get(nested)).append(')');
 					number -= nested * 1000;
 				} else {
-					romanNumeral.append(ROMAN_NUMERALS[i]);
+					builder.append(ROMAN_NUMERALS[i]);
 					number -= ROMAN_NUMERAL_VALUES[i];
 				}
 			}
 		}
 
-		String romanNumeralString = romanNumeral.toString();
+		String romanNumeral = builder.toString();
 
 		if(negative) {
-			romanNumeralString = "-" + romanNumeralString;
+			romanNumeral = "-" + romanNumeral;
 		}
 
-		cachedRomanNumerals.put(number, romanNumeralString);
-
-		return romanNumeralString;
+		CACHE.put(number, romanNumeral);
+		return romanNumeral;
 	}
 }

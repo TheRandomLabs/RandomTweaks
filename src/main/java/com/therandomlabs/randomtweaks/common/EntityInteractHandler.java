@@ -2,9 +2,8 @@ package com.therandomlabs.randomtweaks.common;
 
 import java.util.Set;
 import com.google.common.collect.Sets;
-import com.therandomlabs.randomtweaks.base.Constants;
-import com.therandomlabs.randomtweaks.base.RTConfig;
-import com.therandomlabs.randomtweaks.base.RandomTweaks;
+import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityParrot;
@@ -88,7 +87,7 @@ public final class EntityInteractHandler {
 	}
 
 	private static int getHealAmount(EntityTameable entity, ItemStack stack, Set<Item> healItems) {
-		if(!(Constants.IS_DEOBFUSCATED || entity.isTamed()) ||
+		if(!(RandomTweaks.IS_DEOBFUSCATED || entity.isTamed()) ||
 				entity.getHealth() >= entity.getMaxHealth()) {
 			return 0;
 		}

@@ -2,9 +2,8 @@ package com.therandomlabs.randomtweaks.common;
 
 import java.lang.reflect.Method;
 import java.util.function.Function;
-import com.therandomlabs.randomtweaks.base.Constants;
-import com.therandomlabs.randomtweaks.base.RTConfig;
-import com.therandomlabs.randomtweaks.base.RandomTweaks;
+import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
@@ -47,7 +46,7 @@ public final class SleepHandler {
 			return;
 		}
 
-		if(Constants.COMFORTS_LOADED) {
+		if(RandomTweaks.COMFORTS_LOADED) {
 			for(StackTraceElement element : Thread.currentThread().getStackTrace()) {
 				if(element.getClassName().equals("c4.comforts.common.items.ItemSleepingBag")) {
 					return;

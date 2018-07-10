@@ -1,4 +1,4 @@
-package com.therandomlabs.randomtweaks.base;
+package com.therandomlabs.randomtweaks;
 
 import com.therandomlabs.randomtweaks.common.RTFoodStats;
 import com.therandomlabs.randomtweaks.common.RTLanguageMap;
@@ -20,15 +20,15 @@ public class CommonProxy {
 	public void init(FMLInitializationEvent event) {
 		WorldTypeRegistry.registerWorldTypes();
 
-		if(RTConfig.oceanFloor.enabled && !Constants.OCEAN_FLOOR_LOADED) {
+		if(RTConfig.oceanFloor.enabled && !RandomTweaks.OCEAN_FLOOR_LOADED) {
 			GameRegistry.registerWorldGenerator(new WorldGeneratorOceanFloor(), 0);
 		}
 
-		if(Constants.APPLECORE_LOADED) {
+		if(RandomTweaks.APPLECORE_LOADED) {
 			MinecraftForge.EVENT_BUS.register(new RTFoodStats.AppleCoreEventHandler());
 		}
 
-		if(Constants.COMFORTS_LOADED) {
+		if(RandomTweaks.COMFORTS_LOADED) {
 			FMLInterModComms.sendFunctionMessage("comforts", "mobSleepFilter",
 					SleepHandler.MobFilter.class.getName());
 		}

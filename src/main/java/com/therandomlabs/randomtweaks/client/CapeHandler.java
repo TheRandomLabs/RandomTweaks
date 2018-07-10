@@ -3,9 +3,8 @@ package com.therandomlabs.randomtweaks.client;
 import java.util.Arrays;
 import java.util.List;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
-import com.therandomlabs.randomtweaks.base.Constants;
-import com.therandomlabs.randomtweaks.base.RTConfig;
-import com.therandomlabs.randomtweaks.base.RandomTweaks;
+import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.network.NetworkPlayerInfo;
@@ -46,7 +45,7 @@ public final class CapeHandler {
 	}
 
 	public static boolean hasCape(AbstractClientPlayer player) {
-		return Constants.IS_DEOBFUSCATED || CONTRIBUTORS.contains(player.getUniqueID().toString());
+		return RandomTweaks.IS_DEOBFUSCATED || CONTRIBUTORS.contains(player.getUniqueID().toString());
 	}
 
 	private static void setCape(AbstractClientPlayer player) {

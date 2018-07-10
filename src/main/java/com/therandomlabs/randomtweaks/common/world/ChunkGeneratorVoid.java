@@ -3,7 +3,7 @@ package com.therandomlabs.randomtweaks.common.world;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import com.therandomlabs.randomtweaks.base.RTConfig;
+import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;

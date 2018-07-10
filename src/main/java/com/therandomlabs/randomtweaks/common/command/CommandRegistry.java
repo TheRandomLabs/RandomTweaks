@@ -1,7 +1,7 @@
 package com.therandomlabs.randomtweaks.common.command;
 
-import com.therandomlabs.randomtweaks.base.Constants;
-import com.therandomlabs.randomtweaks.base.RTConfig;
+import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
@@ -21,7 +21,7 @@ public final class CommandRegistry {
 			event.registerServerCommand(new CommandRTGive());
 		}
 
-		if(RTConfig.commands.helpTweaks && !Constants.HELPFIXER_LOADED) {
+		if(RTConfig.commands.helpTweaks && !RandomTweaks.HELPFIXER_LOADED) {
 			event.registerServerCommand(new CommandRTHelp());
 		}
 

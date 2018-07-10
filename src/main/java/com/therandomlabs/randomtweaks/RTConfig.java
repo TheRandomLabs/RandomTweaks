@@ -1,4 +1,4 @@
-package com.therandomlabs.randomtweaks.base;
+package com.therandomlabs.randomtweaks;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
@@ -75,7 +75,7 @@ public class RTConfig {
 	public static class AutoThirdPerson {
 		@Config.LangKey("entity.Boat.name")
 		@Config.Comment("Whether auto-third person is enabled when riding a boat.")
-		public boolean boat = Constants.IS_DEOBFUSCATED;
+		public boolean boat = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("item.elytra.name")
 		@Config.Comment("Whether auto-third person is enabled when flying with elytra.")
@@ -87,15 +87,15 @@ public class RTConfig {
 
 		@Config.LangKey("entity.Horse.name")
 		@Config.Comment("Whether auto-third person is enabled when riding a horse.")
-		public boolean horse = Constants.IS_DEOBFUSCATED;
+		public boolean horse = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("item.minecart.name")
 		@Config.Comment("Whether auto-third person is enabled when riding a minecart.")
-		public boolean minecart = Constants.IS_DEOBFUSCATED;
+		public boolean minecart = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("entity.Pig.name")
 		@Config.Comment("Whether auto-third person is enabled when riding a pig.")
-		public boolean pig = Constants.IS_DEOBFUSCATED;
+		public boolean pig = RandomTweaks.IS_DEOBFUSCATED;
 	}
 
 	public static class BoneMeal {
@@ -148,7 +148,7 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.client.disablePotionIcons")
 		@Config.Comment("Whether to disable the potion icons at the top right.")
-		public boolean disablePotionIcons = Constants.IS_DEOBFUSCATED;
+		public boolean disablePotionIcons = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.client.disablePotionShift")
 		@Config.Comment("Stops potion effects from moving GUIs to the right.")
@@ -168,7 +168,7 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.client.stepup")
 		@Config.Comment("Whether to enable stepup.")
-		public boolean stepup = Constants.IS_DEOBFUSCATED;
+		public boolean stepup = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.client.stepupEnabledByDefault")
 		@Config.Comment("Whether stepup is enabled by default.")
@@ -245,16 +245,16 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.hunger.carryExcessHungerToSaturation")
 		@Config.Comment("If this is enabled, any excess hunger level gained by eating will be " +
 				"added to the saturation.")
-		public boolean carryExcessHungerToSaturation = Constants.IS_DEOBFUSCATED;
+		public boolean carryExcessHungerToSaturation = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.hunger.halveExhaustion")
 		@Config.Comment("Halves exhaustion values.")
-		public boolean halveExhaustion = Constants.IS_DEOBFUSCATED;
+		public boolean halveExhaustion = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.RangeInt(min = 1)
 		@Config.LangKey("randomtweaks.config.hunger.maximumHungerLevel")
 		@Config.Comment("The maximum hunger level.")
-		public int maximumHungerLevel = Constants.IS_DEOBFUSCATED ? 22 : 20;
+		public int maximumHungerLevel = RandomTweaks.IS_DEOBFUSCATED ? 22 : 20;
 
 		@Config.RangeInt(min = 0)
 		@Config.LangKey("randomtweaks.config.hunger.minimumRespawnHungerLevel")
@@ -271,7 +271,7 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.hunger.saturationLimit")
 		@Config.Comment("This value is added to the player's food level to calculate the maximum " +
 				"saturation level.")
-		public double saturationLimit = Constants.IS_DEOBFUSCATED ? 100.0 : 0.0;
+		public double saturationLimit = RandomTweaks.IS_DEOBFUSCATED ? 100.0 : 0.0;
 	}
 
 	public static class Keybinds {
@@ -307,7 +307,7 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.misc.attackSpeed")
 		@Config.Comment("Sets the base attack speed for players. Set this to 16.0 or higher " +
 				"to remove the attack cooldown. 4.0 is the default value.")
-		public double attackSpeed = Constants.IS_DEOBFUSCATED ? 24.0 : 4.0;
+		public double attackSpeed = RandomTweaks.IS_DEOBFUSCATED ? 24.0 : 4.0;
 
 		@Config.LangKey("randomtweaks.config.misc.deathPunishmentMode")
 		@Config.Comment("Sets when death punishments are enabled in which all XP and 3 hunger " +
@@ -336,11 +336,11 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.misc.pickUpSkeletonArrows")
 		@Config.Comment("Allows skeleton arrows to be picked up.")
-		public boolean pickUpSkeletonArrows = Constants.IS_DEOBFUSCATED;
+		public boolean pickUpSkeletonArrows = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.misc.requireFullCubeForSpawns")
 		@Config.Comment("Disables mob spawning on non-full cubes.")
-		public boolean requireFullCubeForSpawns = Constants.IS_DEOBFUSCATED;
+		public boolean requireFullCubeForSpawns = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.misc.sleepTweaks")
 		@Config.Comment("Allows players to sleep near mobs with custom names.")
@@ -465,7 +465,7 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.disableIfNoDaylightCycle")
 		@Config.Comment("Disables the overlay if doDaylightCycle is false.")
-		public boolean disableIfNoDaylightCycle = !Constants.IS_DEOBFUSCATED;
+		public boolean disableIfNoDaylightCycle = !RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.disableInAdventureMode")
 		@Config.Comment("Disables the overlay in Adventure Mode.")
@@ -481,11 +481,11 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.enabledByDefault")
 		@Config.Comment("Enables the overlay by default.")
-		public boolean enabledByDefault = Constants.IS_DEOBFUSCATED;
+		public boolean enabledByDefault = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.twentyFourHourTime")
 		@Config.Comment("Enables 24-hour time.")
-		public boolean twentyFourHourTime = Constants.IS_DEOBFUSCATED;
+		public boolean twentyFourHourTime = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.x")
 		@Config.Comment("The X offset.")

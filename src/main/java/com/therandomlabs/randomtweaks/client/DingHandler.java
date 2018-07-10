@@ -3,9 +3,8 @@ package com.therandomlabs.randomtweaks.client;
 import java.lang.reflect.Field;
 import java.security.SecureRandom;
 import java.util.Random;
-import com.therandomlabs.randomtweaks.base.Constants;
-import com.therandomlabs.randomtweaks.base.RTConfig;
-import com.therandomlabs.randomtweaks.base.RandomTweaks;
+import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -61,7 +60,7 @@ public final class DingHandler {
 	}
 
 	public static void playSound(String soundName, double pitch) {
-		if(Constants.DING_LOADED || soundName.isEmpty()) {
+		if(RandomTweaks.DING_LOADED || soundName.isEmpty()) {
 			return;
 		}
 
@@ -77,7 +76,7 @@ public final class DingHandler {
 	}
 
 	public static boolean isDsurroundStartupSoundDisabled() {
-		if(!Constants.DYNAMIC_SURROUNDINGS_LOADED) {
+		if(!RandomTweaks.DYNAMIC_SURROUNDINGS_LOADED) {
 			return true;
 		}
 
