@@ -166,6 +166,10 @@ public class RTConfig {
 		@Config.Comment("Moves spawn eggs to their own creative tab.")
 		public boolean spawnEggsCreativeTab = true;
 
+		@Config.LangKey("randomtweaks.config.client.startOnMultiplayerScreen")
+		@Config.Comment("Whether to start the game on the Multiplayer screen.")
+		public boolean startOnMultiplayerScreen = RandomTweaks.IS_DEOBFUSCATED;
+
 		@Config.LangKey("randomtweaks.config.client.stepup")
 		@Config.Comment("Whether to enable stepup.")
 		public boolean stepup = RandomTweaks.IS_DEOBFUSCATED;

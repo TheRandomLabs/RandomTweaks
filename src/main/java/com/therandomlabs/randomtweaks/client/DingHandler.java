@@ -7,11 +7,9 @@ import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
-import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -20,20 +18,13 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class DingHandler {
-	private static final Random random = new SecureRandom();
-
-	private static boolean mainMenuPlayed;
+	private static final Random RANDOM = new SecureRandom();
 	private static boolean playWorld;
 
-	@SubscribeEvent
-	public static void onGuiOpen(GuiOpenEvent event) {
-		if(RTConfig.ding.soundNames.length != 0 &&
-				event.getGui() instanceof GuiMainMenu && !mainMenuPlayed &&
-				isDsurroundStartupSoundDisabled()) {
-			final int index = random.nextInt(RTConfig.ding.soundNames.length);
+	public static void onGameStarted() {
+		if(RTConfig.ding.soundNames.length != 0 && isDsurroundStartupSoundDisabled()) {
+			final int index = RANDOM.nextInt(RTConfig.ding.soundNames.length);
 			playSound(RTConfig.ding.soundNames[index], RTConfig.ding.soundPitch);
-
-			mainMenuPlayed = true;
 		}
 	}
 
@@ -51,7 +42,7 @@ public final class DingHandler {
 			final EntityPlayer player = mc.player;
 
 			if(player != null && (player.ticksExisted > 20 || mc.isGamePaused())) {
-				final int index = random.nextInt(RTConfig.ding.worldSoundNames.length);
+				final int index = RANDOM.nextInt(RTConfig.ding.worldSoundNames.length);
 				playSound(RTConfig.ding.worldSoundNames[index], RTConfig.ding.worldSoundPitch);
 
 				playWorld = false;
