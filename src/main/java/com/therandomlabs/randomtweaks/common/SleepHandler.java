@@ -27,6 +27,9 @@ public final class SleepHandler {
 			"func_70105_a", float.class, float.class);
 
 	public static class MobFilter implements Function<EntityMob, Boolean> {
+		//Not actually a singleton
+		public static final MobFilter INSTANCE = new MobFilter();
+
 		@Override
 		public Boolean apply(EntityMob mob) {
 			return !(RTConfig.misc.sleepTweaks && mob.hasCustomName());
@@ -172,7 +175,7 @@ public final class SleepHandler {
 						position.getY(),
 						position.getZ()
 				).grow(8.0, 5.0, 8.0),
-				mob -> mob.isPreventingPlayerRest(player) && new MobFilter().apply(mob)
+				mob -> mob.isPreventingPlayerRest(player) && MobFilter.INSTANCE.apply(mob)
 		).isEmpty();
 	}
 
