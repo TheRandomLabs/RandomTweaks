@@ -42,6 +42,7 @@ public final class SleepHandler {
 		final EntityPlayer player = event.getEntityPlayer();
 		final World world = player.getEntityWorld();
 
+		//The client-sided behavior is exactly the same as in vanilla
 		if(world.isRemote) {
 			return;
 		}
@@ -65,7 +66,7 @@ public final class SleepHandler {
 			if(state != null) {
 				final ResourceLocation name = state.getBlock().getRegistryName();
 				
-				if(name != null && name.getResourceDomain().equals("comforts")) {
+				if(name != null && name.getNamespace().equals("comforts")) {
 					return;
 				}
 
@@ -116,8 +117,8 @@ public final class SleepHandler {
 		if(state != null && state.getBlock().isBed(state, world, pos, player)) {
 			setRenderOffsetForSleep(player, facing);
 
-			final float x = 0.5F + facing.getFrontOffsetX() * 0.4F;
-			final float z = 0.5F + facing.getFrontOffsetZ() * 0.4F;
+			final float x = 0.5F + facing.getXOffset() * 0.4F;
+			final float z = 0.5F + facing.getZOffset() * 0.4F;
 
 			player.setPosition(
 					event.getPos().getX() + x,
@@ -139,9 +140,7 @@ public final class SleepHandler {
 		player.motionY = 0.0;
 		player.motionZ = 0.0;
 
-		if(!player.getEntityWorld().isRemote) {
-			player.getEntityWorld().updateAllPlayersSleepingFlag();
-		}
+		world.updateAllPlayersSleepingFlag();
 
 		event.setResult(EntityPlayer.SleepResult.OK);
 	}
@@ -178,7 +177,7 @@ public final class SleepHandler {
 	}
 
 	public static void setRenderOffsetForSleep(EntityPlayer player, EnumFacing facing) {
-		player.renderOffsetX = -1.8F * facing.getFrontOffsetX();
-		player.renderOffsetZ = -1.8F * facing.getFrontOffsetZ();
+		player.renderOffsetX = -1.8F * facing.getXOffset();
+		player.renderOffsetZ = -1.8F * facing.getZOffset();
 	}
 }

@@ -55,7 +55,7 @@ public class WorldGeneratorOceanFloor implements IWorldGenerator {
 			);
 
 			final Biome biome = world.getBiome(pos);
-			if(biome.getRegistryName().getResourcePath().contains("ocean")) {
+			if(biome.getRegistryName().getPath().contains("ocean")) {
 				generator.generate(world, random, pos);
 			}
 		}

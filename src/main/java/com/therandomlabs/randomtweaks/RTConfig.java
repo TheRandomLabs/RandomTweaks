@@ -280,8 +280,8 @@ public class RTConfig {
 
 	public static class Keybinds {
 		@Config.LangKey("randomtweaks.config.keybinds.noclip")
-		@Config.Comment("Enables the Noclip keybind, which toggles between /gamemode c " +
-				"and /gamemode sp.")
+		@Config.Comment("Enables the Noclip keybind, which toggles between /gamemode creative " +
+				"and /gamemode spectator.")
 		public boolean noclip = true;
 
 		@Config.LangKey("randomtweaks.config.keybinds.fovChangesEnabledByDefault")

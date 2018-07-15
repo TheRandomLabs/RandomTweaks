@@ -74,7 +74,7 @@ public final class SquidHandler {
 	}
 
 	private static boolean isInChunk(Entity entity, LivingSpawnEvent.CheckSpawn event) {
-		final Chunk chunk = event.getWorld().getChunkFromBlockCoords(entity.getPosition());
+		final Chunk chunk = event.getWorld().getChunk(entity.getPosition());
 		return entity.chunkCoordX == chunk.x && entity.chunkCoordZ == chunk.z;
 	}
 }

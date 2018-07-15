@@ -11,6 +11,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldType;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -52,14 +53,20 @@ public final class WorldHandler {
 	private static void onPlayerSpawn(EntityPlayer player) {
 		final World world = player.getEntityWorld();
 
-		if(world.provider.getDimensionType() == DimensionType.OVERWORLD &&
-				(world.getWorldType() instanceof WorldTypeVoid ||
-						world.getWorldType() instanceof WorldTypeVoidIslands)) {
-			onPlayerSpawnInVoidWorld(player);
+		if(world.provider.getDimensionType() != DimensionType.OVERWORLD) {
+			return;
+		}
+
+		final WorldType type = world.getWorldType();
+
+		if(type instanceof WorldTypeVoid) {
+			onPlayerSpawnInVoidWorld(player, false);
+		} else if(type instanceof WorldTypeVoidIslands) {
+			onPlayerSpawnInVoidWorld(player, true);
 		}
 	}
 
-	private static void onPlayerSpawnInVoidWorld(EntityPlayer player) {
+	private static void onPlayerSpawnInVoidWorld(EntityPlayer player, boolean voidIslands) {
 		final World world = player.getEntityWorld();
 
 		BlockPos playerSpawnPoint = player.getBedLocation(DimensionType.OVERWORLD.getId());
@@ -75,12 +82,15 @@ public final class WorldHandler {
 			return;
 		}
 
+		//The player doesn't have a viable spawn point, so we find or create one at (0, 0)
+
 		final int newSpawnY;
-		if(world.getWorldType() instanceof WorldTypeVoid) {
-			newSpawnY = RTConfig.world.voidWorldYSpawn;
-		} else {
+
+		if(voidIslands) {
 			final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(0, 0, 0));
 			newSpawnY = pos.getY() + 1;
+		} else {
+			newSpawnY = RTConfig.world.voidWorldYSpawn;
 		}
 
 		final BlockPos newSpawn = new BlockPos(0.5, newSpawnY, 0.5);
@@ -93,11 +103,11 @@ public final class WorldHandler {
 			world.setSpawnPoint(newSpawn);
 		}
 
-		if(!(world.getWorldType() instanceof WorldTypeVoid)) {
+		if(voidIslands) {
 			return;
 		}
 
-		final BlockPos spawnBlock = new BlockPos(0, newSpawnY, 0);
+		final BlockPos spawnBlock = new BlockPos(0, newSpawnY - 1, 0);
 
 		if(isSpawnable(world, spawnBlock)) {
 			return;
