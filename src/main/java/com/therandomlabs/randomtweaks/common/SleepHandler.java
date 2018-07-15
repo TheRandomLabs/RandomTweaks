@@ -95,7 +95,7 @@ public final class SleepHandler {
 			return;
 		}
 
-		if(!bedInRange(player, pos, facing)) {
+		if(!player.bedInRange(pos, facing)) {
 			event.setResult(EntityPlayer.SleepResult.TOO_FAR_AWAY);
 			return;
 		}
@@ -118,7 +118,7 @@ public final class SleepHandler {
 		}
 
 		if(state != null && state.getBlock().isBed(state, world, pos, player)) {
-			setRenderOffsetForSleep(player, facing);
+			player.setRenderOffsetForSleep(facing);
 
 			final float x = 0.5F + facing.getXOffset() * 0.4F;
 			final float z = 0.5F + facing.getZOffset() * 0.4F;
@@ -148,23 +148,6 @@ public final class SleepHandler {
 		event.setResult(EntityPlayer.SleepResult.OK);
 	}
 
-	public static boolean bedInRange(EntityPlayer player, BlockPos position, EnumFacing facing) {
-		if(Math.abs(player.posX - position.getX()) <= 3.0 &&
-				Math.abs(player.posY - position.getY()) <= 2.0 &&
-				Math.abs(player.posZ - position.getZ()) <= 3.0) {
-			return true;
-		}
-
-		if(facing == null) {
-			return false;
-		}
-
-		position = position.offset(facing.getOpposite());
-		return Math.abs(player.posX - position.getX()) <= 3.0 &&
-				Math.abs(player.posY - position.getY()) <= 2.0 &&
-				Math.abs(player.posZ - position.getZ()) <= 3.0;
-	}
-
 	public static boolean isMobInRange(EntityPlayer player, World world, BlockPos position) {
 		return !world.getEntitiesWithinAABB(EntityMob.class,
 				new AxisAlignedBB(
@@ -177,10 +160,5 @@ public final class SleepHandler {
 				).grow(8.0, 5.0, 8.0),
 				mob -> mob.isPreventingPlayerRest(player) && MobFilter.INSTANCE.apply(mob)
 		).isEmpty();
-	}
-
-	public static void setRenderOffsetForSleep(EntityPlayer player, EnumFacing facing) {
-		player.renderOffsetX = -1.8F * facing.getXOffset();
-		player.renderOffsetZ = -1.8F * facing.getZOffset();
 	}
 }
