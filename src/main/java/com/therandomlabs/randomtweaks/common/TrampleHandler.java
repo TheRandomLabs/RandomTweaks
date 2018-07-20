@@ -21,7 +21,7 @@ public final class TrampleHandler {
 	}
 
 	@SubscribeEvent
-	public static void onFarmlandTrample(BlockEvent.FarmlandTrampleEvent event) {
+	public void onFarmlandTrample(BlockEvent.FarmlandTrampleEvent event) {
 		if(event.getWorld().isRemote) {
 			return;
 		}

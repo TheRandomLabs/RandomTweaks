@@ -22,7 +22,8 @@ public final class RandomTweaks {
 	public static final String VERSION = "@VERSION@";
 	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12.2,1.13)";
 	public static final String ACCEPTABLE_REMOTE_VERSIONS = "*";
-	public static final String DEPENDENCIES = "required-after:forge@[14.23.4.2718,);";
+	public static final String DEPENDENCIES =
+			"required-after:forge@[14.23.4.2705,);after:comforts@[1.2.0,)";
 	public static final String UPDATE_JSON =
 			"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/misc/versions.json";
 	public static final String CERTIFICATE_FINGERPRINT = "@FINGERPRINT@";
