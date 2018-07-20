@@ -281,7 +281,8 @@ public class RTConfig {
 	public static class Keybinds {
 		@Config.LangKey("randomtweaks.config.keybinds.noclip")
 		@Config.Comment("Enables the Noclip keybind, which toggles between /gamemode creative " +
-				"and /gamemode spectator.")
+				"and /gamemode spectator. This does the same thing as F3+N, so is unbound by " +
+				"default.")
 		public boolean noclip = true;
 
 		@Config.LangKey("randomtweaks.config.keybinds.fovChangesEnabledByDefault")

@@ -20,7 +20,7 @@ import org.lwjgl.input.Keyboard;
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class KeyBindingHandler {
 	public static final KeyBinding NOCLIP = new KeyBinding("key.noclip",
-			KeyConflictContext.IN_GAME, KeyModifier.SHIFT, Keyboard.KEY_F4,
+			KeyConflictContext.IN_GAME, KeyModifier.SHIFT, Keyboard.KEY_NONE,
 			"key.categories.randomtweaks");
 	public static final KeyBinding TOGGLE_FOV_CHANGES = new KeyBinding("key.toggleFoVChanges",
 			KeyConflictContext.IN_GAME, KeyModifier.SHIFT, Keyboard.KEY_COMMA,
