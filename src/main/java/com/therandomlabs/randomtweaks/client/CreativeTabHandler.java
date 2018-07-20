@@ -23,7 +23,7 @@ public final class CreativeTabHandler {
 	public static final CreativeTabs SPAWN_EGGS = new CreativeTabs("spawnEggs") {
 		@SideOnly(Side.CLIENT)
 		@Override
-		public ItemStack getTabIconItem() {
+		public ItemStack createIcon() {
 			final ItemStack stack = new ItemStack(Items.SPAWN_EGG);
 			ItemMonsterPlacer.applyEntityIdToItemStack(stack, new ResourceLocation("chicken"));
 			return stack;
@@ -58,7 +58,7 @@ public final class CreativeTabHandler {
 			if(!ArrayUtils.contains(CreativeTabs.CREATIVE_TAB_ARRAY, SPAWN_EGGS)) {
 				CreativeTabs.CREATIVE_TAB_ARRAY =
 						ArrayUtils.add(CreativeTabs.CREATIVE_TAB_ARRAY, SPAWN_EGGS);
-				SPAWN_EGGS.tabIndex = CreativeTabs.CREATIVE_TAB_ARRAY.length - 1;
+				SPAWN_EGGS.index = CreativeTabs.CREATIVE_TAB_ARRAY.length - 1;
 			}
 
 			Items.SPAWN_EGG.setCreativeTab(SPAWN_EGGS);
@@ -68,7 +68,7 @@ public final class CreativeTabHandler {
 			if(index != ArrayUtils.INDEX_NOT_FOUND) {
 				CreativeTabs.CREATIVE_TAB_ARRAY =
 						ArrayUtils.remove(CreativeTabs.CREATIVE_TAB_ARRAY, index);
-				GuiContainerCreative.selectedTabIndex = CreativeTabs.BUILDING_BLOCKS.getTabIndex();
+				GuiContainerCreative.selectedTabIndex = CreativeTabs.BUILDING_BLOCKS.index;
 
 				try {
 					TAB_PAGE.set(null, 0);
