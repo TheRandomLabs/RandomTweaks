@@ -331,7 +331,8 @@ public class RTConfig {
 		public String disableNetherPortalCreationGameruleName = "disableNetherPortalCreation";
 
 		@Config.LangKey("randomtweaks.config.misc.farmlandTrampleBehavior")
-		@Config.Comment("The farmland trample behavior.")
+		@Config.Comment("The farmland trample behavior. This only works on " +
+				"Forge 1.12.2-14.23.4.2718 and above.")
 		public TrampleHandler.Behavior farmlandTrampleBehavior =
 				TrampleHandler.Behavior.DONT_TRAMPLE_IF_FEATHER_FALLING;
 
