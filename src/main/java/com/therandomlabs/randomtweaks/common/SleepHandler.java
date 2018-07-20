@@ -50,14 +50,6 @@ public final class SleepHandler {
 			return;
 		}
 
-		if(RandomTweaks.COMFORTS_LOADED) {
-			for(StackTraceElement element : Thread.currentThread().getStackTrace()) {
-				if(element.getClassName().equals("c4.comforts.common.items.ItemSleepingBag")) {
-					return;
-				}
-			}
-		}
-
 		final BlockPos pos = event.getPos();
 
 		IBlockState state;
@@ -69,7 +61,7 @@ public final class SleepHandler {
 			if(state != null) {
 				final ResourceLocation name = state.getBlock().getRegistryName();
 				
-				if(name != null && name.getNamespace().equals("comforts")) {
+				if(name != null && name.toString().startsWith("comforts:hammock")) {
 					return;
 				}
 
