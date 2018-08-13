@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.common.world;
 
+import java.util.Arrays;
 import net.minecraft.world.WorldType;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -20,13 +21,24 @@ public abstract class RTWorldType extends WorldType {
 	public abstract boolean isEnabled();
 
 	public void enable() {
-		if(!ArrayUtils.contains(WORLD_TYPES, this)) {
+		if(WORLD_TYPES[id] != this) {
+			if(WORLD_TYPES[id] == null) {
+				WORLD_TYPES[id] = this;
+				return;
+			}
+
 			for(int i = 0; i < WORLD_TYPES.length; i++) {
 				if(WORLD_TYPES[i] == null) {
 					WORLD_TYPES[i] = this;
-					break;
+					id = i;
+					return;
 				}
 			}
+
+			final int oldLength = WORLD_TYPES.length;
+			WORLD_TYPES = Arrays.copyOf(WORLD_TYPES, oldLength + 16);
+			WORLD_TYPES[oldLength] = this;
+			id = oldLength;
 		}
 	}
 
