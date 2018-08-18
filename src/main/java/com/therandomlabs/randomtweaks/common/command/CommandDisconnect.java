@@ -1,6 +1,6 @@
 package com.therandomlabs.randomtweaks.common.command;
 
-import java.lang.reflect.Field;
+import com.therandomlabs.randompatches.RPStaticConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.client.Minecraft;
@@ -34,13 +34,12 @@ public class CommandDisconnect extends CommandBase {
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args)
 			throws CommandException {
 		try {
-			boolean forceTitleScreenOnDisconnect = false;
+			final boolean forceTitleScreenOnDisconnect;
 
 			if(RandomTweaks.RANDOMPATCHES_LOADED) {
-				final Class<?> rpConfig =
-						Class.forName("com.therandomlabs.randompatches.RPStaticConfig");
-				final Field field = rpConfig.getDeclaredField("forceTitleScreenOnDisconnect");
-				forceTitleScreenOnDisconnect = (boolean) field.get(null);
+				forceTitleScreenOnDisconnect = RPStaticConfig.forceTitleScreenOnDisconnect;
+			} else {
+				forceTitleScreenOnDisconnect = false;
 			}
 
 			mc.world.sendQuittingDisconnectingPacket();
@@ -55,8 +54,10 @@ public class CommandDisconnect extends CommandBase {
 			}
 		} catch(Exception ex) {
 			ex.printStackTrace();
-			throw new CommandException(Utils.localize("commands.disconnect.failure",
-					ex.getClass().getName() + ": " + ex.getMessage()));
+			throw new CommandException(Utils.localize(
+					"commands.disconnect.failure",
+					ex.getClass().getName() + ": " + ex.getMessage()
+			));
 		}
 	}
 }
