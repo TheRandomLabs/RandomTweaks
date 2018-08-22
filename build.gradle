@@ -14,24 +14,11 @@ buildscript {
 
 apply plugin: "net.minecraftforge.gradle.forge"
 
-version = "1.12.2-2.1.2.3"
+version = "1.12.2-2.1.3.0"
 group = "com.therandomlabs.randomtweaks"
 archivesBaseName = "randomtweaks"
 
 sourceCompatibility = targetCompatibility = "1.8"
-
-compileJava {
-	sourceCompatibility = targetCompatibility = "1.8"
-}
-
-minecraft {
-	version = "1.12.2-latest"
-	runDir = "run"
-	mappings = "stable_39"
-
-	replace "@VERSION@", project.version
-	replace "@FINGERPRINT@", project.findProperty("signSHA1")
-}
 
 repositories {
 	maven {
@@ -44,8 +31,17 @@ repositories {
 }
 
 dependencies {
-	deobfCompile "applecore:AppleCore:1.12.2-3.1.3:api"
+	deobfCompile "applecore:AppleCore:1.12.2-3.1.4:api"
 	deobfCompile "com.github.TheRandomLabs:RandomPatches:master-SNAPSHOT"
+}
+
+minecraft {
+	version = "1.12.2-latest"
+	runDir = "run"
+	mappings = "stable_39"
+
+	replace "@VERSION@", project.version
+	replace "@FINGERPRINT@", project.findProperty("signSHA1")
 }
 
 processResources {

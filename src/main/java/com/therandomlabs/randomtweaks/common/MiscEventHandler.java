@@ -12,15 +12,19 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.monster.EntitySkeleton;
+import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
+import net.minecraft.init.Items;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -197,5 +201,38 @@ public final class MiscEventHandler {
 				event.setCanceled(true);
 			}
 		}
+	}
+
+	@SubscribeEvent
+	public static void onLivingDrops(LivingDropsEvent event) {
+		if(RandomTweaks.VANILLATWEAKS_LOADED) {
+			return;
+		}
+
+		final Entity entity = event.getEntity();
+		final World world = entity.getEntityWorld();
+
+		if(world.isRemote || !world.getGameRules().getBoolean("doMobLoot")) {
+			return;
+		}
+
+		if(RTConfig.animals.batLeatherDropChance != 0.0 && entity instanceof EntityBat &&
+				Math.random() < RTConfig.animals.batLeatherDropChance) {
+			entity.dropItem(Items.LEATHER, 1);
+		}
+
+		if(!RTConfig.misc.entitiesDropNameTags) {
+			return;
+		}
+
+		final String customName = entity.getCustomNameTag();
+
+		if(customName.isEmpty()) {
+			return;
+		}
+
+		final ItemStack nameTag = new ItemStack(Items.NAME_TAG);
+		nameTag.setStackDisplayName(customName);
+		entity.entityDropItem(nameTag, 0.0F);
 	}
 }

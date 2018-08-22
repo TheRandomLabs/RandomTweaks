@@ -6,6 +6,7 @@ import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.Utils;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
@@ -34,6 +35,16 @@ public final class CreativeTabHandler {
 			ReflectionHelper.findField(GuiContainerCreative.class, "tabPage");
 
 	private static CreativeTabs originalBucketTab;
+	private static boolean bucketSetBefore;
+
+	private static CreativeTabs originalCommandBlockTab;
+	private static boolean commandBlockSetBefore;
+
+	private static CreativeTabs originalDragonEggTab;
+	private static boolean dragonEggSetBefore;
+
+	private static CreativeTabs originalSpawnEggsTab;
+	private static boolean spawnEggsSetBefore;
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
@@ -43,41 +54,67 @@ public final class CreativeTabHandler {
 	}
 
 	public static void init() {
-		if(RTConfig.client.moveBucketCreativeTab) {
+		if(RTConfig.client.creativeTabs.moveBucketCreativeTab) {
 			originalBucketTab = Items.BUCKET.getCreativeTab();
+			bucketSetBefore = true;
 			Items.BUCKET.setCreativeTab(CreativeTabs.TOOLS);
-		} else {
+		} else if(bucketSetBefore) {
 			Items.BUCKET.setCreativeTab(originalBucketTab);
+		}
+
+		if(RTConfig.client.creativeTabs.setCommandBlockCreativeTab) {
+			originalCommandBlockTab = Blocks.COMMAND_BLOCK.getCreativeTab();
+			commandBlockSetBefore = true;
+			Blocks.COMMAND_BLOCK.setCreativeTab(CreativeTabs.REDSTONE);
+		} else if(commandBlockSetBefore) {
+			Blocks.COMMAND_BLOCK.setCreativeTab(originalCommandBlockTab);
+		}
+
+		if(RTConfig.client.creativeTabs.setDragonEggCreativeTab) {
+			originalDragonEggTab = Blocks.DRAGON_EGG.getCreativeTab();
+			dragonEggSetBefore = true;
+			Blocks.DRAGON_EGG.setCreativeTab(CreativeTabs.DECORATIONS);
+		} else if(dragonEggSetBefore) {
+			Blocks.DRAGON_EGG.setCreativeTab(originalDragonEggTab);
 		}
 
 		registerSpawnEggsTab();
 	}
 
 	private static void registerSpawnEggsTab() {
-		if(RTConfig.client.spawnEggsCreativeTab) {
+		if(RTConfig.client.creativeTabs.spawnEggsCreativeTab) {
 			if(!ArrayUtils.contains(CreativeTabs.CREATIVE_TAB_ARRAY, SPAWN_EGGS)) {
 				CreativeTabs.CREATIVE_TAB_ARRAY =
 						ArrayUtils.add(CreativeTabs.CREATIVE_TAB_ARRAY, SPAWN_EGGS);
 				SPAWN_EGGS.index = CreativeTabs.CREATIVE_TAB_ARRAY.length - 1;
 			}
 
+			originalSpawnEggsTab = Items.SPAWN_EGG.getCreativeTab();
+			spawnEggsSetBefore = true;
 			Items.SPAWN_EGG.setCreativeTab(SPAWN_EGGS);
-		} else {
-			final int index = ArrayUtils.indexOf(CreativeTabs.CREATIVE_TAB_ARRAY, SPAWN_EGGS);
 
-			if(index != ArrayUtils.INDEX_NOT_FOUND) {
-				CreativeTabs.CREATIVE_TAB_ARRAY =
-						ArrayUtils.remove(CreativeTabs.CREATIVE_TAB_ARRAY, index);
-				GuiContainerCreative.selectedTabIndex = CreativeTabs.BUILDING_BLOCKS.index;
-
-				try {
-					TAB_PAGE.set(null, 0);
-				} catch(Exception ex) {
-					Utils.crashReport("Error while disabling creative tab", ex);
-				}
-			}
-
-			Items.SPAWN_EGG.setCreativeTab(originalBucketTab);
+			return;
 		}
+
+		if(!spawnEggsSetBefore) {
+			return;
+		}
+
+
+		final int index = ArrayUtils.indexOf(CreativeTabs.CREATIVE_TAB_ARRAY, SPAWN_EGGS);
+
+		if(index != ArrayUtils.INDEX_NOT_FOUND) {
+			CreativeTabs.CREATIVE_TAB_ARRAY =
+					ArrayUtils.remove(CreativeTabs.CREATIVE_TAB_ARRAY, index);
+			GuiContainerCreative.selectedTabIndex = CreativeTabs.BUILDING_BLOCKS.index;
+
+			try {
+				TAB_PAGE.set(null, 0);
+			} catch(Exception ex) {
+				Utils.crashReport("Error while disabling creative tab", ex);
+			}
+		}
+
+		Items.SPAWN_EGG.setCreativeTab(originalSpawnEggsTab);
 	}
 }

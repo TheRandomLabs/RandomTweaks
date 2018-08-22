@@ -46,6 +46,10 @@ public class RTConfig {
 		@Config.Comment("Options related to squid spawning behavior.")
 		public Squids squids = new Squids();
 
+		@Config.LangKey("randomtweaks.config.animals.batLeatherDropChance")
+		@Config.Comment("The chance that a bat drops a piece of Leather when killed.")
+		public double batLeatherDropChance = 0.8;
+
 		@Config.LangKey("randomtweaks.config.animals.coloredSheep")
 		@Config.Comment("Whether colored sheep should spawn.")
 		public boolean coloredSheep = true;
@@ -121,6 +125,10 @@ public class RTConfig {
 		@Config.Comment("Options related to the auto-third person feature.")
 		public AutoThirdPerson autoThirdPerson = new AutoThirdPerson();
 
+		@Config.LangKey("randomtweaks.config.creativeTabs")
+		@Config.Comment("Options related to creative tabs.")
+		public CreativeTabs creativeTabs = new CreativeTabs();
+
 		@Config.LangKey("randomtweaks.config.ding")
 		@Config.Comment("Options related to the 'ding' feature.")
 		public Ding ding = new Ding();
@@ -157,14 +165,6 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.client.disableWitherSpawnSound")
 		@Config.Comment("Disables the Wither spawn sound.")
 		public boolean disableWitherSpawnSound;
-
-		@Config.LangKey("randomtweaks.config.client.moveBucketCreativeTab")
-		@Config.Comment("Moves the Bucket to the Tools creative tab.")
-		public boolean moveBucketCreativeTab = true;
-
-		@Config.LangKey("randomtweaks.config.client.spawnEggsCreativeTab")
-		@Config.Comment("Moves spawn eggs to their own creative tab.")
-		public boolean spawnEggsCreativeTab = true;
 
 		@Config.LangKey("randomtweaks.config.client.startOnMultiplayerScreen")
 		@Config.Comment("Whether to start the game on the Multiplayer screen.")
@@ -217,6 +217,24 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.commands.rtreloadclient")
 		@Config.Comment("Enables the client-sided /rtreloadclient command.")
 		public boolean rtreloadclient = true;
+	}
+
+	public static class CreativeTabs {
+		@Config.LangKey("randomtweaks.config.creativeTabs.moveBucketCreativeTab")
+		@Config.Comment("Moves the Bucket to the Tools creative tab.")
+		public boolean moveBucketCreativeTab = true;
+
+		@Config.LangKey("randomtweaks.config.creativeTabs.setCommandBlockCreativeTab")
+		@Config.Comment("Adds the Command Blocks to the Redstone creative tab.")
+		public boolean setCommandBlockCreativeTab = true;
+
+		@Config.LangKey("randomtweaks.config.creativeTabs.setDragonEggCreativeTab")
+		@Config.Comment("Adds the Dragon Egg to the Decorations creative tab.")
+		public boolean setDragonEggCreativeTab = true;
+
+		@Config.LangKey("randomtweaks.config.creativeTabs.spawnEggsCreativeTab")
+		@Config.Comment("Moves spawn eggs to their own creative tab.")
+		public boolean spawnEggsCreativeTab = true;
 	}
 
 	public static class Ding {
@@ -329,6 +347,10 @@ public class RTConfig {
 		@Config.Comment("The name of the gamerule that disables Nether portal creation. " +
 				"Set this to an empty string to disable the gamerule.")
 		public String disableNetherPortalCreationGameruleName = "disableNetherPortalCreation";
+
+		@Config.LangKey("randomtweaks.config.misc.entitiesDropNameTags")
+		@Config.Comment("Whether living entities should drop name tags if they have a custom name.")
+		public boolean entitiesDropNameTags = true;
 
 		@Config.LangKey("randomtweaks.config.misc.farmlandTrampleBehavior")
 		@Config.Comment("The farmland trample behavior. This only works on " +

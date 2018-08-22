@@ -94,7 +94,8 @@ public final class TimeOfDayOverlay {
 	}
 
 	public static boolean shouldHide() {
-		if(!RTConfig.timeOfDay.enabled || shouldHide || mc.player == null) {
+		if(!RTConfig.timeOfDay.enabled || shouldHide || mc.world == null ||
+				!Minecraft.isGuiEnabled()) {
 			return true;
 		}
 
@@ -102,25 +103,19 @@ public final class TimeOfDayOverlay {
 			return true;
 		}
 
-		final World world = mc.player.getEntityWorld();
-
-		if(world == null) {
-			return true;
-		}
-
 		if(RTConfig.timeOfDay.disableIfNoDaylightCycle &&
-				!world.getGameRules().getBoolean("doDaylightCycle")) {
+				!mc.world.getGameRules().getBoolean("doDaylightCycle")) {
 			return true;
 		}
 
 		return RTConfig.timeOfDay.disableInAdventureMode &&
-				world.getWorldInfo().getGameType() == GameType.ADVENTURE;
+				mc.world.getWorldInfo().getGameType() == GameType.ADVENTURE;
 	}
 
 	public static boolean isEnabledForCurrentWorld() {
 		final Map<String, Boolean> worlds = RTConfig.Data.get().timeOfDayOverlay;
-
 		final File saveDirectory = DimensionManager.getCurrentSaveRootDirectory();
+
 		if(saveDirectory != null) {
 			final String name = saveDirectory.getName();
 

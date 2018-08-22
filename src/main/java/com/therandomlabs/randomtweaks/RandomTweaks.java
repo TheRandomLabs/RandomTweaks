@@ -42,6 +42,7 @@ public final class RandomTweaks {
 	public static final boolean QUARK_LOADED = Loader.isModLoaded("quark");
 	public static final boolean OCEAN_FLOOR_LOADED = Loader.isModLoaded("samsocean");
 	public static final boolean RANDOMPATCHES_LOADED = Loader.isModLoaded("randompatches");
+	public static final boolean VANILLATWEAKS_LOADED = Loader.isModLoaded("vanillatweaks");
 
 	public static final boolean IS_DEOBFUSCATED =
 			(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");

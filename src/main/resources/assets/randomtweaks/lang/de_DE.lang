@@ -24,8 +24,7 @@ randomtweaks.config.client.disableEnderDragonDeathSound=Disable Ender Dragon dea
 randomtweaks.config.client.disablePotionIcons=Disable potion icons
 randomtweaks.config.client.disablePotionShift=Disable potion effect inventory shift
 randomtweaks.config.client.disableWitherSpawnSound=Disable Wither spawn sound
-randomtweaks.config.client.moveBucketCreativeTab=Move Bucket to Tools creative tab
-randomtweaks.config.client.spawnEggsCreativeTab=Move spawn eggs to their own creative tab
+randomtweaks.config.client.startOnMultiplayerScreen=Start on the Multiplayer screen
 randomtweaks.config.client.stepup=Enable stepup
 randomtweaks.config.client.stepupEnabledByDefault=Enable stepup by default
 
@@ -38,6 +37,12 @@ randomtweaks.config.commands.helpTweaks=Tweaks to /help
 randomtweaks.config.commands.hunger=/hunger
 randomtweaks.config.commands.rtreload=/rtreload
 randomtweaks.config.commands.rtreloadclient=/rtreloadclient
+
+randomtweaks.config.creativeTabs=Creative Tabs
+randomtweaks.config.creativeTabs.moveBucketCreativeTab=Move Bucket to Tools creative tab
+randomtweaks.config.creativeTabs.spawnEggsCreativeTab=Move spawn eggs to their own creative tab
+randomtweaks.config.creativeTabs.setCommandBlockCreativeTag=Move Command Blocks to Redstone creative tab
+randomtweaks.config.creativeTabs.setDragonEggCreativeTab=Add Dragon Egg to Decorations creative tab
 
 randomtweaks.config.ding=Ding
 randomtweaks.config.ding.soundNames=Sound names
@@ -68,6 +73,7 @@ randomtweaks.config.misc.attackSpeed=Attack speed
 randomtweaks.config.misc.deathPunishmentMode=Death punishment mode
 randomtweaks.config.misc.disableCumulativeAnvilCost=Disable cumulative Anvil cost
 randomtweaks.config.misc.disableNetherPortalCreationGameruleName=disableNetherPortalCreation gamerule name
+randomtweaks.config.misc.entitiesDropNameTags=Enable living entities with custom names dropping nametags
 randomtweaks.config.misc.farmlandTrampleBehavior=Farmland trample behavior
 randomtweaks.config.misc.moreRomanNumerals=More Roman numerals
 randomtweaks.config.misc.pickUpSkeletonArrows=Allow Arrows shot by Skeletons to be picked up
