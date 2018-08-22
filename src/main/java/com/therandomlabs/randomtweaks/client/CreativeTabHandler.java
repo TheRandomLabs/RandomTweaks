@@ -66,8 +66,12 @@ public final class CreativeTabHandler {
 			originalCommandBlockTab = Blocks.COMMAND_BLOCK.getCreativeTab();
 			commandBlockSetBefore = true;
 			Blocks.COMMAND_BLOCK.setCreativeTab(CreativeTabs.REDSTONE);
+			Blocks.CHAIN_COMMAND_BLOCK.setCreativeTab(CreativeTabs.REDSTONE);
+			Blocks.REPEATING_COMMAND_BLOCK.setCreativeTab(CreativeTabs.REDSTONE);
 		} else if(commandBlockSetBefore) {
 			Blocks.COMMAND_BLOCK.setCreativeTab(originalCommandBlockTab);
+			Blocks.CHAIN_COMMAND_BLOCK.setCreativeTab(originalCommandBlockTab);
+			Blocks.REPEATING_COMMAND_BLOCK.setCreativeTab(originalCommandBlockTab);
 		}
 
 		if(RTConfig.client.creativeTabs.setDragonEggCreativeTab) {
