@@ -25,8 +25,10 @@ public class ChunkGeneratorVoidIslands extends ChunkGeneratorOverworld {
 	}
 
 	@Override
-	public Chunk generateChunk(int x, int z) {
-		if((x == 0 && z == 0) || random.nextInt(RTConfig.world.voidIslandsChunkRarity) == 0) {
+	public Chunk generateChunk(int x, int z) {	
+		if((x == 0 && z == 0) ||
+				(RTConfig.world.voidIslandsChunkRarity != 1 &&
+				random.nextInt(RTConfig.world.voidIslandsChunkRarity) == 0)) {
 			return super.generateChunk(x, z);
 		}
 

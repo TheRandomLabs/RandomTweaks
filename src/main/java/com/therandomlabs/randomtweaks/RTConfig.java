@@ -533,10 +533,11 @@ public class RTConfig {
 		@Config.Comment("Enables the Realistic world type. Name: REALISTIC")
 		public boolean realisticWorldType = true;
 
-		@Config.RangeInt(min = 2)
+		@Config.RangeInt(min = 1)
 		@Config.LangKey("randomtweaks.config.world.voidIslandsChunkRarity")
 		@Config.Comment("The rarity of non-empty chunks in a Void Islands world. " +
-				"If n, there is a 1 in n chance of a chunk being non-empty.")
+				"If n, there is a 1 in n chance of a chunk being non-empty. " +
+				"If this is set to 1, only the spawn chunk is generated.")
 		public int voidIslandsChunkRarity = 10;
 
 		@Config.LangKey("randomtweaks.config.world.voidIslandsWorldBiome")
