@@ -10,10 +10,6 @@ public final class ColoredSheepHandler {
 	private static final Map<Integer, EnumDyeColor> QUEUE = new ConcurrentHashMap<>();
 
 	public static void onSheepSpawn(EntitySheep sheep) {
-		if(sheep.isChild()) {
-			return;
-		}
-
 		final Map<EnumDyeColor, Double> weights = RTConfig.SheepColorWeights.WEIGHTS;
 		double weightTotal = 0.0;
 

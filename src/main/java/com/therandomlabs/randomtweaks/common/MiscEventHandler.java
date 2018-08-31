@@ -4,8 +4,6 @@ import java.util.Random;
 import java.util.UUID;
 import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
-import net.minecraft.block.Block;
-import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
@@ -20,7 +18,6 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
@@ -30,7 +27,6 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
@@ -81,18 +77,6 @@ public final class MiscEventHandler {
 		}
 
 		final Entity entity = event.getEntity();
-
-		if(RTConfig.misc.requireFullCubeForSpawns) {
-			final BlockPos pos = entity.getPosition().down();
-			final IBlockState state = world.getBlockState(pos);
-
-			if(!state.isFullCube() ||
-					state.getCollisionBoundingBox(world, pos) == Block.NULL_AABB) {
-				event.setResult(Event.Result.DENY);
-				return;
-			}
-		}
-
 		final Class<?> clazz = entity.getClass();
 
 		if(clazz == EntitySquid.class) {
@@ -100,12 +84,11 @@ public final class MiscEventHandler {
 			return;
 		}
 
-		if(RTConfig.animals.coloredSheep && !RandomTweaks.COLORFUL_SHEEP_LOADED &&
-				clazz == EntitySheep.class) {
-			ColoredSheepHandler.onSheepSpawn((EntitySheep) entity);
+		if(!(entity instanceof EntityAgeable)) {
+			return;
 		}
 
-		if(RTConfig.randomizedAges.chance != 0.0 && entity instanceof EntityAgeable) {
+		if(RTConfig.randomizedAges.chance != 0.0) {
 			final EntityAgeable ageable = (EntityAgeable) entity;
 
 			if(ageable.isChild()) {
@@ -124,6 +107,11 @@ public final class MiscEventHandler {
 					ageable.setGrowingAge(rng.nextInt(max + 1 - min) + min);
 				}
 			}
+		}
+
+		if(RTConfig.animals.coloredSheep && !RandomTweaks.COLORFUL_SHEEP_LOADED &&
+				clazz == EntitySheep.class) {
+			ColoredSheepHandler.onSheepSpawn((EntitySheep) entity);
 		}
 	}
 

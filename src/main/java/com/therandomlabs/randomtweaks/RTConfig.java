@@ -366,10 +366,6 @@ public class RTConfig {
 		@Config.Comment("Allows skeleton arrows to be picked up.")
 		public boolean pickUpSkeletonArrows = RandomTweaks.IS_DEOBFUSCATED;
 
-		@Config.LangKey("randomtweaks.config.misc.requireFullCubeForSpawns")
-		@Config.Comment("Disables mob spawning on non-full cubes.")
-		public boolean requireFullCubeForSpawns = RandomTweaks.IS_DEOBFUSCATED;
-
 		@Config.LangKey("randomtweaks.config.misc.sleepTweaks")
 		@Config.Comment("Allows players to sleep near mobs with custom names.")
 		public boolean sleepTweaks = true;
