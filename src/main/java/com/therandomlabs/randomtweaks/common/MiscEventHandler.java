@@ -63,7 +63,7 @@ public final class MiscEventHandler {
 		player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).
 				setBaseValue(RTConfig.misc.attackSpeed);
 
-		if(!RandomTweaks.APPLECORE_LOADED) {
+		if(!RandomTweaks.APPLECORE_LOADED && !RTConfig.hunger.disableAll) {
 			player.foodStats = new RTFoodStats(player.foodStats);
 		}
 	}

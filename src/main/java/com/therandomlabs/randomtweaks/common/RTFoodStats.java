@@ -78,26 +78,26 @@ public class RTFoodStats extends FoodStats {
 
 	public static Map.Entry<Integer, Float> addStats(int originalFoodLevel,
 			float originalSaturation, int foodLevel, float foodSaturationModifier) {
-		originalFoodLevel += foodLevel;
-		float newSaturation = originalSaturation + foodLevel * foodSaturationModifier;
+		int newFoodLevel = originalFoodLevel + foodLevel;
+		float newSaturation = originalSaturation + foodLevel * foodSaturationModifier * 2.0F;
 
-		if(originalFoodLevel > RTConfig.hunger.maximumHungerLevel) {
+		if(newFoodLevel > RTConfig.hunger.maximumHungerLevel) {
 			if(RTConfig.hunger.carryExcessHungerToSaturation) {
 				newSaturation += originalFoodLevel - RTConfig.hunger.maximumHungerLevel;
 			}
 
-			originalFoodLevel = RTConfig.hunger.maximumHungerLevel;
+			newFoodLevel = RTConfig.hunger.maximumHungerLevel;
 		}
 
-		float maxSaturationLevel = originalFoodLevel + (float) RTConfig.hunger.saturationLimit;
+		float maxSaturationLevel = newFoodLevel + (float) RTConfig.hunger.saturationLimit;
 
 		//In the unlikely event of overflow
 		if(maxSaturationLevel == Float.NEGATIVE_INFINITY) {
 			maxSaturationLevel = Float.MAX_VALUE;
 		}
 
-		originalSaturation = Math.min(newSaturation, maxSaturationLevel);
+		newSaturation = Math.min(newSaturation, maxSaturationLevel);
 
-		return new AbstractMap.SimpleEntry<>(originalFoodLevel, originalSaturation);
+		return new AbstractMap.SimpleEntry<>(newFoodLevel, newSaturation);
 	}
 }
