@@ -32,7 +32,7 @@ repositories {
 
 dependencies {
 	deobfCompile "applecore:AppleCore:1.12.2-3.1.4:api"
-	deobfCompile "com.github.TheRandomLabs:RandomPatches:master-SNAPSHOT"
+	deobfCompile "com.github.TheRandomLabs:RandomPatches:1.12-SNAPSHOT"
 }
 
 minecraft {
