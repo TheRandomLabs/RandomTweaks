@@ -23,11 +23,6 @@ public final class PlayerHeadDropHandler {
 		}
 
 		final EntityPlayer player = event.getEntityPlayer();
-
-		if(player.getEntityWorld().isRemote) {
-			return;
-		}
-
 		final Entity source = event.getSource().getTrueSource();
 
 		if(source instanceof EntityCreeper) {

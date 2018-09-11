@@ -45,7 +45,7 @@ public final class SleepHandler {
 		final EntityPlayer player = event.getEntityPlayer();
 		final World world = player.getEntityWorld();
 
-		//The client-sided behavior is exactly the same as in vanilla
+		//The client-sided behavior should be left unchanged
 		if(world.isRemote) {
 			return;
 		}

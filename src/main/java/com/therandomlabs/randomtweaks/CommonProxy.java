@@ -20,7 +20,7 @@ public class CommonProxy {
 
 	public void init(FMLInitializationEvent event) {
 		try {
-			Class.forName("net.minecraftforge.event.world.BlockEvent.FarmlandTrampleEvent");
+			Class.forName("net.minecraftforge.event.world.BlockEvent$FarmlandTrampleEvent");
 			MinecraftForge.EVENT_BUS.register(new TrampleHandler());
 		} catch(ClassNotFoundException ignored) {}
 
@@ -30,7 +30,7 @@ public class CommonProxy {
 			GameRegistry.registerWorldGenerator(new WorldGeneratorOceanFloor(), 0);
 		}
 
-		if(RandomTweaks.APPLECORE_LOADED) {
+		if(RTConfig.hunger.enabled && RandomTweaks.APPLECORE_LOADED) {
 			MinecraftForge.EVENT_BUS.register(new RTFoodStats.AppleCoreEventHandler());
 		}
 

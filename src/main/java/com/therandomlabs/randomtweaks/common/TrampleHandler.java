@@ -19,31 +19,29 @@ public final class TrampleHandler {
 
 	@SubscribeEvent
 	public void onFarmlandTrample(BlockEvent.FarmlandTrampleEvent event) {
-		if(event.getWorld().isRemote) {
+		if(RTConfig.misc.farmlandTrampleBehavior == Behavior.VANILLA) {
 			return;
 		}
 
-		switch(RTConfig.misc.farmlandTrampleBehavior) {
-		case DONT_TRAMPLE_IF_FEATHER_FALLING:
-			final Iterable<ItemStack> armor = event.getEntity().getArmorInventoryList();
+		if(RTConfig.misc.farmlandTrampleBehavior == Behavior.DONT_TRAMPLE) {
+			event.setCanceled(true);
+			return;
+		}
 
-			for(ItemStack stack : armor) {
-				final Item item = stack.getItem();
+		final Iterable<ItemStack> armor = event.getEntity().getArmorInventoryList();
 
-				if(!(item instanceof ItemArmor &&
-						((ItemArmor) item).armorType == EntityEquipmentSlot.FEET)) {
-					continue;
-				}
+		for(ItemStack stack : armor) {
+			final Item item = stack.getItem();
 
-				if(EnchantmentHelper.getEnchantmentLevel(Enchantments.FEATHER_FALLING, stack) > 0) {
-					event.setCanceled(true);
-					return;
-				}
+			if(!(item instanceof ItemArmor &&
+					((ItemArmor) item).armorType == EntityEquipmentSlot.FEET)) {
+				continue;
 			}
 
-			break;
-		case DONT_TRAMPLE:
-			event.setCanceled(true);
+			if(EnchantmentHelper.getEnchantmentLevel(Enchantments.FEATHER_FALLING, stack) > 0) {
+				event.setCanceled(true);
+				break;
+			}
 		}
 	}
 }

@@ -18,7 +18,6 @@ import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -63,19 +62,13 @@ public final class MiscEventHandler {
 		player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).
 				setBaseValue(RTConfig.misc.attackSpeed);
 
-		if(!RandomTweaks.APPLECORE_LOADED && !RTConfig.hunger.disableAll) {
+		if(RTConfig.hunger.enabled && !RandomTweaks.APPLECORE_LOADED) {
 			player.foodStats = new RTFoodStats(player.foodStats);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
-		final World world = event.getWorld();
-
-		if(world.isRemote) {
-			return;
-		}
-
 		final Entity entity = event.getEntity();
 		final Class<?> clazz = entity.getClass();
 
@@ -133,17 +126,7 @@ public final class MiscEventHandler {
 	public static void onPortalSpawn(BlockEvent.PortalSpawnEvent event) {
 		final String name = RTConfig.misc.disableNetherPortalCreationGameruleName;
 
-		if(name.isEmpty()) {
-			return;
-		}
-
-		final World world = event.getWorld();
-
-		if(world.isRemote) {
-			return;
-		}
-
-		if(world.getGameRules().getBoolean(name)) {
+		if(!name.isEmpty() && event.getWorld().getGameRules().getBoolean(name)) {
 			event.setCanceled(true);
 		}
 	}
@@ -151,11 +134,6 @@ public final class MiscEventHandler {
 	@SubscribeEvent
 	public static void onLivingHurt(LivingHurtEvent event) {
 		final EntityLivingBase entity = event.getEntityLiving();
-
-		if(entity.getEntityWorld().isRemote) {
-			return;
-		}
-
 		final DamageSource source = event.getSource();
 
 		if(!(entity instanceof IEntityOwnable) || source == null) {
@@ -198,9 +176,8 @@ public final class MiscEventHandler {
 		}
 
 		final Entity entity = event.getEntity();
-		final World world = entity.getEntityWorld();
 
-		if(world.isRemote || !world.getGameRules().getBoolean("doMobLoot")) {
+		if(!entity.getEntityWorld().getGameRules().getBoolean("doMobLoot")) {
 			return;
 		}
 

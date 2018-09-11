@@ -32,7 +32,7 @@ public final class SquidHandler {
 	public static void onLivingEntityPackSpawn(LivingPackSizeEvent event) {
 		final Entity entity = event.getEntity();
 
-		if(!entity.getEntityWorld().isRemote && entity.getClass() == EntitySquid.class &&
+		if(entity.getClass() == EntitySquid.class &&
 				RTConfig.squids.maxPackSize != VANILLA_PACK_SIZE) {
 			event.setMaxPackSize(RTConfig.squids.maxPackSize);
 		}

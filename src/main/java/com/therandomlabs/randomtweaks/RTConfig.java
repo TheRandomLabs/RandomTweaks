@@ -269,9 +269,10 @@ public class RTConfig {
 				"added to the saturation.")
 		public boolean carryExcessHungerToSaturation = RandomTweaks.IS_DEOBFUSCATED;
 
-		@Config.LangKey("randomtweaks.config.hunger.disableAll")
-		@Config.Comment("Whether all hunger tweaks should be disabled.")
-		public boolean disableAll;
+		@Config.RequiresMcRestart
+		@Config.LangKey("randomtweaks.config.hunger.enabled")
+		@Config.Comment("Whether hunger tweaks should be enabled.")
+		public boolean enabled = true;
 
 		@Config.LangKey("randomtweaks.config.hunger.halveExhaustion")
 		@Config.Comment("Halves exhaustion values.")
