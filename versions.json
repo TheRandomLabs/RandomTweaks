@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12.2": {
+		"1.12.2-2.1.4.0": "Miscellaneous fixes and improvements.\nReplaced the hunger.disableAll configuration property with hunger.enabled.",
 		"1.12.2-2.1.3.2": "Fixed incorrect saturation values.\nAdded a configuration option to disable all hunger tweaks.",
 		"1.12.2-2.1.3.1": "Removed the option to disable mob spawning on non-full cubes.",
 		"1.12.2-2.1.3.0": "Bats now have a chance to drop leather when killed.\nMoved the Command Blocks to the Redstone creative tab.\nMoved the Dragon Egg to the Decorations creative tab.\nLiving entities with custom names now drop name tags when killed.\nvoidIslandsChunkRarity can now be set to 1 to only generate the spawn chunk.",
@@ -293,8 +294,8 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"promos": {
-		"1.12.2-latest": "1.12.2-2.1.3.2",
-		"1.12.2-recommended": "1.12.2-2.1.3.2",
+		"1.12.2-latest": "1.12.2-2.1.4.0",
+		"1.12.2-recommended": "1.12.2-2.1.4.0",
 		"1.12.1-latest": "1.12.2-2.0.2.0",
 		"1.12.1-recommended": "1.12.2-2.0.2.0",
 		"1.12-latest": "1.12.2-2.0.2.0",
