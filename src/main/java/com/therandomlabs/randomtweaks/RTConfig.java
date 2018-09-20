@@ -274,9 +274,10 @@ public class RTConfig {
 		@Config.Comment("Whether hunger tweaks should be enabled.")
 		public boolean enabled = true;
 
-		@Config.LangKey("randomtweaks.config.hunger.halveExhaustion")
-		@Config.Comment("Halves exhaustion values.")
-		public boolean halveExhaustion = RandomTweaks.IS_DEOBFUSCATED;
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("randomtweaks.config.hunger.exhaustionMultiplier")
+		@Config.Comment("The hunger exhaustion multiplier.")
+		public double exhaustionMultiplier = RandomTweaks.IS_DEOBFUSCATED ? 0.0 : 1.0;
 
 		@Config.RangeInt(min = 1)
 		@Config.LangKey("randomtweaks.config.hunger.maximumHungerLevel")
