@@ -3,7 +3,6 @@ package com.therandomlabs.randomtweaks.client;
 import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.text.TextComponentTranslation;
@@ -19,31 +18,58 @@ import org.lwjgl.input.Keyboard;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class KeyBindingHandler {
-	public static final KeyBinding NOCLIP =
-			new KeyBinding("key.noclip", Keyboard.KEY_NONE, "key.categories.randomtweaks");
-	public static final KeyBinding TOGGLE_FOV_CHANGES = new KeyBinding("key.toggleFoVChanges",
-			KeyConflictContext.IN_GAME, KeyModifier.SHIFT, Keyboard.KEY_COMMA,
-			"key.categories.randomtweaks");
-	public static final KeyBinding RELOAD_SOUND_SYSTEM = new KeyBinding("key.reloadSoundSystem",
-			KeyConflictContext.IN_GAME, KeyModifier.SHIFT, Keyboard.KEY_F8,
-			"key.categories.randomtweaks");
+	public static final KeyBinding NOCLIP = new KeyBinding(
+			"key.noclip",
+			Keyboard.KEY_NONE,
+			"key.categories.randomtweaks"
+	);
+
+	public static final KeyBinding TOGGLE_FOV_CHANGES = new KeyBinding(
+			"key.toggleFoVChanges",
+			KeyConflictContext.IN_GAME,
+			KeyModifier.SHIFT,
+			Keyboard.KEY_COMMA,
+			"key.categories.randomtweaks"
+	);
+
+	public static final KeyBinding RELOAD_SOUND_SYSTEM = new KeyBinding(
+			"key.reloadSoundSystem",
+			KeyConflictContext.IN_GAME,
+			KeyModifier.SHIFT,
+			Keyboard.KEY_F8,
+			"key.categories.randomtweaks"
+	);
+
 	public static final KeyBinding TOGGLE_TIME_OF_DAY_OVERLAY = new KeyBinding(
-			"key.toggleTimeOfDayOverlay", KeyConflictContext.IN_GAME, KeyModifier.CONTROL,
-			Keyboard.KEY_BACKSLASH, "key.categories.randomtweaks");
-	public static final KeyBinding TOGGLE_AUTO_JUMP = new KeyBinding("key.toggleAutoJump",
-			KeyConflictContext.IN_GAME, Keyboard.KEY_B, "key.categories.randomtweaks");
+			"key.toggleTimeOfDayOverlay",
+			KeyConflictContext.IN_GAME,
+			KeyModifier.CONTROL,
+			Keyboard.KEY_BACKSLASH,
+			"key.categories.randomtweaks"
+	);
+
+	public static final KeyBinding TOGGLE_AUTO_JUMP = new KeyBinding(
+			"key.toggleAutoJump",
+			KeyConflictContext.IN_GAME,
+			Keyboard.KEY_B,
+			"key.categories.randomtweaks"
+	);
+
+	private static final Minecraft mc = Minecraft.getMinecraft();
 
 	public static void registerKeyBindings() {
 		register(RTConfig.keybinds.noclip, NOCLIP);
 		register(RTConfig.keybinds.toggleFoVChanges, TOGGLE_FOV_CHANGES);
 		register(RTConfig.keybinds.reloadSoundSystem, RELOAD_SOUND_SYSTEM);
-		register(RTConfig.timeOfDay.enabled && RTConfig.keybinds.toggleTimeOfDayOverlay,
-				TOGGLE_TIME_OF_DAY_OVERLAY);
+		register(
+				RTConfig.timeOfDay.enabled && RTConfig.keybinds.toggleTimeOfDayOverlay,
+				TOGGLE_TIME_OF_DAY_OVERLAY
+		);
 		register(RTConfig.client.stepup, TOGGLE_AUTO_JUMP);
 	}
 
 	private static void register(boolean flag, KeyBinding keyBinding) {
-		final GameSettings gameSettings = Minecraft.getMinecraft().gameSettings;
+		final GameSettings gameSettings = mc.gameSettings;
 
 		if(flag) {
 			if(!ArrayUtils.contains(gameSettings.keyBindings, keyBinding)) {
@@ -89,18 +115,15 @@ public final class KeyBindingHandler {
 			if(RTConfig.timeOfDay.enabled && RTConfig.keybinds.toggleTimeOfDayOverlay) {
 				TimeOfDayOverlay.toggle();
 			}
-		} else if(TOGGLE_AUTO_JUMP.isActiveAndMatches(key)) {
-			if(RTConfig.client.stepup) {
-				StepupHandler.toggle();
-			}
+		} else if(TOGGLE_AUTO_JUMP.isActiveAndMatches(key) && RTConfig.client.stepup) {
+			StepupHandler.toggle();
 		}
 	}
 
 	public static void toggleNoclip() {
 		if(RTConfig.keybinds.noclip) {
-			final EntityPlayerSP player = Minecraft.getMinecraft().player;
-			final String gamemode = player.isCreative() ? "sp" : "c";
-			player.sendChatMessage("/gamemode " + gamemode);
+			final String gamemode = mc.player.isCreative() ? "spectator" : "creative";
+			mc.player.sendChatMessage("/gamemode " + gamemode);
 		}
 	}
 
@@ -110,8 +133,7 @@ public final class KeyBindingHandler {
 		RTConfig.Data.save();
 
 		if(RTConfig.keybinds.fovChangesStatusMessage) {
-			final EntityPlayerSP player = Minecraft.getMinecraft().player;
-			player.sendStatusMessage(new TextComponentTranslation(
+			mc.player.sendStatusMessage(new TextComponentTranslation(
 					"toggleFoVChanges." + (data.fovChanges ? "enabled" : "disabled")
 			), true);
 		}
@@ -123,9 +145,7 @@ public final class KeyBindingHandler {
 			return;
 		}
 
-		Minecraft.getMinecraft().getSoundHandler().sndManager.reloadSoundSystem();
-
-		final EntityPlayerSP player = Minecraft.getMinecraft().player;
-		player.sendStatusMessage(new TextComponentTranslation("reloadSoundSystem.success"), true);
+		mc.getSoundHandler().sndManager.reloadSoundSystem();
+		mc.player.sendStatusMessage(new TextComponentTranslation("reloadSoundSystem.success"), true);
 	}
 }

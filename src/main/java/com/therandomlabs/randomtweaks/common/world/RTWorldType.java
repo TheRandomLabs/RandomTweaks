@@ -6,6 +6,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
 
+//A lot of this code is just so the world type options can be toggled in-game
+//Worth it? Maybe
 public abstract class RTWorldType extends WorldType {
 	public RTWorldType(String name) {
 		super(name);

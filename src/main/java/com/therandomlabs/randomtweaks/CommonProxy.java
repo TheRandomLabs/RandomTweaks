@@ -7,18 +7,16 @@ import com.therandomlabs.randomtweaks.common.TrampleHandler;
 import com.therandomlabs.randomtweaks.common.world.WorldGeneratorOceanFloor;
 import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class CommonProxy {
-	public void preInit(FMLPreInitializationEvent event) {
+	public void preInit() {
 		RTConfig.reload();
 		RTLanguageMap.replaceLanguageMaps();
 	}
 
-	public void init(FMLInitializationEvent event) {
+	public void init() {
 		try {
 			Class.forName("net.minecraftforge.event.world.BlockEvent$FarmlandTrampleEvent");
 			MinecraftForge.EVENT_BUS.register(new TrampleHandler());
@@ -35,8 +33,9 @@ public class CommonProxy {
 		}
 
 		if(RandomTweaks.COMFORTS_LOADED) {
-			FMLInterModComms.sendFunctionMessage("comforts", "mobSleepFilter",
-					SleepHandler.MobFilter.class.getName());
+			FMLInterModComms.sendFunctionMessage(
+					"comforts", "mobSleepFilter", SleepHandler.MobFilter.class.getName()
+			);
 		}
 	}
 }

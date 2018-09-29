@@ -23,9 +23,6 @@ import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 @Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
 public final class SleepHandler {
-	public static final Method SET_SIZE = ReflectionHelper.findMethod(Entity.class, "setSize",
-			"func_70105_a", float.class, float.class);
-
 	public static class MobFilter implements Function<EntityMob, Boolean> {
 		//Not actually a singleton
 		public static final MobFilter INSTANCE = new MobFilter();
@@ -36,6 +33,10 @@ public final class SleepHandler {
 		}
 	}
 
+	public static final Method SET_SIZE = ReflectionHelper.findMethod(
+			Entity.class, "setSize", "func_70105_a", float.class, float.class
+	);
+
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onSleep(PlayerSleepInBedEvent event) {
 		if(!RTConfig.misc.sleepTweaks) {
@@ -45,7 +46,7 @@ public final class SleepHandler {
 		final EntityPlayer player = event.getEntityPlayer();
 		final World world = player.getEntityWorld();
 
-		//The client-sided behavior should be left unchanged
+		//RandomTweaks does not modify client-sided sleeping behavior
 		if(world.isRemote) {
 			return;
 		}
@@ -60,7 +61,7 @@ public final class SleepHandler {
 
 			if(state != null) {
 				final ResourceLocation name = state.getBlock().getRegistryName();
-				
+
 				if(name != null && name.toString().startsWith("comforts:hammock")) {
 					return;
 				}
@@ -141,7 +142,8 @@ public final class SleepHandler {
 	}
 
 	public static boolean isMobInRange(EntityPlayer player, World world, BlockPos position) {
-		return !world.getEntitiesWithinAABB(EntityMob.class,
+		return !world.getEntitiesWithinAABB(
+				EntityMob.class,
 				new AxisAlignedBB(
 						position.getX(),
 						position.getY(),

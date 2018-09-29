@@ -43,8 +43,9 @@ public class WorldTypeRealistic extends RTWorldType {
 
 	@Override
 	public ChunkGeneratorOverworld getChunkGenerator(World world, String generatorOptions) {
-		return new ChunkGeneratorOverworld(world, world.getSeed(),
-				world.getWorldInfo().isMapFeaturesEnabled(), PRESET);
+		return new ChunkGeneratorOverworld(
+				world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled(), PRESET
+		);
 	}
 
 	@Override

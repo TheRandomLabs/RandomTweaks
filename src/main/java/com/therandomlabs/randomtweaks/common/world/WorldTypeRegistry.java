@@ -26,18 +26,25 @@ public final class WorldTypeRegistry {
 			return false;
 		}
 
-		if(RandomTweaks.QUARK_LOADED) {
-			try {
-				final Class<?> moduleLoader =
-						Class.forName("vazkii.quark.base.module.ModuleLoader");
-				final Method isFeatureEnabled =
-						moduleLoader.getDeclaredMethod("isFeatureEnabled", Class.class);
-				final Class<?> realisticWorldType =
-						Class.forName("vazkii.quark.world.feature.RealisticWorldType");
-				return !((boolean) isFeatureEnabled.invoke(null, realisticWorldType));
-			} catch(Exception ex) {
-				ex.printStackTrace();
-			}
+		if(!RandomTweaks.QUARK_LOADED) {
+			return true;
+		}
+
+		try {
+			final Class<?> moduleLoader = Class.forName("vazkii.quark.base.module.ModuleLoader");
+
+			final Method isFeatureEnabled = moduleLoader.getDeclaredMethod(
+					"isFeatureEnabled", Class.class
+			);
+
+			final Class<?> realisticWorldType =
+					Class.forName("vazkii.quark.world.feature.RealisticWorldType");
+
+			return !((boolean) isFeatureEnabled.invoke(null, realisticWorldType));
+		} catch(Exception ex) {
+			RandomTweaks.LOGGER.error(
+					"Failed to check if Quark's realistic world type is enabled", ex
+			);
 		}
 
 		return true;

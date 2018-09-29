@@ -3,7 +3,6 @@ package com.therandomlabs.randomtweaks.common.command;
 import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraftforge.client.ClientCommandHandler;
-import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
@@ -40,7 +39,7 @@ public final class CommandRegistry {
 		}
 	}
 
-	public static void serverStarted(FMLServerStartedEvent event) {
+	public static void serverStarted() {
 		if(RTConfig.commands.helpTweaks) {
 			CommandRTHelp.serverStarted();
 		}

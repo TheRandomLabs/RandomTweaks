@@ -53,7 +53,7 @@ public class CommandDisconnect extends CommandBase {
 				mc.displayGuiScreen(new GuiMultiplayer(new GuiMainMenu()));
 			}
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			RandomTweaks.LOGGER.error("Failed to disconnect", ex);
 			throw new CommandException(Utils.localize(
 					"commands.disconnect.failure",
 					ex.getClass().getName() + ": " + ex.getMessage()

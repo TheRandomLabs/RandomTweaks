@@ -50,12 +50,18 @@ public class CommandRTHelp extends CommandHelp {
 
 			try {
 				if(command.getName() == null) {
-					RandomTweaks.LOGGER.warn("The command %s has a null name! Ignoring...",
-							command.getClass().getName());
+					RandomTweaks.LOGGER.warn(
+							"The command %s has a null name! Ignoring...",
+							command.getClass().getName()
+					);
+
 					it.remove();
 				} else if(command.getUsage(sender) == null) {
-					RandomTweaks.LOGGER.warn("The command %s has a null usage! Ignoring...",
-							command.getClass().getName());
+					RandomTweaks.LOGGER.warn(
+							"The command %s has a null usage! Ignoring...",
+							command.getClass().getName()
+					);
+
 					it.remove();
 				}
 			} catch(Exception ex) {
@@ -70,10 +76,13 @@ public class CommandRTHelp extends CommandHelp {
 	static void serverStarted() {
 		final Collection<ICommand> commands = FMLCommonHandler.instance().
 				getMinecraftServerInstance().getCommandManager().getCommands().values();
+
 		for(ICommand command : commands) {
 			if(!isValid(command)) {
-				RandomTweaks.LOGGER.warn("The command %s incorrectly overrides compareTo!",
-						command.getName(), command.getClass().getName());
+				RandomTweaks.LOGGER.warn(
+						"The command %s incorrectly overrides compareTo!",
+						command.getName(), command.getClass().getName()
+				);
 			}
 		}
 	}
@@ -82,8 +91,10 @@ public class CommandRTHelp extends CommandHelp {
 		try {
 			return command.compareTo(testCommand1) != command.compareTo(testCommand2);
 		} catch(Exception ex) {
-			RandomTweaks.LOGGER.warn("Failed to test the command %s for a valid compareTo!",
-					command, ex);
+			RandomTweaks.LOGGER.warn(
+					"Failed to test the command %s for a valid compareTo!",
+					command, ex
+			);
 		}
 
 		//We don't know if the implementation is bad, just that it throws an exception

@@ -14,6 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.event.entity.player.BonemealEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
+import net.minecraftforge.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
@@ -35,29 +36,25 @@ public final class BoneMealHandler {
 		final BlockPos pos = event.getPos();
 
 		if(block == Blocks.CACTUS) {
-			if(RTConfig.boneMeal.cacti != 0 &&
-					grow(world, block, pos, BlockCactus.AGE, RTConfig.boneMeal.cacti)) {
-				event.setResult(Event.Result.ALLOW);
+			if(RTConfig.boneMeal.cacti != 0) {
+				grow(world, block, pos, BlockCactus.AGE, RTConfig.boneMeal.cacti, event);
 			}
 		} else if(block == Blocks.REEDS) {
-			if(RTConfig.boneMeal.sugarCanes != 0 &&
-					grow(world, block, pos, BlockReed.AGE, RTConfig.boneMeal.sugarCanes)) {
-				event.setResult(Event.Result.ALLOW);
+			if(RTConfig.boneMeal.sugarCanes != 0) {
+				grow(world, block, pos, BlockReed.AGE, RTConfig.boneMeal.sugarCanes, event);
 			}
-		} else if(block == Blocks.NETHER_WART) {
-			if(RTConfig.boneMeal.netherWarts) {
-				final int age = state.getValue(BlockNetherWart.AGE);
+		} else if(block == Blocks.NETHER_WART && RTConfig.boneMeal.netherWarts) {
+			final int age = state.getValue(BlockNetherWart.AGE);
 
-				if(age < 3) {
-					world.setBlockState(pos, state.withProperty(BlockNetherWart.AGE, age + 1), 2);
-					event.setResult(Event.Result.ALLOW);
-				}
+			if(age < 3) {
+				world.setBlockState(pos, state.withProperty(BlockNetherWart.AGE, age + 1), 2);
+				event.setResult(Event.Result.ALLOW);
 			}
 		}
 	}
 
-	public static boolean grow(World world, Block block, BlockPos pos, PropertyInteger ageProperty,
-			int stages) {
+	public static void grow(World world, Block block, BlockPos pos, PropertyInteger ageProperty,
+			int stages, BonemealEvent event) {
 		BlockPos tempPos;
 		int i = 0;
 
@@ -65,7 +62,7 @@ public final class BoneMealHandler {
 			pos = tempPos;
 
 			if(++i > 1) {
-				return false;
+				return;
 			}
 		}
 
@@ -75,7 +72,7 @@ public final class BoneMealHandler {
 			pos = tempPos;
 
 			if(++i > 1) {
-				return false;
+				return;
 			}
 		}
 
@@ -89,7 +86,7 @@ public final class BoneMealHandler {
 		}
 
 		if(originalStage == newStage) {
-			return false;
+			return;
 		}
 
 		state = state.withProperty(ageProperty, newStage);
@@ -97,6 +94,6 @@ public final class BoneMealHandler {
 		world.setBlockState(pos, state, 4);
 		block.updateTick(world, pos, state, world.rand);
 
-		return true;
+		event.setResult(Result.ALLOW);
 	}
 }

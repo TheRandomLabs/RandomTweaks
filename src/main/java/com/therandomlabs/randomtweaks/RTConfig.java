@@ -1,6 +1,7 @@
 package com.therandomlabs.randomtweaks;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -34,8 +35,138 @@ import org.apache.commons.lang3.StringUtils;
 @Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
 @Config(modid = RandomTweaks.MODID, name = RTConfig.NAME, category = "")
 public class RTConfig {
-	@Config.Ignore
-	public static final String NAME = RandomTweaks.MODID + "/" + RandomTweaks.MODID;
+	public static class SheepColorWeights {
+		public static final Path PATH = getJson("sheepcolorweights");
+		public static final Map<EnumDyeColor, Double> WEIGHTS = new LinkedHashMap<>();
+
+		public static void create() {
+			try {
+				final JsonObject json = new JsonObject();
+
+				json.addProperty(EnumDyeColor.WHITE.getName(), 70.0);
+
+				for(EnumDyeColor color : EnumDyeColor.values()) {
+					if(color != EnumDyeColor.WHITE) {
+						json.addProperty(color.getName(), 2.0);
+					}
+				}
+
+				final String string = new GsonBuilder().setPrettyPrinting().create().toJson(json);
+				Files.write(PATH, Collections.singletonList(string.replaceAll(" {2}", "\t")));
+			} catch(IOException ex) {
+				Utils.crashReport("Failed to create: " + PATH, ex);
+			}
+		}
+
+		public static void ensureExists() {
+			if(!PATH.toFile().exists()) {
+				create();
+			}
+
+			get();
+		}
+
+		public static void get() {
+			if(!PATH.toFile().exists()) {
+				create();
+				get();
+				return;
+			}
+
+			JsonObject object;
+
+			try {
+				object = readJson(PATH);
+			} catch(JsonSyntaxException ex) {
+				RandomTweaks.LOGGER.error("Error in the RandomTweaks sheep color weights JSON. " +
+						"The file will be replaced.", ex);
+
+				create();
+				get();
+
+				return;
+			}
+
+
+			final EnumDyeColor[] colors = EnumDyeColor.values();
+			final Map<String, EnumDyeColor> names = new HashMap<>(colors.length);
+
+			for(EnumDyeColor color : colors) {
+				names.put(color.getName(), color);
+			}
+
+			WEIGHTS.clear();
+
+			try {
+				for(Map.Entry<String, JsonElement> entry : object.entrySet()) {
+					final String name = entry.getKey();
+
+					final EnumDyeColor color = names.get(name);
+
+					if(color != null) {
+						WEIGHTS.put(color, Double.parseDouble(entry.getValue().getAsString()));
+					}
+				}
+			} catch(NumberFormatException ex) {
+				RandomTweaks.LOGGER.error("Error in the RandomTweaks sheep color weights JSON. " +
+						"The file will be replaced.", ex);
+
+				create();
+				get();
+			}
+		}
+	}
+
+	public static class Data {
+		public static final Path PATH = getJson("data");
+
+		private static Data data;
+
+		public Map<String, Boolean> timeOfDayOverlay;
+		public boolean stepup;
+		public boolean fovChanges;
+
+		public static Data get() {
+			if(data != null) {
+				return data;
+			}
+
+			if(PATH.toFile().exists()) {
+				try {
+					data = new Gson().fromJson(readFile(PATH), Data.class);
+				} catch(JsonSyntaxException ex) {
+					RandomTweaks.LOGGER.error("Error in the RandomTweaks data JSON. " +
+							"The file will be replaced.", ex);
+				}
+			}
+
+			if(data == null) {
+				data = new Data();
+
+				data.timeOfDayOverlay = new HashMap<>();
+				data.stepup = client.stepupEnabledByDefault;
+				data.fovChanges = keybinds.fovChangesEnabledByDefault;
+
+				save();
+			} else if(data.timeOfDayOverlay == null) {
+				data.timeOfDayOverlay = new HashMap<>();
+				save();
+			}
+
+			return data;
+		}
+
+		public static void save() {
+			//Ensure non-null
+			get();
+
+			try {
+				Files.write(PATH, Collections.singletonList(new Gson().toJson(data)));
+			} catch(IOException ex) {
+				Utils.crashReport("Error while saving RandomTweaks data", ex);
+			}
+		}
+	}
 
 	public static class Animals {
 		@Config.LangKey("randomtweaks.config.randomizedAges")
@@ -297,7 +428,8 @@ public class RTConfig {
 
 		@Config.RangeDouble(min = 0.0)
 		@Config.LangKey("randomtweaks.config.hunger.saturationLimit")
-		@Config.Comment("This value is added to the player's food level to calculate the maximum " +
+		@Config.Comment("This value is added to the player's food level to calculate the maximum" +
+				" " +
 				"saturation level.")
 		public double saturationLimit = RandomTweaks.IS_DEOBFUSCATED ? 100.0 : 0.0;
 	}
@@ -355,7 +487,8 @@ public class RTConfig {
 		public String disableNetherPortalCreationGameruleName = "disableNetherPortalCreation";
 
 		@Config.LangKey("randomtweaks.config.misc.entitiesDropNameTags")
-		@Config.Comment("Whether living entities should drop name tags if they have a custom name.")
+		@Config.Comment("Whether living entities should drop name tags if they have a custom " +
+				"name.")
 		public boolean entitiesDropNameTags = true;
 
 		@Config.LangKey("randomtweaks.config.misc.farmlandTrampleBehavior")
@@ -569,6 +702,9 @@ public class RTConfig {
 		public int voidWorldYSpawn = 17;
 	}
 
+	@Config.Ignore
+	public static final String NAME = RandomTweaks.MODID + "/" + RandomTweaks.MODID;
+
 	@Config.LangKey("randomtweaks.config.animals")
 	@Config.Comment("Options related to animals (including villagers).")
 	public static Animals animals = new Animals();
@@ -603,153 +739,27 @@ public class RTConfig {
 
 	@Config.Ignore
 	public static AutoThirdPerson autoThirdPerson = client.autoThirdPerson;
+
 	@Config.Ignore
 	public static Ding ding = client.ding;
+
 	@Config.Ignore
 	public static Keybinds keybinds = client.keybinds;
+
 	@Config.Ignore
 	public static RandomizedAges randomizedAges = animals.randomizedAges;
+
 	@Config.Ignore
 	public static Squids squids = animals.squids;
+
 	@Config.Ignore
 	public static TimeOfDay timeOfDay = client.timeOfDay;
+
 	@Config.Ignore
 	public static OceanFloor oceanFloor = world.oceanFloor;
 
-	public static class SheepColorWeights {
-		public static final Path PATH = getJson("sheepcolorweights");
-		public static final Map<EnumDyeColor, Double> WEIGHTS = new LinkedHashMap<>();
-
-		public static void create() {
-			try {
-				final JsonObject json = new JsonObject();
-
-				json.addProperty(EnumDyeColor.WHITE.getName(), 70.0);
-
-				for(EnumDyeColor color : EnumDyeColor.values()) {
-					if(color != EnumDyeColor.WHITE) {
-						json.addProperty(color.getName(), 2.0);
-					}
-				}
-
-				final String string = new GsonBuilder().setPrettyPrinting().create().toJson(json);
-				Files.write(PATH, Collections.singletonList(string.replaceAll(" {2}", "\t")));
-			} catch(IOException ex) {
-				Utils.crashReport("Failed to create: " + PATH, ex);
-			}
-		}
-
-		public static void ensureExists() {
-			if(!Files.exists(PATH)) {
-				create();
-			}
-
-			get();
-		}
-
-		public static void get() {
-			if(!Files.exists(PATH)) {
-				create();
-				get();
-				return;
-			}
-
-			JsonObject object;
-
-			try {
-				object = readJson(PATH);
-			} catch(JsonSyntaxException ex) {
-				RandomTweaks.LOGGER.error("Error in the RandomTweaks sheep color weights JSON. " +
-						"The file will be replaced.", ex);
-
-				create();
-				get();
-
-				return;
-			}
-
-
-			final EnumDyeColor[] colors = EnumDyeColor.values();
-			final Map<String, EnumDyeColor> names = new HashMap<>(colors.length);
-
-			for(EnumDyeColor color : colors) {
-				names.put(color.getName(), color);
-			}
-
-			WEIGHTS.clear();
-
-			try {
-				for(Map.Entry<String, JsonElement> entry : object.entrySet()) {
-					final String name = entry.getKey();
-
-					final EnumDyeColor color = names.get(name);
-
-					if(color != null) {
-						WEIGHTS.put(color, Double.parseDouble(entry.getValue().getAsString()));
-					}
-				}
-			} catch(NumberFormatException ex) {
-				RandomTweaks.LOGGER.error("Error in the RandomTweaks sheep color weights JSON. " +
-						"The file will be replaced.", ex);
-
-				create();
-				get();
-			}
-		}
-	}
-
-	public static class Data {
-		public static final Path PATH = getJson("data");
-
-		private static Data data;
-
-		public Map<String, Boolean> timeOfDayOverlay;
-		public boolean stepup;
-		public boolean fovChanges;
-
-		public static Data get() {
-			if(data != null) {
-				return data;
-			}
-
-			if(Files.exists(PATH)) {
-				try {
-					data = new Gson().fromJson(readFile(PATH), Data.class);
-				} catch(JsonSyntaxException ex) {
-					RandomTweaks.LOGGER.error("Error in the RandomTweaks data JSON. " +
-							"The file will be replaced.", ex);
-				}
-			}
-
-			if(data == null) {
-				data = new Data();
-
-				data.timeOfDayOverlay = new HashMap<>();
-				data.stepup = client.stepupEnabledByDefault;
-				data.fovChanges = keybinds.fovChangesEnabledByDefault;
-
-				save();
-			} else if(data.timeOfDayOverlay == null) {
-				data.timeOfDayOverlay = new HashMap<>();
-				save();
-			}
-
-			return data;
-		}
-
-		public static void save() {
-			//Ensure non-null
-			get();
-
-			try {
-				Files.write(PATH, Collections.singletonList(new Gson().toJson(data)));
-			} catch(IOException ex) {
-				Utils.crashReport("Error while saving RandomTweaks data", ex);
-			}
-		}
-	}
-
-	private static final Method GET_CONFIGURATION = ReflectionHelper.findMethod(ConfigManager.class,
+	private static final Method GET_CONFIGURATION =
+			ReflectionHelper.findMethod(ConfigManager.class,
 			"getConfiguration", "getConfiguration", String.class, String.class);
 
 	public static Path getConfig(String name) {
@@ -758,7 +768,7 @@ public class RTConfig {
 
 		try {
 			if(parent != null) {
-				if(Files.exists(parent) && !Files.isDirectory(parent)) {
+				if(parent.toFile().exists() && parent.toFile().isFile()) {
 					Files.delete(parent);
 				}
 
@@ -789,13 +799,6 @@ public class RTConfig {
 		return new JsonParser().parse(readFile(path)).getAsJsonObject();
 	}
 
-	@SubscribeEvent
-	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-		if(event.getModID().equals(RandomTweaks.MODID)) {
-			reload();
-		}
-	}
-
 	public static void reload() {
 		ConfigManager.sync(RandomTweaks.MODID, Config.Type.INSTANCE);
 
@@ -814,7 +817,14 @@ public class RTConfig {
 		Data.data = null;
 	}
 
-	private static void modifyConfig() throws Exception {
+	@SubscribeEvent
+	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+		if(event.getModID().equals(RandomTweaks.MODID)) {
+			reload();
+		}
+	}
+
+	private static void modifyConfig() throws IllegalAccessException, InvocationTargetException {
 		final Configuration config =
 				(Configuration) GET_CONFIGURATION.invoke(null, RandomTweaks.MODID, NAME);
 
@@ -852,8 +862,9 @@ public class RTConfig {
 
 		//Remove default values from comments so they don't show up in the configuration GUI
 		for(String name : config.getCategoryNames()) {
-			config.getCategory(name).getValues().forEach((key, property) ->
-					property.setComment(comments.get(property)));
+			config.getCategory(name).getValues().forEach(
+					(key, property) -> property.setComment(comments.get(property))
+			);
 		}
 	}
 }

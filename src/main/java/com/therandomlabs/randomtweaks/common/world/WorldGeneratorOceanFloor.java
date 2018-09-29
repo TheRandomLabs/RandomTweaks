@@ -17,17 +17,29 @@ import net.minecraftforge.fml.common.IWorldGenerator;
 public class WorldGeneratorOceanFloor implements IWorldGenerator {
 	private static final BlockMatcher GRAVEL = BlockMatcher.forBlock(Blocks.GRAVEL);
 
-	private static final WorldGenMinable CLAY = new WorldGenMinable(Blocks.CLAY.getDefaultState(),
-			RTConfig.oceanFloor.clayVeinSize, GRAVEL);
-	private static final WorldGenMinable SAND = new WorldGenMinable(Blocks.SAND.getDefaultState(),
-			RTConfig.oceanFloor.sandVeinSize, GRAVEL);
-	private static final WorldGenMinable DIRT = new WorldGenMinable(Blocks.DIRT.getDefaultState(),
-			RTConfig.oceanFloor.dirtVeinSize, GRAVEL);
+	private static final WorldGenMinable CLAY = new WorldGenMinable(
+			Blocks.CLAY.getDefaultState(),
+			RTConfig.oceanFloor.clayVeinSize,
+			GRAVEL
+	);
+
+	private static final WorldGenMinable SAND = new WorldGenMinable(
+			Blocks.SAND.getDefaultState(),
+			RTConfig.oceanFloor.sandVeinSize,
+			GRAVEL
+	);
+
+	private static final WorldGenMinable DIRT = new WorldGenMinable(
+			Blocks.DIRT.getDefaultState(),
+			RTConfig.oceanFloor.dirtVeinSize,
+			GRAVEL
+	);
 
 	static {
 		if(RTConfig.oceanFloor.minY > RTConfig.oceanFloor.maxY) {
-			throw new IllegalArgumentException("oceanFloor.minY must be smaller than or equal to " +
-					"oceanFloor.maxY");
+			throw new IllegalArgumentException(
+					"oceanFloor.minY must be lesser than or equal to oceanFloor.maxY"
+			);
 		}
 	}
 
@@ -55,6 +67,7 @@ public class WorldGeneratorOceanFloor implements IWorldGenerator {
 			);
 
 			final Biome biome = world.getBiome(pos);
+
 			if(biome.getRegistryName().getPath().contains("ocean")) {
 				generator.generate(world, random, pos);
 			}

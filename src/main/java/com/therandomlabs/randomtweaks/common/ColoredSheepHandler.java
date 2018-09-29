@@ -7,7 +7,7 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.item.EnumDyeColor;
 
 public final class ColoredSheepHandler {
-	private static final Map<Integer, EnumDyeColor> QUEUE = new ConcurrentHashMap<>();
+	private static final Map<Integer, EnumDyeColor> queue = new ConcurrentHashMap<>();
 
 	public static void onSheepSpawn(EntitySheep sheep) {
 		final Map<EnumDyeColor, Double> weights = RTConfig.SheepColorWeights.WEIGHTS;
@@ -24,7 +24,7 @@ public final class ColoredSheepHandler {
 			weightTotal += weight.getValue();
 
 			if(weightTotal >= result) {
-				QUEUE.put(sheep.getEntityId(), weight.getKey());
+				queue.put(sheep.getEntityId(), weight.getKey());
 				break;
 			}
 		}
@@ -32,11 +32,11 @@ public final class ColoredSheepHandler {
 
 	public static void onSheepTick(EntitySheep sheep) {
 		final int id = sheep.getEntityId();
-		final EnumDyeColor color = QUEUE.get(id);
+		final EnumDyeColor color = queue.get(id);
 
 		if(color != null) {
 			sheep.setFleeceColor(color);
-			QUEUE.remove(id);
+			queue.remove(id);
 		}
 	}
 }

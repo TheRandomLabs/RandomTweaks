@@ -38,8 +38,10 @@ public class CommandHunger extends CommandBase {
 			stats.foodSaturationLevel = (float) parseDouble(args[2]);
 		}
 
-		notifyCommandListener(sender, this, "%s's hunger level is %s and saturation level is %s",
-				player.getDisplayNameString(), stats.foodLevel, stats.foodSaturationLevel);
+		notifyCommandListener(
+				sender, this, "%s's hunger level is %s and saturation level is %s",
+				player.getDisplayNameString(), stats.foodLevel, stats.foodSaturationLevel
+		);
 	}
 
 	@Override

@@ -18,9 +18,9 @@ public final class StepupHandler {
 	public static final float STEPUP_STEP_HEIGHT = 1.2F;
 
 	private static final Minecraft mc = Minecraft.getMinecraft();
-	private static Mode mode;
-
 	private static Potion jumpBoost;
+
+	private static Mode mode;
 
 	private enum Mode {
 		NO_AUTO_JUMP(VANILLA_STEP_HEIGHT, false, "autoJump.disabled"),

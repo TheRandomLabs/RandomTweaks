@@ -21,7 +21,6 @@ public class CommandDeleteGamerule extends CommandBase {
 		return "/deletegamerule <gamerule>";
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args)
 			throws CommandException {
@@ -35,8 +34,9 @@ public class CommandDeleteGamerule extends CommandBase {
 		if(success) {
 			notifyCommandListener(sender, this, "Gamerule \"%s\" successfully deleted!", args[0]);
 		} else {
-			notifyCommandListener(sender, this, TextFormatting.RED + "No such gamerule exists: " +
-					args[0]);
+			notifyCommandListener(
+					sender, this, TextFormatting.RED + "No such gamerule exists: %s" + args[0]
+			);
 		}
 	}
 

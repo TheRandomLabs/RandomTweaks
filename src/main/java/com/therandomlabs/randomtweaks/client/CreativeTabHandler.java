@@ -19,6 +19,8 @@ import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
 
+//A lot of this is there just so creative tab configuration options can be toggled in-game
+//Worth it? Maybe
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class CreativeTabHandler {
 	public static final CreativeTabs SPAWN_EGGS = new CreativeTabs("spawnEggs") {
@@ -65,6 +67,7 @@ public final class CreativeTabHandler {
 		if(RTConfig.client.creativeTabs.setCommandBlockCreativeTab) {
 			originalCommandBlockTab = Blocks.COMMAND_BLOCK.getCreativeTab();
 			commandBlockSetBefore = true;
+
 			Blocks.COMMAND_BLOCK.setCreativeTab(CreativeTabs.REDSTONE);
 			Blocks.CHAIN_COMMAND_BLOCK.setCreativeTab(CreativeTabs.REDSTONE);
 			Blocks.REPEATING_COMMAND_BLOCK.setCreativeTab(CreativeTabs.REDSTONE);
@@ -77,6 +80,7 @@ public final class CreativeTabHandler {
 		if(RTConfig.client.creativeTabs.setDragonEggCreativeTab) {
 			originalDragonEggTab = Blocks.DRAGON_EGG.getCreativeTab();
 			dragonEggSetBefore = true;
+
 			Blocks.DRAGON_EGG.setCreativeTab(CreativeTabs.DECORATIONS);
 		} else if(dragonEggSetBefore) {
 			Blocks.DRAGON_EGG.setCreativeTab(originalDragonEggTab);

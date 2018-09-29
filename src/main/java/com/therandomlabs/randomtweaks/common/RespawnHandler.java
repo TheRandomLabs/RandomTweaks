@@ -23,7 +23,7 @@ public final class RespawnHandler {
 	}
 
 	@SubscribeEvent
-	public static void onRespawn(PlayerEvent.Clone event) throws Exception {
+	public static void onRespawn(PlayerEvent.Clone event) {
 		final EntityPlayer original = event.getOriginal();
 		final boolean keepInventory =
 				original.getEntityWorld().getGameRules().getBoolean("keepInventory");

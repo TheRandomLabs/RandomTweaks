@@ -26,10 +26,10 @@ public enum Alignment {
 	private static final int CENTER = 0x0C;
 	private static final int RIGHT = 0x08;
 
-	private int alignment;
-
 	private final int defaultX;
 	private final int defaultY;
+
+	private int alignment;
 
 	static {
 		TOPLEFT.alignment = TOP | LEFT;
@@ -52,12 +52,12 @@ public enum Alignment {
 		x += defaultX;
 
 		switch(alignment & MASK_X) {
-			case LEFT:
-				return x;
-			case CENTER:
-				return x + (screenWidth - textWidth) / 2;
-			case RIGHT:
-				return x + screenWidth - textWidth;
+		case LEFT:
+			return x;
+		case CENTER:
+			return x + (screenWidth - textWidth) / 2;
+		case RIGHT:
+			return x + screenWidth - textWidth;
 		}
 
 		return 0;
@@ -67,12 +67,12 @@ public enum Alignment {
 		y += defaultY;
 
 		switch(alignment & MASK_Y) {
-			case TOP:
-				return y;
-			case MIDDLE:
-				return y + (screenHeight - textHeight) / 2;
-			case BOTTOM:
-				return y + screenHeight - textHeight;
+		case TOP:
+			return y;
+		case MIDDLE:
+			return y + (screenHeight - textHeight) / 2;
+		case BOTTOM:
+			return y + screenHeight - textHeight;
 		}
 
 		return 0;

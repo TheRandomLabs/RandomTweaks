@@ -12,11 +12,13 @@ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-@Mod(modid = RandomTweaks.MODID, version = RandomTweaks.VERSION,
+@Mod(
+		modid = RandomTweaks.MODID, version = RandomTweaks.VERSION,
 		acceptedMinecraftVersions = RandomTweaks.ACCEPTED_MINECRAFT_VERSIONS,
 		acceptableRemoteVersions = RandomTweaks.ACCEPTABLE_REMOTE_VERSIONS,
 		dependencies = RandomTweaks.DEPENDENCIES, updateJSON = RandomTweaks.UPDATE_JSON,
-		certificateFingerprint = RandomTweaks.CERTIFICATE_FINGERPRINT)
+		certificateFingerprint = RandomTweaks.CERTIFICATE_FINGERPRINT
+)
 public final class RandomTweaks {
 	public static final String MODID = "randomtweaks";
 	public static final String VERSION = "@VERSION@";
@@ -47,18 +49,20 @@ public final class RandomTweaks {
 	public static final boolean IS_DEOBFUSCATED =
 			(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
-	@SidedProxy(clientSide = "com.therandomlabs.randomtweaks.ClientProxy",
-			serverSide = "com.therandomlabs.randomtweaks.CommonProxy")
+	@SidedProxy(
+			clientSide = "com.therandomlabs.randomtweaks.ClientProxy",
+			serverSide = "com.therandomlabs.randomtweaks.CommonProxy"
+	)
 	public static CommonProxy proxy;
 
 	@Mod.EventHandler
 	public static void preInit(FMLPreInitializationEvent event) {
-		proxy.preInit(event);
+		proxy.preInit();
 	}
 
 	@Mod.EventHandler
 	public static void init(FMLInitializationEvent event) {
-		proxy.init(event);
+		proxy.init();
 	}
 
 	@Mod.EventHandler
@@ -68,6 +72,6 @@ public final class RandomTweaks {
 
 	@Mod.EventHandler
 	public static void serverStarted(FMLServerStartedEvent event) {
-		CommandRegistry.serverStarted(event);
+		CommandRegistry.serverStarted();
 	}
 }

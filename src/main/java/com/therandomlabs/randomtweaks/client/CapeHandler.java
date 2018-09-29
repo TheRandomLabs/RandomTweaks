@@ -45,7 +45,8 @@ public final class CapeHandler {
 	}
 
 	public static boolean hasCape(AbstractClientPlayer player) {
-		return RandomTweaks.IS_DEOBFUSCATED || CONTRIBUTORS.contains(player.getUniqueID().toString());
+		return RandomTweaks.IS_DEOBFUSCATED ||
+				CONTRIBUTORS.contains(player.getUniqueID().toString());
 	}
 
 	private static void setCape(AbstractClientPlayer player) {

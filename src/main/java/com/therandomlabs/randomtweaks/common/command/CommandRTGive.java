@@ -3,8 +3,7 @@ package com.therandomlabs.randomtweaks.common.command;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
-import javax.annotation.Nullable;
+import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.CommandGive;
 import net.minecraft.command.CommandResultStats;
@@ -41,9 +40,12 @@ public class CommandRTGive extends CommandGive {
 		} catch(NumberInvalidException ex) {
 			if(args[1].startsWith("ore:")) {
 				final List<ItemStack> ores = OreDictionary.getOres(args[1].substring(4));
+
 				if(!ores.isEmpty()) {
-					item = ores.get(0).getItem();
-					meta = ores.get(0).getItemDamage();
+					final ItemStack ore = ores.get(0);
+
+					item = ore.getItem();
+					meta = ore.getItemDamage();
 				}
 			} else {
 				try {
@@ -62,10 +64,11 @@ public class CommandRTGive extends CommandGive {
 
 		if(args.length > 4) {
 			final String tag = buildString(args, 4);
+
 			try {
 				stack.setTagCompound(JsonToNBT.getTagFromJson(tag));
 			} catch(NBTException ex) {
-				ex.printStackTrace();
+				RandomTweaks.LOGGER.error("Failed to parse data tag", ex);
 				throw new CommandException("commands.give.tagError", ex.getMessage());
 			}
 		}
@@ -74,9 +77,13 @@ public class CommandRTGive extends CommandGive {
 
 		if(added) {
 			final Random rng = player.getRNG();
-			player.getEntityWorld().playSound(null, player.posX, player.posY, player.posZ,
-					SoundEvents.ENTITY_ITEM_PICKUP, SoundCategory.PLAYERS, 0.2F,
-					((rng.nextFloat() - rng.nextFloat()) * 0.7F + 1.0F) * 2.0F);
+			final float random1 = rng.nextFloat();
+			final float random2 = rng.nextFloat();
+
+			player.getEntityWorld().playSound(
+					null, player.posX, player.posY, player.posZ, SoundEvents.ENTITY_ITEM_PICKUP,
+					SoundCategory.PLAYERS, 0.2F, ((random1 - random2) * 0.7F + 1.0F) * 2.0F
+			);
 
 			player.inventoryContainer.detectAndSendChanges();
 
@@ -90,8 +97,10 @@ public class CommandRTGive extends CommandGive {
 					droppedItem.makeFakeItem();
 				}
 			} else {
-				sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS,
-						amount - stack.getCount());
+				sender.setCommandStat(
+						CommandResultStats.Type.AFFECTED_ITEMS,
+						amount - stack.getCount()
+				);
 
 				final EntityItem droppedItem = player.dropItem(stack, false);
 
@@ -101,23 +110,27 @@ public class CommandRTGive extends CommandGive {
 				}
 			}
 
-			notifyCommandListener(sender, this, "commands.give.success", stack.getTextComponent(),
-					amount, player.getName());
+			notifyCommandListener(
+					sender, this, "commands.give.success",
+					stack.getTextComponent(), amount, player.getName()
+			);
 		}
 	}
 
 	@Override
 	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender,
-			String[] args, @Nullable BlockPos targetPos) {
+			String[] args, BlockPos targetPos) {
 		final List<String> tabCompletions =
 				super.getTabCompletions(server, sender, args, targetPos);
 
 		if(args.length == 2) {
-			tabCompletions.addAll(getListOfStringsMatchingLastWord(args,
-					Arrays.stream(OreDictionary.getOreNames()).
-							map(name -> "ore:" + name).
-							collect(Collectors.toList()))
-			);
+			final String[] names = OreDictionary.getOreNames();
+
+			for(int i = 0; i < names.length; i++) {
+				names[i] = "ore:" + names[i];
+			}
+
+			tabCompletions.addAll(getListOfStringsMatchingLastWord(args, Arrays.asList(names)));
 		}
 
 		return tabCompletions;

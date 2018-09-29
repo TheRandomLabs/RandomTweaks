@@ -20,6 +20,7 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class MiscClientEventHandler {
+	private static final Minecraft mc = Minecraft.getMinecraft();
 	private static boolean gameStarted;
 
 	@SubscribeEvent
@@ -30,7 +31,7 @@ public final class MiscClientEventHandler {
 			DingHandler.onGameStarted();
 
 			if(RTConfig.client.startOnMultiplayerScreen) {
-				Minecraft.getMinecraft().displayGuiScreen(new GuiMultiplayer(gui));
+				mc.displayGuiScreen(new GuiMultiplayer(gui));
 				event.setCanceled(true);
 			}
 
@@ -63,10 +64,9 @@ public final class MiscClientEventHandler {
 			return;
 		}
 
-		if(event.getName().equals("entity.enderdragon.death")) {
-			if(RTConfig.client.disableEnderDragonDeathSound) {
-				event.setResultSound(null);
-			}
+		if(event.getName().equals("entity.enderdragon.death") &&
+				RTConfig.client.disableEnderDragonDeathSound) {
+			event.setResultSound(null);
 		}
 	}
 

@@ -23,6 +23,7 @@ public final class EntityInteractHandler {
 	public static final Set<Item> OCELOT_HEAL_ITEMS = Sets.newHashSet(
 			Items.FISH
 	);
+
 	public static final Set<Item> PARROT_HEAL_ITEMS = Sets.newHashSet(
 			Items.WHEAT_SEEDS,
 			Items.MELON_SEEDS,
@@ -46,11 +47,7 @@ public final class EntityInteractHandler {
 		final Entity target = event.getTarget();
 
 		if(target instanceof EntityVillager) {
-			if(RTConfig.animals.leashableVillagers &&
-					onVillagerInteract(player, (EntityVillager) target, stack)) {
-				event.setCanceled(true);
-			}
-
+			onVillagerInteract(player, (EntityVillager) target, stack, event);
 			return;
 		}
 
@@ -87,8 +84,12 @@ public final class EntityInteractHandler {
 	}
 
 	private static int getHealAmount(EntityTameable entity, ItemStack stack, Set<Item> healItems) {
-		if(!(RandomTweaks.IS_DEOBFUSCATED || entity.isTamed()) ||
-				entity.getHealth() >= entity.getMaxHealth()) {
+		//If the entity is not tamed and this is not a development environment
+		if(!(RandomTweaks.IS_DEOBFUSCATED || entity.isTamed())) {
+			return 0;
+		}
+
+		if(entity.getHealth() >= entity.getMaxHealth()) {
 			return 0;
 		}
 
@@ -101,15 +102,16 @@ public final class EntityInteractHandler {
 		return ((ItemFood) item).getHealAmount(stack);
 	}
 
-	private static boolean onVillagerInteract(EntityPlayer player, EntityVillager villager,
-			ItemStack stack) {
+	private static void onVillagerInteract(EntityPlayer player, EntityVillager villager,
+			ItemStack stack, PlayerInteractEvent.EntityInteract event) {
 		if(villager.getLeashed() && villager.getLeashHolder() == player) {
 			villager.clearLeashed(true, !player.capabilities.isCreativeMode);
-			return true;
+			event.setCanceled(true);
+			return;
 		}
 
 		if(stack.getItem() != Items.LEAD) {
-			return false;
+			return;
 		}
 
 		villager.setLeashHolder(player, true);
@@ -118,6 +120,6 @@ public final class EntityInteractHandler {
 			stack.shrink(1);
 		}
 
-		return true;
+		event.setCanceled(true);
 	}
 }

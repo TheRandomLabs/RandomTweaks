@@ -7,7 +7,6 @@ import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -18,12 +17,14 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class DingHandler {
-	private static final Random RANDOM = new SecureRandom();
+	private static final Random random = new SecureRandom();
+	private static final Minecraft mc = Minecraft.getMinecraft();
+
 	private static boolean playWorld;
 
 	public static void onGameStarted() {
 		if(RTConfig.ding.soundNames.length != 0 && isDsurroundStartupSoundDisabled()) {
-			final int index = RANDOM.nextInt(RTConfig.ding.soundNames.length);
+			final int index = random.nextInt(RTConfig.ding.soundNames.length);
 			playSound(RTConfig.ding.soundNames[index], RTConfig.ding.soundPitch);
 		}
 	}
@@ -37,16 +38,15 @@ public final class DingHandler {
 
 	@SubscribeEvent
 	public static void onWorldTick(TickEvent.WorldTickEvent event) {
-		if(playWorld && event.phase == TickEvent.Phase.END) {
-			final Minecraft mc = Minecraft.getMinecraft();
-			final EntityPlayer player = mc.player;
+		if(!playWorld || event.phase != TickEvent.Phase.END || mc.player == null) {
+			return;
+		}
 
-			if(player != null && (player.ticksExisted > 20 || mc.isGamePaused())) {
-				final int index = RANDOM.nextInt(RTConfig.ding.worldSoundNames.length);
-				playSound(RTConfig.ding.worldSoundNames[index], RTConfig.ding.worldSoundPitch);
+		if(mc.player.ticksExisted > 20 || mc.isGamePaused()) {
+			final int index = random.nextInt(RTConfig.ding.worldSoundNames.length);
+			playSound(RTConfig.ding.worldSoundNames[index], RTConfig.ding.worldSoundPitch);
 
-				playWorld = false;
-			}
+			playWorld = false;
 		}
 	}
 
@@ -59,10 +59,11 @@ public final class DingHandler {
 		final SoundEvent sound = SoundEvent.REGISTRY.getObject(resource);
 
 		if(sound != null) {
-			Minecraft.getMinecraft().getSoundHandler().playSound(
-					PositionedSoundRecord.getMasterRecord(sound, (float) pitch));
+			mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(
+					sound, (float) pitch
+			));
 		} else {
-			RandomTweaks.LOGGER.error("Could not find sound: %s", resource);
+			RandomTweaks.LOGGER.error("Sound does not exist: %s", resource);
 		}
 	}
 
@@ -79,7 +80,9 @@ public final class DingHandler {
 
 			return startupSoundList.length != 0;
 		} catch(Exception ex) {
-			ex.printStackTrace();
+			RandomTweaks.LOGGER.error(
+					"Failed to check if Dynamic Surrounding's startup sound list is empty", ex
+			);
 		}
 
 		return true;

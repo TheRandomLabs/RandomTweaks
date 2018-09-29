@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.SharedMonsterAttributes;
+import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySheep;
@@ -59,8 +60,9 @@ public final class MiscEventHandler {
 
 		final EntityPlayer player = (EntityPlayer) event.getEntity();
 
-		player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED).
-				setBaseValue(RTConfig.misc.attackSpeed);
+		final IAttributeInstance attackSpeed =
+				player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
+		attackSpeed.setBaseValue(RTConfig.misc.attackSpeed);
 
 		if(RTConfig.hunger.enabled && !RandomTweaks.APPLECORE_LOADED) {
 			player.foodStats = new RTFoodStats(player.foodStats);
@@ -161,6 +163,7 @@ public final class MiscEventHandler {
 
 		if(RTConfig.animals.protectPetsFromOtherPets && attacker instanceof IEntityOwnable) {
 			final IEntityOwnable otherPet = (IEntityOwnable) attacker;
+
 			if(owner.equals(otherPet.getOwnerId())) {
 				entity.setRevengeTarget(null);
 				((EntityLivingBase) attacker).setRevengeTarget(null);

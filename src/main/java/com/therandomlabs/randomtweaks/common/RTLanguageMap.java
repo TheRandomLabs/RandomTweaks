@@ -26,17 +26,17 @@ public class RTLanguageMap extends LanguageMap {
 		boolean isLevel = false;
 		int level = 0;
 
-		try {
-			if(key.startsWith("enchantment.level.")) {
-				final String number = key.substring("enchantment.level.".length());
-				level = Integer.parseInt(number);
+		if(key.startsWith("enchantment.level.")) {
+			try {
+				level = Integer.parseInt(key.substring(18));
 				isLevel = true;
-			} else if(key.startsWith("potion.potency.")) {
-				final String number = key.substring("potion.potency.".length());
-				level = Integer.parseInt(number) + 1;
+			} catch(NumberFormatException ignored) {}
+		} else if(key.startsWith("potion.potency.")) {
+			try {
+				level = Integer.parseInt(key.substring(15));
 				isLevel = true;
-			}
-		} catch(NumberFormatException ignored) {}
+			} catch(NumberFormatException ignored) {}
+		}
 
 		return isLevel ? RomanNumerals.get(level) : key;
 	}
