@@ -2,7 +2,7 @@ package com.therandomlabs.randomtweaks.common.world;
 
 import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
-import com.therandomlabs.randomtweaks.util.Utils;
+import com.therandomlabs.randomtweaks.util.RTUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
@@ -113,7 +113,7 @@ public final class WorldHandler {
 			return;
 		}
 
-		final Block block = Utils.getBlock(RTConfig.world.voidWorldBlock, Blocks.GLASS);
+		final Block block = RTUtils.getBlock(RTConfig.world.voidWorldBlock, Blocks.GLASS);
 		world.setBlockState(spawnBlock, block.getDefaultState());
 	}
 

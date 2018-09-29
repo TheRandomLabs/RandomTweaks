@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import com.therandomlabs.randomtweaks.RTConfig;
-import com.therandomlabs.randomtweaks.util.Utils;
+import com.therandomlabs.randomtweaks.util.RTUtils;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.init.Biomes;
 import net.minecraft.util.math.BlockPos;
@@ -67,7 +67,7 @@ public class ChunkGeneratorVoid implements IChunkGenerator {
 	public static Biome getBiome() {
 		if(biome == null || !RTConfig.world.voidWorldBiome.equals(biomeName)) {
 			biomeName = RTConfig.world.voidWorldBiome;
-			biome = Utils.getBiome(biomeName, Biomes.PLAINS);
+			biome = RTUtils.getBiome(biomeName, Biomes.PLAINS);
 		}
 
 		return biome;

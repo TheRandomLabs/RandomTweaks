@@ -9,7 +9,7 @@ import net.minecraft.world.biome.Biome;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import net.minecraftforge.registries.IForgeRegistry;
 
-public final class Utils {
+public final class RTUtils {
 	public static final IForgeRegistry<Block> BLOCK_REGISTRY =
 			GameRegistry.findRegistry(Block.class);
 	public static final IForgeRegistry<Biome> BIOME_REGISTRY =

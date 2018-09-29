@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.Map;
 import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
-import com.therandomlabs.randomtweaks.util.Utils;
+import com.therandomlabs.randomtweaks.util.RTUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.multiplayer.ServerData;
@@ -49,14 +49,14 @@ public final class TimeOfDayOverlay {
 				if(hour != 12) {
 					hour -= 12;
 				}
-				ampm = " " + Utils.localize("timeOfDayOverlay.pm");
+				ampm = " " + RTUtils.localize("timeOfDayOverlay.pm");
 			} else {
 				//Midnight
 				if(hour == 0) {
 					hour = 12;
 				}
 
-				ampm = " " + Utils.localize("timeOfDayOverlay.am");
+				ampm = " " + RTUtils.localize("timeOfDayOverlay.am");
 			}
 		}
 
@@ -66,12 +66,12 @@ public final class TimeOfDayOverlay {
 		final String dayOrNight;
 
 		if(world.calculateSkylightSubtracted(1.0F) < 4) {
-			dayOrNight = Utils.localize("timeOfDayOverlay.dayTime");
+			dayOrNight = RTUtils.localize("timeOfDayOverlay.dayTime");
 		} else {
-			dayOrNight = Utils.localize("timeOfDayOverlay.nightTime");
+			dayOrNight = RTUtils.localize("timeOfDayOverlay.nightTime");
 		}
 
-		final String timeString = Utils.localize("timeOfDayOverlay.day") + " " +
+		final String timeString = RTUtils.localize("timeOfDayOverlay.day") + " " +
 				day + ", " +
 				hourString + ":" + minuteString +
 				ampm +

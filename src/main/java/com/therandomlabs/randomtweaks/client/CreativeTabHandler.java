@@ -3,7 +3,7 @@ package com.therandomlabs.randomtweaks.client;
 import java.lang.reflect.Field;
 import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
-import com.therandomlabs.randomtweaks.util.Utils;
+import com.therandomlabs.randomtweaks.util.RTUtils;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
@@ -119,7 +119,7 @@ public final class CreativeTabHandler {
 			try {
 				TAB_PAGE.set(null, 0);
 			} catch(Exception ex) {
-				Utils.crashReport("Error while disabling creative tab", ex);
+				RTUtils.crashReport("Error while disabling creative tab", ex);
 			}
 		}
 

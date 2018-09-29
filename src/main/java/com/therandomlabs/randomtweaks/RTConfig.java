@@ -19,7 +19,7 @@ import com.google.gson.JsonSyntaxException;
 import com.therandomlabs.randomtweaks.common.RespawnHandler;
 import com.therandomlabs.randomtweaks.common.TrampleHandler;
 import com.therandomlabs.randomtweaks.util.Alignment;
-import com.therandomlabs.randomtweaks.util.Utils;
+import com.therandomlabs.randomtweaks.util.RTUtils;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigCategory;
@@ -54,7 +54,7 @@ public class RTConfig {
 				final String string = new GsonBuilder().setPrettyPrinting().create().toJson(json);
 				Files.write(PATH, Collections.singletonList(string.replaceAll(" {2}", "\t")));
 			} catch(IOException ex) {
-				Utils.crashReport("Failed to create: " + PATH, ex);
+				RTUtils.crashReport("Failed to create: " + PATH, ex);
 			}
 		}
 
@@ -163,7 +163,7 @@ public class RTConfig {
 			try {
 				Files.write(PATH, Collections.singletonList(new Gson().toJson(data)));
 			} catch(IOException ex) {
-				Utils.crashReport("Error while saving RandomTweaks data", ex);
+				RTUtils.crashReport("Error while saving RandomTweaks data", ex);
 			}
 		}
 	}
@@ -779,7 +779,7 @@ public class RTConfig {
 				Files.createDirectories(parent);
 			}
 		} catch(IOException ex) {
-			Utils.crashReport("Failed to create parent: " + path, ex);
+			RTUtils.crashReport("Failed to create parent: " + path, ex);
 		}
 
 		return path;
@@ -793,7 +793,7 @@ public class RTConfig {
 		try {
 			return StringUtils.join(Files.readAllLines(path), System.lineSeparator());
 		} catch(IOException ex) {
-			Utils.crashReport("Failed to read file: " + path, ex);
+			RTUtils.crashReport("Failed to read file: " + path, ex);
 		}
 
 		return null;
@@ -811,7 +811,7 @@ public class RTConfig {
 			ConfigManager.sync(RandomTweaks.MODID, Config.Type.INSTANCE);
 			modifyConfig();
 		} catch(Exception ex) {
-			Utils.crashReport("Error while modifying config", ex);
+			RTUtils.crashReport("Error while modifying config", ex);
 		}
 
 		if(animals.coloredSheep) {

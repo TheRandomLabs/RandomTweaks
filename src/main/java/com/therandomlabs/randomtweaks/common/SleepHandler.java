@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 import java.util.function.Function;
 import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
-import com.therandomlabs.randomtweaks.util.Utils;
+import com.therandomlabs.randomtweaks.util.RTUtils;
 import net.minecraft.block.BlockHorizontal;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
@@ -107,7 +107,7 @@ public final class SleepHandler {
 		try {
 			SET_SIZE.invoke(player, 0.2F, 0.2F);
 		} catch(Exception ex) {
-			Utils.crashReport("Error while setting player size", ex);
+			RTUtils.crashReport("Error while setting player size", ex);
 		}
 
 		if(state != null && state.getBlock().isBed(state, world, pos, player)) {

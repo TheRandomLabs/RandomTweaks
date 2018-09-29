@@ -2,7 +2,7 @@ package com.therandomlabs.randomtweaks.common.command;
 
 import com.therandomlabs.randompatches.RPStaticConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
-import com.therandomlabs.randomtweaks.util.Utils;
+import com.therandomlabs.randomtweaks.util.RTUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
 import net.minecraft.client.gui.GuiMultiplayer;
@@ -54,7 +54,7 @@ public class CommandDisconnect extends CommandBase {
 			}
 		} catch(Exception ex) {
 			RandomTweaks.LOGGER.error("Failed to disconnect", ex);
-			throw new CommandException(Utils.localize(
+			throw new CommandException(RTUtils.localize(
 					"commands.disconnect.failure",
 					ex.getClass().getName() + ": " + ex.getMessage()
 			));
