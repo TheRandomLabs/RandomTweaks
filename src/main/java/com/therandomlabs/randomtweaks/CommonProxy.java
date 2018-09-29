@@ -6,6 +6,7 @@ import com.therandomlabs.randomtweaks.common.SleepHandler;
 import com.therandomlabs.randomtweaks.common.TrampleHandler;
 import com.therandomlabs.randomtweaks.common.world.WorldGeneratorOceanFloor;
 import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
+import net.minecraft.init.Blocks;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.event.FMLInterModComms;
 import net.minecraftforge.fml.common.registry.GameRegistry;
@@ -14,6 +15,11 @@ public class CommonProxy {
 	public void preInit() {
 		RTConfig.reload();
 		RTLanguageMap.replaceLanguageMaps();
+
+		if(RTConfig.misc.betterButtonNames) {
+			Blocks.STONE_BUTTON.setTranslationKey("buttonStone");
+			Blocks.WOODEN_BUTTON.setTranslationKey("buttonWood");
+		}
 	}
 
 	public void init() {

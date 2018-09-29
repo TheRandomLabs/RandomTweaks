@@ -470,6 +470,11 @@ public class RTConfig {
 				"to remove the attack cooldown. 4.0 is the default value.")
 		public double attackSpeed = RandomTweaks.IS_DEOBFUSCATED ? 24.0 : 4.0;
 
+		@Config.LangKey("randomtweaks.config.misc.betterButtonNames")
+		@Config.Comment("Changes the names of the stone and wooden buttons so that their type is " +
+				"in them.")
+		public boolean betterButtonNames = RandomTweaks.IS_DEOBFUSCATED;
+
 		@Config.LangKey("randomtweaks.config.misc.deathPunishmentMode")
 		@Config.Comment("Sets when death punishments are enabled in which all XP and 3 hunger " +
 				"points are removed. This is always disabled in creative mode and overrides " +
@@ -487,8 +492,7 @@ public class RTConfig {
 		public String disableNetherPortalCreationGameruleName = "disableNetherPortalCreation";
 
 		@Config.LangKey("randomtweaks.config.misc.entitiesDropNameTags")
-		@Config.Comment("Whether living entities should drop name tags if they have a custom " +
-				"name.")
+		@Config.Comment("Whether living entities should drop name tags if they have a custom name.")
 		public boolean entitiesDropNameTags = true;
 
 		@Config.LangKey("randomtweaks.config.misc.farmlandTrampleBehavior")
