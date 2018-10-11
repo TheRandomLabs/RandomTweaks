@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import net.minecraft.world.WorldType;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -13,9 +14,23 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class WorldTypeRegistry {
 	static final List<RTWorldType> WORLD_TYPES = new ArrayList<>();
 
-	public static final WorldTypeRealistic REALISTIC = new WorldTypeRealistic();
-	public static final WorldTypeVoid VOID = new WorldTypeVoid();
-	public static final WorldTypeVoidIslands VOID_IOSLANDS = new WorldTypeVoidIslands();
+	public static final WorldTypeRealistic REALISTIC;
+	public static final WorldTypeVoid VOID;
+	public static final WorldTypeVoidIslands VOID_ISLANDS;
+
+	static {
+		//Apparently some mods change the type of WORLD_TYPES to force a world type
+		//(namely Hex Lands)
+		if(WorldType.WORLD_TYPES.getClass() != WorldType[].class) {
+			REALISTIC = null;
+			VOID = null;
+			VOID_ISLANDS = null;
+		} else {
+			REALISTIC = new WorldTypeRealistic();
+			VOID = new WorldTypeVoid();
+			VOID_ISLANDS = new WorldTypeVoidIslands();
+		}
+	}
 
 	public static void registerWorldTypes() {
 		WORLD_TYPES.forEach(RTWorldType::onConfigReload);

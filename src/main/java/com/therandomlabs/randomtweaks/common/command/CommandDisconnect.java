@@ -33,31 +33,31 @@ public class CommandDisconnect extends CommandBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args)
 			throws CommandException {
-		try {
-			final boolean forceTitleScreenOnDisconnect;
+		final boolean forceTitleScreenOnDisconnect;
 
-			if(RandomTweaks.RANDOMPATCHES_LOADED) {
+		if(RandomTweaks.RANDOMPATCHES_LOADED) {
+			try {
 				forceTitleScreenOnDisconnect = RPStaticConfig.forceTitleScreenOnDisconnect;
-			} else {
-				forceTitleScreenOnDisconnect = false;
+			} catch(Throwable t) {
+				RandomTweaks.LOGGER.error("Failed to disconnect", t);
+				throw new CommandException(RTUtils.localize(
+						"commands.disconnect.failure",
+						t.getClass().getName() + ": " + t.getMessage()
+				));
 			}
+		} else {
+			forceTitleScreenOnDisconnect = false;
+		}
 
-			mc.world.sendQuittingDisconnectingPacket();
-			mc.loadWorld(null);
+		mc.world.sendQuittingDisconnectingPacket();
+		mc.loadWorld(null);
 
-			if(forceTitleScreenOnDisconnect || mc.isIntegratedServerRunning()) {
-				mc.displayGuiScreen(new GuiMainMenu());
-			} else if(mc.isConnectedToRealms()) {
-				new RealmsBridge().switchToRealms(new GuiMainMenu());
-			} else {
-				mc.displayGuiScreen(new GuiMultiplayer(new GuiMainMenu()));
-			}
-		} catch(Exception ex) {
-			RandomTweaks.LOGGER.error("Failed to disconnect", ex);
-			throw new CommandException(RTUtils.localize(
-					"commands.disconnect.failure",
-					ex.getClass().getName() + ": " + ex.getMessage()
-			));
+		if(forceTitleScreenOnDisconnect || mc.isIntegratedServerRunning()) {
+			mc.displayGuiScreen(new GuiMainMenu());
+		} else if(mc.isConnectedToRealms()) {
+			new RealmsBridge().switchToRealms(new GuiMainMenu());
+		} else {
+			mc.displayGuiScreen(new GuiMultiplayer(new GuiMainMenu()));
 		}
 	}
 }

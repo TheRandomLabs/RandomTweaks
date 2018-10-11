@@ -27,6 +27,7 @@ randomtweaks.config.client.disableWitherSpawnSound=Disable Wither spawn sound
 randomtweaks.config.client.startOnMultiplayerScreen=Start on the Multiplayer screen
 randomtweaks.config.client.stepup=Enable stepup
 randomtweaks.config.client.stepupEnabledByDefault=Enable stepup by default
+randomtweaks.config.client.storeDataInLocal=Store data in local
 
 randomtweaks.config.commands=Commands
 randomtweaks.config.commands.tooltip=Options related to commands.

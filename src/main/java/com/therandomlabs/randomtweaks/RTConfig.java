@@ -118,8 +118,6 @@ public class RTConfig {
 	}
 
 	public static class Data {
-		public static final Path PATH = getJson("data");
-
 		private static Data data;
 
 		public Map<String, Boolean> timeOfDayOverlay;
@@ -131,9 +129,11 @@ public class RTConfig {
 				return data;
 			}
 
-			if(PATH.toFile().exists()) {
+			final Path path = getPath();
+
+			if(path.toFile().exists()) {
 				try {
-					data = new Gson().fromJson(readFile(PATH), Data.class);
+					data = new Gson().fromJson(readFile(path), Data.class);
 				} catch(JsonSyntaxException ex) {
 					RandomTweaks.LOGGER.error("Error in the RandomTweaks data JSON. " +
 							"The file will be replaced.", ex);
@@ -161,10 +161,14 @@ public class RTConfig {
 			get();
 
 			try {
-				Files.write(PATH, Collections.singletonList(new Gson().toJson(data)));
+				Files.write(getPath(), Collections.singletonList(new Gson().toJson(data)));
 			} catch(IOException ex) {
 				RTUtils.crashReport("Error while saving RandomTweaks data", ex);
 			}
+		}
+
+		public static Path getPath() {
+			return client.storeDataInLocal ? getJson("../../local/client/rtdata") : getJson("data");
 		}
 	}
 
@@ -308,6 +312,11 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.client.stepupEnabledByDefault")
 		@Config.Comment("Whether stepup is enabled by default.")
 		public boolean stepupEnabledByDefault;
+
+		@Config.LangKey("randomtweaks.config.client.storeDataInLocal")
+		@Config.Comment("Whether the toggle states for the time of day overlay, stepup and " +
+				"FoV changes should be stored in local/client instead of config/randomtweaks.")
+		public boolean storeDataInLocal = true;
 	}
 
 	public static class Commands {
@@ -493,7 +502,7 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.misc.entitiesDropNameTags")
 		@Config.Comment("Whether living entities should drop name tags if they have a custom name.")
-		public boolean entitiesDropNameTags = true;
+		public boolean entitiesDropNameTags = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.misc.farmlandTrampleBehavior")
 		@Config.Comment("The farmland trample behavior. This only works on " +

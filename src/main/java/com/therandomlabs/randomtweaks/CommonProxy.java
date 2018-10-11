@@ -3,7 +3,6 @@ package com.therandomlabs.randomtweaks;
 import com.therandomlabs.randomtweaks.common.RTFoodStats;
 import com.therandomlabs.randomtweaks.common.RTLanguageMap;
 import com.therandomlabs.randomtweaks.common.SleepHandler;
-import com.therandomlabs.randomtweaks.common.TrampleHandler;
 import com.therandomlabs.randomtweaks.common.world.WorldGeneratorOceanFloor;
 import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
 import net.minecraft.init.Blocks;
@@ -23,11 +22,6 @@ public class CommonProxy {
 	}
 
 	public void init() {
-		try {
-			Class.forName("net.minecraftforge.event.world.BlockEvent$FarmlandTrampleEvent");
-			MinecraftForge.EVENT_BUS.register(new TrampleHandler());
-		} catch(ClassNotFoundException ignored) {}
-
 		WorldTypeRegistry.registerWorldTypes();
 
 		if(RTConfig.oceanFloor.enabled && !RandomTweaks.OCEAN_FLOOR_LOADED) {
