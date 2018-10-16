@@ -11,6 +11,8 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkGeneratorOverworld;
 
 public class ChunkGeneratorVoidIslands extends ChunkGeneratorOverworld {
+	public static final int ONLY_GENERATE_SPAWN_CHUNK = 1;
+
 	private static String biomeName;
 	private static Biome biome;
 
@@ -37,7 +39,7 @@ public class ChunkGeneratorVoidIslands extends ChunkGeneratorOverworld {
 		}
 
 		//If the rarity is set to 1, only the spawn chunk should be generated
-		if(RTConfig.world.voidIslandsChunkRarity != 1 &&
+		if(RTConfig.world.voidIslandsChunkRarity != ONLY_GENERATE_SPAWN_CHUNK &&
 				random.nextInt(RTConfig.world.voidIslandsChunkRarity) == 0) {
 			return super.generateChunk(x, z);
 		}

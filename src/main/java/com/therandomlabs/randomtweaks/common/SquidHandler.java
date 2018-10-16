@@ -1,12 +1,12 @@
 package com.therandomlabs.randomtweaks.common;
 
-import java.util.List;
 import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.entity.living.LivingPackSizeEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -54,27 +54,40 @@ public final class SquidHandler {
 				event.getZ()
 		).expand(radius, radius, radius);
 
-		return !event.getWorld().getEntitiesWithinAABB(EntityPlayer.class, aabb).isEmpty();
+		for(EntityPlayer player : event.getWorld().playerEntities) {
+			if(player.getEntityBoundingBox().intersects(aabb)) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public static boolean tooManySquids(LivingSpawnEvent.CheckSpawn event) {
-		switch(RTConfig.squids.chunkLimit) {
-			case SQUID_SPAWNING_DISABLED:
-				return true;
-			case CHUNK_LIMIT_DISABLED:
-				return false;
-			default:
-				final List<?> entities = event.getWorld().getEntities(
-						EntitySquid.class,
-						entity -> isInChunk(entity, event)
-				);
-
-				return entities.size() >= RTConfig.squids.chunkLimit;
+		if(RTConfig.squids.chunkLimit == SQUID_SPAWNING_DISABLED) {
+			return true;
 		}
-	}
 
-	private static boolean isInChunk(Entity entity, LivingSpawnEvent.CheckSpawn event) {
-		final Chunk chunk = event.getWorld().getChunk(entity.getPosition());
-		return entity.chunkCoordX == chunk.x && entity.chunkCoordZ == chunk.z;
+		if(RTConfig.squids.chunkLimit == CHUNK_LIMIT_DISABLED) {
+			return false;
+		}
+
+		final World world = event.getWorld();
+		final Chunk chunk = world.getChunk(event.getEntity().getPosition());
+
+		int squids = 0;
+
+		for(Entity entity : event.getWorld().loadedEntityList) {
+			if(entity.getClass() != EntitySquid.class ||
+					entity.chunkCoordX != chunk.x || entity.chunkCoordZ != chunk.z) {
+				continue;
+			}
+
+			if(++squids >= RTConfig.squids.chunkLimit) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

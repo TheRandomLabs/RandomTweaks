@@ -17,7 +17,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.therandomlabs.randomtweaks.common.RespawnHandler;
+import com.therandomlabs.randomtweaks.common.SquidHandler;
 import com.therandomlabs.randomtweaks.common.TrampleHandler;
+import com.therandomlabs.randomtweaks.common.world.ChunkGeneratorVoidIslands;
 import com.therandomlabs.randomtweaks.util.Alignment;
 import com.therandomlabs.randomtweaks.util.RTUtils;
 import net.minecraft.item.EnumDyeColor;
@@ -505,13 +507,13 @@ public class RTConfig {
 		public boolean entitiesDropNameTags = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.misc.farmlandTrampleBehavior")
-		@Config.Comment("The farmland trample behavior. This only works on " +
-				"Forge 1.12.2-14.23.4.2718 and above.")
+		@Config.Comment("The farmland trample behavior.")
 		public TrampleHandler.Behavior farmlandTrampleBehavior =
 				TrampleHandler.Behavior.DONT_TRAMPLE_IF_FEATHER_FALLING;
 
 		@Config.LangKey("randomtweaks.config.misc.moreRomanNumerals")
-		@Config.Comment("Enables Roman numerals from -32768 to 32767.")
+		@Config.Comment("Enables Roman numerals from " + Short.MIN_VALUE + " to " +
+				Short.MAX_VALUE + ".")
 		public boolean moreRomanNumerals = true;
 
 		@Config.LangKey("randomtweaks.config.misc.pickUpSkeletonArrows")
@@ -617,20 +619,22 @@ public class RTConfig {
 	public static class Squids {
 		@Config.RangeInt(min = -1)
 		@Config.LangKey("randomtweaks.config.squids.chunkLimit")
-		@Config.Comment("The amount of squids allowed in one chunk. Set this to 0 to disable " +
-				"squid spawning, and set this to -1 to disable this limit.")
+		@Config.Comment("The amount of squids allowed in one chunk. Set this to " +
+				SquidHandler.SQUID_SPAWNING_DISABLED + " to disable squid spawning, and set this " +
+				"to " + SquidHandler.CHUNK_LIMIT_DISABLED + "to disable this limit.")
 		public int chunkLimit = 12;
 
 		@Config.RangeInt(min = 0)
 		@Config.LangKey("randomtweaks.config.squids.maxPackSize")
 		@Config.Comment("The maximum number of squids that can be spawned in a pack. " +
-				"Set to 0 to use vanilla behavior.")
+				"Set to " + SquidHandler.VANILLA_PACK_SIZE + " to use vanilla behavior.")
 		public int maxPackSize = 2;
 
 		@Config.RangeInt(min = 0)
 		@Config.LangKey("randomtweaks.config.squids.spawnRadiusLimit")
 		@Config.Comment("Disables squid spawning when a player is not within the specified " +
-				"radius. Set this to 0 to disable this limit.")
+				"radius. Set this to " + SquidHandler.RADIUS_LIMIT_DISABLED + " to disable this " +
+				"limit.")
 		public int spawnRadiusLimit = 64;
 	}
 
@@ -685,7 +689,8 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.world.voidIslandsChunkRarity")
 		@Config.Comment("The rarity of non-empty chunks in a Void Islands world. " +
 				"If n, there is a 1 in n chance of a chunk being non-empty. " +
-				"If this is set to 1, only the spawn chunk is generated.")
+				"If this is set to " + ChunkGeneratorVoidIslands.ONLY_GENERATE_SPAWN_CHUNK +
+				", only the spawn chunk is generated.")
 		public int voidIslandsChunkRarity = 10;
 
 		@Config.LangKey("randomtweaks.config.world.voidIslandsWorldBiome")
