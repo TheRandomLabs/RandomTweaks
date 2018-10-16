@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12.2": {
+		"1.12.2-2.1.8.0": "Optimized squid spawn control.",
 		"1.12.2-2.1.7.1": "misc.entitiesDropNameTags is now disabled by default.\nFixed Hex Lands compatibility.\nRandomTweaks now only runs on Forge 1.12.2-14.23.4.2718 or higher again.",
 		"1.12.2-2.1.7.0": "Moved the client toggle states to local/client by default.",
 		"1.12.2-2.1.6.0": "Cleaned up the code.\nAdded better button names, which are disabled by default.",
@@ -298,8 +299,8 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"promos": {
-		"1.12.2-latest": "1.12.2-2.1.7.1",
-		"1.12.2-recommended": "1.12.2-2.1.7.1",
+		"1.12.2-latest": "1.12.2-2.1.8.0",
+		"1.12.2-recommended": "1.12.2-2.1.8.0",
 		"1.12.1-latest": "1.12.2-2.0.2.0",
 		"1.12.1-recommended": "1.12.2-2.0.2.0",
 		"1.12-latest": "1.12.2-2.0.2.0",
