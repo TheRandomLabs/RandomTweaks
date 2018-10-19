@@ -48,6 +48,7 @@ public enum Alignment {
 		defaultY = y;
 	}
 
+	@SuppressWarnings("Duplicates")
 	public int getX(int x, int screenWidth, int textWidth) {
 		x += defaultX;
 
@@ -63,6 +64,7 @@ public enum Alignment {
 		return 0;
 	}
 
+	@SuppressWarnings("Duplicates")
 	public int getY(int y, int screenHeight, int textHeight) {
 		y += defaultY;
 

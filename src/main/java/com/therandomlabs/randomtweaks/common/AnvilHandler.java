@@ -26,7 +26,7 @@ public final class AnvilHandler {
 	}
 
 	public static void removeRepairCost(ItemStack stack) {
-		if(stack.isEmpty() && stack.hasTagCompound()) {
+		if(!stack.isEmpty() && stack.hasTagCompound()) {
 			stack.getTagCompound().removeTag("RepairCost");
 		}
 	}

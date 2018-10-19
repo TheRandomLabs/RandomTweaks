@@ -1,6 +1,8 @@
 package com.therandomlabs.randomtweaks;
 
+import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
@@ -29,6 +31,7 @@ import net.minecraftforge.common.config.ConfigManager;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
+import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
@@ -313,7 +316,7 @@ public class RTConfig {
 
 		@Config.LangKey("randomtweaks.config.client.stepupEnabledByDefault")
 		@Config.Comment("Whether stepup is enabled by default.")
-		public boolean stepupEnabledByDefault;
+		public boolean stepupEnabledByDefault = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.client.storeDataInLocal")
 		@Config.Comment("Whether the toggle states for the time of day overlay, stepup and " +
@@ -776,9 +779,11 @@ public class RTConfig {
 	@Config.Ignore
 	public static OceanFloor oceanFloor = world.oceanFloor;
 
-	private static final Method GET_CONFIGURATION =
-			ReflectionHelper.findMethod(ConfigManager.class,
-			"getConfiguration", "getConfiguration", String.class, String.class);
+	private static final Method GET_CONFIGURATION = ReflectionHelper.findMethod(
+			ConfigManager.class, "getConfiguration", "getConfiguration", String.class, String.class
+	);
+
+	private static final Field CONFIGS = ReflectionHelper.findField(ConfigManager.class, "CONFIGS");
 
 	public static Path getConfig(String name) {
 		final Path path = Paths.get("config", RandomTweaks.MODID, name);
@@ -833,6 +838,16 @@ public class RTConfig {
 		}
 
 		Data.data = null;
+	}
+
+	public static void reloadFromDisk() {
+		try {
+			final File file = new File(Loader.instance().getConfigDir(), NAME + ".cfg");
+			((Map) CONFIGS.get(null)).remove(file.getAbsolutePath());
+			reload();
+		} catch(Exception ex) {
+			RTUtils.crashReport("Error while modifying config", ex);
+		}
 	}
 
 	@SubscribeEvent
