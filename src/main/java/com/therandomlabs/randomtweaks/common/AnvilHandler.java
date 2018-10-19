@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class AnvilHandler {
 	@SubscribeEvent
 	public static void onAnvilUpdate(AnvilUpdateEvent event) {
-		if(RTConfig.misc.disableCumulativeAnvilCost) {
+		if(RTConfig.misc.disableCumulativeAnvilCosts) {
 			removeRepairCost(event.getLeft());
 			removeRepairCost(event.getRight());
 		}
@@ -20,7 +20,7 @@ public final class AnvilHandler {
 
 	@SubscribeEvent
 	public static void onAnvilRepair(AnvilRepairEvent event) {
-		if(RTConfig.misc.disableCumulativeAnvilCost) {
+		if(RTConfig.misc.disableCumulativeAnvilCosts) {
 			removeRepairCost(event.getItemResult());
 		}
 	}

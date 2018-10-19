@@ -497,8 +497,8 @@ public class RTConfig {
 				RespawnHandler.DeathPunishmentMode.ENABLED_IF_KEEP_INVENTORY;
 
 		@Config.LangKey("randomtweaks.config.misc.disableCumulativeAnvilCost")
-		@Config.Comment("Disables the cumulative anvil cost.")
-		public boolean disableCumulativeAnvilCost = true;
+		@Config.Comment("Disables cumulative anvil costs.")
+		public boolean disableCumulativeAnvilCosts = true;
 
 		@Config.LangKey("randomtweaks.config.misc.disableNetherPortalCreationGameruleName")
 		@Config.Comment("The name of the gamerule that disables Nether portal creation. " +
