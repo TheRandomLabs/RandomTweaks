@@ -496,7 +496,7 @@ public class RTConfig {
 		public RespawnHandler.DeathPunishmentMode deathPunishmentMode =
 				RespawnHandler.DeathPunishmentMode.ENABLED_IF_KEEP_INVENTORY;
 
-		@Config.LangKey("randomtweaks.config.misc.disableCumulativeAnvilCost")
+		@Config.LangKey("randomtweaks.config.misc.disableCumulativeAnvilCosts")
 		@Config.Comment("Disables cumulative anvil costs.")
 		public boolean disableCumulativeAnvilCosts = true;
 
