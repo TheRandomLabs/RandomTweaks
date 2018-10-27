@@ -60,7 +60,7 @@ randomtweaks.config.hunger.exhaustionMultiplier=Exhaustion multiplier
 randomtweaks.config.hunger.maximumHungerLevel=Maximum hunger level
 randomtweaks.config.hunger.minimumRespawnHungerLevel=Minimum respawn hunger level
 randomtweaks.config.hunger.respawnResetBehavior=Hunger respawn reset behavior
-randomtweaks.config.hunger.saturationLimit=Saturation limit (added to current food level)
+randomtweaks.config.hunger.saturationLimit=Value added to food level for saturation limit
 
 randomtweaks.config.keybinds=Keybinds
 randomtweaks.config.keybinds.fovChangesEnabledByDefault=Enable FoV changes by default
