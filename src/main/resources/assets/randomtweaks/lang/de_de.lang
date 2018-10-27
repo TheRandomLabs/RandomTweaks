@@ -135,8 +135,8 @@ randomtweaks.config.world.voidWorldYSpawn=Void world spawn Y coordinate
 timeOfDayOverlay.day=Tag
 timeOfDayOverlay.am=AM
 timeOfDayOverlay.pm=PM
-timeOfDayOverlay.dayTime=Tag
-timeOfDayOverlay.nightTime=Nacht
+timeOfDayOverlay.dayTime=(§eTag§r)
+timeOfDayOverlay.nightTime=(§8Nacht§r)
 
 toggleFoVChanges.enabled=FoV changes enabled
 toggleFoVChanges.disabled=FoV changes disabled

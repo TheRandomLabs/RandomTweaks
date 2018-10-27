@@ -74,8 +74,7 @@ public final class TimeOfDayOverlay {
 		final String timeString = RTUtils.localize("timeOfDayOverlay.day") + " " +
 				day + ", " +
 				hourString + ":" + minuteString +
-				ampm +
-				" (" + dayOrNight + ")";
+				ampm + " " + dayOrNight;
 
 		final int textWidth = mc.fontRenderer.getStringWidth(timeString);
 		final int textHeight = mc.fontRenderer.FONT_HEIGHT;
