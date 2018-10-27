@@ -1,7 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12.2": {
-		"1.12.2-2.2.0.1": "The time of day overlay toggle state now saves properly.",
+		"1.12.2-2.2.0.1": "The time of day overlay toggle state now saves properly.\nFixed the time of day overlay day/night display.",
 		"1.12.2-2.2.0.0": "Improved the configuration. The configuration option to allow nether wart to be bone mealed will be reset.\nRemoved the noclip keybind.\nAdded a configuration option to protect pets from sneaking owners.",
 		"1.12.2-2.1.9.0": "Fixed /rtreload and /rtreloadclient.\nFixed the option to disable cumulative anvil costs.",
 		"1.12.2-2.1.8.0": "Optimized squid spawn control.",
