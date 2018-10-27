@@ -162,5 +162,7 @@ public final class TimeOfDayOverlay {
 		} else {
 			worlds.put(name, !worlds.get(name));
 		}
+
+		RTConfig.Data.save();
 	}
 }
