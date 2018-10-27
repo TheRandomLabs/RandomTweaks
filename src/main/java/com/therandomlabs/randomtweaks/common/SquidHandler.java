@@ -22,12 +22,6 @@ public final class SquidHandler {
 	public static final int SQUID_SPAWNING_DISABLED = 0;
 	public static final int VANILLA_PACK_SIZE = 0;
 
-	public static void onSquidSpawn(LivingSpawnEvent.CheckSpawn event) {
-		if(!isInRadiusOfPlayer(event) || tooManySquids(event)) {
-			event.setResult(Event.Result.DENY);
-		}
-	}
-
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onLivingEntityPackSpawn(LivingPackSizeEvent event) {
 		final Entity entity = event.getEntity();
@@ -35,6 +29,12 @@ public final class SquidHandler {
 		if(entity.getClass() == EntitySquid.class &&
 				RTConfig.squids.maxPackSize != VANILLA_PACK_SIZE) {
 			event.setMaxPackSize(RTConfig.squids.maxPackSize);
+		}
+	}
+
+	public static void onSquidSpawn(LivingSpawnEvent.CheckSpawn event) {
+		if(!isInRadiusOfPlayer(event) || tooManySquids(event)) {
+			event.setResult(Event.Result.DENY);
 		}
 	}
 

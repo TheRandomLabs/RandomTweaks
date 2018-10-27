@@ -18,12 +18,6 @@ import org.lwjgl.input.Keyboard;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
 public final class KeyBindingHandler {
-	public static final KeyBinding NOCLIP = new KeyBinding(
-			"key.noclip",
-			Keyboard.KEY_NONE,
-			"key.categories.randomtweaks"
-	);
-
 	public static final KeyBinding TOGGLE_FOV_CHANGES = new KeyBinding(
 			"key.toggleFoVChanges",
 			KeyConflictContext.IN_GAME,
@@ -58,7 +52,6 @@ public final class KeyBindingHandler {
 	private static final Minecraft mc = Minecraft.getMinecraft();
 
 	public static void registerKeyBindings() {
-		register(RTConfig.keybinds.noclip, NOCLIP);
 		register(RTConfig.keybinds.toggleFoVChanges, TOGGLE_FOV_CHANGES);
 		register(RTConfig.keybinds.reloadSoundSystem, RELOAD_SOUND_SYSTEM);
 		register(
@@ -99,11 +92,7 @@ public final class KeyBindingHandler {
 
 		final int key = Keyboard.getEventKey();
 
-		if(NOCLIP.isActiveAndMatches(key)) {
-			if(RTConfig.keybinds.noclip) {
-				toggleNoclip();
-			}
-		} else if(TOGGLE_FOV_CHANGES.isActiveAndMatches(key)) {
+		if(TOGGLE_FOV_CHANGES.isActiveAndMatches(key)) {
 			if(RTConfig.keybinds.toggleFoVChanges) {
 				toggleFoVChanges();
 			}
@@ -117,13 +106,6 @@ public final class KeyBindingHandler {
 			}
 		} else if(TOGGLE_AUTO_JUMP.isActiveAndMatches(key) && RTConfig.client.stepup) {
 			StepupHandler.toggle();
-		}
-	}
-
-	public static void toggleNoclip() {
-		if(RTConfig.keybinds.noclip) {
-			final String gamemode = mc.player.isCreative() ? "spectator" : "creative";
-			mc.player.sendChatMessage("/gamemode " + gamemode);
 		}
 	}
 

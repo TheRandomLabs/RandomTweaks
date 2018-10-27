@@ -157,8 +157,10 @@ public final class MiscEventHandler {
 			return;
 		}
 
+		final boolean protectFromSneaking = RTConfig.animals.protectPetsFromSneakingOwners;
+
 		if(RTConfig.animals.protectPetsFromOwners && owner.equals(attacker.getUniqueID()) &&
-				!attacker.isSneaking()) {
+				(!protectFromSneaking || (protectFromSneaking && !attacker.isSneaking()))) {
 			event.setCanceled(true);
 			return;
 		}

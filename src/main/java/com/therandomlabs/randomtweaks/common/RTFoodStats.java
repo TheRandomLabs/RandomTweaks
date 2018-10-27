@@ -15,9 +15,12 @@ public class RTFoodStats extends FoodStats {
 			event.setCanceled(true);
 
 			final FoodStats stats = event.player.getFoodStats();
-			final Map.Entry<Integer, Float> newStats = addStats(stats.foodLevel,
-					stats.foodSaturationLevel, event.foodValuesToBeAdded.hunger,
-					event.foodValuesToBeAdded.saturationModifier);
+			final Map.Entry<Integer, Float> newStats = addStats(
+					stats.foodLevel,
+					stats.foodSaturationLevel,
+					event.foodValuesToBeAdded.hunger,
+					event.foodValuesToBeAdded.saturationModifier
+			);
 
 			stats.foodLevel = newStats.getKey();
 			stats.foodSaturationLevel = newStats.getValue();

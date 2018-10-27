@@ -83,8 +83,10 @@ public class RTConfig {
 			try {
 				object = readJson(PATH);
 			} catch(JsonSyntaxException ex) {
-				RandomTweaks.LOGGER.error("Error in the RandomTweaks sheep color weights JSON. " +
-						"The file will be replaced.", ex);
+				RandomTweaks.LOGGER.error(
+						"Error in the RandomTweaks sheep color weights configuration. " +
+								"The file will be replaced.", ex
+				);
 
 				create();
 				get();
@@ -113,8 +115,10 @@ public class RTConfig {
 					}
 				}
 			} catch(NumberFormatException ex) {
-				RandomTweaks.LOGGER.error("Error in the RandomTweaks sheep color weights JSON. " +
-						"The file will be replaced.", ex);
+				RandomTweaks.LOGGER.error(
+						"Error in the RandomTweaks sheep color weights configuration. " +
+								"The file will be replaced.", ex
+				);
 
 				create();
 				get();
@@ -140,8 +144,9 @@ public class RTConfig {
 				try {
 					data = new Gson().fromJson(readFile(path), Data.class);
 				} catch(JsonSyntaxException ex) {
-					RandomTweaks.LOGGER.error("Error in the RandomTweaks data JSON. " +
-							"The file will be replaced.", ex);
+					RandomTweaks.LOGGER.error(
+							"Error in the RandomTweaks data JSON. The file will be replaced.", ex
+					);
 				}
 			}
 
@@ -187,11 +192,11 @@ public class RTConfig {
 		public Squids squids = new Squids();
 
 		@Config.LangKey("randomtweaks.config.animals.batLeatherDropChance")
-		@Config.Comment("The chance that a bat drops a piece of Leather when killed.")
+		@Config.Comment("The chance that a bat drops a piece of leather when killed.")
 		public double batLeatherDropChance = 0.8;
 
 		@Config.LangKey("randomtweaks.config.animals.coloredSheep")
-		@Config.Comment("Whether colored sheep should spawn.")
+		@Config.Comment("Enables colored sheep spawning.")
 		public boolean coloredSheep = true;
 
 		@Config.LangKey("randomtweaks.config.animals.leashableVillagers")
@@ -199,11 +204,11 @@ public class RTConfig {
 		public boolean leashableVillagers = true;
 
 		@Config.LangKey("randomtweaks.config.animals.ocelotsCanBeHealed")
-		@Config.Comment("Tamed Ocelots can be healed with fish.")
+		@Config.Comment("Whether tamed ocelots can be healed with fish.")
 		public boolean ocelotsCanBeHealed = true;
 
 		@Config.LangKey("randomtweaks.config.animals.parrotsCanBeHealed")
-		@Config.Comment("Tamed Parrots can be healed with seeds.")
+		@Config.Comment("Whether tamed parrots can be healed with seeds.")
 		public boolean parrotsCanBeHealed = true;
 
 		@Config.LangKey("randomtweaks.config.animals.protectPetsFromOtherPets")
@@ -211,52 +216,62 @@ public class RTConfig {
 		public boolean protectPetsFromOtherPets = true;
 
 		@Config.LangKey("randomtweaks.config.animals.protectPetsFromOwners")
-		@Config.Comment("Prevents pets from being attacked by their owners " +
-				"(unless they're sneaking).")
+		@Config.Comment({
+				"Prevents pets from being attacked by their owners.",
+				"By default, owners can still attack their pets while sneaking."
+		})
 		public boolean protectPetsFromOwners = true;
+
+		@Config.LangKey("randomtweaks.config.animals.protectPetsFromSneakingOwners")
+		@Config.Comment("Prevents pets from being attacked by their owners while sneaking.")
+		public boolean protectPetsFromSneakingOwners;
 	}
 
 	public static class AutoThirdPerson {
 		@Config.LangKey("entity.Boat.name")
-		@Config.Comment("Whether auto-third person is enabled when riding a boat.")
+		@Config.Comment("Enables auto-third person upon entering a boat.")
 		public boolean boat = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("item.elytra.name")
-		@Config.Comment("Whether auto-third person is enabled when flying with elytra.")
+		@Config.Comment("Enables auto-third person upon flying with elytra.")
 		public boolean elytra = true;
 
 		@Config.LangKey("randomtweaks.config.autoThirdPerson.enabled")
-		@Config.Comment("Whether auto-third person is enabled.")
+		@Config.Comment("Enables auto-third person.")
 		public boolean enabled = true;
 
 		@Config.LangKey("entity.Horse.name")
-		@Config.Comment("Whether auto-third person is enabled when riding a horse.")
+		@Config.Comment("Enables auto-third person upon mounting a horse.")
 		public boolean horse = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("item.minecart.name")
-		@Config.Comment("Whether auto-third person is enabled when riding a minecart.")
+		@Config.Comment("Enables auto-third person upon entering a minecart.")
 		public boolean minecart = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("entity.Pig.name")
-		@Config.Comment("Whether auto-third person is enabled when riding a pig.")
+		@Config.Comment("Enables auto-third person upon mounting a pig.")
 		public boolean pig = RandomTweaks.IS_DEOBFUSCATED;
 	}
 
 	public static class BoneMeal {
 		@Config.RangeInt(min = 0, max = 16)
 		@Config.LangKey("randomtweaks.config.boneMeal.cacti")
-		@Config.Comment("The amount of stages Bone Meal should cause Cacti to grow. " +
-				"16 is a full block.")
+		@Config.Comment({
+				"The amount of stages bone meal should cause cacti to grow.",
+				"16 stages is a full block."
+		})
 		public int cacti = 8;
 
-		@Config.LangKey("randomtweaks.config.boneMeal.netherWarts")
-		@Config.Comment("Whether Bone Meal should grow Nether Warts.")
-		public boolean netherWarts = true;
+		@Config.LangKey("randomtweaks.config.boneMeal.netherWart")
+		@Config.Comment("Whether bone meal should grow nether wart.")
+		public boolean netherWart = true;
 
 		@Config.RangeInt(min = 0, max = 16)
 		@Config.LangKey("randomtweaks.config.boneMeal.sugarCanes")
-		@Config.Comment("The amount of stages Bone Meal should cause Sugar Canes to grow. " +
-				"16 is a full block.")
+		@Config.Comment({
+				"The amount of stages bone meal should cause sugar canes to grow.",
+				"16 stages is a full block."
+		})
 		public int sugarCanes = 8;
 	}
 
@@ -287,15 +302,15 @@ public class RTConfig {
 
 		@Config.RequiresWorldRestart
 		@Config.LangKey("randomtweaks.config.client.contributorCapes")
-		@Config.Comment("Enables contributor capes.")
+		@Config.Comment("Whether contributor capes should be enabled.")
 		public boolean contributorCapes = true;
 
 		@Config.LangKey("randomtweaks.config.client.disableEnderDragonDeathSound")
-		@Config.Comment("Disables the Ender Dragon death sound.")
+		@Config.Comment("Disables the ender dragon death sound.")
 		public boolean disableEnderDragonDeathSound;
 
 		@Config.LangKey("randomtweaks.config.client.disablePotionIcons")
-		@Config.Comment("Whether to disable the potion icons at the top right.")
+		@Config.Comment("Disables the potion icons at the top right.")
 		public boolean disablePotionIcons = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.client.disablePotionShift")
@@ -303,7 +318,7 @@ public class RTConfig {
 		public boolean disablePotionShift = true;
 
 		@Config.LangKey("randomtweaks.config.client.disableWitherSpawnSound")
-		@Config.Comment("Disables the Wither spawn sound.")
+		@Config.Comment("Disables the wither spawn sound.")
 		public boolean disableWitherSpawnSound;
 
 		@Config.LangKey("randomtweaks.config.client.startOnMultiplayerScreen")
@@ -366,15 +381,15 @@ public class RTConfig {
 
 	public static class CreativeTabs {
 		@Config.LangKey("randomtweaks.config.creativeTabs.moveBucketCreativeTab")
-		@Config.Comment("Moves the Bucket to the Tools creative tab.")
+		@Config.Comment("Moves the bucket to the Tools creative tab.")
 		public boolean moveBucketCreativeTab = true;
 
 		@Config.LangKey("randomtweaks.config.creativeTabs.setCommandBlockCreativeTab")
-		@Config.Comment("Adds the Command Blocks to the Redstone creative tab.")
+		@Config.Comment("Adds the command blocks to the Redstone creative tab.")
 		public boolean setCommandBlockCreativeTab = true;
 
 		@Config.LangKey("randomtweaks.config.creativeTabs.setDragonEggCreativeTab")
-		@Config.Comment("Adds the Dragon Egg to the Decorations creative tab.")
+		@Config.Comment("Adds the dragon egg to the Decorations creative tab.")
 		public boolean setDragonEggCreativeTab = true;
 
 		@Config.LangKey("randomtweaks.config.creativeTabs.spawnEggsCreativeTab")
@@ -384,8 +399,10 @@ public class RTConfig {
 
 	public static class Ding {
 		@Config.LangKey("randomtweaks.config.ding.soundNames")
-		@Config.Comment("The names of the sounds to play when Minecraft starts. " +
-				"Leave this empty to disable it.")
+		@Config.Comment({
+				"The names of the sounds to play when Minecraft starts.",
+				"Leave this empty to disable this feature."
+		})
 		public String[] soundNames = new String[] {
 				"entity.experience_orb.pickup"
 		};
@@ -396,27 +413,28 @@ public class RTConfig {
 		public double soundPitch = 1.0;
 
 		@Config.LangKey("randomtweaks.config.ding.worldSoundNames")
-		@Config.Comment("The name of the sound to play when a world loads." +
-				"Leave this empty to disable it.")
+		@Config.Comment({
+				"The names of the sounds to play when a world loads.",
+				"Leave this empty to disable this feature."
+		})
 		public String[] worldSoundNames = new String[] {
 				"entity.experience_orb.pickup"
 		};
 
 		@Config.RangeDouble(min = 0.0, max = 10.0)
 		@Config.LangKey("randomtweaks.config.ding.worldSoundPitch")
-		@Config.Comment("The pitch of the sound to play when a world starts.")
+		@Config.Comment("The pitch of the sound to play when a world loads.")
 		public double worldSoundPitch = 1.0;
 	}
 
 	public static class Hunger {
 		@Config.LangKey("randomtweaks.config.hunger.carryExcessHungerToSaturation")
-		@Config.Comment("If this is enabled, any excess hunger level gained by eating will be " +
-				"added to the saturation.")
+		@Config.Comment("Carries any excess hunger level gained by eating over to the saturation.")
 		public boolean carryExcessHungerToSaturation = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.RequiresMcRestart
 		@Config.LangKey("randomtweaks.config.hunger.enabled")
-		@Config.Comment("Whether hunger tweaks should be enabled.")
+		@Config.Comment("Enables hunger tweaks.")
 		public boolean enabled = true;
 
 		@Config.RangeDouble(min = 0.0)
@@ -435,28 +453,23 @@ public class RTConfig {
 		public int minimumRespawnHungerLevel = 3;
 
 		@Config.LangKey("randomtweaks.config.hunger.respawnResetBehavior")
-		@Config.Comment("What happens to a player's hunger when they respawn. " +
-				"This has no effect in creative mode.")
+		@Config.Comment({
+				"What happens to a player's hunger when they respawn.",
+				"This has no effect in creative mode."
+		})
 		public RespawnHandler.HungerResetBehavior respawnResetBehavior =
 				RespawnHandler.HungerResetBehavior.RESET_UNLESS_KEEP_INVENTORY;
 
 		@Config.RangeDouble(min = 0.0)
 		@Config.LangKey("randomtweaks.config.hunger.saturationLimit")
-		@Config.Comment("This value is added to the player's food level to calculate the maximum" +
-				" " +
+		@Config.Comment("The value added to the player's food level to calculate the maximum " +
 				"saturation level.")
 		public double saturationLimit = RandomTweaks.IS_DEOBFUSCATED ? 100.0 : 0.0;
 	}
 
 	public static class Keybinds {
-		@Config.LangKey("randomtweaks.config.keybinds.noclip")
-		@Config.Comment("Enables the Noclip keybind, which toggles between /gamemode creative " +
-				"and /gamemode spectator. This does the same thing as F3+N, so is unbound by " +
-				"default.")
-		public boolean noclip = true;
-
 		@Config.LangKey("randomtweaks.config.keybinds.fovChangesEnabledByDefault")
-		@Config.Comment("Whether FoV changes are enabled by default.")
+		@Config.Comment("Whether FoV changes should be enabled by default.")
 		public boolean fovChangesEnabledByDefault = true;
 
 		@Config.LangKey("randomtweaks.config.keybinds.fovChangesStatusMessage")
@@ -480,19 +493,26 @@ public class RTConfig {
 	public static class Misc {
 		@Config.RangeDouble(min = 0.0, max = 1024.0)
 		@Config.LangKey("randomtweaks.config.misc.attackSpeed")
-		@Config.Comment("Sets the base attack speed for players. Set this to 16.0 or higher " +
-				"to remove the attack cooldown. 4.0 is the default value.")
+		@Config.Comment({
+				"The base attack speed for players.",
+				"Set this to 16.0 or higher to remove the attack cooldown."
+		})
 		public double attackSpeed = RandomTweaks.IS_DEOBFUSCATED ? 24.0 : 4.0;
 
 		@Config.LangKey("randomtweaks.config.misc.betterButtonNames")
-		@Config.Comment("Changes the names of the stone and wooden buttons so that their type is " +
-				"in them.")
+		@Config.Comment("Changes the names of the stone and wooden buttons so that they describe " +
+				"their type.")
 		public boolean betterButtonNames = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.misc.deathPunishmentMode")
-		@Config.Comment("Sets when death punishments are enabled in which all XP and 3 hunger " +
-				"points are removed. This is always disabled in creative mode and overrides " +
-				"hunger.respawnResetBehavior.")
+		@Config.Comment({
+				"When death punishments should be enabled.",
+				"When death punishments are enabled, players lose all XP and 3 hunger points " +
+						"upon dying.",
+				"This is always disabled in creative mode.",
+				"This has no effect on hunger if hunger resetting is enabled by " +
+						"hunger.respawnResetBehavior."
+		})
 		public RespawnHandler.DeathPunishmentMode deathPunishmentMode =
 				RespawnHandler.DeathPunishmentMode.ENABLED_IF_KEEP_INVENTORY;
 
@@ -501,8 +521,10 @@ public class RTConfig {
 		public boolean disableCumulativeAnvilCosts = true;
 
 		@Config.LangKey("randomtweaks.config.misc.disableNetherPortalCreationGameruleName")
-		@Config.Comment("The name of the gamerule that disables Nether portal creation. " +
-				"Set this to an empty string to disable the gamerule.")
+		@Config.Comment({
+				"The name of the gamerule that disables nether portal creation.",
+				"Set this to an empty string to disable this gamerule."
+		})
 		public String disableNetherPortalCreationGameruleName = "disableNetherPortalCreation";
 
 		@Config.LangKey("randomtweaks.config.misc.entitiesDropNameTags")
@@ -515,8 +537,8 @@ public class RTConfig {
 				TrampleHandler.Behavior.DONT_TRAMPLE_IF_FEATHER_FALLING;
 
 		@Config.LangKey("randomtweaks.config.misc.moreRomanNumerals")
-		@Config.Comment("Enables Roman numerals from " + Short.MIN_VALUE + " to " +
-				Short.MAX_VALUE + ".")
+		@Config.Comment("Generates Roman numerals from " + Short.MIN_VALUE + " to " +
+				Short.MAX_VALUE + " as they are needed.")
 		public boolean moreRomanNumerals = true;
 
 		@Config.LangKey("randomtweaks.config.misc.pickUpSkeletonArrows")
@@ -622,22 +644,27 @@ public class RTConfig {
 	public static class Squids {
 		@Config.RangeInt(min = -1)
 		@Config.LangKey("randomtweaks.config.squids.chunkLimit")
-		@Config.Comment("The amount of squids allowed in one chunk. Set this to " +
-				SquidHandler.SQUID_SPAWNING_DISABLED + " to disable squid spawning, and set this " +
-				"to " + SquidHandler.CHUNK_LIMIT_DISABLED + "to disable this limit.")
+		@Config.Comment({"The number of squids allowed in one chunk.",
+				"Set this to " + SquidHandler.SQUID_SPAWNING_DISABLED +
+						" to disable squid spawning.",
+				"Set this to " + SquidHandler.CHUNK_LIMIT_DISABLED + "to disable this limit."
+		})
 		public int chunkLimit = 12;
 
 		@Config.RangeInt(min = 0)
 		@Config.LangKey("randomtweaks.config.squids.maxPackSize")
-		@Config.Comment("The maximum number of squids that can be spawned in a pack. " +
-				"Set to " + SquidHandler.VANILLA_PACK_SIZE + " to use vanilla behavior.")
+		@Config.Comment({
+				"The maximum number of squids that can be spawned in a pack.",
+				"Set this to " + SquidHandler.VANILLA_PACK_SIZE + " to use vanilla behavior."
+		})
 		public int maxPackSize = 2;
 
 		@Config.RangeInt(min = 0)
 		@Config.LangKey("randomtweaks.config.squids.spawnRadiusLimit")
-		@Config.Comment("Disables squid spawning when a player is not within the specified " +
-				"radius. Set this to " + SquidHandler.RADIUS_LIMIT_DISABLED + " to disable this " +
-				"limit.")
+		@Config.Comment({
+				"Disables squid spawning when a player is not within this radius.",
+				"Set this to " + SquidHandler.RADIUS_LIMIT_DISABLED + " to disable this limit."
+		})
 		public int spawnRadiusLimit = 64;
 	}
 
@@ -685,28 +712,41 @@ public class RTConfig {
 		public OceanFloor oceanFloor = new OceanFloor();
 
 		@Config.LangKey("randomtweaks.config.world.realisticWorldType")
-		@Config.Comment("Enables the Realistic world type. Name: REALISTIC")
+		@Config.Comment({
+				"Enables the Realistic world type",
+				"Name: REALISTIC"
+		})
 		public boolean realisticWorldType = true;
 
 		@Config.RangeInt(min = 1)
 		@Config.LangKey("randomtweaks.config.world.voidIslandsChunkRarity")
-		@Config.Comment("The rarity of non-empty chunks in a Void Islands world. " +
-				"If n, there is a 1 in n chance of a chunk being non-empty. " +
+		@Config.Comment({
+				"The rarity of non-empty chunks in a Void Islands world.",
+				"If this is set to n, there is a 1 in n chance of a chunk being non-empty.",
 				"If this is set to " + ChunkGeneratorVoidIslands.ONLY_GENERATE_SPAWN_CHUNK +
-				", only the spawn chunk is generated.")
+						", only the spawn chunk is generated."
+		})
 		public int voidIslandsChunkRarity = 10;
 
 		@Config.LangKey("randomtweaks.config.world.voidIslandsWorldBiome")
-		@Config.Comment("The biome of the void chunks of a Void Islands world. " +
-				"Leave this empty to randomize the biomes.")
+		@Config.Comment({
+				"The biome of the void chunks of a Void Islands world.",
+				"Leave this empty for randomized biomes."
+		})
 		public String voidIslandsWorldBiome = "minecraft:plains";
 
 		@Config.LangKey("randomtweaks.config.world.voidIslandsWorldType")
-		@Config.Comment("Enables the Void Islands world type. Name: VOIDISLANDS")
+		@Config.Comment({
+				"Enables the Void Islands world type",
+				"Name: VOIDISLANDS"
+		})
 		public boolean voidIslandsWorldType = true;
 
 		@Config.LangKey("randomtweaks.config.world.voidWorldBiome")
-		@Config.Comment("The biome of a Void world. Leave this empty to randomize the biomes.")
+		@Config.Comment({
+				"The biome of a Void world.",
+				"Leave this empty for randomized biomes."
+		})
 		public String voidWorldBiome = "minecraft:plains";
 
 		@Config.LangKey("randomtweaks.config.world.voidWorldBlock")
@@ -714,7 +754,10 @@ public class RTConfig {
 		public String voidWorldBlock = "minecraft:glass";
 
 		@Config.LangKey("randomtweaks.config.world.voidWorldType")
-		@Config.Comment("Enables the Void world type. Name: VOID")
+		@Config.Comment({
+				"Enables the Void world type",
+				"Name: VOID"
+		})
 		public boolean voidWorldType = true;
 
 		@Config.RangeInt(min = 1, max = 255)

@@ -43,7 +43,7 @@ public final class BoneMealHandler {
 			if(RTConfig.boneMeal.sugarCanes != 0) {
 				grow(world, block, pos, BlockReed.AGE, RTConfig.boneMeal.sugarCanes, event);
 			}
-		} else if(block == Blocks.NETHER_WART && RTConfig.boneMeal.netherWarts) {
+		} else if(block == Blocks.NETHER_WART && RTConfig.boneMeal.netherWart) {
 			final int age = state.getValue(BlockNetherWart.AGE);
 
 			if(age < 3) {
