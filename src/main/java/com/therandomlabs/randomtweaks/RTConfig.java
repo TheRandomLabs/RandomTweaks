@@ -647,7 +647,7 @@ public class RTConfig {
 		@Config.Comment({"The number of squids allowed in one chunk.",
 				"Set this to " + SquidHandler.SQUID_SPAWNING_DISABLED +
 						" to disable squid spawning.",
-				"Set this to " + SquidHandler.CHUNK_LIMIT_DISABLED + "to disable this limit."
+				"Set this to " + SquidHandler.CHUNK_LIMIT_DISABLED + " to disable this limit."
 		})
 		public int chunkLimit = 12;
 
@@ -665,7 +665,7 @@ public class RTConfig {
 				"Disables squid spawning when a player is not within this radius.",
 				"Set this to " + SquidHandler.RADIUS_LIMIT_DISABLED + " to disable this limit."
 		})
-		public int spawnRadiusLimit = 64;
+		public int spawnRadiusLimit = 128;
 	}
 
 	public static class TimeOfDay {
