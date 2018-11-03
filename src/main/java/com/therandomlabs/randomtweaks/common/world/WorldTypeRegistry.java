@@ -10,7 +10,7 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 public final class WorldTypeRegistry {
 	static final List<RTWorldType> WORLD_TYPES = new ArrayList<>();
 
@@ -67,7 +67,7 @@ public final class WorldTypeRegistry {
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
-		if(event.getModID().equals(RandomTweaks.MODID)) {
+		if(event.getModID().equals(RandomTweaks.MOD_ID)) {
 			registerWorldTypes();
 		}
 	}

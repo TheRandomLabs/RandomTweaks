@@ -21,7 +21,7 @@ import org.apache.commons.lang3.ArrayUtils;
 
 //A lot of this is there just so creative tab configuration options can be toggled in-game
 //Worth it? Maybe
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MOD_ID)
 public final class CreativeTabHandler {
 	public static final CreativeTabs SPAWN_EGGS = new CreativeTabs("spawnEggs") {
 		@SideOnly(Side.CLIENT)
@@ -50,7 +50,7 @@ public final class CreativeTabHandler {
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
-		if(event.getModID().equals(RandomTweaks.MODID)) {
+		if(event.getModID().equals(RandomTweaks.MOD_IDs)) {
 			init();
 		}
 	}

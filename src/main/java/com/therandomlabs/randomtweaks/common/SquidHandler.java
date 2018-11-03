@@ -15,7 +15,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 public final class SquidHandler {
 	public static final int RADIUS_LIMIT_DISABLED = 0;
 	public static final int CHUNK_LIMIT_DISABLED = -1;

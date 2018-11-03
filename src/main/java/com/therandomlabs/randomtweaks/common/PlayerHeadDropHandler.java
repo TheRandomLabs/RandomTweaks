@@ -13,7 +13,7 @@ import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 public final class PlayerHeadDropHandler {
 	@SubscribeEvent
 	public static void onPlayerDrops(PlayerDropsEvent event) {

@@ -13,14 +13,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(
-		modid = RandomTweaks.MODID, version = RandomTweaks.VERSION,
+		modid = RandomTweaks.MOD_ID, version = RandomTweaks.VERSION,
 		acceptedMinecraftVersions = RandomTweaks.ACCEPTED_MINECRAFT_VERSIONS,
 		acceptableRemoteVersions = RandomTweaks.ACCEPTABLE_REMOTE_VERSIONS,
 		dependencies = RandomTweaks.DEPENDENCIES, updateJSON = RandomTweaks.UPDATE_JSON,
 		certificateFingerprint = RandomTweaks.CERTIFICATE_FINGERPRINT
 )
 public final class RandomTweaks {
-	public static final String MODID = "randomtweaks";
+	public static final String MOD_ID = "randomtweaks";
 	public static final String VERSION = "@VERSION@";
 	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12.2,1.13)";
 	public static final String ACCEPTABLE_REMOTE_VERSIONS = "*";
@@ -30,7 +30,7 @@ public final class RandomTweaks {
 			"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/misc/versions.json";
 	public static final String CERTIFICATE_FINGERPRINT = "@FINGERPRINT@";
 
-	public static final Logger LOGGER = LogManager.getLogger(MODID);
+	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
 	public static final boolean APPLECORE_LOADED = Loader.isModLoaded("applecore");
 	public static final boolean COLORFUL_SHEEP_LOADED = Loader.isModLoaded("colorful-sheep");

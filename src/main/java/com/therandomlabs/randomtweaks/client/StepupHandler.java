@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MOD_ID)
 public final class StepupHandler {
 	public static final float VANILLA_STEP_HEIGHT = 0.6F;
 	public static final float STEPUP_STEP_HEIGHT = 1.2F;

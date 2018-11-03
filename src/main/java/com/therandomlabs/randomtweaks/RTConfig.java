@@ -37,8 +37,8 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import org.apache.commons.lang3.StringUtils;
 
-@Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
-@Config(modid = RandomTweaks.MODID, name = RTConfig.NAME, category = "")
+@Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
+@Config(modid = RandomTweaks.MOD_ID, name = RTConfig.NAME, category = "")
 public class RTConfig {
 	public static class SheepColorWeights {
 		public static final Path PATH = getJson("sheepcolorweights");
@@ -768,7 +768,7 @@ public class RTConfig {
 	}
 
 	@Config.Ignore
-	public static final String NAME = RandomTweaks.MODID + "/" + RandomTweaks.MODID;
+	public static final String NAME = RandomTweaks.MOD_ID + "/" + RandomTweaks.MOD_ID;
 
 	@Config.LangKey("randomtweaks.config.animals")
 	@Config.Comment("Options related to animals (including villagers).")
@@ -830,7 +830,7 @@ public class RTConfig {
 	private static final Field CONFIGS = ReflectionHelper.findField(ConfigManager.class, "CONFIGS");
 
 	public static Path getConfig(String name) {
-		final Path path = Paths.get("config", RandomTweaks.MODID, name);
+		final Path path = Paths.get("config", RandomTweaks.MOD_ID, name);
 		final Path parent = path.getParent();
 
 		try {
@@ -867,11 +867,11 @@ public class RTConfig {
 	}
 
 	public static void reload() {
-		ConfigManager.sync(RandomTweaks.MODID, Config.Type.INSTANCE);
+		ConfigManager.sync(RandomTweaks.MOD_ID, Config.Type.INSTANCE);
 
 		try {
 			modifyConfig();
-			ConfigManager.sync(RandomTweaks.MODID, Config.Type.INSTANCE);
+			ConfigManager.sync(RandomTweaks.MOD_ID, Config.Type.INSTANCE);
 			modifyConfig();
 		} catch(Exception ex) {
 			RTUtils.crashReport("Error while modifying config", ex);
@@ -896,14 +896,14 @@ public class RTConfig {
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-		if(event.getModID().equals(RandomTweaks.MODID)) {
+		if(event.getModID().equals(RandomTweaks.MOD_ID)) {
 			reload();
 		}
 	}
 
 	private static void modifyConfig() throws IllegalAccessException, InvocationTargetException {
 		final Configuration config =
-				(Configuration) GET_CONFIGURATION.invoke(null, RandomTweaks.MODID, NAME);
+				(Configuration) GET_CONFIGURATION.invoke(null, RandomTweaks.MOD_ID, NAME);
 
 		final Map<Property, String> comments = new HashMap<>();
 

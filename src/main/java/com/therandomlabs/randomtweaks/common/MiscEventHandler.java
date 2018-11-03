@@ -32,7 +32,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 public final class MiscEventHandler {
 	@SubscribeEvent
 	public static void onArrowImpact(ProjectileImpactEvent.Arrow event) {
@@ -210,7 +210,7 @@ public final class MiscEventHandler {
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
-		if(!event.getModID().equals(RandomTweaks.MODID)) {
+		if(!event.getModID().equals(RandomTweaks.MOD_ID)) {
 			return;
 		}
 

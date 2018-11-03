@@ -15,10 +15,10 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MOD_ID)
 public final class CapeHandler {
 	public static final ResourceLocation CAPE_LOCATION =
-			new ResourceLocation(RandomTweaks.MODID, "textures/cape.png");
+			new ResourceLocation(RandomTweaks.MOD_ID, "textures/cape.png");
 
 	public static final List<String> CONTRIBUTORS = Arrays.asList(
 			"de2b3ebd-c0e9-4f43-b0f7-b660d482dd51",

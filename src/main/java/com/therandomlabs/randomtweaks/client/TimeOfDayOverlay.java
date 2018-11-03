@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 //Some code has been taken and adapted from https://github.com/Lunatrius/InGame-Info-XML
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MOD_ID)
 public final class TimeOfDayOverlay {
 	private static final Minecraft mc = Minecraft.getMinecraft();
 	private static boolean shouldHide;

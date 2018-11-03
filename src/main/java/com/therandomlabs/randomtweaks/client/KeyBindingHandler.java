@@ -16,7 +16,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.input.Keyboard;
 
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MODID)
+@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MOD_ID)
 public final class KeyBindingHandler {
 	public static final KeyBinding TOGGLE_FOV_CHANGES = new KeyBinding(
 			"key.toggleFoVChanges",
@@ -79,7 +79,7 @@ public final class KeyBindingHandler {
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
-		if(event.getModID().equals(RandomTweaks.MODID)) {
+		if(event.getModID().equals(RandomTweaks.MOD_ID)) {
 			registerKeyBindings();
 		}
 	}
