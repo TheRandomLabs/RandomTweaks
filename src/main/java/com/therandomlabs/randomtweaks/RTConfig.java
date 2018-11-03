@@ -191,6 +191,7 @@ public class RTConfig {
 		@Config.Comment("Options related to squid spawning behavior.")
 		public Squids squids = new Squids();
 
+		@Config.RangeDouble(min = 0.0, max = 1.0)
 		@Config.LangKey("randomtweaks.config.animals.batLeatherDropChance")
 		@Config.Comment("The chance that a bat drops a piece of leather when killed.")
 		public double batLeatherDropChance = 0.8;
@@ -926,7 +927,7 @@ public class RTConfig {
 
 				//Add default value to comment
 				comments.put(property, comment);
-				property.setComment(comment + "\n" + "Default: " + property.getDefault());
+				property.setComment(comment + "\nDefault: " + property.getDefault());
 			});
 
 			if(category.getValues().isEmpty() || category.getComment() == null) {
