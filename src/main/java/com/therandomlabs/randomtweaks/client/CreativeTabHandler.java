@@ -50,7 +50,7 @@ public final class CreativeTabHandler {
 
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
-		if(event.getModID().equals(RandomTweaks.MOD_IDs)) {
+		if(event.getModID().equals(RandomTweaks.MOD_ID)) {
 			init();
 		}
 	}
