@@ -1,6 +1,6 @@
 package com.therandomlabs.randomtweaks.common.command;
 
-import com.therandomlabs.randompatches.RPStaticConfig;
+import com.therandomlabs.randompatches.config.RPStaticConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.RTUtils;
 import net.minecraft.client.Minecraft;

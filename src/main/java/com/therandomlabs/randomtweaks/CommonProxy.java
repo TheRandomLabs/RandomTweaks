@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks;
 
+import com.therandomlabs.randomtweaks.common.NetherPortalSpawnHandler;
 import com.therandomlabs.randomtweaks.common.RTFoodStats;
 import com.therandomlabs.randomtweaks.common.RTLanguageMap;
 import com.therandomlabs.randomtweaks.common.SleepHandler;
@@ -30,6 +31,10 @@ public class CommonProxy {
 
 		if(RTConfig.hunger.enabled && RandomTweaks.APPLECORE_LOADED) {
 			MinecraftForge.EVENT_BUS.register(new RTFoodStats.AppleCoreEventHandler());
+		}
+
+		if(RandomTweaks.VERTICAL_END_PORTALS_LOADED) {
+			MinecraftForge.EVENT_BUS.register(new NetherPortalSpawnHandler.VEPHandler());
 		}
 
 		if(RandomTweaks.COMFORTS_LOADED) {

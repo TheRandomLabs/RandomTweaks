@@ -19,7 +19,6 @@ import net.minecraftforge.event.entity.player.PlayerSleepInBedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 
 @Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 public final class SleepHandler {
@@ -33,7 +32,7 @@ public final class SleepHandler {
 		}
 	}
 
-	public static final Method SET_SIZE = ReflectionHelper.findMethod(
+	public static final Method SET_SIZE = RTUtils.findMethod(
 			Entity.class, "setSize", "func_70105_a", float.class, float.class
 	);
 

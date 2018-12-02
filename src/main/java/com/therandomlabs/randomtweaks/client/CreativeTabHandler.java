@@ -14,7 +14,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
 import org.apache.commons.lang3.ArrayUtils;
@@ -33,8 +32,7 @@ public final class CreativeTabHandler {
 		}
 	};
 
-	public static final Field TAB_PAGE =
-			ReflectionHelper.findField(GuiContainerCreative.class, "tabPage");
+	public static final Field TAB_PAGE = RTUtils.findField(GuiContainerCreative.class, "tabPage");
 
 	private static CreativeTabs originalBucketTab;
 	private static boolean bucketSetBefore;

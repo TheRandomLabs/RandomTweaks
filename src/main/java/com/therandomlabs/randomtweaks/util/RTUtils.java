@@ -1,5 +1,8 @@
 package com.therandomlabs.randomtweaks.util;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 import com.therandomlabs.randomtweaks.common.RTLanguageMap;
 import net.minecraft.block.Block;
 import net.minecraft.crash.CrashReport;
@@ -27,6 +30,32 @@ public final class RTUtils {
 	public static Biome getBiome(String biomeName, Biome defaultBiome) {
 		final Biome biome = BIOME_REGISTRY.getValue(new ResourceLocation(biomeName));
 		return biome == null ? defaultBiome : biome;
+	}
+
+	public static Field findField(Class<?> clazz, String... names) {
+		for(Field field : clazz.getDeclaredFields()) {
+			for(String name : names) {
+				if(name.equals(field.getName())) {
+					field.setAccessible(true);
+					return field;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	public static Method findMethod(Class<?> clazz, String name, String obfName,
+			Class<?>... parameterTypes) {
+		for(Method method : clazz.getDeclaredMethods()) {
+			if((name.equals(method.getName()) || obfName.equals(method.getName())) &&
+					Arrays.equals(method.getParameterTypes(), parameterTypes)) {
+				method.setAccessible(true);
+				return method;
+			}
+		}
+
+		return null;
 	}
 
 	public static void crashReport(String message, Throwable throwable) {

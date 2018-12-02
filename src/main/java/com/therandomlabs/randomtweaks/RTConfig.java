@@ -34,7 +34,6 @@ import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.ReflectionHelper;
 import org.apache.commons.lang3.StringUtils;
 
 @Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
@@ -823,11 +822,11 @@ public class RTConfig {
 	@Config.Ignore
 	public static OceanFloor oceanFloor = world.oceanFloor;
 
-	private static final Method GET_CONFIGURATION = ReflectionHelper.findMethod(
+	private static final Method GET_CONFIGURATION = RTUtils.findMethod(
 			ConfigManager.class, "getConfiguration", "getConfiguration", String.class, String.class
 	);
 
-	private static final Field CONFIGS = ReflectionHelper.findField(ConfigManager.class, "CONFIGS");
+	private static final Field CONFIGS = RTUtils.findField(ConfigManager.class, "CONFIGS");
 
 	public static Path getConfig(String name) {
 		final Path path = Paths.get("config", RandomTweaks.MOD_ID, name);

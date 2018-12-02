@@ -14,7 +14,7 @@ buildscript {
 
 apply plugin: "net.minecraftforge.gradle.forge"
 
-version = "1.12.2-2.2.0.3"
+version = "1.12.2-2.2.1.0"
 group = "com.therandomlabs.randomtweaks"
 archivesBaseName = "randomtweaks"
 
@@ -24,15 +24,10 @@ repositories {
 	maven {
 		url "http://www.ryanliptak.com/maven/"
 	}
-
-	maven {
-		url "https://jitpack.io"
-	}	
 }
 
 dependencies {
 	deobfCompile "applecore:AppleCore:1.12.2-3.1.4:api"
-	deobfCompile "com.github.TheRandomLabs:RandomPatches:1.12-SNAPSHOT"
 }
 
 minecraft {

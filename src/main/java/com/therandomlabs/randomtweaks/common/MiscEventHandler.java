@@ -26,7 +26,6 @@ import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
-import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -123,15 +122,6 @@ public final class MiscEventHandler {
 		if(RTConfig.animals.coloredSheep && !RandomTweaks.COLORFUL_SHEEP_LOADED &&
 				entity.getClass() == EntitySheep.class) {
 			ColoredSheepHandler.onSheepTick((EntitySheep) entity);
-		}
-	}
-
-	@SubscribeEvent
-	public static void onPortalSpawn(BlockEvent.PortalSpawnEvent event) {
-		final String name = RTConfig.misc.disableNetherPortalCreationGameruleName;
-
-		if(!name.isEmpty() && event.getWorld().getGameRules().getBoolean(name)) {
-			event.setCanceled(true);
 		}
 	}
 
