@@ -35,7 +35,7 @@ public class CommandRTReload extends CommandBase {
 			throws CommandException {
 		RTConfig.reloadFromDisk();
 
-		if(server.isDedicatedServer()) {
+		if(server != null && server.isDedicatedServer()) {
 			notifyCommandListener(sender, this, "RandomTweaks configuration reloaded!");
 		} else {
 			sender.sendMessage(new TextComponentTranslation("commands.rtreloadclient.success"));
