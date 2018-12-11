@@ -12,7 +12,7 @@ public final class RomanNumerals {
 			1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1
 	};
 
-	private static final Map<Integer, String> CACHE = new ConcurrentHashMap<>();
+	private static final Map<Integer, String> cache = new ConcurrentHashMap<>();
 
 	private RomanNumerals() {}
 
@@ -21,7 +21,7 @@ public final class RomanNumerals {
 			return "Nulla";
 		}
 
-		final String cached = CACHE.get(number);
+		final String cached = cache.get(number);
 
 		if(cached != null) {
 			return cached;
@@ -60,7 +60,7 @@ public final class RomanNumerals {
 			romanNumeral = "-" + romanNumeral;
 		}
 
-		CACHE.put(number, romanNumeral);
+		cache.put(number, romanNumeral);
 		return romanNumeral;
 	}
 }

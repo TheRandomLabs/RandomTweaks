@@ -106,6 +106,9 @@ randomtweaks.config.randomizedAges.chance=Chance that an animal's age is randomi
 randomtweaks.config.randomizedAges.maximumAge=Maximum age
 randomtweaks.config.randomizedAges.minimumAge=Minimum age
 
+randomtweaks.config.sheepColorWeights=Sheep Color Weights
+randomtweaks.config.sheepColorWeights.enabled=Enable colored sheep spawning
+
 randomtweaks.config.squids=Squid Spawning Behavior
 randomtweaks.config.squids.chunkLimit=Amount of squids allowed in one chunk
 randomtweaks.config.squids.maxPackSize=Maximum squid spawn pack size

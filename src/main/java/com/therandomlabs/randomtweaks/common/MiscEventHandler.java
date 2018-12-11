@@ -13,7 +13,6 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySheep;
-import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Blocks;
@@ -23,9 +22,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
-import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -55,28 +52,17 @@ public final class MiscEventHandler {
 
 		final Entity entity = event.getEntity();
 
-		if(!(entity instanceof EntityPlayer)) {
-			return;
-		}
+		if(entity instanceof EntityPlayer) {
+			final EntityPlayer player = (EntityPlayer) event.getEntity();
 
-		final EntityPlayer player = (EntityPlayer) event.getEntity();
+			final IAttributeInstance attackSpeed =
+					player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
+			attackSpeed.setBaseValue(RTConfig.misc.attackSpeed);
 
-		final IAttributeInstance attackSpeed =
-				player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
-		attackSpeed.setBaseValue(RTConfig.misc.attackSpeed);
+			if(RTConfig.hunger.enabled && !RandomTweaks.APPLECORE_LOADED) {
+				player.foodStats = new RTFoodStats(player.foodStats);
+			}
 
-		if(RTConfig.hunger.enabled && !RandomTweaks.APPLECORE_LOADED) {
-			player.foodStats = new RTFoodStats(player.foodStats);
-		}
-	}
-
-	@SubscribeEvent
-	public static void onCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
-		final Entity entity = event.getEntity();
-		final Class<?> clazz = entity.getClass();
-
-		if(clazz == EntitySquid.class) {
-			SquidHandler.onSquidSpawn(event);
 			return;
 		}
 
@@ -105,23 +91,9 @@ public final class MiscEventHandler {
 			}
 		}
 
-		if(RTConfig.animals.coloredSheep && !RandomTweaks.COLORFUL_SHEEP_LOADED &&
-				clazz == EntitySheep.class) {
-			ColoredSheepHandler.onSheepSpawn((EntitySheep) entity);
-		}
-	}
-
-	@SubscribeEvent
-	public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
-		final Entity entity = event.getEntity();
-
-		if(entity.getEntityWorld().isRemote) {
-			return;
-		}
-
-		if(RTConfig.animals.coloredSheep && !RandomTweaks.COLORFUL_SHEEP_LOADED &&
+		if(RTConfig.sheepColorWeights.enabled && !RandomTweaks.COLORFUL_SHEEP_LOADED &&
 				entity.getClass() == EntitySheep.class) {
-			ColoredSheepHandler.onSheepTick((EntitySheep) entity);
+			ColoredSheepHandler.onSheepSpawn((EntitySheep) entity);
 		}
 	}
 

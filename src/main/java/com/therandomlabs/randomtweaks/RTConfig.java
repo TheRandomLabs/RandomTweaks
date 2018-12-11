@@ -9,12 +9,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Collections;
+import java.util.EnumMap;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.Map;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
@@ -38,94 +36,8 @@ import org.apache.commons.lang3.StringUtils;
 
 @Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 @Config(modid = RandomTweaks.MOD_ID, name = RTConfig.NAME, category = "")
-public class RTConfig {
-	public static class SheepColorWeights {
-		public static final Path PATH = getJson("sheepcolorweights");
-		public static final Map<EnumDyeColor, Double> WEIGHTS = new LinkedHashMap<>();
-
-		public static void create() {
-			try {
-				final JsonObject json = new JsonObject();
-
-				json.addProperty(EnumDyeColor.WHITE.getName(), 70.0);
-
-				for(EnumDyeColor color : EnumDyeColor.values()) {
-					if(color != EnumDyeColor.WHITE) {
-						json.addProperty(color.getName(), 2.0);
-					}
-				}
-
-				final String string = new GsonBuilder().setPrettyPrinting().create().toJson(json);
-				Files.write(PATH, Collections.singletonList(string.replaceAll(" {2}", "\t")));
-			} catch(IOException ex) {
-				RTUtils.crashReport("Failed to create: " + PATH, ex);
-			}
-		}
-
-		public static void ensureExists() {
-			if(!PATH.toFile().exists()) {
-				create();
-			}
-
-			get();
-		}
-
-		public static void get() {
-			if(!PATH.toFile().exists()) {
-				create();
-				get();
-				return;
-			}
-
-			JsonObject object;
-
-			try {
-				object = readJson(PATH);
-			} catch(JsonSyntaxException ex) {
-				RandomTweaks.LOGGER.error(
-						"Error in the RandomTweaks sheep color weights configuration. " +
-								"The file will be replaced.", ex
-				);
-
-				create();
-				get();
-
-				return;
-			}
-
-
-			final EnumDyeColor[] colors = EnumDyeColor.values();
-			final Map<String, EnumDyeColor> names = new HashMap<>(colors.length);
-
-			for(EnumDyeColor color : colors) {
-				names.put(color.getName(), color);
-			}
-
-			WEIGHTS.clear();
-
-			try {
-				for(Map.Entry<String, JsonElement> entry : object.entrySet()) {
-					final String name = entry.getKey();
-
-					final EnumDyeColor color = names.get(name);
-
-					if(color != null) {
-						WEIGHTS.put(color, Double.parseDouble(entry.getValue().getAsString()));
-					}
-				}
-			} catch(NumberFormatException ex) {
-				RandomTweaks.LOGGER.error(
-						"Error in the RandomTweaks sheep color weights configuration. " +
-								"The file will be replaced.", ex
-				);
-
-				create();
-				get();
-			}
-		}
-	}
-
-	public static class Data {
+public final class RTConfig {
+	public static final class Data {
 		private static Data data;
 
 		public Map<String, Boolean> timeOfDayOverlay;
@@ -181,10 +93,14 @@ public class RTConfig {
 		}
 	}
 
-	public static class Animals {
+	public static final class Animals {
 		@Config.LangKey("randomtweaks.config.randomizedAges")
 		@Config.Comment("Options related to randomized animal ages.")
 		public RandomizedAges randomizedAges = new RandomizedAges();
+
+		@Config.LangKey("randomtweaks.config.sheepColorWeights")
+		@Config.Comment("Sheep color weights.")
+		public SheepColorWeights sheepColorWeights = new SheepColorWeights();
 
 		@Config.LangKey("randomtweaks.config.squids")
 		@Config.Comment("Options related to squid spawning behavior.")
@@ -194,10 +110,6 @@ public class RTConfig {
 		@Config.LangKey("randomtweaks.config.animals.batLeatherDropChance")
 		@Config.Comment("The chance that a bat drops a piece of leather when killed.")
 		public double batLeatherDropChance = 0.8;
-
-		@Config.LangKey("randomtweaks.config.animals.coloredSheep")
-		@Config.Comment("Enables colored sheep spawning.")
-		public boolean coloredSheep = true;
 
 		@Config.LangKey("randomtweaks.config.animals.leashableVillagers")
 		@Config.Comment("Whether villagers should be leashable.")
@@ -641,6 +553,124 @@ public class RTConfig {
 		public int minimumAge = -24000;
 	}
 
+	public static class SheepColorWeights {
+		@Config.Ignore
+		public final Map<EnumDyeColor, Double> weights = new EnumMap<>(EnumDyeColor.class);
+
+		@Config.Ignore
+		public double totalWeight;
+
+		@Config.LangKey("randomtweaks.config.sheepColorWeights.enabled")
+		@Config.Comment("Enables colored sheep spawning.")
+		public boolean enabled = true;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("item.fireworksCharge.white")
+		@Config.Comment("The weight for the color white.")
+		public double white = 70.0;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("item.fireworksCharge.orange")
+		@Config.Comment("The weight for the color orange.")
+		public double orange = 2.0;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("item.fireworksCharge.magenta")
+		@Config.Comment("The weight for the color magenta.")
+		public double magenta = 2.0;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("item.fireworksCharge.lightBlue")
+		@Config.Comment("The weight for the color light blue.")
+		public double lightBlue = 2.0;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("item.fireworksCharge.yellow")
+		@Config.Comment("The weight for the color yellow.")
+		public double yellow = 2.0;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("item.fireworksCharge.lime")
+		@Config.Comment("The weight for the color lime.")
+		public double lime = 2.0;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("item.fireworksCharge.pink")
+		@Config.Comment("The weight for the color pink.")
+		public double pink = 2.0;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("item.fireworksCharge.gray")
+		@Config.Comment("The weight for the color gray.")
+		public double gray = 2.0;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("item.fireworksCharge.silver")
+		@Config.Comment("The weight for the color silver.")
+		public double silver = 2.0;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("item.fireworksCharge.cyan")
+		@Config.Comment("The weight for the color cyan.")
+		public double cyan = 2.0;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("item.fireworksCharge.purple")
+		@Config.Comment("The weight for the color purple.")
+		public double purple = 2.0;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("item.fireworksCharge.blue")
+		@Config.Comment("The weight for the color blue.")
+		public double blue = 2.0;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("item.fireworksCharge.brown")
+		@Config.Comment("The weight for the color brown.")
+		public double brown = 2.0;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("item.fireworksCharge.green")
+		@Config.Comment("The weight for the color green.")
+		public double green = 2.0;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("item.fireworksCharge.red")
+		@Config.Comment("The weight for the color red.")
+		public double red = 2.0;
+
+		@Config.RangeDouble(min = 0.0)
+		@Config.LangKey("item.fireworksCharge.black")
+		@Config.Comment("The weight for the color black.")
+		public double black = 2.0;
+
+		private void reload() {
+			totalWeight = 0.0;
+
+			putWeight(EnumDyeColor.WHITE, white);
+			putWeight(EnumDyeColor.ORANGE, orange);
+			putWeight(EnumDyeColor.MAGENTA, magenta);
+			putWeight(EnumDyeColor.LIGHT_BLUE, lightBlue);
+			putWeight(EnumDyeColor.YELLOW, yellow);
+			putWeight(EnumDyeColor.LIME, lime);
+			putWeight(EnumDyeColor.PINK, pink);
+			putWeight(EnumDyeColor.GRAY, gray);
+			putWeight(EnumDyeColor.SILVER, silver);
+			putWeight(EnumDyeColor.CYAN, cyan);
+			putWeight(EnumDyeColor.PURPLE, purple);
+			putWeight(EnumDyeColor.BLUE, blue);
+			putWeight(EnumDyeColor.BROWN, brown);
+			putWeight(EnumDyeColor.GREEN, green);
+			putWeight(EnumDyeColor.RED, red);
+			putWeight(EnumDyeColor.BLACK, black);
+		}
+
+		private void putWeight(EnumDyeColor color, double weight) {
+			totalWeight += weight;
+			weights.put(color, weight);
+		}
+	}
+
 	public static class Squids {
 		@Config.RangeInt(min = -1)
 		@Config.LangKey("randomtweaks.config.squids.chunkLimit")
@@ -771,56 +801,59 @@ public class RTConfig {
 
 	@Config.LangKey("randomtweaks.config.animals")
 	@Config.Comment("Options related to animals (including villagers).")
-	public static Animals animals = new Animals();
+	public static final Animals animals = new Animals();
 
 	@Config.LangKey("randomtweaks.config.boneMeal")
 	@Config.Comment("Options related to bone meal.")
-	public static BoneMeal boneMeal = new BoneMeal();
+	public static final BoneMeal boneMeal = new BoneMeal();
 
 	@Config.LangKey("randomtweaks.config.client")
 	@Config.Comment("Options related to features that only work client-side.")
-	public static Client client = new Client();
+	public static final Client client = new Client();
 
 	@Config.LangKey("randomtweaks.config.commands")
 	@Config.Comment("Options related to commands.")
-	public static Commands commands = new Commands();
+	public static final Commands commands = new Commands();
 
 	@Config.LangKey("randomtweaks.config.hunger")
 	@Config.Comment("Options related to hunger behavior.")
-	public static Hunger hunger = new Hunger();
+	public static final Hunger hunger = new Hunger();
 
 	@Config.LangKey("randomtweaks.config.misc")
 	@Config.Comment("Options that don't fit into any other categories.")
-	public static Misc misc = new Misc();
+	public static final Misc misc = new Misc();
 
 	@Config.LangKey("randomtweaks.config.playerHeadDrops")
 	@Config.Comment("Options related to player head drops.")
-	public static PlayerHeadDrops playerHeadDrops = new PlayerHeadDrops();
+	public static final PlayerHeadDrops playerHeadDrops = new PlayerHeadDrops();
 
 	@Config.LangKey("randomtweaks.config.world")
 	@Config.Comment("Options related to world generation.")
-	public static World world = new World();
+	public static final World world = new World();
 
 	@Config.Ignore
-	public static AutoThirdPerson autoThirdPerson = client.autoThirdPerson;
+	public static final AutoThirdPerson autoThirdPerson = client.autoThirdPerson;
 
 	@Config.Ignore
-	public static Ding ding = client.ding;
+	public static final Ding ding = client.ding;
 
 	@Config.Ignore
-	public static Keybinds keybinds = client.keybinds;
+	public static final Keybinds keybinds = client.keybinds;
 
 	@Config.Ignore
-	public static RandomizedAges randomizedAges = animals.randomizedAges;
+	public static final RandomizedAges randomizedAges = animals.randomizedAges;
 
 	@Config.Ignore
-	public static Squids squids = animals.squids;
+	public static final SheepColorWeights sheepColorWeights = animals.sheepColorWeights;
 
 	@Config.Ignore
-	public static TimeOfDay timeOfDay = client.timeOfDay;
+	public static final Squids squids = animals.squids;
 
 	@Config.Ignore
-	public static OceanFloor oceanFloor = world.oceanFloor;
+	public static final TimeOfDay timeOfDay = client.timeOfDay;
+
+	@Config.Ignore
+	public static final OceanFloor oceanFloor = world.oceanFloor;
 
 	private static final Method GET_CONFIGURATION = RTUtils.findMethod(
 			ConfigManager.class, "getConfiguration", "getConfiguration", String.class, String.class
@@ -876,8 +909,8 @@ public class RTConfig {
 			RTUtils.crashReport("Error while modifying config", ex);
 		}
 
-		if(animals.coloredSheep) {
-			SheepColorWeights.ensureExists();
+		if(sheepColorWeights.enabled) {
+			sheepColorWeights.reload();
 		}
 
 		Data.data = null;
