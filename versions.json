@@ -1,7 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12.2": {
-		"1.12.2-2.3.0.0": "Improved randomized sheep colors and ages. Sheep colors and ages are now randomized for entities spawned using spawn eggs.\nThe \"disableNetherPortalCreation\" gamerule now works with RandomPortals.\nMoved the sheep color weights to the main configuration.\nAdded an option to disable the bed proximity requirement.\nFixed tab completion for /deletegamerule.\nAdded spawn eggs to the Spawn Eggs creative tab that spawn entities without AIs.",
+		"1.12.2-2.3.0.0": "Improved randomized sheep colors and ages. Sheep colors and ages are now randomized for entities spawned using spawn eggs.\nThe \"disableNetherPortalCreation\" gamerule now works with RandomPortals.\nMoved the sheep color weights to the main configuration.\nAdded an option to disable the bed proximity requirement.\nFixed tab completion for /deletegamerule.\nAdded spawn eggs to the Spawn Eggs creative tab that spawn entities without AIs.\nAdded the \"fallDamageMultiplier\" gamerule.",
 		"1.12.2-2.2.1.1": "Fixed /rpreloadclient.",
 		"1.12.2-2.2.1.0": "The \"disableNetherPortalCreation\" gamerule now works with Vertical End Portals.",
 		"1.12.2-2.2.0.3": "Fixed the range on the animals.batLeatherDropChance configuration property.",
