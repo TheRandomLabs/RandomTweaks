@@ -61,22 +61,6 @@ public final class KeyBindingHandler {
 		register(RTConfig.client.stepup, TOGGLE_AUTO_JUMP);
 	}
 
-	private static void register(boolean flag, KeyBinding keyBinding) {
-		final GameSettings gameSettings = mc.gameSettings;
-
-		if(flag) {
-			if(!ArrayUtils.contains(gameSettings.keyBindings, keyBinding)) {
-				gameSettings.keyBindings = ArrayUtils.add(gameSettings.keyBindings, keyBinding);
-			}
-		} else {
-			final int index = ArrayUtils.indexOf(gameSettings.keyBindings, keyBinding);
-
-			if(index != ArrayUtils.INDEX_NOT_FOUND) {
-				gameSettings.keyBindings = ArrayUtils.remove(gameSettings.keyBindings, index);
-			}
-		}
-	}
-
 	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
 		if(event.getModID().equals(RandomTweaks.MOD_ID)) {
@@ -128,6 +112,24 @@ public final class KeyBindingHandler {
 		}
 
 		mc.getSoundHandler().sndManager.reloadSoundSystem();
-		mc.player.sendStatusMessage(new TextComponentTranslation("reloadSoundSystem.success"), true);
+		mc.player.sendStatusMessage(
+				new TextComponentTranslation("reloadSoundSystem.success"), true
+		);
+	}
+
+	private static void register(boolean flag, KeyBinding keyBinding) {
+		final GameSettings gameSettings = mc.gameSettings;
+
+		if(flag) {
+			if(!ArrayUtils.contains(gameSettings.keyBindings, keyBinding)) {
+				gameSettings.keyBindings = ArrayUtils.add(gameSettings.keyBindings, keyBinding);
+			}
+		} else {
+			final int index = ArrayUtils.indexOf(gameSettings.keyBindings, keyBinding);
+
+			if(index != ArrayUtils.INDEX_NOT_FOUND) {
+				gameSettings.keyBindings = ArrayUtils.remove(gameSettings.keyBindings, index);
+			}
+		}
 	}
 }

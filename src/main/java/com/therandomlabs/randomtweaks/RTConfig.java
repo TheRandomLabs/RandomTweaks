@@ -22,6 +22,7 @@ import com.therandomlabs.randomtweaks.common.TrampleHandler;
 import com.therandomlabs.randomtweaks.common.world.ChunkGeneratorVoidIslands;
 import com.therandomlabs.randomtweaks.util.Alignment;
 import com.therandomlabs.randomtweaks.util.RTUtils;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigCategory;
@@ -403,6 +404,14 @@ public final class RTConfig {
 	}
 
 	public static class Misc {
+		@Config.LangKey("randomtweaks.config.misc.allowSleepNearMobsWithCustomNames")
+		@Config.Comment("Allows players to sleep near mobs with custom names.")
+		public boolean allowSleepNearMobsWithCustomNames = true;
+
+		@Config.LangKey("randomtweaks.config.misc.disableBedProximityRequirement")
+		@Config.Comment("Disables the bed proximity requirement.")
+		public boolean disableBedProximityRequirement = true;
+
 		@Config.RangeDouble(min = 0.0, max = 1024.0)
 		@Config.LangKey("randomtweaks.config.misc.attackSpeed")
 		@Config.Comment({
@@ -456,10 +465,6 @@ public final class RTConfig {
 		@Config.LangKey("randomtweaks.config.misc.pickUpSkeletonArrows")
 		@Config.Comment("Allows skeleton arrows to be picked up.")
 		public boolean pickUpSkeletonArrows = RandomTweaks.IS_DEOBFUSCATED;
-
-		@Config.LangKey("randomtweaks.config.misc.sleepTweaks")
-		@Config.Comment("Allows players to sleep near mobs with custom names.")
-		public boolean sleepTweaks = true;
 	}
 
 	public static class OceanFloor {
@@ -674,7 +679,8 @@ public final class RTConfig {
 	public static class Squids {
 		@Config.RangeInt(min = -1)
 		@Config.LangKey("randomtweaks.config.squids.chunkLimit")
-		@Config.Comment({"The number of squids allowed in one chunk.",
+		@Config.Comment({
+				"The number of squids allowed in one chunk.",
 				"Set this to " + SquidHandler.SQUID_SPAWNING_DISABLED +
 						" to disable squid spawning.",
 				"Set this to " + SquidHandler.CHUNK_LIMIT_DISABLED + " to disable this limit."
@@ -914,6 +920,14 @@ public final class RTConfig {
 		}
 
 		Data.data = null;
+
+		if(misc.betterButtonNames) {
+			Blocks.STONE_BUTTON.setTranslationKey("buttonStone");
+			Blocks.WOODEN_BUTTON.setTranslationKey("buttonWood");
+		} else {
+			Blocks.STONE_BUTTON.setTranslationKey("button");
+			Blocks.WOODEN_BUTTON.setTranslationKey("button");
+		}
 	}
 
 	public static void reloadFromDisk() {

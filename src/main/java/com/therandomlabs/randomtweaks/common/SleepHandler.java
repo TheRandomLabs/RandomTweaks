@@ -1,7 +1,6 @@
 package com.therandomlabs.randomtweaks.common;
 
 import java.lang.reflect.Method;
-import java.util.function.Function;
 import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.RTUtils;
@@ -22,23 +21,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 public final class SleepHandler {
-	public static class MobFilter implements Function<EntityMob, Boolean> {
-		//Not actually a singleton
-		public static final MobFilter INSTANCE = new MobFilter();
-
-		@Override
-		public Boolean apply(EntityMob mob) {
-			return !(RTConfig.misc.sleepTweaks && mob.hasCustomName());
-		}
-	}
-
 	public static final Method SET_SIZE = RTUtils.findMethod(
 			Entity.class, "setSize", "func_70105_a", float.class, float.class
 	);
 
 	@SubscribeEvent(priority = EventPriority.HIGHEST)
 	public static void onSleep(PlayerSleepInBedEvent event) {
-		if(!RTConfig.misc.sleepTweaks) {
+		if(!RTConfig.misc.allowSleepNearMobsWithCustomNames &&
+				!RTConfig.misc.disableBedProximityRequirement) {
 			return;
 		}
 
@@ -87,7 +77,7 @@ public final class SleepHandler {
 			return;
 		}
 
-		if(!player.bedInRange(pos, facing)) {
+		if(!RTConfig.misc.disableBedProximityRequirement && !player.bedInRange(pos, facing)) {
 			event.setResult(EntityPlayer.SleepResult.TOO_FAR_AWAY);
 			return;
 		}
@@ -151,7 +141,8 @@ public final class SleepHandler {
 						position.getY(),
 						position.getZ()
 				).grow(8.0, 5.0, 8.0),
-				mob -> mob.isPreventingPlayerRest(player) && MobFilter.INSTANCE.apply(mob)
+				mob -> mob.isPreventingPlayerRest(player) &&
+						(!RTConfig.misc.allowSleepNearMobsWithCustomNames || !mob.hasCustomName())
 		).isEmpty();
 	}
 }

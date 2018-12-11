@@ -11,7 +11,7 @@ import org.apache.commons.lang3.ArrayUtils;
 public abstract class RTWorldType extends WorldType {
 	public RTWorldType(String name) {
 		super(name);
-		WorldTypeRegistry.WORLD_TYPES.add(this);
+		WorldTypeRegistry.worldTypes.add(this);
 	}
 
 	@SideOnly(Side.CLIENT)

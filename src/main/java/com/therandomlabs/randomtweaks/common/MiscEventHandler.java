@@ -15,7 +15,6 @@ import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.projectile.EntityArrow;
-import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
@@ -23,7 +22,6 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -168,20 +166,5 @@ public final class MiscEventHandler {
 		final ItemStack nameTag = new ItemStack(Items.NAME_TAG);
 		nameTag.setStackDisplayName(customName);
 		entity.entityDropItem(nameTag, 0.0F);
-	}
-
-	@SubscribeEvent
-	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
-		if(!event.getModID().equals(RandomTweaks.MOD_ID)) {
-			return;
-		}
-
-		if(RTConfig.misc.betterButtonNames) {
-			Blocks.STONE_BUTTON.setTranslationKey("buttonStone");
-			Blocks.WOODEN_BUTTON.setTranslationKey("buttonWood");
-		} else {
-			Blocks.STONE_BUTTON.setTranslationKey("button");
-			Blocks.WOODEN_BUTTON.setTranslationKey("button");
-		}
 	}
 }

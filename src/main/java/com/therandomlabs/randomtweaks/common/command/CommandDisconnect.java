@@ -21,11 +21,6 @@ public class CommandDisconnect extends CommandBase {
 	}
 
 	@Override
-	public int getRequiredPermissionLevel() {
-		return 0;
-	}
-
-	@Override
 	public String getUsage(ICommandSender sender) {
 		return "commands.disconnect.usage";
 	}
@@ -59,5 +54,10 @@ public class CommandDisconnect extends CommandBase {
 		} else {
 			mc.displayGuiScreen(new GuiMultiplayer(new GuiMainMenu()));
 		}
+	}
+
+	@Override
+	public int getRequiredPermissionLevel() {
+		return 0;
 	}
 }

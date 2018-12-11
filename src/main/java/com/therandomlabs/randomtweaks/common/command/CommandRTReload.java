@@ -21,11 +21,6 @@ public class CommandRTReload extends CommandBase {
 	}
 
 	@Override
-	public int getRequiredPermissionLevel() {
-		return isClient ? 0 : 4;
-	}
-
-	@Override
 	public String getUsage(ICommandSender sender) {
 		return isClient ? "commands.rtreloadclient.usage" : "/rtreload";
 	}
@@ -40,5 +35,10 @@ public class CommandRTReload extends CommandBase {
 		} else {
 			sender.sendMessage(new TextComponentTranslation("commands.rtreloadclient.success"));
 		}
+	}
+
+	@Override
+	public int getRequiredPermissionLevel() {
+		return isClient ? 0 : 4;
 	}
 }

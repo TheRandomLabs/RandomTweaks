@@ -15,9 +15,6 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 //Taken and adapted from https://github.com/matthewprenger/HelpFixer, which is licensed
 //under the WTFPL
 public class CommandRTHelp extends CommandHelp {
-	private static final ICommand testCommand1 = new TestCommand("a");
-	private static final ICommand testCommand2 = new TestCommand("z");
-
 	private static class TestCommand extends CommandBase {
 		private final String name;
 
@@ -38,6 +35,9 @@ public class CommandRTHelp extends CommandHelp {
 		@Override
 		public void execute(MinecraftServer server, ICommandSender sender, String[] args) {}
 	}
+
+	private static final ICommand testCommand1 = new TestCommand("a");
+	private static final ICommand testCommand2 = new TestCommand("z");
 
 	@Override
 	protected List<ICommand> getSortedPossibleCommands(ICommandSender sender,

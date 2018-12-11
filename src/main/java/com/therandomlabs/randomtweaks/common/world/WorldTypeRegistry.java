@@ -12,14 +12,14 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 public final class WorldTypeRegistry {
-	static final List<RTWorldType> WORLD_TYPES = new ArrayList<>();
+	static final List<RTWorldType> worldTypes = new ArrayList<>();
 
 	public static final WorldTypeRealistic REALISTIC;
 	public static final WorldTypeVoid VOID;
 	public static final WorldTypeVoidIslands VOID_ISLANDS;
 
 	static {
-		//Apparently some mods change the type of WORLD_TYPES to force a world type
+		//Apparently some mods change the type of WorldType.WORLD_TYPES to force a world type
 		//(namely Hex Lands)
 		if(WorldType.WORLD_TYPES.getClass() != WorldType[].class) {
 			REALISTIC = null;
@@ -33,7 +33,7 @@ public final class WorldTypeRegistry {
 	}
 
 	public static void registerWorldTypes() {
-		WORLD_TYPES.forEach(RTWorldType::onConfigReload);
+		worldTypes.forEach(RTWorldType::onConfigReload);
 	}
 
 	public static boolean shouldRegisterRealisticWorldType() {

@@ -11,7 +11,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 public final class NetherPortalSpawnHandler {
-	public static class VEPHandler {
+	public static class RPOHandler {
 		@SubscribeEvent
 		public void onPortalActivate(NetherPortalEvent.Activate event) {
 			handle(event, event.getFrame().getWorld());

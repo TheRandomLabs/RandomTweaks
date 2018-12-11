@@ -14,14 +14,6 @@ import net.minecraftforge.fml.relauncher.Side;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MOD_ID)
 public final class StepupHandler {
-	public static final float VANILLA_STEP_HEIGHT = 0.6F;
-	public static final float STEPUP_STEP_HEIGHT = 1.2F;
-
-	private static final Minecraft mc = Minecraft.getMinecraft();
-	private static Potion jumpBoost;
-
-	private static Mode mode;
-
 	private enum Mode {
 		NO_AUTO_JUMP(VANILLA_STEP_HEIGHT, false, "autoJump.disabled"),
 		VANILLA_AUTO_JUMP(VANILLA_STEP_HEIGHT, true, "autoJump.enabled"),
@@ -37,6 +29,14 @@ public final class StepupHandler {
 			this.message = message;
 		}
 	}
+
+	public static final float VANILLA_STEP_HEIGHT = 0.6F;
+	public static final float STEPUP_STEP_HEIGHT = 1.2F;
+
+	private static final Minecraft mc = Minecraft.getMinecraft();
+
+	private static Potion jumpBoost;
+	private static Mode mode;
 
 	@SubscribeEvent
 	public static void onClientTick(TickEvent.ClientTickEvent event) {

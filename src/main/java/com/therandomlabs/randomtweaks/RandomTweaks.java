@@ -34,7 +34,6 @@ public final class RandomTweaks {
 
 	public static final boolean APPLECORE_LOADED = Loader.isModLoaded("applecore");
 	public static final boolean COLORFUL_SHEEP_LOADED = Loader.isModLoaded("colorful-sheep");
-	public static final boolean COMFORTS_LOADED = Loader.isModLoaded("comforts");
 	public static final boolean DING_LOADED = Loader.isModLoaded("ding");
 	public static final boolean DYNAMIC_SURROUNDINGS_LOADED = Loader.isModLoaded("dsurround");
 	public static final boolean EXPANDED_BONEMEAL_LOADED = Loader.isModLoaded("expandedbonemeal");

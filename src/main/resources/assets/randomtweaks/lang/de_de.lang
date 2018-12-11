@@ -72,16 +72,17 @@ randomtweaks.config.keybinds.toggleTimeOfDayOverlay=Enable Toggle Time of Day Ov
 
 randomtweaks.config.misc=Miscellaneous
 randomtweaks.config.misc.tooltip=Options that don't fit into any other categories.
+randomtweaks.config.misc.allowSleepNearMobsWithCustomNames=Allow sleep near mobs with custom names
 randomtweaks.config.misc.attackSpeed=Attack speed
 randomtweaks.config.misc.betterButtonNames=Better button names
 randomtweaks.config.misc.deathPunishmentMode=Death punishment mode
+randomtweaks.config.misc.disableBedProximityRequirement=Disable bed proximity requirement
 randomtweaks.config.misc.disableCumulativeAnvilCosts=Disable cumulative anvil cost
 randomtweaks.config.misc.disableNetherPortalCreationGameruleName=disableNetherPortalCreation gamerule name
 randomtweaks.config.misc.entitiesDropNameTags=Enable living entities with custom names dropping nametags
 randomtweaks.config.misc.farmlandTrampleBehavior=Farmland trample behavior
 randomtweaks.config.misc.moreRomanNumerals=More Roman numerals
 randomtweaks.config.misc.pickUpSkeletonArrows=Allow arrows shot by skeletons to be picked up
-randomtweaks.config.misc.sleepTweaks=Sleep tweaks
 
 randomtweaks.config.oceanFloor=Ocean Floor Generation
 randomtweaks.config.oceanFloor.clayChance=Clay spawn chance
@@ -174,3 +175,4 @@ itemGroup.spawnEggs=Spawn Eggs
 
 tile.buttonStone.name=Stone Button
 tile.buttonWood.name=Wooden Button
+randomtweaks.config.misc.sleepTweaks=Sleep tweaks

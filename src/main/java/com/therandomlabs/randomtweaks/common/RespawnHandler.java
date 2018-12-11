@@ -44,7 +44,7 @@ public final class RespawnHandler {
 
 		if(!player.capabilities.isCreativeMode &&
 				((keepInventory && mode == DeathPunishmentMode.ENABLED_IF_KEEP_INVENTORY) ||
-				mode == DeathPunishmentMode.ENABLED)) {
+						mode == DeathPunishmentMode.ENABLED)) {
 			newFoodLevel -= 3;
 			player.experience = 0;
 			player.experienceLevel = 0;
@@ -72,12 +72,12 @@ public final class RespawnHandler {
 		}
 
 		switch(RTConfig.hunger.respawnResetBehavior) {
-			case RESET:
-				return true;
-			case DONT_RESET:
-				return false;
-			default:
-				return keepInventory;
+		case RESET:
+			return true;
+		case DONT_RESET:
+			return false;
+		default:
+			return keepInventory;
 		}
 	}
 }
