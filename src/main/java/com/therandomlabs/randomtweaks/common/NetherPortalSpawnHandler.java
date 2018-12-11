@@ -1,8 +1,8 @@
 package com.therandomlabs.randomtweaks.common;
 
+import com.therandomlabs.randomportals.api.event.NetherPortalEvent;
 import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
-import com.therandomlabs.verticalendportals.api.event.NetherPortalEvent;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;

@@ -33,7 +33,7 @@ public class CommonProxy {
 			MinecraftForge.EVENT_BUS.register(new RTFoodStats.AppleCoreEventHandler());
 		}
 
-		if(RandomTweaks.VERTICAL_END_PORTALS_LOADED) {
+		if(RandomTweaks.RANDOMPORTALS_LOADED) {
 			MinecraftForge.EVENT_BUS.register(new NetherPortalSpawnHandler.VEPHandler());
 		}
 
