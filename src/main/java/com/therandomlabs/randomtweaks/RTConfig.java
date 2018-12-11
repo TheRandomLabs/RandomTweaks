@@ -96,15 +96,15 @@ public final class RTConfig {
 	public static final class Animals {
 		@Config.LangKey("randomtweaks.config.randomizedAges")
 		@Config.Comment("Options related to randomized animal ages.")
-		public RandomizedAges randomizedAges = new RandomizedAges();
+		public final RandomizedAges randomizedAges = new RandomizedAges();
 
 		@Config.LangKey("randomtweaks.config.sheepColorWeights")
 		@Config.Comment("Sheep color weights.")
-		public SheepColorWeights sheepColorWeights = new SheepColorWeights();
+		public final SheepColorWeights sheepColorWeights = new SheepColorWeights();
 
 		@Config.LangKey("randomtweaks.config.squids")
 		@Config.Comment("Options related to squid spawning behavior.")
-		public Squids squids = new Squids();
+		public final Squids squids = new Squids();
 
 		@Config.RangeDouble(min = 0.0, max = 1.0)
 		@Config.LangKey("randomtweaks.config.animals.batLeatherDropChance")
@@ -190,23 +190,23 @@ public final class RTConfig {
 	public static class Client {
 		@Config.LangKey("randomtweaks.config.autoThirdPerson")
 		@Config.Comment("Options related to the auto-third person feature.")
-		public AutoThirdPerson autoThirdPerson = new AutoThirdPerson();
+		public final AutoThirdPerson autoThirdPerson = new AutoThirdPerson();
 
 		@Config.LangKey("randomtweaks.config.creativeTabs")
 		@Config.Comment("Options related to creative tabs.")
-		public CreativeTabs creativeTabs = new CreativeTabs();
+		public final CreativeTabs creativeTabs = new CreativeTabs();
 
 		@Config.LangKey("randomtweaks.config.ding")
 		@Config.Comment("Options related to the 'ding' feature.")
-		public Ding ding = new Ding();
+		public final Ding ding = new Ding();
 
 		@Config.LangKey("randomtweaks.config.keybinds")
 		@Config.Comment("Options related to keybinds.")
-		public Keybinds keybinds = new Keybinds();
+		public final Keybinds keybinds = new Keybinds();
 
 		@Config.LangKey("randomtweaks.config.timeOfDay")
 		@Config.Comment("Options related to the time of day overlay.")
-		public TimeOfDay timeOfDay = new TimeOfDay();
+		public final TimeOfDay timeOfDay = new TimeOfDay();
 
 		@Config.LangKey("randomtweaks.config.client.clearWater")
 		@Config.Comment("Removes underwater fog.")
@@ -739,7 +739,7 @@ public final class RTConfig {
 	public static class World {
 		@Config.LangKey("randomtweaks.config.oceanFloor")
 		@Config.Comment("Options related to ocean floor generation.")
-		public OceanFloor oceanFloor = new OceanFloor();
+		public final OceanFloor oceanFloor = new OceanFloor();
 
 		@Config.LangKey("randomtweaks.config.world.realisticWorldType")
 		@Config.Comment({
