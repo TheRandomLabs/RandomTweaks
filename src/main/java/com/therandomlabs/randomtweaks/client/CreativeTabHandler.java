@@ -6,11 +6,15 @@ import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.util.RTUtils;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -30,6 +34,26 @@ public final class CreativeTabHandler {
 			ItemMonsterPlacer.applyEntityIdToItemStack(stack, new ResourceLocation("chicken"));
 			return stack;
 		}
+
+		@Override
+		public void displayAllRelevantItems(NonNullList<ItemStack> itemList) {
+			super.displayAllRelevantItems(itemList);
+
+			if(!RTConfig.creativeTabs.noAISpawnEggs) {
+				return;
+			}
+
+			for(ResourceLocation id : EntityList.ENTITY_EGGS.keySet()) {
+				final ItemStack stack = new ItemStack(Items.SPAWN_EGG);
+
+				ItemMonsterPlacer.applyEntityIdToItemStack(stack, id);
+
+				final NBTTagCompound tag = stack.getTagCompound().getCompoundTag("EntityTag");
+				tag.setBoolean("NoAI", true);
+
+				itemList.add(stack);
+			}
+		}
 	};
 
 	public static final Field TAB_PAGE = RTUtils.findField(GuiContainerCreative.class, "tabPage");
@@ -47,6 +71,25 @@ public final class CreativeTabHandler {
 	private static boolean spawnEggsSetBefore;
 
 	@SubscribeEvent
+	public static void onItemTooltip(ItemTooltipEvent event) {
+		final ItemStack stack = event.getItemStack();
+
+		if(stack == null || stack.getItem() != Items.SPAWN_EGG) {
+			return;
+		}
+
+		final NBTTagCompound stackTag = stack.getTagCompound();
+
+		if(stackTag.hasKey("EntityTag")) {
+			final NBTTagCompound entityTag = stackTag.getCompoundTag("EntityTag");
+
+			if(entityTag.getBoolean("NoAI")) {
+				event.getToolTip().add(RTUtils.localize("spawnEgg.noAI"));
+			}
+		}
+	}
+
+	@SubscribeEvent
 	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
 		if(event.getModID().equals(RandomTweaks.MOD_ID)) {
 			init();
@@ -54,7 +97,7 @@ public final class CreativeTabHandler {
 	}
 
 	public static void init() {
-		if(RTConfig.client.creativeTabs.moveBucketCreativeTab) {
+		if(RTConfig.creativeTabs.moveBucketCreativeTab) {
 			originalBucketTab = Items.BUCKET.getCreativeTab();
 			bucketSetBefore = true;
 			Items.BUCKET.setCreativeTab(CreativeTabs.TOOLS);
@@ -62,7 +105,7 @@ public final class CreativeTabHandler {
 			Items.BUCKET.setCreativeTab(originalBucketTab);
 		}
 
-		if(RTConfig.client.creativeTabs.setCommandBlockCreativeTab) {
+		if(RTConfig.creativeTabs.setCommandBlockCreativeTab) {
 			originalCommandBlockTab = Blocks.COMMAND_BLOCK.getCreativeTab();
 			commandBlockSetBefore = true;
 
@@ -75,7 +118,7 @@ public final class CreativeTabHandler {
 			Blocks.REPEATING_COMMAND_BLOCK.setCreativeTab(originalCommandBlockTab);
 		}
 
-		if(RTConfig.client.creativeTabs.setDragonEggCreativeTab) {
+		if(RTConfig.creativeTabs.setDragonEggCreativeTab) {
 			originalDragonEggTab = Blocks.DRAGON_EGG.getCreativeTab();
 			dragonEggSetBefore = true;
 
@@ -88,7 +131,7 @@ public final class CreativeTabHandler {
 	}
 
 	private static void registerSpawnEggsTab() {
-		if(RTConfig.client.creativeTabs.spawnEggsCreativeTab) {
+		if(RTConfig.creativeTabs.spawnEggsCreativeTab) {
 			if(!ArrayUtils.contains(CreativeTabs.CREATIVE_TAB_ARRAY, SPAWN_EGGS)) {
 				CreativeTabs.CREATIVE_TAB_ARRAY =
 						ArrayUtils.add(CreativeTabs.CREATIVE_TAB_ARRAY, SPAWN_EGGS);

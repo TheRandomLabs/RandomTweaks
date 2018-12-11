@@ -43,6 +43,7 @@ randomtweaks.config.commands.rtreloadclient=/rtreloadclient
 
 randomtweaks.config.creativeTabs=Creative Tabs
 randomtweaks.config.creativeTabs.moveBucketCreativeTab=Move the bucket to the Tools creative tab
+randomtweaks.config.creativeTabs.noAISpawnEggs=No AI spawn eggs
 randomtweaks.config.creativeTabs.spawnEggsCreativeTab=Move the spawn eggs to their own creative tab
 randomtweaks.config.creativeTabs.setCommandBlockCreativeTag=Move the command blocks to the Redstone creative tab
 randomtweaks.config.creativeTabs.setDragonEggCreativeTab=Add the dragon egg to the Decorations creative tab
@@ -173,6 +174,8 @@ generator.voidislands=Void Islands
 generator.voidislands.info=Islands in the void
 
 itemGroup.spawnEggs=Spawn Eggs
+
+spawnEgg.noAI=§cNo AI
 
 tile.buttonStone.name=Stone Button
 tile.buttonWood.name=Wooden Button

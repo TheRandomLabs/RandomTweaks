@@ -297,6 +297,12 @@ public final class RTConfig {
 		@Config.Comment("Moves the bucket to the Tools creative tab.")
 		public boolean moveBucketCreativeTab = true;
 
+		@Config.LangKey("randomtweaks.config.creativeTabs.noAISpawnEggs")
+		@Config.Comment(
+				"Adds spawn eggs to the Spawn Eggs creative tab that spawn entities without AIs."
+		)
+		public boolean noAISpawnEggs = true;
+
 		@Config.LangKey("randomtweaks.config.creativeTabs.setCommandBlockCreativeTab")
 		@Config.Comment("Adds the command blocks to the Redstone creative tab.")
 		public boolean setCommandBlockCreativeTab = true;
@@ -846,6 +852,9 @@ public final class RTConfig {
 
 	@Config.Ignore
 	public static final AutoThirdPerson autoThirdPerson = client.autoThirdPerson;
+
+	@Config.Ignore
+	public static final CreativeTabs creativeTabs = client.creativeTabs;
 
 	@Config.Ignore
 	public static final Ding ding = client.ding;
