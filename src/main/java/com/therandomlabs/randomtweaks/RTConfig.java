@@ -441,16 +441,23 @@ public final class RTConfig {
 		@Config.Comment("Disables cumulative anvil costs.")
 		public boolean disableCumulativeAnvilCosts = true;
 
-		@Config.LangKey("randomtweaks.config.misc.disableNetherPortalCreationGameruleName")
+		@Config.LangKey("randomtweaks.config.misc.disableNetherPortalCreationGameRuleName")
 		@Config.Comment({
 				"The name of the gamerule that disables nether portal creation.",
 				"Set this to an empty string to disable this gamerule."
 		})
-		public String disableNetherPortalCreationGameruleName = "disableNetherPortalCreation";
+		public String disableNetherPortalCreationGameRuleName = "disableNetherPortalCreation";
 
 		@Config.LangKey("randomtweaks.config.misc.entitiesDropNameTags")
 		@Config.Comment("Whether living entities should drop name tags if they have a custom name.")
 		public boolean entitiesDropNameTags = RandomTweaks.IS_DEOBFUSCATED;
+
+		@Config.LangKey("randomtweaks.config.misc.fallDamageMultiplierGameRuleName")
+		@Config.Comment({
+				"The name of the gamerule that controls the fall damage multiplier.",
+				"Set this to an empty string to disable this gamerule."
+		})
+		public String fallDamageMultiplierGameRuleName = "fallDamageMultiplier";
 
 		@Config.LangKey("randomtweaks.config.misc.farmlandTrampleBehavior")
 		@Config.Comment("The farmland trample behavior.")

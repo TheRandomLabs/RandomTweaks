@@ -24,7 +24,7 @@ public final class NetherPortalSpawnHandler {
 	}
 
 	private static void handle(Event event, World world) {
-		final String name = RTConfig.misc.disableNetherPortalCreationGameruleName;
+		final String name = RTConfig.misc.disableNetherPortalCreationGameRuleName;
 
 		if(!name.isEmpty() && world.getGameRules().getBoolean(name)) {
 			event.setCanceled(true);

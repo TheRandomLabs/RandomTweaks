@@ -21,12 +21,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class WorldHandler {
 	@SubscribeEvent
 	public static void onWorldLoad(WorldEvent.Load event) {
-		final String name = RTConfig.misc.disableNetherPortalCreationGameruleName;
-
-		if(name.isEmpty()) {
-			return;
-		}
-
 		final World world = event.getWorld();
 
 		if(world.isRemote) {
@@ -35,8 +29,15 @@ public final class WorldHandler {
 
 		final GameRules gamerules = world.getGameRules();
 
-		if(!gamerules.hasRule(name)) {
-			gamerules.setOrCreateGameRule(name, "false");
+		final String netherPortalCreation = RTConfig.misc.disableNetherPortalCreationGameRuleName;
+		final String fallDamage = RTConfig.misc.fallDamageMultiplierGameRuleName;
+
+		if(!netherPortalCreation.isEmpty() && !gamerules.hasRule(netherPortalCreation)) {
+			gamerules.setOrCreateGameRule(netherPortalCreation, "false");
+		}
+
+		if(!fallDamage.isEmpty() && !gamerules.hasRule(fallDamage)) {
+			gamerules.setOrCreateGameRule(fallDamage, "1.0");
 		}
 	}
 
@@ -93,7 +94,7 @@ public final class WorldHandler {
 			newSpawnY = RTConfig.world.voidWorldYSpawn;
 		}
 
-		final BlockPos newSpawn = new BlockPos(0.5, newSpawnY, 0.5);
+		final BlockPos newSpawn = new BlockPos(0, newSpawnY, 0);
 
 		player.setPosition(0.5, newSpawnY, 0.5);
 		player.setSpawnPoint(newSpawn, true);

@@ -1,6 +1,5 @@
 package com.therandomlabs.randomtweaks.common.command;
 
-import java.util.Arrays;
 import java.util.List;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -43,6 +42,8 @@ public class CommandDeleteGamerule extends CommandBase {
 	@Override
 	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender,
 			String[] args, BlockPos targetPos) {
-		return Arrays.asList(sender.getEntityWorld().getGameRules().getRules());
+		return getListOfStringsMatchingLastWord(
+				args, sender.getEntityWorld().getGameRules().getRules()
+		);
 	}
 }

@@ -100,6 +100,32 @@ public final class MiscEventHandler {
 		final EntityLivingBase entity = event.getEntityLiving();
 		final DamageSource source = event.getSource();
 
+		final String fallDamage = RTConfig.misc.fallDamageMultiplierGameRuleName;
+
+		if(source == DamageSource.FALL && !fallDamage.isEmpty()) {
+			float multiplier = 0.0F;
+
+			try {
+				multiplier = Float.parseFloat(
+						entity.getEntityWorld().getGameRules().getString(fallDamage)
+				);
+			} catch(NumberFormatException ignored) {}
+
+			if(multiplier == 0.0F) {
+				event.setCanceled(true);
+			} else if(multiplier <= 0.0F) {
+				event.setCanceled(true);
+				entity.setHealth(Math.max(
+						entity.getHealth() + event.getAmount() * multiplier,
+						entity.getMaxHealth()
+				));
+			} else {
+				event.setAmount(event.getAmount() * multiplier);
+			}
+
+			return;
+		}
+
 		if(!(entity instanceof IEntityOwnable) || source == null) {
 			return;
 		}
