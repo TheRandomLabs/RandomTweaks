@@ -22,6 +22,7 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -50,22 +51,32 @@ public final class MiscEventHandler {
 
 		final Entity entity = event.getEntity();
 
-		if(entity instanceof EntityPlayer) {
-			final EntityPlayer player = (EntityPlayer) event.getEntity();
-
-			final IAttributeInstance attackSpeed =
-					player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
-			attackSpeed.setBaseValue(RTConfig.misc.attackSpeed);
-
-			if(RTConfig.hunger.enabled && !RandomTweaks.APPLECORE_LOADED) {
-				player.foodStats = new RTFoodStats(player.foodStats);
-			}
-
+		if(!(entity instanceof EntityPlayer)) {
 			return;
 		}
 
+		final EntityPlayer player = (EntityPlayer) event.getEntity();
+
+		final IAttributeInstance attackSpeed =
+				player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
+		attackSpeed.setBaseValue(RTConfig.misc.attackSpeed);
+
+		if(RTConfig.hunger.enabled && !RandomTweaks.APPLECORE_LOADED) {
+			player.foodStats = new RTFoodStats(player.foodStats);
+		}
+	}
+
+	@SubscribeEvent(priority = EventPriority.LOWEST)
+	public static void onCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
+		final Entity entity = event.getEntity();
+
 		if(!(entity instanceof EntityAgeable)) {
 			return;
+		}
+
+		if(RTConfig.sheepColorWeights.enabled && !RandomTweaks.COLORFUL_SHEEP_LOADED &&
+				entity.getClass() == EntitySheep.class) {
+			ColoredSheepHandler.onSheepSpawn((EntitySheep) entity);
 		}
 
 		if(RTConfig.randomizedAges.chance != 0.0) {
@@ -87,11 +98,6 @@ public final class MiscEventHandler {
 					ageable.setGrowingAge(rng.nextInt(max + 1 - min) + min);
 				}
 			}
-		}
-
-		if(RTConfig.sheepColorWeights.enabled && !RandomTweaks.COLORFUL_SHEEP_LOADED &&
-				entity.getClass() == EntitySheep.class) {
-			ColoredSheepHandler.onSheepSpawn((EntitySheep) entity);
 		}
 	}
 
