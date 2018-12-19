@@ -5,6 +5,7 @@ import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
@@ -54,6 +55,11 @@ public final class RandomTweaks {
 			serverSide = "com.therandomlabs.randomtweaks.CommonProxy"
 	)
 	public static CommonProxy proxy;
+
+	@Mod.EventHandler
+	public static void construct(FMLConstructionEvent event) {
+		proxy.construct();
+	}
 
 	@Mod.EventHandler
 	public static void preInit(FMLPreInitializationEvent event) {

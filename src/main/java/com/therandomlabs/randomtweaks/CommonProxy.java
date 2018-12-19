@@ -9,8 +9,11 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class CommonProxy {
-	public void preInit() {
+	public void construct() {
 		RTConfig.reload();
+	}
+
+	public void preInit() {
 		RTLanguageMap.replaceLanguageMaps();
 	}
 
