@@ -14,7 +14,7 @@ buildscript {
 
 apply plugin: "net.minecraftforge.gradle.forge"
 
-version = "1.12.2-2.3.0.3"
+version = "1.12.2-2.3.0.4"
 group = "com.therandomlabs.randomtweaks"
 archivesBaseName = "randomtweaks"
 

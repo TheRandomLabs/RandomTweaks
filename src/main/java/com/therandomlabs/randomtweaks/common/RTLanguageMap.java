@@ -19,7 +19,8 @@ public class RTLanguageMap extends LanguageMap {
 			return languageList.get(key);
 		}
 
-		if(!RTConfig.misc.moreRomanNumerals) {
+		//According to OpenEye, key can be null
+		if(!RTConfig.misc.moreRomanNumerals || key == null) {
 			return key;
 		}
 
