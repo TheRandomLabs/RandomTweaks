@@ -73,8 +73,17 @@ public final class DingHandler {
 		}
 
 		try {
-			final Class<?> general =
-					Class.forName("org.blockartistry.DynSurround.ModOptions$general");
+			Class<?> general;
+
+			try {
+				general =
+						Class.forName("org.orecruncher.dsurround.ModOptions$general");
+			} catch(ClassNotFoundException ex) {
+				//Older versions have a different package name
+				general =
+						Class.forName("org.blockartistry.DynSurround.ModOptions$general");
+			}
+
 			final Field startupSoundListField = general.getDeclaredField("startupSoundList");
 			final String[] startupSoundList = (String[]) startupSoundListField.get(null);
 

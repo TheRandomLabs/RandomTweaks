@@ -926,6 +926,13 @@ public final class RTConfig {
 		return new JsonParser().parse(readFile(path)).getAsJsonObject();
 	}
 
+	@SubscribeEvent
+	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+		if(event.getModID().equals(RandomTweaks.MOD_ID)) {
+			reload();
+		}
+	}
+
 	public static void reload() {
 		try {
 			if(defaultValues.isEmpty()) {
@@ -1002,13 +1009,6 @@ public final class RTConfig {
 			reload();
 		} catch(Exception ex) {
 			RTUtils.crashReport("Error while modifying config", ex);
-		}
-	}
-
-	@SubscribeEvent
-	public static void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-		if(event.getModID().equals(RandomTweaks.MOD_ID)) {
-			reload();
 		}
 	}
 
