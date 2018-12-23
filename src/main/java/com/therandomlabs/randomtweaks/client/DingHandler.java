@@ -85,7 +85,7 @@ public final class DingHandler {
 				final Field startupSoundListField = general.getDeclaredField("startupSoundList");
 				final String[] startupSoundList = (String[]) startupSoundListField.get(null);
 
-				return startupSoundList.length != 0;
+				return startupSoundList.length == 0;
 			}
 		} catch(Exception ex) {
 			RandomTweaks.LOGGER.error(
