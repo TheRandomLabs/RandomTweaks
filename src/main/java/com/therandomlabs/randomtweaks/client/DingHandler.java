@@ -88,6 +88,7 @@ public final class DingHandler {
 
 		if(!RTConfig.ding.ignoreDsurroundMuteWhenBackground || BACKGROUND_MUTE == null) {
 			soundHandler.playSound(sound);
+			sound = null;
 			return;
 		}
 
