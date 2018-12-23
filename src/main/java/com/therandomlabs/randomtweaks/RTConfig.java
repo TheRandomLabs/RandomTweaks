@@ -26,6 +26,7 @@ import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigCategory;
@@ -321,33 +322,60 @@ public final class RTConfig {
 	}
 
 	public static final class Ding {
-		@Config.LangKey("randomtweaks.config.ding.soundNames")
-		@Config.Comment({
-				"The names of the sounds to play when Minecraft starts.",
-				"Leave this empty to disable this feature."
-		})
-		public String[] soundNames = new String[] {
-				"entity.experience_orb.pickup"
-		};
-
 		@Config.RangeDouble(min = 0.0, max = 10.0)
-		@Config.LangKey("randomtweaks.config.ding.soundPitch")
+		@Config.LangKey("randomtweaks.config.ding.startupSoundPitch")
 		@Config.Comment("The pitch of the sound to play when Minecraft starts.")
-		public double soundPitch = 1.0;
+		public double startupSoundPitch = 1.0;
 
-		@Config.LangKey("randomtweaks.config.ding.worldSoundNames")
-		@Config.Comment({
-				"The names of the sounds to play when a world loads.",
-				"Leave this empty to disable this feature."
-		})
-		public String[] worldSoundNames = new String[] {
+		@Config.LangKey("randomtweaks.config.ding.startupSounds")
+		@Config.Comment("The registry names of the sounds to play when Minecraft starts.")
+		public String[] startupSounds = new String[] {
 				"entity.experience_orb.pickup"
 		};
 
 		@Config.RangeDouble(min = 0.0, max = 10.0)
-		@Config.LangKey("randomtweaks.config.ding.worldSoundPitch")
+		@Config.LangKey("randomtweaks.config.ding.worldLoadSoundPitch")
 		@Config.Comment("The pitch of the sound to play when a world loads.")
-		public double worldSoundPitch = 1.0;
+		public double worldLoadSoundPitch = 1.0;
+
+		@Config.LangKey("randomtweaks.config.ding.worldLoadSounds")
+		@Config.Comment("The registry names of the sounds to play when a world loads.")
+		public String[] worldLoadSounds = new String[] {
+				"entity.experience_orb.pickup"
+		};
+
+		@Config.Ignore
+		public SoundEvent[] startupSoundEvents;
+
+		@Config.Ignore
+		public SoundEvent[] worldLoadSoundEvents;
+
+		private void reload() {
+			Map<String, SoundEvent> sounds = getSoundEvents(startupSounds);
+
+			startupSounds = sounds.keySet().toArray(new String[0]);
+			startupSoundEvents = sounds.values().toArray(new SoundEvent[0]);
+
+			sounds = getSoundEvents(worldLoadSounds);
+
+			worldLoadSounds = sounds.keySet().toArray(new String[0]);
+			worldLoadSoundEvents = sounds.values().toArray(new SoundEvent[0]);
+		}
+
+		private Map<String, SoundEvent> getSoundEvents(String[] names) {
+			final Map<String, SoundEvent> soundEvents = new HashMap<>(names.length);
+
+			for(String name : names) {
+				final SoundEvent soundEvent =
+						SoundEvent.REGISTRY.getObject(new ResourceLocation(name));
+
+				if(soundEvent != null) {
+					soundEvents.put(soundEvent.getRegistryName().toString(), soundEvent);
+				}
+			}
+
+			return soundEvents;
+		}
 	}
 
 	public static final class Hunger {
@@ -1139,6 +1167,8 @@ public final class RTConfig {
 	}
 
 	private static void onReload() {
+		ding.reload();
+
 		if(misc.betterButtonNames) {
 			Blocks.STONE_BUTTON.setTranslationKey("buttonStone");
 			Blocks.WOODEN_BUTTON.setTranslationKey("buttonWood");

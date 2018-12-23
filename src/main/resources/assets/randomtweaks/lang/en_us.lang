@@ -49,10 +49,10 @@ randomtweaks.config.creativeTabs.setCommandBlockCreativeTag=Move the command blo
 randomtweaks.config.creativeTabs.setDragonEggCreativeTab=Add the dragon egg to the Decorations creative tab
 
 randomtweaks.config.ding=Ding
-randomtweaks.config.ding.soundNames=Sound names
-randomtweaks.config.ding.soundPitch=Sound pitch
-randomtweaks.config.ding.worldSoundNames=World sound names
-randomtweaks.config.ding.worldSoundPitch=World sound pitch
+randomtweaks.config.ding.startupSoundPitch=Startup sound pitch
+randomtweaks.config.ding.startupSounds=Startup sounds
+randomtweaks.config.ding.worldLoadSoundPitch=World load sound pitch
+randomtweaks.config.ding.worldLoadSounds=World load sounds
 
 randomtweaks.config.hunger=Hunger
 randomtweaks.config.hunger.tooltip=Options related to hunger behavior.

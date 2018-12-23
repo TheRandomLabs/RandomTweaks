@@ -50,7 +50,6 @@ public final class KeyBindingHandler {
 	);
 
 	private static final Minecraft mc = Minecraft.getMinecraft();
-	private static final GameSettings gameSettings = mc.gameSettings;
 
 	public static void registerKeyBindings() {
 		register(RTConfig.keybinds.toggleFoVChanges, TOGGLE_FOV_CHANGES);
@@ -65,9 +64,9 @@ public final class KeyBindingHandler {
 
 		int index;
 
-		while((index = ArrayUtils.indexOf(gameSettings.keyBindings, null))
+		while((index = ArrayUtils.indexOf(mc.gameSettings.keyBindings, null))
 				!= ArrayUtils.INDEX_NOT_FOUND) {
-			gameSettings.keyBindings = ArrayUtils.remove(gameSettings.keyBindings, index);
+			mc.gameSettings.keyBindings = ArrayUtils.remove(mc.gameSettings.keyBindings, index);
 		}
 	}
 
@@ -128,6 +127,8 @@ public final class KeyBindingHandler {
 	}
 
 	private static void register(boolean flag, KeyBinding keyBinding) {
+		final GameSettings gameSettings = mc.gameSettings;
+
 		if(flag) {
 			if(!ArrayUtils.contains(gameSettings.keyBindings, keyBinding)) {
 				gameSettings.keyBindings = ArrayUtils.add(gameSettings.keyBindings, keyBinding);

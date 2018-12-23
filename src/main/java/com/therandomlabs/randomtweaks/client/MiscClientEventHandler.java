@@ -16,6 +16,7 @@ import net.minecraftforge.client.event.sound.PlaySoundEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MOD_ID)
@@ -83,5 +84,11 @@ public final class MiscClientEventHandler {
 				event.getType() == RenderGameOverlayEvent.ElementType.POTION_ICONS) {
 			event.setCanceled(true);
 		}
+	}
+
+	@SubscribeEvent(priority = EventPriority.LOW)
+	public static void onClientTick(TickEvent.ClientTickEvent event) {
+		AutoThirdPersonHandler.onClientTick();
+		DingHandler.onClientTick();
 	}
 }

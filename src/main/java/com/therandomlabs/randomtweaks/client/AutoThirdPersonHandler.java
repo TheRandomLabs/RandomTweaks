@@ -1,19 +1,13 @@
 package com.therandomlabs.randomtweaks.client;
 
 import com.therandomlabs.randomtweaks.RTConfig;
-import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.passive.AbstractHorse;
 import net.minecraft.entity.passive.EntityPig;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.gameevent.TickEvent;
-import net.minecraftforge.fml.relauncher.Side;
 
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MOD_ID)
 public final class AutoThirdPersonHandler {
 	private static final Minecraft mc = Minecraft.getMinecraft();
 
@@ -25,8 +19,7 @@ public final class AutoThirdPersonHandler {
 	private static int lastID = NO_ENTITY;
 	private static int originalPerspective;
 
-	@SubscribeEvent
-	public static void onClientTick(TickEvent.ClientTickEvent event) {
+	public static void onClientTick() {
 		if(!RTConfig.autoThirdPerson.enabled || mc.world == null || mc.player == null) {
 			return;
 		}
