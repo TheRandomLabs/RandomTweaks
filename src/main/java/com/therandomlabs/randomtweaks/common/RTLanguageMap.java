@@ -6,6 +6,7 @@ import net.minecraft.util.text.translation.LanguageMap;
 
 public class RTLanguageMap extends LanguageMap {
 	//Use the fully qualified class name so the compiler doesn't throw a warning at us
+	//https://bugs.openjdk.java.net/browse/JDK-8032211
 	@SuppressWarnings("deprecation")
 	public static final RTLanguageMap INSTANCE =
 			new RTLanguageMap(net.minecraft.util.text.translation.I18n.localizedName);

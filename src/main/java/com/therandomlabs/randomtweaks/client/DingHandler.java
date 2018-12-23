@@ -1,7 +1,6 @@
 package com.therandomlabs.randomtweaks.client;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.security.SecureRandom;
 import java.util.Random;
 import com.therandomlabs.randomtweaks.RTConfig;
@@ -60,36 +59,6 @@ public final class DingHandler {
 		final SoundEvent sound = SoundEvent.REGISTRY.getObject(resource);
 
 		if(sound != null) {
-			if(RandomTweaks.DYNAMIC_SURROUNDINGS_LOADED) {
-				try {
-					final Class<?> soundEngine = getDsurroundClass("client.sound.SoundEngine");
-					final Method instance = soundEngine.getDeclaredMethod("instance");
-					final Object engine = instance.invoke(null);
-
-					//DSurround mutes the game when the window is not focused
-					final Method isMuted = soundEngine.getDeclaredMethod("isMuted");
-
-					if((boolean) isMuted.invoke(engine)) {
-						final Method setMuted =
-								soundEngine.getDeclaredMethod("setMuted", boolean.class);
-
-						setMuted.invoke(engine, false);
-
-						mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(
-								sound, (float) pitch
-						));
-
-						setMuted.invoke(engine, true);
-
-						return;
-					}
-				} catch(Exception ex) {
-					RandomTweaks.LOGGER.error(
-							"Failed to check if Dynamic Surroundings' SoundEngine is muted", ex
-					);
-				}
-			}
-
 			mc.getSoundHandler().playSound(PositionedSoundRecord.getMasterRecord(
 					sound, (float) pitch
 			));
@@ -104,10 +73,15 @@ public final class DingHandler {
 		}
 
 		try {
-			final Class<?> general = getDsurroundClass("ModOptions$general");
+			Class<?> general;
+
+			try {
+				general = Class.forName("org.orecruncher.dsurround.ModOptions$general");
+			} catch(ClassNotFoundException ex) {
+				general = Class.forName("org.blockartistry.DynSurround.ModOptions$general");
+			}
 
 			if(general != null) {
-
 				final Field startupSoundListField = general.getDeclaredField("startupSoundList");
 				final String[] startupSoundList = (String[]) startupSoundListField.get(null);
 
@@ -120,17 +94,5 @@ public final class DingHandler {
 		}
 
 		return true;
-	}
-
-	private static Class<?> getDsurroundClass(String name) {
-		try {
-			return Class.forName("org.orecruncher.dsurround." + name);
-		} catch(ClassNotFoundException ex) {
-			try {
-				return Class.forName("org.blockartistry.DynSurround." + name);
-			} catch(ClassNotFoundException ignored) {}
-		}
-
-		return null;
 	}
 }
