@@ -334,7 +334,7 @@ public final class RTConfig {
 		@Config.LangKey("randomtweaks.config.ding.startupSounds")
 		@Config.Comment("The registry names of the sounds to play when Minecraft starts.")
 		public String[] startupSounds = new String[] {
-				"entity.experience_orb.pickup"
+				"minecraft:entity.experience_orb.pickup"
 		};
 
 		@Config.RangeDouble(min = 0.0, max = 10.0)
@@ -345,7 +345,7 @@ public final class RTConfig {
 		@Config.LangKey("randomtweaks.config.ding.worldLoadSounds")
 		@Config.Comment("The registry names of the sounds to play when a world loads.")
 		public String[] worldLoadSounds = new String[] {
-				"entity.experience_orb.pickup"
+				"minecraft:entity.experience_orb.pickup"
 		};
 
 		@Config.Ignore

@@ -51,7 +51,11 @@ public final class KeyBindingHandler {
 
 	private static final Minecraft mc = Minecraft.getMinecraft();
 
+	private static boolean categoryEnabled;
+
 	public static void registerKeyBindings() {
+		categoryEnabled = false;
+
 		register(RTConfig.keybinds.toggleFoVChanges, TOGGLE_FOV_CHANGES);
 		register(RTConfig.keybinds.reloadSoundSystem, RELOAD_SOUND_SYSTEM);
 		register(
@@ -60,13 +64,13 @@ public final class KeyBindingHandler {
 		);
 		register(RTConfig.client.stepup, TOGGLE_AUTO_JUMP);
 
-		//Attempt to fix https://github.com/TheRandomLabs/RandomTweaks/issues/32
-
-		int index;
-
-		while((index = ArrayUtils.indexOf(mc.gameSettings.keyBindings, null))
-				!= ArrayUtils.INDEX_NOT_FOUND) {
-			mc.gameSettings.keyBindings = ArrayUtils.remove(mc.gameSettings.keyBindings, index);
+		//Forge just isn't designed to allow keybinds to be toggled in-game
+		if(categoryEnabled) {
+			KeyBinding.getKeybinds().add("key.categories.randomtweaks");
+		} else {
+			//If none of the keybinds are enabled, then GuiKeyBindingList.getListEntry
+			//returns null for one of the indexes, which causes a NullPointerException
+			KeyBinding.getKeybinds().remove("key.categories.randomtweaks");
 		}
 	}
 
@@ -133,6 +137,8 @@ public final class KeyBindingHandler {
 			if(!ArrayUtils.contains(gameSettings.keyBindings, keyBinding)) {
 				gameSettings.keyBindings = ArrayUtils.add(gameSettings.keyBindings, keyBinding);
 			}
+
+			categoryEnabled = true;
 		} else {
 			final int index = ArrayUtils.indexOf(gameSettings.keyBindings, keyBinding);
 
