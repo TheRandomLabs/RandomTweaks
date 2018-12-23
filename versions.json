@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12.2": {
+		"1.12.2-2.4.0.2": "Fixed an occasional crash on world load.",
 		"1.12.2-2.4.0.1": "Fixed a crash when opening the Controls GUI.",
 		"1.12.2-2.4.0.0": "Improved the world type configuration options.\nFixed issues related to the Void and Void Islands world types.\nMob spawning is now enabled by default in Void worlds.\nPotentially fixed a crash when the Controls GUI is opened.\nThe \"ding\" sound now ignores Dynamic Surroundings' \"Mute when Background\" option. There is a configuration option to disable this.\nImproved the \"ding\" sound configuration.\nRandomTweaks no longer crashes the game when it cannot access configuration files.",
 		"1.12.2-2.3.0.3": "Fixed Dynamic Surroundings compatibility.",
@@ -312,8 +313,8 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"promos": {
-		"1.12.2-latest": "1.12.2-2.4.0.1",
-		"1.12.2-recommended": "1.12.2-2.4.0.1",
+		"1.12.2-latest": "1.12.2-2.4.0.2",
+		"1.12.2-recommended": "1.12.2-2.4.0.2",
 		"1.12.1-latest": "1.12.2-2.0.2.0",
 		"1.12.1-recommended": "1.12.2-2.0.2.0",
 		"1.12-latest": "1.12.2-2.0.2.0",
