@@ -322,6 +322,10 @@ public final class RTConfig {
 	}
 
 	public static final class Ding {
+		@Config.LangKey("randomtweaks.config.ding.ignoreDsurroundMuteWhenBackground")
+		@Config.Comment("Whether to ignore Dynamic Surroundings' \"Mute when Background\" feature.")
+		public boolean ignoreDsurroundMuteWhenBackground = true;
+
 		@Config.RangeDouble(min = 0.0, max = 10.0)
 		@Config.LangKey("randomtweaks.config.ding.startupSoundPitch")
 		@Config.Comment("The pitch of the sound to play when Minecraft starts.")

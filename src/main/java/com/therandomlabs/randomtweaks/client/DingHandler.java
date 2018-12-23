@@ -1,7 +1,6 @@
 package com.therandomlabs.randomtweaks.client;
 
 import java.lang.reflect.Field;
-import java.security.SecureRandom;
 import java.util.Random;
 import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
@@ -11,6 +10,7 @@ import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.audio.SoundHandler;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -20,14 +20,25 @@ import paulscode.sound.SoundSystem;
 
 @Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MOD_ID)
 public final class DingHandler {
-	private static final Random random = new SecureRandom();
+	private static final Class<?> GENERAL_MOD_OPTIONS;
+	private static final Class<?> BACKGROUND_MUTE;
+
+	private static final Random random = new Random();
 	private static final Minecraft mc = Minecraft.getMinecraft();
 
-	//DSurround "Mute when Background" feature compatibility
-	private static float previousVolume;
-	private static ISound currentlyPlaying;
-
 	private static boolean playWorld;
+
+	private static ISound sound;
+
+	static {
+		if(RandomTweaks.DYNAMIC_SURROUNDINGS_LOADED) {
+			GENERAL_MOD_OPTIONS = getDsurroundClass("ModOptions$general");
+			BACKGROUND_MUTE = getDsurroundClass("client.sound.BackgroundMute");
+		} else {
+			GENERAL_MOD_OPTIONS = null;
+			BACKGROUND_MUTE = null;
+		}
+	}
 
 	public static void onGameStarted() {
 		if(!RandomTweaks.DING_LOADED && RTConfig.ding.startupSounds.length != 0 &&
@@ -35,22 +46,6 @@ public final class DingHandler {
 			final int index = random.nextInt(RTConfig.ding.startupSoundEvents.length);
 			playSound(RTConfig.ding.startupSoundEvents[index], RTConfig.ding.startupSoundPitch);
 		}
-	}
-
-	public static void onClientTick() {
-		if(currentlyPlaying == null) {
-			return;
-		}
-
-		final SoundSystem system = getSoundSystem();
-
-		if(mc.getSoundHandler().sndManager.isSoundPlaying(currentlyPlaying)) {
-			system.setMasterVolume(mc.gameSettings.getSoundLevel(SoundCategory.MASTER));
-			return;
-		}
-
-		currentlyPlaying = null;
-		system.setMasterVolume(previousVolume);
 	}
 
 	@SubscribeEvent
@@ -73,41 +68,51 @@ public final class DingHandler {
 		}
 	}
 
-	public static void playSound(SoundEvent soundEvent, double pitch) {
+	public static void onClientTick() {
+		if(sound == null) {
+			return;
+		}
+
+		//Dynamics Surroundings compatibility
+
 		final SoundHandler soundHandler = mc.getSoundHandler();
 
-		previousVolume = getSoundSystem().getMasterVolume();
-		currentlyPlaying = PositionedSoundRecord.getMasterRecord(soundEvent, (float) pitch);
-
-		soundHandler.playSound(currentlyPlaying);
-
-		onClientTick();
+		if(!soundHandler.isSoundPlaying(sound)) {
+			MinecraftForge.EVENT_BUS.register(BACKGROUND_MUTE);
+		}
 	}
 
-	public static SoundSystem getSoundSystem() {
-		return mc.getSoundHandler().sndManager.sndSystem;
+	public static void playSound(SoundEvent soundEvent, double pitch) {
+		final SoundHandler soundHandler = mc.getSoundHandler();
+		sound = PositionedSoundRecord.getMasterRecord(soundEvent, (float) pitch);
+
+		if(!RTConfig.ding.ignoreDsurroundMuteWhenBackground || BACKGROUND_MUTE == null) {
+			soundHandler.playSound(sound);
+			return;
+		}
+
+		//Dynamics Surroundings compatibility
+
+		((SoundSystem) soundHandler.sndManager.sndSystem).setMasterVolume(
+				mc.gameSettings.getSoundLevel(SoundCategory.MASTER)
+		);
+
+		soundHandler.playSound(sound);
+
+		MinecraftForge.EVENT_BUS.unregister(BACKGROUND_MUTE);
 	}
 
 	public static boolean isDsurroundStartupSoundDisabled() {
-		if(!RandomTweaks.DYNAMIC_SURROUNDINGS_LOADED) {
+		if(GENERAL_MOD_OPTIONS == null) {
 			return true;
 		}
 
 		try {
-			Class<?> general;
+			final Field startupSoundListField =
+					GENERAL_MOD_OPTIONS.getDeclaredField("startupSoundList");
+			final String[] startupSoundList = (String[]) startupSoundListField.get(null);
 
-			try {
-				general = Class.forName("org.orecruncher.dsurround.ModOptions$general");
-			} catch(ClassNotFoundException ex) {
-				general = Class.forName("org.blockartistry.DynSurround.ModOptions$general");
-			}
-
-			if(general != null) {
-				final Field startupSoundListField = general.getDeclaredField("startupSoundList");
-				final String[] startupSoundList = (String[]) startupSoundListField.get(null);
-
-				return startupSoundList.length == 0;
-			}
+			return startupSoundList.length == 0;
 		} catch(Exception ex) {
 			RandomTweaks.LOGGER.error(
 					"Failed to check if Dynamic Surrounding's startup sound list is empty", ex
@@ -115,5 +120,21 @@ public final class DingHandler {
 		}
 
 		return true;
+	}
+
+	public static Class<?> getDsurroundClass(String name) {
+		try {
+			return Class.forName("org.orecruncher.dsurround." + name);
+		} catch(ClassNotFoundException ex) {
+			try {
+				return Class.forName("org.blockartistry.DynSurround." + name);
+			} catch(ClassNotFoundException ex2) {
+				RandomTweaks.LOGGER.error(
+						"Failed to find Dynamic Surroundings class: " + name, ex2
+				);
+			}
+		}
+
+		return null;
 	}
 }
