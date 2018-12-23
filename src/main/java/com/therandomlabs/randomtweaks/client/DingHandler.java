@@ -84,11 +84,11 @@ public final class DingHandler {
 
 	public static void playSound(SoundEvent soundEvent, double pitch) {
 		final SoundHandler soundHandler = mc.getSoundHandler();
-		sound = PositionedSoundRecord.getMasterRecord(soundEvent, (float) pitch);
+		final ISound sound =
+				PositionedSoundRecord.getMasterRecord(soundEvent, (float) pitch);
 
 		if(!RTConfig.ding.ignoreDsurroundMuteWhenBackground || BACKGROUND_MUTE == null) {
 			soundHandler.playSound(sound);
-			sound = null;
 			return;
 		}
 
@@ -100,6 +100,7 @@ public final class DingHandler {
 
 		soundHandler.playSound(sound);
 
+		DingHandler.sound = sound;
 		MinecraftForge.EVENT_BUS.unregister(BACKGROUND_MUTE);
 	}
 
