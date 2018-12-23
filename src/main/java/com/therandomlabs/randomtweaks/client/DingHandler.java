@@ -66,6 +66,7 @@ public final class DingHandler {
 					final Method instance = soundEngine.getDeclaredMethod("instance");
 					final Object engine = instance.invoke(null);
 
+					//DSurround mutes the game when the window is not focused
 					final Method isMuted = soundEngine.getDeclaredMethod("isMuted");
 
 					if((boolean) isMuted.invoke(engine)) {

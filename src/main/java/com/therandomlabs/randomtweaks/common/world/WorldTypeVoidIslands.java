@@ -12,7 +12,7 @@ public class WorldTypeVoidIslands extends RTWorldType {
 
 	@Override
 	public boolean isEnabled() {
-		return RTConfig.world.voidIslandsWorldType;
+		return RTConfig.voidIslandsWorld.enabled;
 	}
 
 	@Override

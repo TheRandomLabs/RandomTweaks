@@ -2,11 +2,8 @@ package com.therandomlabs.randomtweaks.common.world;
 
 import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
-import com.therandomlabs.randomtweaks.util.RTUtils;
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.GameRules;
@@ -27,17 +24,17 @@ public final class WorldHandler {
 			return;
 		}
 
-		final GameRules gamerules = world.getGameRules();
+		final GameRules gameRules = world.getGameRules();
 
 		final String netherPortalCreation = RTConfig.misc.disableNetherPortalCreationGameRuleName;
 		final String fallDamage = RTConfig.misc.fallDamageMultiplierGameRuleName;
 
-		if(!netherPortalCreation.isEmpty() && !gamerules.hasRule(netherPortalCreation)) {
-			gamerules.setOrCreateGameRule(netherPortalCreation, "false");
+		if(!netherPortalCreation.isEmpty() && !gameRules.hasRule(netherPortalCreation)) {
+			gameRules.setOrCreateGameRule(netherPortalCreation, "false");
 		}
 
-		if(!fallDamage.isEmpty() && !gamerules.hasRule(fallDamage)) {
-			gamerules.setOrCreateGameRule(fallDamage, "1.0");
+		if(!fallDamage.isEmpty() && !gameRules.hasRule(fallDamage)) {
+			gameRules.setOrCreateGameRule(fallDamage, "1.0");
 		}
 	}
 
@@ -91,7 +88,7 @@ public final class WorldHandler {
 			final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(0, 0, 0));
 			newSpawnY = pos.getY() + 1;
 		} else {
-			newSpawnY = RTConfig.world.voidWorldYSpawn;
+			newSpawnY = RTConfig.voidWorld.ySpawn;
 		}
 
 		final BlockPos newSpawn = new BlockPos(0, newSpawnY, 0);
@@ -114,8 +111,7 @@ public final class WorldHandler {
 			return;
 		}
 
-		final Block block = RTUtils.getBlock(RTConfig.world.voidWorldBlock, Blocks.GLASS);
-		world.setBlockState(spawnBlock, block.getDefaultState());
+		world.setBlockState(spawnBlock, RTConfig.voidWorld.blockState);
 	}
 
 	private static boolean isSpawnable(World world, BlockPos pos) {

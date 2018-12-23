@@ -1,12 +1,11 @@
 package com.therandomlabs.randomtweaks.common.world;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.util.RTUtils;
 import net.minecraft.entity.EnumCreatureType;
-import net.minecraft.init.Biomes;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
@@ -14,40 +13,35 @@ import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.IChunkGenerator;
 
 public class ChunkGeneratorVoid implements IChunkGenerator {
-	private static String biomeName;
-	private static Biome biome;
-
 	private final World world;
+	private final Random random;
 
 	public ChunkGeneratorVoid(World world) {
 		this.world = world;
+		random = new Random(world.getSeed());
 	}
 
 	@Override
 	public Chunk generateChunk(int x, int z) {
-		final Chunk chunk = new Chunk(world, x, z);
-
-		if(!RTConfig.world.voidWorldBiome.isEmpty()) {
-			final byte[] biomeArray = new byte[256];
-			Arrays.fill(biomeArray, (byte) Biome.getIdForBiome(getBiome()));
-			chunk.setBiomeArray(biomeArray);
-		}
-
-		return chunk;
+		return RTUtils.createVoidChunk(
+				world, random, RTConfig.voidWorld.actualBiome,
+				RTConfig.voidWorld.biomeBlacklist, x, z
+		);
 	}
 
 	@Override
 	public void populate(int x, int z) {}
 
 	@Override
-	public boolean generateStructures(Chunk chunkIn, int x, int z) {
+	public boolean generateStructures(Chunk chunk, int x, int z) {
 		return false;
 	}
 
 	@Override
 	public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType,
 			BlockPos pos) {
-		return Collections.emptyList();
+		return RTConfig.voidWorld.mobSpawning ?
+				world.getBiome(pos).getSpawnableList(creatureType) : Collections.emptyList();
 	}
 
 	@Override
@@ -62,14 +56,5 @@ public class ChunkGeneratorVoid implements IChunkGenerator {
 	@Override
 	public boolean isInsideStructure(World world, String structureName, BlockPos pos) {
 		return false;
-	}
-
-	public static Biome getBiome() {
-		if(biome == null || !RTConfig.world.voidWorldBiome.equals(biomeName)) {
-			biomeName = RTConfig.world.voidWorldBiome;
-			biome = RTUtils.getBiome(biomeName, Biomes.PLAINS);
-		}
-
-		return biome;
 	}
 }

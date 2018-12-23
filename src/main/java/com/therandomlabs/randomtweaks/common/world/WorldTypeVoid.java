@@ -12,7 +12,7 @@ public class WorldTypeVoid extends RTWorldType {
 
 	@Override
 	public boolean isEnabled() {
-		return RTConfig.world.voidWorldType;
+		return RTConfig.voidWorld.enabled;
 	}
 
 	@Override

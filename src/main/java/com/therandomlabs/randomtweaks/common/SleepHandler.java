@@ -96,7 +96,7 @@ public final class SleepHandler {
 		try {
 			SET_SIZE.invoke(player, 0.2F, 0.2F);
 		} catch(Exception ex) {
-			RTUtils.crashReport("Error while setting player size", ex);
+			RandomTweaks.LOGGER.error("Error while setting player size", ex);
 		}
 
 		if(state != null && state.getBlock().isBed(state, world, pos, player)) {

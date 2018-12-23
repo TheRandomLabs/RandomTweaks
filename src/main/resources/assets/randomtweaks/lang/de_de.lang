@@ -131,13 +131,20 @@ randomtweaks.config.timeOfDay.y=Y coordinate
 randomtweaks.config.world=World
 randomtweaks.config.world.tooltip=Options related to world generation.
 randomtweaks.config.world.realisticWorldType=Enable Realistic world type
-randomtweaks.config.world.voidIslandsChunkRarity=Void Islands world chunk rarity
-randomtweaks.config.world.voidIslandsWorldBiome=Void Islands world biome
-randomtweaks.config.world.voidIslandsWorldType=Enable Void Islands world type
-randomtweaks.config.world.voidWorldBiome=Void world biome
-randomtweaks.config.world.voidWorldBlock=Void world spawn block
-randomtweaks.config.world.voidWorldType=Enable Void world type
-randomtweaks.config.world.voidWorldYSpawn=Void world spawn Y coordinate
+
+randomtweaks.config.voidWorld=Void World
+randomtweaks.config.voidWorld.biome=Biome
+randomtweaks.config.voidWorld.enabled=Enabled
+randomtweaks.config.voidWorld.mobSpawning=Mob spawning
+randomtweaks.config.voidWorld.randomBiomeBlacklist=Random biome blacklist
+randomtweaks.config.voidWorld.spawnBlock=Spawn block
+randomtweaks.config.voidWorld.spawnBlockMeta=Spawn block meta
+randomtweaks.config.voidWorld.ySpawn=Y spawn coordinate
+
+randomtweaks.config.voidIslandsWorld=Void Islands World
+randomtweaks.config.voidIslandsWorld.chunkRarity=Chunk rarity
+randomtweaks.config.voidIslandsWorld.enabled=Enabled
+randomtweaks.config.voidIslandsWorld.voidChunkRandomBiomeBlacklist=Void chunk random biome blacklist
 
 timeOfDayOverlay.day=Tag
 timeOfDayOverlay.am=AM

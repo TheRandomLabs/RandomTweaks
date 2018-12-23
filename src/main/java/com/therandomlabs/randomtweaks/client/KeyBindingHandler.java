@@ -50,6 +50,7 @@ public final class KeyBindingHandler {
 	);
 
 	private static final Minecraft mc = Minecraft.getMinecraft();
+	private static final GameSettings gameSettings = mc.gameSettings;
 
 	public static void registerKeyBindings() {
 		register(RTConfig.keybinds.toggleFoVChanges, TOGGLE_FOV_CHANGES);
@@ -59,6 +60,15 @@ public final class KeyBindingHandler {
 				TOGGLE_TIME_OF_DAY_OVERLAY
 		);
 		register(RTConfig.client.stepup, TOGGLE_AUTO_JUMP);
+
+		//Attempt to fix https://github.com/TheRandomLabs/RandomTweaks/issues/32
+
+		int index;
+
+		while((index = ArrayUtils.indexOf(gameSettings.keyBindings, null))
+				!= ArrayUtils.INDEX_NOT_FOUND) {
+			gameSettings.keyBindings = ArrayUtils.remove(gameSettings.keyBindings, index);
+		}
 	}
 
 	@SubscribeEvent
@@ -118,8 +128,6 @@ public final class KeyBindingHandler {
 	}
 
 	private static void register(boolean flag, KeyBinding keyBinding) {
-		final GameSettings gameSettings = mc.gameSettings;
-
 		if(flag) {
 			if(!ArrayUtils.contains(gameSettings.keyBindings, keyBinding)) {
 				gameSettings.keyBindings = ArrayUtils.add(gameSettings.keyBindings, keyBinding);

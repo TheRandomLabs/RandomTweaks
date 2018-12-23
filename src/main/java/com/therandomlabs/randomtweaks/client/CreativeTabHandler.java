@@ -160,7 +160,7 @@ public final class CreativeTabHandler {
 			try {
 				TAB_PAGE.set(null, 0);
 			} catch(Exception ex) {
-				RTUtils.crashReport("Error while disabling creative tab", ex);
+				RandomTweaks.LOGGER.error("Error while disabling creative tab", ex);
 			}
 		}
 

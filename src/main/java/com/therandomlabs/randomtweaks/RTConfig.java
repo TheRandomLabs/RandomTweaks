@@ -20,8 +20,13 @@ import com.therandomlabs.randomtweaks.common.TrampleHandler;
 import com.therandomlabs.randomtweaks.common.world.ChunkGeneratorVoidIslands;
 import com.therandomlabs.randomtweaks.util.Alignment;
 import com.therandomlabs.randomtweaks.util.RTUtils;
+import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.biome.Biome;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigCategory;
 import net.minecraftforge.common.config.ConfigManager;
@@ -84,7 +89,7 @@ public final class RTConfig {
 			try {
 				Files.write(getPath(), Collections.singletonList(new Gson().toJson(data)));
 			} catch(IOException ex) {
-				RTUtils.crashReport("Error while saving RandomTweaks data", ex);
+				RandomTweaks.LOGGER.error("Error while saving RandomTweaks data", ex);
 			}
 		}
 
@@ -139,7 +144,7 @@ public final class RTConfig {
 		public boolean protectPetsFromSneakingOwners;
 	}
 
-	public static class AutoThirdPerson {
+	public static final class AutoThirdPerson {
 		@Config.LangKey("entity.Boat.name")
 		@Config.Comment("Enables auto-third person upon entering a boat.")
 		public boolean boat = RandomTweaks.IS_DEOBFUSCATED;
@@ -165,7 +170,7 @@ public final class RTConfig {
 		public boolean pig = RandomTweaks.IS_DEOBFUSCATED;
 	}
 
-	public static class BoneMeal {
+	public static final class BoneMeal {
 		@Config.RangeInt(min = 0, max = 16)
 		@Config.LangKey("randomtweaks.config.boneMeal.cacti")
 		@Config.Comment({
@@ -187,7 +192,7 @@ public final class RTConfig {
 		public int sugarCanes = 8;
 	}
 
-	public static class Client {
+	public static final class Client {
 		@Config.LangKey("randomtweaks.config.autoThirdPerson")
 		@Config.Comment("Options related to the auto-third person feature.")
 		public final AutoThirdPerson autoThirdPerson = new AutoThirdPerson();
@@ -251,7 +256,7 @@ public final class RTConfig {
 		public boolean storeDataInLocal = true;
 	}
 
-	public static class Commands {
+	public static final class Commands {
 		@Config.RequiresWorldRestart
 		@Config.LangKey("randomtweaks.config.commands.deletegamerule")
 		@Config.Comment("Enables the /deletegamerule command.")
@@ -291,7 +296,7 @@ public final class RTConfig {
 		public boolean rtreloadclient = true;
 	}
 
-	public static class CreativeTabs {
+	public static final class CreativeTabs {
 		@Config.LangKey("randomtweaks.config.creativeTabs.moveBucketCreativeTab")
 		@Config.Comment("Moves the bucket to the Tools creative tab.")
 		public boolean moveBucketCreativeTab = true;
@@ -315,7 +320,7 @@ public final class RTConfig {
 		public boolean spawnEggsCreativeTab = true;
 	}
 
-	public static class Ding {
+	public static final class Ding {
 		@Config.LangKey("randomtweaks.config.ding.soundNames")
 		@Config.Comment({
 				"The names of the sounds to play when Minecraft starts.",
@@ -345,7 +350,7 @@ public final class RTConfig {
 		public double worldSoundPitch = 1.0;
 	}
 
-	public static class Hunger {
+	public static final class Hunger {
 		@Config.LangKey("randomtweaks.config.hunger.carryExcessHungerToSaturation")
 		@Config.Comment("Carries any excess hunger level gained by eating over to the saturation.")
 		public boolean carryExcessHungerToSaturation = RandomTweaks.IS_DEOBFUSCATED;
@@ -385,7 +390,7 @@ public final class RTConfig {
 		public double saturationLimit = RandomTweaks.IS_DEOBFUSCATED ? 100.0 : 0.0;
 	}
 
-	public static class Keybinds {
+	public static final class Keybinds {
 		@Config.LangKey("randomtweaks.config.keybinds.fovChangesEnabledByDefault")
 		@Config.Comment("Whether FoV changes should be enabled by default.")
 		public boolean fovChangesEnabledByDefault = true;
@@ -408,7 +413,7 @@ public final class RTConfig {
 		public boolean toggleTimeOfDayOverlay = true;
 	}
 
-	public static class Misc {
+	public static final class Misc {
 		@Config.LangKey("randomtweaks.config.misc.allowSleepNearMobsWithCustomNames")
 		@Config.Comment("Allows players to sleep near mobs with custom names.")
 		public boolean allowSleepNearMobsWithCustomNames = true;
@@ -479,7 +484,7 @@ public final class RTConfig {
 		public boolean pickUpSkeletonArrows = RandomTweaks.IS_DEOBFUSCATED;
 	}
 
-	public static class OceanFloor {
+	public static final class OceanFloor {
 		@Config.RequiresMcRestart
 		@Config.RangeInt(min = 0)
 		@Config.LangKey("randomtweaks.config.oceanFloor.clayChance")
@@ -534,7 +539,7 @@ public final class RTConfig {
 		public int sandVeinSize = 22;
 	}
 
-	public static class PlayerHeadDrops {
+	public static final class PlayerHeadDrops {
 		@Config.RangeDouble(min = 0.0, max = 1.0)
 		@Config.LangKey("randomtweaks.config.playerHeadDrops.chanceWhenKilledByChargedCreeper")
 		@Config.Comment("The player head drop chance when a player is killed by a charged creeper.")
@@ -555,7 +560,7 @@ public final class RTConfig {
 		public double normalChance = 1.0;
 	}
 
-	public static class RandomizedAges {
+	public static final class RandomizedAges {
 		@Config.RangeDouble(min = 0.0, max = 1.0)
 		@Config.LangKey("randomtweaks.config.randomizedAges.chance")
 		@Config.Comment("The chance that an animal's age is randomized.")
@@ -568,9 +573,15 @@ public final class RTConfig {
 		@Config.LangKey("randomtweaks.config.randomizedAges.minimumAge")
 		@Config.Comment("The minimum age in ticks.")
 		public int minimumAge = -24000;
+
+		private void reload() {
+			if(maximumAge < minimumAge) {
+				maximumAge = minimumAge;
+			}
+		}
 	}
 
-	public static class SheepColorWeights {
+	public static final class SheepColorWeights {
 		@Config.Ignore
 		public final Map<EnumDyeColor, Double> weights = new EnumMap<>(EnumDyeColor.class);
 
@@ -688,7 +699,7 @@ public final class RTConfig {
 		}
 	}
 
-	public static class Squids {
+	public static final class Squids {
 		@Config.RangeInt(min = -1)
 		@Config.LangKey("randomtweaks.config.squids.chunkLimit")
 		@Config.Comment({
@@ -716,7 +727,7 @@ public final class RTConfig {
 		public int spawnRadiusLimit = 128;
 	}
 
-	public static class TimeOfDay {
+	public static final class TimeOfDay {
 		@Config.LangKey("randomtweaks.config.timeOfDay.alignment")
 		@Config.Comment("The alignment.")
 		public Alignment alignment = Alignment.TOPLEFT;
@@ -754,10 +765,139 @@ public final class RTConfig {
 		public int y = 0;
 	}
 
-	public static class World {
+	public static final class VoidWorld {
+		@Config.LangKey("randomtweaks.config.voidWorld.biome")
+		@Config.Comment({
+				"The Void world biome.",
+				"Leave this empty for randomized biomes."
+		})
+		public String biome = "minecraft:plains";
+
+		@Config.LangKey("randomtweaks.config.voidWorld.enabled")
+		@Config.Comment({
+				"Enables the Void world type",
+				"Name: VOID"
+		})
+		public boolean enabled = true;
+
+		@Config.LangKey("randomtweaks.config.voidWorld.mobSpawning")
+		@Config.Comment("Whether mobs spawn in Void worlds.")
+		public boolean mobSpawning = true;
+
+		@Config.LangKey("randomtweaks.config.voidWorld.voidChunkRandomBiomeBlacklist")
+		@Config.Comment("The biomes that cannot be randomly generated in Void worlds.")
+		public String[] randomBiomeBlacklist = new String[0];
+
+		@Config.LangKey("randomtweaks.config.voidWorld.spawnBlock")
+		@Config.Comment("The block placed at the spawn point of a Void world.")
+		public String spawnBlock = "minecraft:glass";
+
+		@Config.RangeInt(min = 0)
+		@Config.LangKey("randomtweaks.config.voidWorld.spawnBlockMeta")
+		@Config.Comment("The meta value of the block placed at the spawn point of a Void world.")
+		public int spawnBlockMeta = 0;
+
+		@Config.RangeInt(min = 1, max = 255)
+		@Config.LangKey("randomtweaks.config.voidWorld.ySpawn")
+		@Config.Comment("The Y coordinate of the default spawn point in a Void world.")
+		public int ySpawn = 17;
+
+		@Config.Ignore
+		public Biome actualBiome;
+
+		@Config.Ignore
+		public Biome[] biomeBlacklist;
+
+		@Config.Ignore
+		public Block block;
+
+		@Config.Ignore
+		public IBlockState blockState;
+
+		@SuppressWarnings({"deprecation", "Duplicates"})
+		private void reload() {
+			if(biome.isEmpty()) {
+				actualBiome = null;
+			} else {
+				actualBiome = world.getBiome(biome);
+				biome = actualBiome.getRegistryName().toString();
+			}
+
+			final Map<String, Biome> blacklist = world.getBiomes(randomBiomeBlacklist);
+			randomBiomeBlacklist = blacklist.keySet().toArray(new String[0]);
+			biomeBlacklist = blacklist.values().toArray(new Biome[0]);
+
+			block = Block.REGISTRY.getObject(new ResourceLocation(spawnBlock));
+			spawnBlock = block.getRegistryName().toString();
+			blockState = block.getStateFromMeta(spawnBlockMeta);
+		}
+	}
+
+	public static final class VoidIslandsWorld {
+		@Config.RangeInt(min = 1)
+		@Config.LangKey("randomtweaks.config.voidIslandsWorld.chunkRarity")
+		@Config.Comment({
+				"The rarity of non-empty chunks in a Void Islands world.",
+				"If this is set to n, there is a 1 in n chance of a chunk being non-empty.",
+				"If this is set to " + ChunkGeneratorVoidIslands.ONLY_GENERATE_SPAWN_CHUNK +
+						", only the spawn chunk is generated."
+		})
+		public int chunkRarity = 10;
+
+		@Config.LangKey("randomtweaks.config.voidIslandsWorld.enabled")
+		@Config.Comment({
+				"Enables the Void Islands world type",
+				"Name: VOID"
+		})
+		public boolean enabled = true;
+
+		@Config.LangKey("randomtweaks.config.voidIslandsWorld.voidChunkBiome")
+		@Config.Comment({
+				"The void chunk biome.",
+				"Leave this empty for randomized biomes."
+		})
+		public String voidChunkBiome = "";
+
+		@Config.LangKey("randomtweaks.config.voidIslandsWorld.voidChunkRandomBiomeBlacklist")
+		@Config.Comment(
+				"The biomes that cannot be randomly generated in void chunks in Void Islands " +
+						"worlds."
+		)
+		public String[] voidChunkRandomBiomeBlacklist = new String[0];
+
+		@Config.Ignore
+		public Biome biome;
+
+		@Config.Ignore
+		public Biome[] biomeBlacklist;
+
+		@SuppressWarnings("Duplicates")
+		private void reload() {
+			if(voidChunkBiome.isEmpty()) {
+				biome = null;
+			} else {
+				biome = world.getBiome(voidChunkBiome);
+				voidChunkBiome = biome.getRegistryName().toString();
+			}
+
+			final Map<String, Biome> blacklist = world.getBiomes(voidChunkRandomBiomeBlacklist);
+			voidChunkRandomBiomeBlacklist = blacklist.keySet().toArray(new String[0]);
+			biomeBlacklist = blacklist.values().toArray(new Biome[0]);
+		}
+	}
+
+	public static final class World {
 		@Config.LangKey("randomtweaks.config.oceanFloor")
 		@Config.Comment("Options related to ocean floor generation.")
 		public final OceanFloor oceanFloor = new OceanFloor();
+
+		@Config.LangKey("randomtweaks.config.voidWorld")
+		@Config.Comment("Options regarding Void worlds.")
+		public final VoidWorld voidWorld = new VoidWorld();
+
+		@Config.LangKey("randomtweaks.config.voidIslandsWorld")
+		@Config.Comment("Options regarding Void Islands worlds.")
+		public final VoidIslandsWorld voidIslandsWorld = new VoidIslandsWorld();
 
 		@Config.LangKey("randomtweaks.config.world.realisticWorldType")
 		@Config.Comment({
@@ -766,52 +906,29 @@ public final class RTConfig {
 		})
 		public boolean realisticWorldType = true;
 
-		@Config.RangeInt(min = 1)
-		@Config.LangKey("randomtweaks.config.world.voidIslandsChunkRarity")
-		@Config.Comment({
-				"The rarity of non-empty chunks in a Void Islands world.",
-				"If this is set to n, there is a 1 in n chance of a chunk being non-empty.",
-				"If this is set to " + ChunkGeneratorVoidIslands.ONLY_GENERATE_SPAWN_CHUNK +
-						", only the spawn chunk is generated."
-		})
-		public int voidIslandsChunkRarity = 10;
+		private Biome getBiome(String name) {
+			final Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(name));
+			return biome == null ? Biomes.PLAINS : biome;
+		}
 
-		@Config.LangKey("randomtweaks.config.world.voidIslandsWorldBiome")
-		@Config.Comment({
-				"The biome of the void chunks of a Void Islands world.",
-				"Leave this empty for randomized biomes."
-		})
-		public String voidIslandsWorldBiome = "minecraft:plains";
+		private Map<String, Biome> getBiomes(String[] names) {
+			final Map<String, Biome> biomes = new HashMap<>(names.length);
 
-		@Config.LangKey("randomtweaks.config.world.voidIslandsWorldType")
-		@Config.Comment({
-				"Enables the Void Islands world type",
-				"Name: VOIDISLANDS"
-		})
-		public boolean voidIslandsWorldType = true;
+			for(String name : names) {
+				final Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(name));
 
-		@Config.LangKey("randomtweaks.config.world.voidWorldBiome")
-		@Config.Comment({
-				"The biome of a Void world.",
-				"Leave this empty for randomized biomes."
-		})
-		public String voidWorldBiome = "minecraft:plains";
+				if(biome != null) {
+					biomes.put(biome.getRegistryName().toString(), biome);
+				}
+			}
 
-		@Config.LangKey("randomtweaks.config.world.voidWorldBlock")
-		@Config.Comment("The block placed in a Void world for players to stand on.")
-		public String voidWorldBlock = "minecraft:glass";
+			return biomes;
+		}
 
-		@Config.LangKey("randomtweaks.config.world.voidWorldType")
-		@Config.Comment({
-				"Enables the Void world type",
-				"Name: VOID"
-		})
-		public boolean voidWorldType = true;
-
-		@Config.RangeInt(min = 1, max = 255)
-		@Config.LangKey("randomtweaks.config.world.voidWorldYSpawn")
-		@Config.Comment("The Y coordinate of the default spawn point in a Void world.")
-		public int voidWorldYSpawn = 17;
+		private void reload() {
+			voidWorld.reload();
+			voidIslandsWorld.reload();
+		}
 	}
 
 	private interface PropertyConsumer {
@@ -880,6 +997,12 @@ public final class RTConfig {
 	@Config.Ignore
 	public static final OceanFloor oceanFloor = world.oceanFloor;
 
+	@Config.Ignore
+	public static final VoidWorld voidWorld = world.voidWorld;
+
+	@Config.Ignore
+	public static final VoidIslandsWorld voidIslandsWorld = world.voidIslandsWorld;
+
 	private static final Method GET_CONFIGURATION = RTUtils.findMethod(
 			ConfigManager.class, "getConfiguration", "getConfiguration", String.class, String.class
 	);
@@ -902,7 +1025,7 @@ public final class RTConfig {
 				Files.createDirectories(parent);
 			}
 		} catch(IOException ex) {
-			RTUtils.crashReport("Failed to create parent: " + path, ex);
+			RandomTweaks.LOGGER.error("Failed to create parent: " + path, ex);
 		}
 
 		return path;
@@ -916,10 +1039,10 @@ public final class RTConfig {
 		try {
 			return StringUtils.join(Files.readAllLines(path), System.lineSeparator());
 		} catch(IOException ex) {
-			RTUtils.crashReport("Failed to read file: " + path, ex);
+			RandomTweaks.LOGGER.error("Failed to read file: " + path, ex);
 		}
 
-		return null;
+		return "{}";
 	}
 
 	public static JsonObject readJson(Path path) {
@@ -954,6 +1077,7 @@ public final class RTConfig {
 			firstReload = false;
 
 			modifyConfig();
+			onReload();
 			ConfigManager.sync(RandomTweaks.MOD_ID, Config.Type.INSTANCE);
 
 			//If Minecraft hasn't loaded yet and ConfigManager.sync is called, the default values
@@ -972,22 +1096,10 @@ public final class RTConfig {
 
 			modifyConfig();
 		} catch(Exception ex) {
-			RTUtils.crashReport("Error while modifying config", ex);
-		}
-
-		if(sheepColorWeights.enabled) {
-			sheepColorWeights.reload();
+			RandomTweaks.LOGGER.error("Error while modifying config", ex);
 		}
 
 		Data.data = null;
-
-		if(misc.betterButtonNames) {
-			Blocks.STONE_BUTTON.setTranslationKey("buttonStone");
-			Blocks.WOODEN_BUTTON.setTranslationKey("buttonWood");
-		} else {
-			Blocks.STONE_BUTTON.setTranslationKey("button");
-			Blocks.WOODEN_BUTTON.setTranslationKey("button");
-		}
 	}
 
 	public static void reloadFromDisk() {
@@ -1008,7 +1120,7 @@ public final class RTConfig {
 
 			reload();
 		} catch(Exception ex) {
-			RTUtils.crashReport("Error while modifying config", ex);
+			RandomTweaks.LOGGER.error("Error while modifying config", ex);
 		}
 	}
 
@@ -1026,6 +1138,24 @@ public final class RTConfig {
 		}
 	}
 
+	private static void onReload() {
+		if(misc.betterButtonNames) {
+			Blocks.STONE_BUTTON.setTranslationKey("buttonStone");
+			Blocks.WOODEN_BUTTON.setTranslationKey("buttonWood");
+		} else {
+			Blocks.STONE_BUTTON.setTranslationKey("button");
+			Blocks.WOODEN_BUTTON.setTranslationKey("button");
+		}
+
+		randomizedAges.reload();
+
+		if(sheepColorWeights.enabled) {
+			sheepColorWeights.reload();
+		}
+
+		world.reload();
+	}
+
 	private static void modifyConfig() throws IllegalAccessException, InvocationTargetException {
 		final Configuration config =
 				(Configuration) GET_CONFIGURATION.invoke(null, RandomTweaks.MOD_ID, NAME);
@@ -1040,12 +1170,6 @@ public final class RTConfig {
 				if(comment == null || comment.isEmpty()) {
 					category.remove(key);
 					return;
-				}
-
-				if("maximumAge".equals(key) &&
-						randomizedAges.maximumAge < randomizedAges.minimumAge) {
-					property.set(randomizedAges.minimumAge);
-					randomizedAges.maximumAge = randomizedAges.minimumAge;
 				}
 
 				String newComment = comments.get(property);
