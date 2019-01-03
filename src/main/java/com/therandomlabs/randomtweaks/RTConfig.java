@@ -1128,9 +1128,9 @@ public final class RTConfig {
 				}
 			}
 
-			SYNC.invoke(null, config, RTConfig.class, RandomTweaks.MOD_ID, "", false, null);
-
 			config.save();
+
+			SYNC.invoke(null, config, RTConfig.class, RandomTweaks.MOD_ID, "", false, null);
 
 			//Remove default values, min/max values and valid values from the comments so
 			//they don't show up twice in the configuration GUI
