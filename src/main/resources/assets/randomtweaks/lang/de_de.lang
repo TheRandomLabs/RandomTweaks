@@ -145,6 +145,7 @@ randomtweaks.config.voidWorld.ySpawn=Y spawn coordinate
 randomtweaks.config.voidIslandsWorld=Void Islands World
 randomtweaks.config.voidIslandsWorld.chunkRarity=Chunk rarity
 randomtweaks.config.voidIslandsWorld.enabled=Enabled
+randomtweaks.config.voidIslandsWorld.voidChunkBiome=Void chunk biome
 randomtweaks.config.voidIslandsWorld.voidChunkRandomBiomeBlacklist=Void chunk random biome blacklist
 
 timeOfDayOverlay.day=Tag
