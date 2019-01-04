@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12.2": {
+		"1.12.2-2.4.0.6": "Fixed a crash related to item tooltips.\nOn Minecraft Forge 1.12.2-14.23.5.2800 and higher, enum configuration properties are now localized.",
 		"1.12.2-2.4.0.5": "Attempted to fix a ConcurrentModificationException related to squid spawn control.",
 		"1.12.2-2.4.0.4": "Fixed a bug regarding configuration reloading.",
 		"1.12.2-2.4.0.3": "Improved the configuration.",
@@ -316,8 +317,8 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"promos": {
-		"1.12.2-latest": "1.12.2-2.4.0.5",
-		"1.12.2-recommended": "1.12.2-2.4.0.5",
+		"1.12.2-latest": "1.12.2-2.4.0.6",
+		"1.12.2-recommended": "1.12.2-2.4.0.6",
 		"1.12.1-latest": "1.12.2-2.0.2.0",
 		"1.12.1-recommended": "1.12.2-2.0.2.0",
 		"1.12-latest": "1.12.2-2.0.2.0",
