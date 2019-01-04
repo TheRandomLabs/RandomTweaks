@@ -80,7 +80,7 @@ public final class CreativeTabHandler {
 
 		final NBTTagCompound stackTag = stack.getTagCompound();
 
-		if(stackTag.hasKey("EntityTag")) {
+		if(stackTag != null && stackTag.hasKey("EntityTag")) {
 			final NBTTagCompound entityTag = stackTag.getCompoundTag("EntityTag");
 
 			if(entityTag.getBoolean("NoAI")) {
