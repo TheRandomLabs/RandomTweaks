@@ -79,7 +79,11 @@ public final class SquidHandler {
 
 		int squids = 0;
 
-		for(Entity entity : event.getWorld().loadedEntityList) {
+		//Apparently a ConcurrentModificationException can occur here #38
+		//so we iterate using i instead
+		for(int i = 0; i < world.loadedEntityList.size(); i++) {
+			final Entity entity = world.loadedEntityList.get(i);
+
 			if(entity.getClass() != EntitySquid.class ||
 					entity.chunkCoordX != chunk.x || entity.chunkCoordZ != chunk.z) {
 				continue;
