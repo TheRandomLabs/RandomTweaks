@@ -11,15 +11,38 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 public final class RespawnHandler {
 	public enum HungerResetBehavior {
-		RESET,
-		DONT_RESET,
-		RESET_UNLESS_KEEP_INVENTORY
+		RESET("reset"),
+		DONT_RESET("dontReset"),
+		RESET_UNLESS_KEEP_INVENTORY("resetUnlessKeepInventory");
+
+		private final String translationKey;
+
+		HungerResetBehavior(String translationKey) {
+			this.translationKey =
+					"randomtweaks.config.hunger.respawnResetBehavior." + translationKey;
+		}
+
+		@Override
+		public String toString() {
+			return translationKey;
+		}
 	}
 
 	public enum DeathPunishmentMode {
-		ENABLED,
-		ENABLED_IF_KEEP_INVENTORY,
-		DISABLED
+		ENABLED("enabled"),
+		ENABLED_IF_KEEP_INVENTORY("enabledIfKeepInventory"),
+		DISABLED("disabled");
+
+		private final String translationKey;
+
+		DeathPunishmentMode(String translationKey) {
+			this.translationKey = "randomtweaks.config.misc.deathPunishmentMode." + translationKey;
+		}
+
+		@Override
+		public String toString() {
+			return translationKey;
+		}
 	}
 
 	@SubscribeEvent

@@ -15,9 +15,21 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 @Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 public final class TrampleHandler {
 	public enum Behavior {
-		VANILLA,
-		DONT_TRAMPLE_IF_FEATHER_FALLING,
-		DONT_TRAMPLE
+		VANILLA("vanilla"),
+		DONT_TRAMPLE_IF_FEATHER_FALLING("dontTrampleIfFeatherFalling"),
+		DONT_TRAMPLE("dontTrample");
+
+		private final String translationKey;
+
+		Behavior(String translationKey) {
+			this.translationKey =
+					"randomtweaks.config.misc.farmlandTrampleBehavior." + translationKey;
+		}
+
+		@Override
+		public String toString() {
+			return translationKey;
+		}
 	}
 
 	@SubscribeEvent

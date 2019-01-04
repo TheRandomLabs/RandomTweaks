@@ -1,19 +1,21 @@
 package com.therandomlabs.randomtweaks.util;
 
+import com.therandomlabs.randomtweaks.common.RTLanguageMap;
+
 //Taken and adapted from:
 //https://github.com/Lunatrius/InGame-Info-XML/blob/master/src/main/java/com/github/lunatrius/
 //ingameinfo/Alignment.java
 //License: https://github.com/Lunatrius/InGame-Info-XML/blob/master/LICENSE
 public enum Alignment {
-	TOPLEFT(2, 2),
-	TOPCENTER(0, 2),
-	TOPRIGHT(-2, 2),
-	MIDDLELEFT(2, 0),
-	MIDDLECENTER(0, 0),
-	MIDDLERIGHT(-2, 0),
-	BOTTOMLEFT(2, -2),
-	BOTTOMCENTER(0, -45),
-	BOTTOMRIGHT(-2, -2);
+	TOPLEFT("topLeft", 2, 2),
+	TOPCENTER("topCenter", 0, 2),
+	TOPRIGHT("topRight", -2, 2),
+	MIDDLELEFT("middleLeft", 2, 0),
+	MIDDLECENTER("middleCenter", 0, 0),
+	MIDDLERIGHT("middleRight", -2, 0),
+	BOTTOMLEFT("bottomLeft", 2, -2),
+	BOTTOMCENTER("bottomCenter", 0, -45),
+	BOTTOMRIGHT("bottomRight", -2, -2);
 
 	private static final int MASK_X = 0x0C;
 	private static final int MASK_Y = 0x03;
@@ -29,6 +31,8 @@ public enum Alignment {
 	private final int defaultX;
 	private final int defaultY;
 
+	private final String translationKey;
+
 	private int alignment;
 
 	static {
@@ -43,9 +47,15 @@ public enum Alignment {
 		BOTTOMRIGHT.alignment = BOTTOM | RIGHT;
 	}
 
-	Alignment(int x, int y) {
+	Alignment(String translationKey, int x, int y) {
+		this.translationKey = "randomtweaks.config.timeOfDay.alignment." + translationKey;
 		defaultX = x;
 		defaultY = y;
+	}
+
+	@Override
+	public String toString() {
+		return translationKey;
 	}
 
 	@SuppressWarnings("Duplicates")
