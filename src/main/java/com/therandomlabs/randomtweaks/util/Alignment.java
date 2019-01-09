@@ -1,7 +1,5 @@
 package com.therandomlabs.randomtweaks.util;
 
-import com.therandomlabs.randomtweaks.common.RTLanguageMap;
-
 //Taken and adapted from:
 //https://github.com/Lunatrius/InGame-Info-XML/blob/master/src/main/java/com/github/lunatrius/
 //ingameinfo/Alignment.java

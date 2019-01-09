@@ -1,7 +1,7 @@
 package com.therandomlabs.randomtweaks.common;
 
 import java.util.Set;
-import com.google.common.collect.Sets;
+import com.google.common.collect.ImmutableSet;
 import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraft.entity.Entity;
@@ -20,11 +20,11 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 public final class EntityInteractHandler {
-	public static final Set<Item> OCELOT_HEAL_ITEMS = Sets.newHashSet(
+	public static final ImmutableSet<Item> OCELOT_HEAL_ITEMS = ImmutableSet.of(
 			Items.FISH
 	);
 
-	public static final Set<Item> PARROT_HEAL_ITEMS = Sets.newHashSet(
+	public static final ImmutableSet<Item> PARROT_HEAL_ITEMS = ImmutableSet.of(
 			Items.WHEAT_SEEDS,
 			Items.MELON_SEEDS,
 			Items.PUMPKIN_SEEDS,
@@ -104,6 +104,10 @@ public final class EntityInteractHandler {
 
 	private static void onVillagerInteract(EntityPlayer player, EntityVillager villager,
 			ItemStack stack, PlayerInteractEvent.EntityInteract event) {
+		if(!RTConfig.animals.leashableVillagers) {
+			return;
+		}
+
 		if(villager.getLeashed() && villager.getLeashHolder() == player) {
 			villager.clearLeashed(true, !player.capabilities.isCreativeMode);
 			event.setCanceled(true);
