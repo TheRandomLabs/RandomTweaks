@@ -38,7 +38,10 @@ public final class TimeOfDayOverlay {
 		final long time = world.getWorldTime();
 		long hour = (time / 1000L + 6L) % 24L;
 		final long minute = (time % 1000L) * 60L / 1000L;
-		final long day = time / 24000L + 1L;
+
+		//Day 1, 23:00 is 17000
+		//Day 2, 00:00 is 18000
+		final long day = (time + 6000L) / 24000L + 1L;
 
 		final String ampm;
 
