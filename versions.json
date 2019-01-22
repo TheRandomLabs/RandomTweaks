@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12.2": {
+		"1.12.2-2.4.1.0": "Added an option to disable attacks during the attack cooldown.\nMinor bug fixes.",
 		"1.12.2-2.4.0.7": "Fixed the animals.leashableVillagers property not having any effect.\nFixed the time of day overlay day count increasing at 6 am instead of midnight.",
 		"1.12.2-2.4.0.6": "Fixed a crash related to item tooltips.\nOn Minecraft Forge 1.12.2-14.23.5.2800 and higher, enum configuration properties are now localized.",
 		"1.12.2-2.4.0.5": "Attempted to fix a ConcurrentModificationException related to squid spawn control.",
@@ -318,8 +319,8 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"promos": {
-		"1.12.2-latest": "1.12.2-2.4.0.7",
-		"1.12.2-recommended": "1.12.2-2.4.0.7",
+		"1.12.2-latest": "1.12.2-2.4.1.0",
+		"1.12.2-recommended": "1.12.2-2.4.1.0",
 		"1.12.1-latest": "1.12.2-2.0.2.0",
 		"1.12.1-recommended": "1.12.2-2.0.2.0",
 		"1.12-latest": "1.12.2-2.0.2.0",
