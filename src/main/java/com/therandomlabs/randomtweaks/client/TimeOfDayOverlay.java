@@ -52,6 +52,7 @@ public final class TimeOfDayOverlay {
 				if(hour != 12) {
 					hour -= 12;
 				}
+
 				ampm = " " + RTUtils.localize("timeOfDayOverlay.pm");
 			} else {
 				//Midnight

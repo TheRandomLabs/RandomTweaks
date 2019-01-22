@@ -23,6 +23,7 @@ import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
@@ -106,9 +107,15 @@ public final class MiscEventHandler {
 		final EntityLivingBase entity = event.getEntityLiving();
 		final DamageSource source = event.getSource();
 
-		final String fallDamage = RTConfig.misc.fallDamageMultiplierGameRuleName;
+		//"fallDamage" gamerule
 
-		if(source == DamageSource.FALL && !fallDamage.isEmpty()) {
+		if(source == DamageSource.FALL) {
+			final String fallDamage = RTConfig.misc.fallDamageMultiplierGameRuleName;
+
+			if(fallDamage.isEmpty()) {
+				return;
+			}
+
 			float multiplier = 0.0F;
 
 			try {
@@ -132,13 +139,11 @@ public final class MiscEventHandler {
 			return;
 		}
 
-		if(!(entity instanceof IEntityOwnable) || source == null) {
-			return;
-		}
+		//Protect pets from owners
 
 		final Entity attacker = source.getTrueSource();
 
-		if(attacker == null) {
+		if(attacker == null || !(entity instanceof IEntityOwnable)) {
 			return;
 		}
 
@@ -168,7 +173,7 @@ public final class MiscEventHandler {
 		}
 	}
 
-	@SubscribeEvent
+	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void onLivingDrops(LivingDropsEvent event) {
 		if(RandomTweaks.VANILLATWEAKS_LOADED) {
 			return;
@@ -198,5 +203,18 @@ public final class MiscEventHandler {
 		final ItemStack nameTag = new ItemStack(Items.NAME_TAG);
 		nameTag.setStackDisplayName(customName);
 		entity.entityDropItem(nameTag, 0.0F);
+	}
+
+	@SubscribeEvent
+	public static void onPlayerAttackEntity(AttackEntityEvent event) {
+		if(!RTConfig.misc.disableAttacksDuringAttackCooldown) {
+			return;
+		}
+
+		final EntityPlayer player = event.getEntityPlayer();
+
+		if(!player.getEntityWorld().isRemote && player.getCooledAttackStrength(0.5F) != 1.0F) {
+			event.setCanceled(true);
+		}
 	}
 }

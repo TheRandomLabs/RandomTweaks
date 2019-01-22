@@ -80,7 +80,7 @@ public class CommandRTHelp extends CommandHelp {
 		for(ICommand command : commands) {
 			if(!isValid(command)) {
 				RandomTweaks.LOGGER.warn(
-						"The command %s incorrectly overrides compareTo!",
+						"The command %s (%s) incorrectly overrides compareTo!",
 						command.getName(), command.getClass().getName()
 				);
 			}

@@ -4,6 +4,7 @@ import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.util.RomanNumerals;
 import net.minecraft.util.text.translation.LanguageMap;
 
+//TODO fall back to other languages within same group
 public class RTLanguageMap extends LanguageMap {
 	//Use the fully qualified class name so the compiler doesn't throw a warning at us
 	//https://bugs.openjdk.java.net/browse/JDK-8032211

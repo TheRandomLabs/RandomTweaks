@@ -448,6 +448,10 @@ public final class RTConfig {
 		@Config.Comment("Allows players to sleep near mobs with custom names.")
 		public boolean allowSleepNearMobsWithCustomNames = true;
 
+		@Config.LangKey("randomtweaks.config.misc.disableAttacksDuringAttackCooldown")
+		@Config.Comment("Whether attacks should be disabled during the attack cooldown.")
+		public boolean disableAttacksDuringAttackCooldown = RandomTweaks.IS_DEOBFUSCATED;
+
 		@Config.LangKey("randomtweaks.config.misc.disableBedProximityRequirement")
 		@Config.Comment("Disables the bed proximity requirement.")
 		public boolean disableBedProximityRequirement = true;
