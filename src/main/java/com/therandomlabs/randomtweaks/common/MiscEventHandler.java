@@ -44,7 +44,7 @@ public final class MiscEventHandler {
 		}
 	}
 
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
 		if(event.getWorld().isRemote) {
 			return;
@@ -207,13 +207,14 @@ public final class MiscEventHandler {
 
 	@SubscribeEvent
 	public static void onPlayerAttackEntity(AttackEntityEvent event) {
-		if(!RTConfig.misc.disableAttacksDuringAttackCooldown) {
+		if(RandomTweaks.RANDOMCONFIGS_LOADED || !RTConfig.misc.disableAttacksDuringAttackCooldown) {
 			return;
 		}
 
 		final EntityPlayer player = event.getEntityPlayer();
 
 		if(!player.getEntityWorld().isRemote && player.getCooledAttackStrength(0.5F) != 1.0F) {
+			player.resetCooldown();
 			event.setCanceled(true);
 		}
 	}

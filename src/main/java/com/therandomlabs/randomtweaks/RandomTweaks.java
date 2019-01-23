@@ -43,6 +43,7 @@ public final class RandomTweaks {
 	public static final boolean PLAYERS_DROP_HEADS_LOADED = Loader.isModLoaded("playersdropheads");
 	public static final boolean QUARK_LOADED = Loader.isModLoaded("quark");
 	public static final boolean OCEAN_FLOOR_LOADED = Loader.isModLoaded("samsocean");
+	public static final boolean RANDOMCONFIGS_LOADED = Loader.isModLoaded("randomconfigs");
 	public static final boolean RANDOMPATCHES_LOADED = Loader.isModLoaded("randompatches");
 	public static final boolean RANDOMPORTALS_LOADED = Loader.isModLoaded("randomportals");
 	public static final boolean VANILLATWEAKS_LOADED = Loader.isModLoaded("vanillatweaks");
