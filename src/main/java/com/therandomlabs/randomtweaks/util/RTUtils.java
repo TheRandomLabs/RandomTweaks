@@ -51,7 +51,9 @@ public final class RTUtils {
 	public static Method findMethod(Class<?> clazz, String name, String obfName,
 			Class<?>... parameterTypes) {
 		for(Method method : clazz.getDeclaredMethods()) {
-			if((name.equals(method.getName()) || obfName.equals(method.getName())) &&
+			final String methodName = method.getName();
+
+			if((name.equals(methodName) || obfName.equals(methodName)) &&
 					Arrays.equals(method.getParameterTypes(), parameterTypes)) {
 				method.setAccessible(true);
 				return method;

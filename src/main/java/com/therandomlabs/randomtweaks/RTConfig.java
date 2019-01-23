@@ -324,10 +324,15 @@ public final class RTConfig {
 		@Config.Comment("Whether to ignore Dynamic Surroundings' \"Mute when Background\" feature.")
 		public boolean ignoreDsurroundMuteWhenBackground = true;
 
-		@Config.RangeDouble(min = 0.0, max = 10.0)
+		@Config.RangeDouble(min = 0.5, max = 2.0)
 		@Config.LangKey("randomtweaks.config.ding.startupSoundPitch")
 		@Config.Comment("The pitch of the sound to play when Minecraft starts.")
 		public double startupSoundPitch = 1.0;
+
+		@Config.RangeDouble(min = 0.0, max = 1.0)
+		@Config.LangKey("randomtweaks.config.ding.startupSoundVolume")
+		@Config.Comment("The volume of the sound to play when Minecraft starts.")
+		public double startupSoundVolume = 0.25;
 
 		@Config.LangKey("randomtweaks.config.ding.startupSounds")
 		@Config.Comment("The registry names of the sounds to play when Minecraft starts.")
@@ -335,10 +340,15 @@ public final class RTConfig {
 				"minecraft:entity.experience_orb.pickup"
 		};
 
-		@Config.RangeDouble(min = 0.0, max = 10.0)
+		@Config.RangeDouble(min = 0.5, max = 2.0)
 		@Config.LangKey("randomtweaks.config.ding.worldLoadSoundPitch")
 		@Config.Comment("The pitch of the sound to play when a world loads.")
 		public double worldLoadSoundPitch = 1.0;
+
+		@Config.RangeDouble(min = 0.0, max = 1.0)
+		@Config.LangKey("randomtweaks.config.ding.worldLoadSoundVolume")
+		@Config.Comment("The volume of the sound to play when a world loads.")
+		public double worldLoadSoundVolume = 0.25;
 
 		@Config.LangKey("randomtweaks.config.ding.worldLoadSounds")
 		@Config.Comment("The registry names of the sounds to play when a world loads.")
@@ -1052,7 +1062,7 @@ public final class RTConfig {
 
 		try {
 			if(parent != null) {
-				if(parent.toFile().exists() && parent.toFile().isFile()) {
+				if(Files.isRegularFile(parent)) {
 					Files.delete(parent);
 				}
 

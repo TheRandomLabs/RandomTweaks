@@ -43,8 +43,11 @@ public final class DingHandler {
 	public static void onGameStarted() {
 		if(!RandomTweaks.DING_LOADED && RTConfig.ding.startupSounds.length != 0 &&
 				isDsurroundStartupSoundDisabled()) {
-			final int index = random.nextInt(RTConfig.ding.startupSoundEvents.length);
-			playSound(RTConfig.ding.startupSoundEvents[index], RTConfig.ding.startupSoundPitch);
+			playSound(
+					RTConfig.ding.startupSoundEvents,
+					RTConfig.ding.startupSoundPitch,
+					RTConfig.ding.startupSoundVolume
+			);
 		}
 	}
 
@@ -62,8 +65,11 @@ public final class DingHandler {
 		}
 
 		if(mc.player.ticksExisted > 20 || mc.isGamePaused()) {
-			final int index = random.nextInt(RTConfig.ding.worldLoadSoundEvents.length);
-			playSound(RTConfig.ding.worldLoadSoundEvents[index], RTConfig.ding.worldLoadSoundPitch);
+			playSound(
+					RTConfig.ding.worldLoadSoundEvents,
+					RTConfig.ding.worldLoadSoundPitch,
+					RTConfig.ding.worldLoadSoundVolume
+			);
 			playWorld = false;
 		}
 	}
@@ -82,10 +88,13 @@ public final class DingHandler {
 		}
 	}
 
-	public static void playSound(SoundEvent soundEvent, double pitch) {
+	public static void playSound(SoundEvent[] soundEvents, double pitch, double volume) {
+		final SoundEvent soundEvent = soundEvents[random.nextInt(soundEvents.length)];
+
 		final SoundHandler soundHandler = mc.getSoundHandler();
-		final ISound sound =
-				PositionedSoundRecord.getMasterRecord(soundEvent, (float) pitch);
+		final ISound sound = PositionedSoundRecord.getRecord(
+				soundEvent, (float) pitch, (float) volume
+		);
 
 		if(!RTConfig.ding.ignoreDsurroundMuteWhenBackground || BACKGROUND_MUTE == null) {
 			soundHandler.playSound(sound);
