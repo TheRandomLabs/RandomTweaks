@@ -888,8 +888,15 @@ public final class RTConfig {
 			biomeBlacklist = blacklist.values().toArray(new Biome[0]);
 
 			block = BLOCK_REGISTRY.getValue(new ResourceLocation(spawnBlock));
-			spawnBlock = block.getRegistryName().toString();
-			blockState = block.getStateFromMeta(spawnBlockMeta);
+
+			if(block == null) {
+				block = Blocks.GLASS;
+				spawnBlock = "minecraft:glass";
+				blockState = block.getDefaultState();
+			} else {
+				spawnBlock = block.getRegistryName().toString();
+				blockState = block.getStateFromMeta(spawnBlockMeta);
+			}
 		}
 	}
 
@@ -967,7 +974,7 @@ public final class RTConfig {
 		public boolean realisticWorldType = true;
 
 		private Biome getBiome(String name) {
-			final Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(name));
+			final Biome biome = BIOME_REGISTRY.getValue(new ResourceLocation(name));
 			return biome == null ? Biomes.PLAINS : biome;
 		}
 
@@ -975,7 +982,7 @@ public final class RTConfig {
 			final Map<String, Biome> biomes = new HashMap<>(names.length);
 
 			for(String name : names) {
-				final Biome biome = Biome.REGISTRY.getObject(new ResourceLocation(name));
+				final Biome biome = BIOME_REGISTRY.getValue(new ResourceLocation(name));
 
 				if(biome != null) {
 					biomes.put(biome.getRegistryName().toString(), biome);
@@ -1059,6 +1066,8 @@ public final class RTConfig {
 	@Config.Ignore
 	public static final VoidIslandsWorld voidIslandsWorld = world.voidIslandsWorld;
 
+	private static final IForgeRegistry<Biome> BIOME_REGISTRY =
+			GameRegistry.findRegistry(Biome.class);
 	private static final IForgeRegistry<Block> BLOCK_REGISTRY =
 			GameRegistry.findRegistry(Block.class);
 	private static final IForgeRegistry<SoundEvent> SOUND_EVENT_REGISTRY =
