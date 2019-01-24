@@ -36,6 +36,8 @@ import net.minecraftforge.common.config.Property;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.registry.GameRegistry;
+import net.minecraftforge.registries.IForgeRegistry;
 import org.apache.commons.lang3.StringUtils;
 
 @Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
@@ -250,8 +252,10 @@ public final class RTConfig {
 		public boolean stepupEnabledByDefault = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.client.storeDataInLocal")
-		@Config.Comment("Whether the toggle states for the time of day overlay, stepup and " +
-				"FoV changes should be stored in local/client instead of config/randomtweaks.")
+		@Config.Comment(
+				"Whether the toggle states for the time of day overlay, stepup and FoV changes " +
+						"should be stored in local/client instead of config/randomtweaks."
+		)
 		public boolean storeDataInLocal = true;
 	}
 
@@ -263,20 +267,25 @@ public final class RTConfig {
 
 		@Config.RequiresMcRestart
 		@Config.LangKey("randomtweaks.config.commands.disconnect")
-		@Config.Comment("Enables the client-sided /disconnect command, which leaves the " +
-				"current world.")
+		@Config.Comment(
+				"Enables the client-sided /disconnect command, which leaves the " +
+						"current world."
+		)
 		public boolean disconnect = true;
 
 		@Config.RequiresWorldRestart
 		@Config.LangKey("randomtweaks.config.commands.giveTweaks")
-		@Config.Comment("Allows /give to accept integer IDs, amounts higher than 64 and " +
-				"ore dictionary names prefixed by \"ore:\".")
+		@Config.Comment(
+				"Allows /give to accept integer IDs, amounts higher than 64 and " +
+						"ore dictionary names prefixed by \"ore:\"."
+		)
 		public boolean giveTweaks = true;
 
 		@Config.RequiresWorldRestart
 		@Config.LangKey("randomtweaks.config.commands.helpTweaks")
-		@Config.Comment("Changes the /help command to make sure that sorting commands " +
-				"doesn't cause an error.")
+		@Config.Comment(
+				"Changes the /help command to make sure that sorting commands " +
+						"doesn't cause an error.")
 		public boolean helpTweaks = true;
 
 		@Config.RequiresWorldRestart
@@ -379,7 +388,7 @@ public final class RTConfig {
 
 			for(String name : names) {
 				final SoundEvent soundEvent =
-						SoundEvent.REGISTRY.getObject(new ResourceLocation(name));
+						SOUND_EVENT_REGISTRY.getValue(new ResourceLocation(name));
 
 				if(soundEvent != null) {
 					soundEvents.put(soundEvent.getRegistryName().toString(), soundEvent);
@@ -425,8 +434,10 @@ public final class RTConfig {
 
 		@Config.RangeDouble(min = 0.0)
 		@Config.LangKey("randomtweaks.config.hunger.saturationLimit")
-		@Config.Comment("The value added to the player's food level to calculate the maximum " +
-				"saturation level.")
+		@Config.Comment(
+				"The value added to the player's food level to calculate the maximum " +
+						"saturation level."
+		)
 		public double saturationLimit = RandomTweaks.IS_DEOBFUSCATED ? 100.0 : 0.0;
 	}
 
@@ -436,8 +447,9 @@ public final class RTConfig {
 		public boolean fovChangesEnabledByDefault = true;
 
 		@Config.LangKey("randomtweaks.config.keybinds.fovChangesStatusMessage")
-		@Config.Comment("Whether a status message should be displayed when FoV changes are " +
-				"toggled.")
+		@Config.Comment(
+				"Whether a status message should be displayed when FoV changes are toggled."
+		)
 		public boolean fovChangesStatusMessage = true;
 
 		@Config.LangKey("randomtweaks.config.keybinds.reloadSoundSystem")
@@ -475,8 +487,10 @@ public final class RTConfig {
 		public double attackSpeed = RandomTweaks.IS_DEOBFUSCATED ? 24.0 : 4.0;
 
 		@Config.LangKey("randomtweaks.config.misc.betterButtonNames")
-		@Config.Comment("Changes the names of the stone and wooden buttons so that they describe " +
-				"their type.")
+		@Config.Comment(
+				"Changes the names of the stone and wooden buttons so that they describe " +
+						"their type."
+		)
 		public boolean betterButtonNames = RandomTweaks.IS_DEOBFUSCATED;
 
 		@Config.LangKey("randomtweaks.config.misc.deathPunishmentMode")
@@ -519,8 +533,10 @@ public final class RTConfig {
 				TrampleHandler.Behavior.DONT_TRAMPLE_IF_FEATHER_FALLING;
 
 		@Config.LangKey("randomtweaks.config.misc.moreRomanNumerals")
-		@Config.Comment("Generates Roman numerals from " + Short.MIN_VALUE + " to " +
-				Short.MAX_VALUE + " as they are needed.")
+		@Config.Comment(
+				"Generates Roman numerals from " + Short.MIN_VALUE + " to " +
+						Short.MAX_VALUE + " as they are needed."
+		)
 		public boolean moreRomanNumerals = true;
 
 		@Config.LangKey("randomtweaks.config.misc.pickUpSkeletonArrows")
@@ -871,7 +887,7 @@ public final class RTConfig {
 			randomBiomeBlacklist = blacklist.keySet().toArray(new String[0]);
 			biomeBlacklist = blacklist.values().toArray(new Biome[0]);
 
-			block = Block.REGISTRY.getObject(new ResourceLocation(spawnBlock));
+			block = BLOCK_REGISTRY.getValue(new ResourceLocation(spawnBlock));
 			spawnBlock = block.getRegistryName().toString();
 			blockState = block.getStateFromMeta(spawnBlockMeta);
 		}
@@ -1042,6 +1058,11 @@ public final class RTConfig {
 
 	@Config.Ignore
 	public static final VoidIslandsWorld voidIslandsWorld = world.voidIslandsWorld;
+
+	private static final IForgeRegistry<Block> BLOCK_REGISTRY =
+			GameRegistry.findRegistry(Block.class);
+	private static final IForgeRegistry<SoundEvent> SOUND_EVENT_REGISTRY =
+			GameRegistry.findRegistry(SoundEvent.class);
 
 	private static final Method GET_CONFIGURATION = RTUtils.findMethod(
 			ConfigManager.class, "getConfiguration", "getConfiguration", String.class, String.class
