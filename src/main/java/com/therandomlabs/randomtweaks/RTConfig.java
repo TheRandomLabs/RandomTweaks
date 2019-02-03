@@ -532,6 +532,10 @@ public final class RTConfig {
 		public TrampleHandler.Behavior farmlandTrampleBehavior =
 				TrampleHandler.Behavior.DONT_TRAMPLE_IF_FEATHER_FALLING;
 
+		@Config.LangKey("randomtweaks.config.misc.localizePortalNames")
+		@Config.Comment("Whether to localize the Nether Portal, End Portal and End Gateway names.")
+		public boolean localizePortalNames = true;
+
 		@Config.LangKey("randomtweaks.config.misc.moreRomanNumerals")
 		@Config.Comment(
 				"Generates Roman numerals from " + Short.MIN_VALUE + " to " +
@@ -811,6 +815,13 @@ public final class RTConfig {
 		@Config.LangKey("randomtweaks.config.timeOfDay.enabledByDefault")
 		@Config.Comment("Enables the overlay by default.")
 		public boolean enabledByDefault = RandomTweaks.IS_DEOBFUSCATED;
+
+		@Config.LangKey("randomtweaks.config.timeOfDay.lightOrDark")
+		@Config.Comment(
+				"Whether the overlay should say \"Light\" or \"Dark\" instead of " +
+						"\"Day\" or \"Night\"."
+		)
+		public boolean lightOrDark;
 
 		@Config.LangKey("randomtweaks.config.timeOfDay.twentyFourHourTime")
 		@Config.Comment("Enables 24-hour time.")
@@ -1239,6 +1250,16 @@ public final class RTConfig {
 		} else {
 			Blocks.STONE_BUTTON.setTranslationKey("button");
 			Blocks.WOODEN_BUTTON.setTranslationKey("button");
+		}
+
+		if(misc.localizePortalNames && !RandomTweaks.RANDOMPORTALS_LOADED) {
+			Blocks.PORTAL.setTranslationKey("netherPortal");
+			Blocks.END_PORTAL.setTranslationKey("endPortal");
+			Blocks.END_GATEWAY.setTranslationKey("endGateway");
+		} else {
+			Blocks.PORTAL.setTranslationKey(null);
+			Blocks.END_PORTAL.setTranslationKey(null);
+			Blocks.END_GATEWAY.setTranslationKey(null);
 		}
 
 		randomizedAges.reload();

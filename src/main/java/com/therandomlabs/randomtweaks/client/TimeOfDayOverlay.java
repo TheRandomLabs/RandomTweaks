@@ -70,15 +70,18 @@ public final class TimeOfDayOverlay {
 		final String dayOrNight;
 
 		if(world.calculateSkylightSubtracted(1.0F) < 4) {
-			dayOrNight = RTUtils.localize("timeOfDayOverlay.dayTime");
+			dayOrNight = RTUtils.localize(
+					"timeOfDayOverlay." + (RTConfig.timeOfDay.lightOrDark ? "light" : "dayTime")
+			);
 		} else {
-			dayOrNight = RTUtils.localize("timeOfDayOverlay.nightTime");
+			dayOrNight = RTUtils.localize(
+					"timeOfDayOverlay." + (RTConfig.timeOfDay.lightOrDark ? "dark" : "nightTime")
+			);
 		}
 
-		final String timeString = RTUtils.localize("timeOfDayOverlay.day") + " " +
-				day + ", " +
-				hourString + ":" + minuteString +
-				ampm + " " + dayOrNight;
+		final String timeString = RTUtils.localize(
+				"timeOfDayOverlay.text", day, hourString, minuteString, ampm, dayOrNight
+		);
 
 		final int textWidth = mc.fontRenderer.getStringWidth(timeString);
 		final int textHeight = mc.fontRenderer.FONT_HEIGHT;
