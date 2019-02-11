@@ -146,11 +146,11 @@ public final class RTConfig {
 	}
 
 	public static final class AutoThirdPerson {
-		@Config.LangKey("entity.Boat.name")
+		@Config.LangKey("randomtweaks.config.autoThirdPerson.boat")
 		@Config.Comment("Enables auto-third person upon entering a boat.")
 		public boolean boat = RandomTweaks.IS_DEOBFUSCATED;
 
-		@Config.LangKey("item.elytra.name")
+		@Config.LangKey("randomtweaks.config.autoThirdPerson.elytra")
 		@Config.Comment("Enables auto-third person upon flying with elytra.")
 		public boolean elytra = true;
 
@@ -158,15 +158,15 @@ public final class RTConfig {
 		@Config.Comment("Enables auto-third person.")
 		public boolean enabled = true;
 
-		@Config.LangKey("entity.Horse.name")
+		@Config.LangKey("randomtweaks.config.autoThirdPerson.horse")
 		@Config.Comment("Enables auto-third person upon mounting a horse.")
 		public boolean horse = RandomTweaks.IS_DEOBFUSCATED;
 
-		@Config.LangKey("item.minecart.name")
+		@Config.LangKey("randomtweaks.config.autoThirdPerson.minecart")
 		@Config.Comment("Enables auto-third person upon entering a minecart.")
 		public boolean minecart = RandomTweaks.IS_DEOBFUSCATED;
 
-		@Config.LangKey("entity.Pig.name")
+		@Config.LangKey("randomtweaks.config.autoThirdPerson.pig")
 		@Config.Comment("Enables auto-third person upon mounting a pig.")
 		public boolean pig = RandomTweaks.IS_DEOBFUSCATED;
 	}
