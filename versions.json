@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12.2": {
+		"1.12.2-2.4.3.1": "Fixed registry names being reset in the configuration.\nFixed some configuration property name localizations.",
 		"1.12.2-2.4.3.0": "Made the time of day overlay text more configurable.\nPortal names are now localized by default.\nMinor configuration fix.",
 		"1.12.2-2.4.2.1": "Improved compatibility with RandomConfigs' attack speed configuration.\nIf \"misc.disableAttacksDuringAttackCooldown\" is enabled, the attack cooldown is now reset after an attempt to attack during the attack cooldown.",
 		"1.12.2-2.4.2.0": "Improved the startup and world load sound configuration. Volumes are now configurable.",
@@ -322,8 +323,8 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"promos": {
-		"1.12.2-latest": "1.12.2-2.4.3.0",
-		"1.12.2-recommended": "1.12.2-2.4.3.0",
+		"1.12.2-latest": "1.12.2-2.4.3.1",
+		"1.12.2-recommended": "1.12.2-2.4.3.1",
 		"1.12.1-latest": "1.12.2-2.0.2.0",
 		"1.12.1-recommended": "1.12.2-2.0.2.0",
 		"1.12-latest": "1.12.2-2.0.2.0",
