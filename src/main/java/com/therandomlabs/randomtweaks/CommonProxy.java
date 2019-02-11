@@ -18,6 +18,9 @@ public class CommonProxy {
 	}
 
 	public void init() {
+		//Validate registry names
+		RTConfig.reload();
+
 		WorldTypeRegistry.registerWorldTypes();
 
 		if(RTConfig.oceanFloor.enabled && !RandomTweaks.OCEAN_FLOOR_LOADED) {

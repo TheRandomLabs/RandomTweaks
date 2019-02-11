@@ -1152,9 +1152,9 @@ public final class RTConfig {
 				SYNC.invoke(null, config, RTConfig.class, RandomTweaks.MOD_ID, "", false, null);
 			}
 
-			firstReload = false;
-
 			onReload();
+
+			firstReload = false;
 
 			//Remove old elements
 			for(String name : config.getCategoryNames()) {
@@ -1242,7 +1242,9 @@ public final class RTConfig {
 	}
 
 	private static void onReload() {
-		ding.reload();
+		if(!firstReload) {
+			ding.reload();
+		}
 
 		if(misc.betterButtonNames) {
 			Blocks.STONE_BUTTON.setTranslationKey("buttonStone");
@@ -1268,6 +1270,8 @@ public final class RTConfig {
 			sheepColorWeights.reload();
 		}
 
-		world.reload();
+		if(!firstReload) {
+			world.reload();
+		}
 	}
 }
