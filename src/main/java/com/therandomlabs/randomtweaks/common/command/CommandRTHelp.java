@@ -51,21 +51,21 @@ public class CommandRTHelp extends CommandHelp {
 			try {
 				if(command.getName() == null) {
 					RandomTweaks.LOGGER.warn(
-							"The command %s has a null name! Ignoring...",
+							"The command {} has a null name! Ignoring...",
 							command.getClass().getName()
 					);
 
 					it.remove();
 				} else if(command.getUsage(sender) == null) {
 					RandomTweaks.LOGGER.warn(
-							"The command %s has a null usage! Ignoring...",
+							"The command {} has a null usage! Ignoring...",
 							command.getClass().getName()
 					);
 
 					it.remove();
 				}
 			} catch(Exception ex) {
-				RandomTweaks.LOGGER.warn("Failed to test the command %s!", command, ex);
+				RandomTweaks.LOGGER.warn("Failed to test the command {}!", command, ex);
 			}
 		}
 
@@ -80,7 +80,7 @@ public class CommandRTHelp extends CommandHelp {
 		for(ICommand command : commands) {
 			if(!isValid(command)) {
 				RandomTweaks.LOGGER.warn(
-						"The command %s (%s) incorrectly overrides compareTo!",
+						"The command {} ({}) incorrectly overrides compareTo!",
 						command.getName(), command.getClass().getName()
 				);
 			}
@@ -92,7 +92,7 @@ public class CommandRTHelp extends CommandHelp {
 			return command.compareTo(testCommand1) != command.compareTo(testCommand2);
 		} catch(Exception ex) {
 			RandomTweaks.LOGGER.warn(
-					"Failed to test the command %s for a valid compareTo!",
+					"Failed to test the command {} for a valid compareTo!",
 					command, ex
 			);
 		}
