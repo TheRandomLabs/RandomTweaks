@@ -2,8 +2,8 @@ package com.therandomlabs.randomtweaks.common;
 
 import java.util.Set;
 import com.google.common.collect.ImmutableSet;
-import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.entity.passive.EntityParrot;
@@ -54,13 +54,13 @@ public final class EntityInteractHandler {
 		final Set<Item> healItems;
 
 		if(target instanceof EntityOcelot) {
-			if(!RTConfig.animals.ocelotsCanBeHealed) {
+			if(!RTConfig.Animals.ocelotsCanBeHealed) {
 				return;
 			}
 
 			healItems = OCELOT_HEAL_ITEMS;
 		} else if(target instanceof EntityParrot) {
-			if(!RTConfig.animals.parrotsCanBeHealed) {
+			if(!RTConfig.Animals.parrotsCanBeHealed) {
 				return;
 			}
 
@@ -104,7 +104,7 @@ public final class EntityInteractHandler {
 
 	private static void onVillagerInteract(EntityPlayer player, EntityVillager villager,
 			ItemStack stack, PlayerInteractEvent.EntityInteract event) {
-		if(!RTConfig.animals.leashableVillagers) {
+		if(!RTConfig.Animals.leashableVillagers) {
 			return;
 		}
 

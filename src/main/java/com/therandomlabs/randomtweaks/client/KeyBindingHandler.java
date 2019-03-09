@@ -1,7 +1,8 @@
 package com.therandomlabs.randomtweaks.client;
 
-import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import com.therandomlabs.randomtweaks.config.RTConfig;
+import com.therandomlabs.randomtweaks.config.RTData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
@@ -56,13 +57,13 @@ public final class KeyBindingHandler {
 	public static void registerKeyBindings() {
 		categoryEnabled = false;
 
-		register(RTConfig.keybinds.toggleFoVChanges, TOGGLE_FOV_CHANGES);
-		register(RTConfig.keybinds.reloadSoundSystem, RELOAD_SOUND_SYSTEM);
+		register(RTConfig.Keybinds.toggleFoVChanges, TOGGLE_FOV_CHANGES);
+		register(RTConfig.Keybinds.reloadSoundSystem, RELOAD_SOUND_SYSTEM);
 		register(
-				RTConfig.timeOfDay.enabled && RTConfig.keybinds.toggleTimeOfDayOverlay,
+				RTConfig.TimeOfDay.enabled && RTConfig.Keybinds.toggleTimeOfDayOverlay,
 				TOGGLE_TIME_OF_DAY_OVERLAY
 		);
-		register(RTConfig.client.stepup, TOGGLE_AUTO_JUMP);
+		register(RTConfig.Client.stepup, TOGGLE_AUTO_JUMP);
 
 		//Forge just isn't designed to allow keybinds to be toggled in-game
 		if(categoryEnabled) {
@@ -90,28 +91,28 @@ public final class KeyBindingHandler {
 		final int key = Keyboard.getEventKey();
 
 		if(TOGGLE_FOV_CHANGES.isActiveAndMatches(key)) {
-			if(RTConfig.keybinds.toggleFoVChanges) {
+			if(RTConfig.Keybinds.toggleFoVChanges) {
 				toggleFoVChanges();
 			}
 		} else if(RELOAD_SOUND_SYSTEM.isActiveAndMatches(key)) {
-			if(RTConfig.keybinds.reloadSoundSystem) {
+			if(RTConfig.Keybinds.reloadSoundSystem) {
 				reloadSoundSystem();
 			}
 		} else if(TOGGLE_TIME_OF_DAY_OVERLAY.isActiveAndMatches(key)) {
-			if(RTConfig.timeOfDay.enabled && RTConfig.keybinds.toggleTimeOfDayOverlay) {
+			if(RTConfig.TimeOfDay.enabled && RTConfig.Keybinds.toggleTimeOfDayOverlay) {
 				TimeOfDayOverlay.toggle();
 			}
-		} else if(TOGGLE_AUTO_JUMP.isActiveAndMatches(key) && RTConfig.client.stepup) {
+		} else if(TOGGLE_AUTO_JUMP.isActiveAndMatches(key) && RTConfig.Client.stepup) {
 			StepupHandler.toggle();
 		}
 	}
 
 	public static void toggleFoVChanges() {
-		final RTConfig.Data data = RTConfig.Data.get();
+		final RTData data = RTData.get();
 		data.fovChanges = !data.fovChanges;
-		RTConfig.Data.save();
+		RTData.save();
 
-		if(RTConfig.keybinds.fovChangesStatusMessage) {
+		if(RTConfig.Keybinds.fovChangesStatusMessage) {
 			mc.player.sendStatusMessage(new TextComponentTranslation(
 					"toggleFoVChanges." + (data.fovChanges ? "enabled" : "disabled")
 			), true);
@@ -119,7 +120,7 @@ public final class KeyBindingHandler {
 	}
 
 	public static void reloadSoundSystem() {
-		if(!RTConfig.keybinds.reloadSoundSystem || !Keyboard.getEventKeyState() ||
+		if(!RTConfig.Keybinds.reloadSoundSystem || !Keyboard.getEventKeyState() ||
 				!RELOAD_SOUND_SYSTEM.isActiveAndMatches(Keyboard.getEventKey())) {
 			return;
 		}

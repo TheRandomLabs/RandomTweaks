@@ -2,8 +2,8 @@ package com.therandomlabs.randomtweaks.client;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
-import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.network.NetworkPlayerInfo;
@@ -28,7 +28,7 @@ public final class CapeHandler {
 
 	@SubscribeEvent
 	public static void entityJoinWorld(EntityJoinWorldEvent event) {
-		if(!RTConfig.client.contributorCapes) {
+		if(!RTConfig.Client.contributorCapes) {
 			return;
 		}
 

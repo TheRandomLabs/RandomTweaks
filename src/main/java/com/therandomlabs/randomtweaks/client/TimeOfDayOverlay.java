@@ -2,9 +2,10 @@ package com.therandomlabs.randomtweaks.client;
 
 import java.io.File;
 import java.util.Map;
-import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomtweaks.RandomTweaks;
-import com.therandomlabs.randomtweaks.util.RTUtils;
+import com.therandomlabs.randomtweaks.config.RTConfig;
+import com.therandomlabs.randomtweaks.config.RTData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.multiplayer.ServerData;
@@ -45,7 +46,7 @@ public final class TimeOfDayOverlay {
 
 		final String ampm;
 
-		if(RTConfig.timeOfDay.twentyFourHourTime) {
+		if(RTConfig.TimeOfDay.twentyFourHourTime) {
 			ampm = "";
 		} else {
 			if(hour >= 12) {
@@ -53,14 +54,14 @@ public final class TimeOfDayOverlay {
 					hour -= 12;
 				}
 
-				ampm = " " + RTUtils.localize("timeOfDayOverlay.pm");
+				ampm = " " + TRLUtils.localize("timeOfDayOverlay.pm");
 			} else {
 				//Midnight
 				if(hour == 0) {
 					hour = 12;
 				}
 
-				ampm = " " + RTUtils.localize("timeOfDayOverlay.am");
+				ampm = " " + TRLUtils.localize("timeOfDayOverlay.am");
 			}
 		}
 
@@ -70,64 +71,64 @@ public final class TimeOfDayOverlay {
 		final String dayOrNight;
 
 		if(world.calculateSkylightSubtracted(1.0F) < 4) {
-			dayOrNight = RTUtils.localize(
-					"timeOfDayOverlay." + (RTConfig.timeOfDay.lightOrDark ? "light" : "dayTime")
+			dayOrNight = TRLUtils.localize(
+					"timeOfDayOverlay." + (RTConfig.TimeOfDay.lightOrDark ? "light" : "dayTime")
 			);
 		} else {
-			dayOrNight = RTUtils.localize(
-					"timeOfDayOverlay." + (RTConfig.timeOfDay.lightOrDark ? "dark" : "nightTime")
+			dayOrNight = TRLUtils.localize(
+					"timeOfDayOverlay." + (RTConfig.TimeOfDay.lightOrDark ? "dark" : "nightTime")
 			);
 		}
 
-		final String timeString = RTUtils.localize(
+		final String timeString = TRLUtils.localize(
 				"timeOfDayOverlay.text", day, hourString, minuteString, ampm, dayOrNight
 		);
 
 		final int textWidth = mc.fontRenderer.getStringWidth(timeString);
 		final int textHeight = mc.fontRenderer.FONT_HEIGHT;
 
-		final int x = RTConfig.timeOfDay.x;
-		final int y = RTConfig.timeOfDay.y;
+		final int x = RTConfig.TimeOfDay.x;
+		final int y = RTConfig.TimeOfDay.y;
 
 		final ScaledResolution scaled = new ScaledResolution(mc);
 		final int displayWidth = scaled.getScaledWidth();
 		final int displayHeight = scaled.getScaledHeight();
 
-		final int actualX = RTConfig.timeOfDay.alignment.getX(x, displayWidth, textWidth);
-		final int actualY = RTConfig.timeOfDay.alignment.getY(y, displayHeight, textHeight);
+		final int actualX = RTConfig.TimeOfDay.alignment.getX(x, displayWidth, textWidth);
+		final int actualY = RTConfig.TimeOfDay.alignment.getY(y, displayHeight, textHeight);
 
 		mc.fontRenderer.drawStringWithShadow(timeString, actualX, actualY, 0xFFFFFF);
 	}
 
 	public static boolean shouldHide() {
-		if(!RTConfig.timeOfDay.enabled || shouldHide || mc.world == null ||
+		if(!RTConfig.TimeOfDay.enabled || shouldHide || mc.world == null ||
 				!Minecraft.isGuiEnabled()) {
 			return true;
 		}
 
-		if(mc.currentScreen != null && RTConfig.timeOfDay.disableInGUIs) {
+		if(mc.currentScreen != null && RTConfig.TimeOfDay.disableInGUIs) {
 			return true;
 		}
 
-		if(RTConfig.timeOfDay.disableIfNoDaylightCycle &&
+		if(RTConfig.TimeOfDay.disableIfNoDaylightCycle &&
 				!mc.world.getGameRules().getBoolean("doDaylightCycle")) {
 			return true;
 		}
 
-		return RTConfig.timeOfDay.disableInAdventureMode &&
+		return RTConfig.TimeOfDay.disableInAdventureMode &&
 				mc.world.getWorldInfo().getGameType() == GameType.ADVENTURE;
 	}
 
 	public static boolean isEnabledForCurrentWorld() {
-		final Map<String, Boolean> worlds = RTConfig.Data.get().timeOfDayOverlay;
+		final Map<String, Boolean> worlds = RTData.get().timeOfDayOverlay;
 		final File saveDirectory = DimensionManager.getCurrentSaveRootDirectory();
 
 		if(saveDirectory != null) {
 			final String name = saveDirectory.getName();
 
 			if(!worlds.containsKey(name)) {
-				worlds.put(name, RTConfig.timeOfDay.enabledByDefault);
-				RTConfig.Data.save();
+				worlds.put(name, RTConfig.TimeOfDay.enabledByDefault);
+				RTData.save();
 			}
 
 			return worlds.get(name);
@@ -145,9 +146,9 @@ public final class TimeOfDayOverlay {
 			return false;
 		}
 
-		if(!RTConfig.Data.get().timeOfDayOverlay.containsKey(ip)) {
-			worlds.put(ip, RTConfig.timeOfDay.enabledByDefault);
-			RTConfig.Data.save();
+		if(!RTData.get().timeOfDayOverlay.containsKey(ip)) {
+			worlds.put(ip, RTConfig.TimeOfDay.enabledByDefault);
+			RTData.save();
 		}
 
 		return worlds.get(ip);
@@ -159,16 +160,16 @@ public final class TimeOfDayOverlay {
 		}
 
 		final File saveDirectory = DimensionManager.getCurrentSaveRootDirectory();
-		final Map<String, Boolean> worlds = RTConfig.Data.get().timeOfDayOverlay;
+		final Map<String, Boolean> worlds = RTData.get().timeOfDayOverlay;
 		final String name = saveDirectory != null ?
 				saveDirectory.getName() : mc.getCurrentServerData().serverIP;
 
 		if(!worlds.containsKey(name)) {
-			worlds.put(name, !RTConfig.timeOfDay.enabledByDefault);
+			worlds.put(name, !RTConfig.TimeOfDay.enabledByDefault);
 		} else {
 			worlds.put(name, !worlds.get(name));
 		}
 
-		RTConfig.Data.save();
+		RTData.save();
 	}
 }

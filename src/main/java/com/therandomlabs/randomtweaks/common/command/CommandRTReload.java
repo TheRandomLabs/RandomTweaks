@@ -1,6 +1,7 @@
 package com.therandomlabs.randomtweaks.common.command;
 
-import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomlib.config.ConfigManager;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
@@ -28,7 +29,7 @@ public class CommandRTReload extends CommandBase {
 	@Override
 	public void execute(MinecraftServer server, ICommandSender sender, String[] args)
 			throws CommandException {
-		RTConfig.reloadFromDisk();
+		ConfigManager.reloadFromDisk(RTConfig.class);
 
 		if(server != null && server.isDedicatedServer()) {
 			notifyCommandListener(sender, this, "RandomTweaks configuration reloaded!");

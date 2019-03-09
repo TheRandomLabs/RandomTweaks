@@ -2,8 +2,8 @@ package com.therandomlabs.randomtweaks.client;
 
 import java.lang.reflect.Field;
 import java.util.Random;
-import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -41,19 +41,19 @@ public final class DingHandler {
 	}
 
 	public static void onGameStarted() {
-		if(!RandomTweaks.DING_LOADED && RTConfig.ding.startupSounds.length != 0 &&
+		if(!RandomTweaks.DING_LOADED && RTConfig.Ding.startupSounds.length != 0 &&
 				isDsurroundStartupSoundDisabled()) {
 			playSound(
-					RTConfig.ding.startupSoundEvents,
-					RTConfig.ding.startupSoundPitch,
-					RTConfig.ding.startupSoundVolume
+					RTConfig.Ding.startupSounds,
+					RTConfig.Ding.startupSoundPitch,
+					RTConfig.Ding.startupSoundVolume
 			);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onConnectToServer(FMLNetworkEvent.ClientConnectedToServerEvent event) {
-		if(!RandomTweaks.DING_LOADED && RTConfig.ding.worldLoadSounds.length != 0) {
+		if(!RandomTweaks.DING_LOADED && RTConfig.Ding.worldLoadSounds.length != 0) {
 			playWorld = true;
 		}
 	}
@@ -66,9 +66,9 @@ public final class DingHandler {
 
 		if(mc.player.ticksExisted > 20 || mc.isGamePaused()) {
 			playSound(
-					RTConfig.ding.worldLoadSoundEvents,
-					RTConfig.ding.worldLoadSoundPitch,
-					RTConfig.ding.worldLoadSoundVolume
+					RTConfig.Ding.worldLoadSounds,
+					RTConfig.Ding.worldLoadSoundPitch,
+					RTConfig.Ding.worldLoadSoundVolume
 			);
 			playWorld = false;
 		}
@@ -96,7 +96,7 @@ public final class DingHandler {
 				soundEvent, (float) pitch, (float) volume
 		);
 
-		if(!RTConfig.ding.ignoreDsurroundMuteWhenBackground || BACKGROUND_MUTE == null) {
+		if(!RTConfig.Ding.ignoreDsurroundMuteWhenBackground || BACKGROUND_MUTE == null) {
 			soundHandler.playSound(sound);
 			return;
 		}

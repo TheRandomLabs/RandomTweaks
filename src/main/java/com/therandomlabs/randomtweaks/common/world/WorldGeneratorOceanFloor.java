@@ -1,7 +1,7 @@
 package com.therandomlabs.randomtweaks.common.world;
 
 import java.util.Random;
-import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.block.state.pattern.BlockMatcher;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.math.BlockPos;
@@ -19,24 +19,24 @@ public class WorldGeneratorOceanFloor implements IWorldGenerator {
 
 	private static final WorldGenMinable CLAY = new WorldGenMinable(
 			Blocks.CLAY.getDefaultState(),
-			RTConfig.oceanFloor.clayVeinSize,
+			RTConfig.OceanFloor.clayVeinSize,
 			GRAVEL
 	);
 
 	private static final WorldGenMinable SAND = new WorldGenMinable(
 			Blocks.SAND.getDefaultState(),
-			RTConfig.oceanFloor.sandVeinSize,
+			RTConfig.OceanFloor.sandVeinSize,
 			GRAVEL
 	);
 
 	private static final WorldGenMinable DIRT = new WorldGenMinable(
 			Blocks.DIRT.getDefaultState(),
-			RTConfig.oceanFloor.dirtVeinSize,
+			RTConfig.OceanFloor.dirtVeinSize,
 			GRAVEL
 	);
 
 	static {
-		if(RTConfig.oceanFloor.minY > RTConfig.oceanFloor.maxY) {
+		if(RTConfig.OceanFloor.minY > RTConfig.OceanFloor.maxY) {
 			throw new IllegalArgumentException(
 					"oceanFloor.minY must be lesser than or equal to oceanFloor.maxY"
 			);
@@ -47,22 +47,22 @@ public class WorldGeneratorOceanFloor implements IWorldGenerator {
 	public void generate(Random random, int chunkX, int chunkZ, World world,
 			IChunkGenerator generator, IChunkProvider provider) {
 		if(world.provider.getDimensionType() == DimensionType.OVERWORLD) {
-			generate(CLAY, RTConfig.oceanFloor.clayChance, random, chunkX, chunkZ, world);
-			generate(SAND, RTConfig.oceanFloor.sandChance, random, chunkX, chunkZ, world);
-			generate(DIRT, RTConfig.oceanFloor.dirtChance, random, chunkX, chunkZ, world);
+			generate(CLAY, RTConfig.OceanFloor.clayChance, random, chunkX, chunkZ, world);
+			generate(SAND, RTConfig.OceanFloor.sandChance, random, chunkX, chunkZ, world);
+			generate(DIRT, RTConfig.OceanFloor.dirtChance, random, chunkX, chunkZ, world);
 		}
 	}
 
 	private void generate(WorldGenerator generator, int chance, Random random, int chunkX,
 			int chunkZ, World world) {
-		final int yDifference = RTConfig.oceanFloor.maxY - RTConfig.oceanFloor.minY;
+		final int yDifference = RTConfig.OceanFloor.maxY - RTConfig.OceanFloor.minY;
 		final int x = chunkX * 16;
 		final int z = chunkZ * 16;
 
 		for(int i = 0; i < chance; i++) {
 			final BlockPos pos = new BlockPos(
 					x + random.nextInt(16),
-					RTConfig.oceanFloor.minY + random.nextInt(yDifference),
+					RTConfig.OceanFloor.minY + random.nextInt(yDifference),
 					z + random.nextInt(16)
 			);
 

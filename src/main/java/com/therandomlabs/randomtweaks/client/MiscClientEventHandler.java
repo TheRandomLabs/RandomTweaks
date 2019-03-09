@@ -1,7 +1,8 @@
 package com.therandomlabs.randomtweaks.client;
 
-import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import com.therandomlabs.randomtweaks.config.RTConfig;
+import com.therandomlabs.randomtweaks.config.RTData;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -31,7 +32,7 @@ public final class MiscClientEventHandler {
 		if(!gameStarted && gui instanceof GuiMainMenu) {
 			DingHandler.onGameStarted();
 
-			if(RTConfig.client.startOnMultiplayerScreen) {
+			if(RTConfig.Client.startOnMultiplayerScreen) {
 				mc.displayGuiScreen(new GuiMultiplayer(gui));
 				event.setCanceled(true);
 			}
@@ -42,7 +43,7 @@ public final class MiscClientEventHandler {
 
 	@SubscribeEvent
 	public static void onRenderFog(EntityViewRenderEvent.FogDensity event) {
-		if(RTConfig.client.clearWater && event.getState().getMaterial() == Material.WATER) {
+		if(RTConfig.Client.clearWater && event.getState().getMaterial() == Material.WATER) {
 			event.setDensity(0);
 			event.setCanceled(true);
 		}
@@ -50,7 +51,7 @@ public final class MiscClientEventHandler {
 
 	@SubscribeEvent
 	public static void onPotionShift(GuiScreenEvent.PotionShiftEvent event) {
-		if(RTConfig.client.disablePotionShift) {
+		if(RTConfig.Client.disablePotionShift) {
 			event.setCanceled(true);
 		}
 	}
@@ -58,7 +59,7 @@ public final class MiscClientEventHandler {
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void onSoundPlay(PlaySoundEvent event) {
 		if(event.getName().equals("entity.wither.spawn")) {
-			if(RTConfig.client.disableWitherSpawnSound) {
+			if(RTConfig.Client.disableWitherSpawnSound) {
 				event.setResultSound(null);
 			}
 
@@ -66,21 +67,21 @@ public final class MiscClientEventHandler {
 		}
 
 		if(event.getName().equals("entity.enderdragon.death") &&
-				RTConfig.client.disableEnderDragonDeathSound) {
+				RTConfig.Client.disableEnderDragonDeathSound) {
 			event.setResultSound(null);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onFoVUpdate(FOVUpdateEvent event) {
-		if(!RTConfig.Data.get().fovChanges) {
+		if(!RTData.get().fovChanges) {
 			event.setNewfov(1.0F);
 		}
 	}
 
 	@SubscribeEvent
 	public static void onRenderGameOverlay(RenderGameOverlayEvent.Pre event) {
-		if(RTConfig.client.disablePotionIcons &&
+		if(RTConfig.Client.disablePotionIcons &&
 				event.getType() == RenderGameOverlayEvent.ElementType.POTION_ICONS) {
 			event.setCanceled(true);
 		}

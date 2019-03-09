@@ -1,7 +1,7 @@
 package com.therandomlabs.randomtweaks.common;
 
-import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntitySquid;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,8 +27,8 @@ public final class SquidHandler {
 		final Entity entity = event.getEntity();
 
 		if(entity.getClass() == EntitySquid.class &&
-				RTConfig.squids.maxPackSize != VANILLA_PACK_SIZE) {
-			event.setMaxPackSize(RTConfig.squids.maxPackSize);
+				RTConfig.Squids.maxPackSize != VANILLA_PACK_SIZE) {
+			event.setMaxPackSize(RTConfig.Squids.maxPackSize);
 		}
 	}
 
@@ -41,7 +41,7 @@ public final class SquidHandler {
 	}
 
 	public static boolean isInRadiusOfPlayer(LivingSpawnEvent.CheckSpawn event) {
-		final int radius = RTConfig.squids.spawnRadiusLimit;
+		final int radius = RTConfig.Squids.spawnRadiusLimit;
 
 		if(radius == RADIUS_LIMIT_DISABLED) {
 			return true;
@@ -66,11 +66,11 @@ public final class SquidHandler {
 	}
 
 	public static boolean tooManySquids(LivingSpawnEvent.CheckSpawn event) {
-		if(RTConfig.squids.chunkLimit == SQUID_SPAWNING_DISABLED) {
+		if(RTConfig.Squids.chunkLimit == SQUID_SPAWNING_DISABLED) {
 			return true;
 		}
 
-		if(RTConfig.squids.chunkLimit == CHUNK_LIMIT_DISABLED) {
+		if(RTConfig.Squids.chunkLimit == CHUNK_LIMIT_DISABLED) {
 			return false;
 		}
 
@@ -89,7 +89,7 @@ public final class SquidHandler {
 				continue;
 			}
 
-			if(++squids >= RTConfig.squids.chunkLimit) {
+			if(++squids >= RTConfig.Squids.chunkLimit) {
 				return true;
 			}
 		}

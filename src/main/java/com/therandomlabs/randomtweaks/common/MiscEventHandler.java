@@ -2,8 +2,8 @@ package com.therandomlabs.randomtweaks.common;
 
 import java.util.Random;
 import java.util.UUID;
-import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
@@ -32,7 +32,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class MiscEventHandler {
 	@SubscribeEvent
 	public static void onArrowImpact(ProjectileImpactEvent.Arrow event) {
-		if(!RTConfig.misc.pickUpSkeletonArrows) {
+		if(!RTConfig.Misc.pickUpSkeletonArrows) {
 			return;
 		}
 
@@ -60,9 +60,9 @@ public final class MiscEventHandler {
 
 		final IAttributeInstance attackSpeed =
 				player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
-		attackSpeed.setBaseValue(RTConfig.misc.attackSpeed);
+		attackSpeed.setBaseValue(RTConfig.Misc.attackSpeed);
 
-		if(RTConfig.hunger.enabled && !RandomTweaks.APPLECORE_LOADED) {
+		if(RTConfig.Hunger.enabled && !RandomTweaks.APPLECORE_LOADED) {
 			player.foodStats = new RTFoodStats(player.foodStats);
 		}
 	}
@@ -75,12 +75,12 @@ public final class MiscEventHandler {
 			return;
 		}
 
-		if(RTConfig.sheepColorWeights.enabled && !RandomTweaks.COLORFUL_SHEEP_LOADED &&
+		if(RTConfig.SheepColorWeights.enabled && !RandomTweaks.COLORFUL_SHEEP_LOADED &&
 				entity.getClass() == EntitySheep.class) {
 			ColoredSheepHandler.onSheepSpawn((EntitySheep) entity);
 		}
 
-		if(RTConfig.randomizedAges.chance != 0.0) {
+		if(RTConfig.RandomizedAges.chance != 0.0) {
 			final EntityAgeable ageable = (EntityAgeable) entity;
 
 			if(ageable.isChild()) {
@@ -89,9 +89,9 @@ public final class MiscEventHandler {
 
 			final Random rng = ageable.getRNG();
 
-			if(rng.nextDouble() < RTConfig.randomizedAges.chance) {
-				final int min = RTConfig.randomizedAges.minimumAge;
-				final int max = RTConfig.randomizedAges.maximumAge;
+			if(rng.nextDouble() < RTConfig.RandomizedAges.chance) {
+				final int min = RTConfig.RandomizedAges.minimumAge;
+				final int max = RTConfig.RandomizedAges.maximumAge;
 
 				if(min == max) {
 					ageable.setGrowingAge(min);
@@ -110,7 +110,7 @@ public final class MiscEventHandler {
 		//"fallDamage" gamerule
 
 		if(source == DamageSource.FALL) {
-			final String fallDamage = RTConfig.misc.fallDamageMultiplierGameRuleName;
+			final String fallDamage = RTConfig.Misc.fallDamageMultiplierGameRuleName;
 
 			if(fallDamage.isEmpty()) {
 				return;
@@ -154,15 +154,15 @@ public final class MiscEventHandler {
 			return;
 		}
 
-		final boolean protectFromSneaking = RTConfig.animals.protectPetsFromSneakingOwners;
+		final boolean protectFromSneaking = RTConfig.Animals.protectPetsFromSneakingOwners;
 
-		if(RTConfig.animals.protectPetsFromOwners && owner.equals(attacker.getUniqueID()) &&
+		if(RTConfig.Animals.protectPetsFromOwners && owner.equals(attacker.getUniqueID()) &&
 				(!protectFromSneaking || (protectFromSneaking && !attacker.isSneaking()))) {
 			event.setCanceled(true);
 			return;
 		}
 
-		if(RTConfig.animals.protectPetsFromOtherPets && attacker instanceof IEntityOwnable) {
+		if(RTConfig.Animals.protectPetsFromOtherPets && attacker instanceof IEntityOwnable) {
 			final IEntityOwnable otherPet = (IEntityOwnable) attacker;
 
 			if(owner.equals(otherPet.getOwnerId())) {
@@ -185,12 +185,12 @@ public final class MiscEventHandler {
 			return;
 		}
 
-		if(RTConfig.animals.batLeatherDropChance != 0.0 && entity instanceof EntityBat &&
-				Math.random() < RTConfig.animals.batLeatherDropChance) {
+		if(RTConfig.Animals.batLeatherDropChance != 0.0 && entity instanceof EntityBat &&
+				Math.random() < RTConfig.Animals.batLeatherDropChance) {
 			entity.dropItem(Items.LEATHER, 1);
 		}
 
-		if(!RTConfig.misc.entitiesDropNameTags) {
+		if(!RTConfig.Misc.entitiesDropNameTags) {
 			return;
 		}
 
@@ -207,7 +207,7 @@ public final class MiscEventHandler {
 
 	@SubscribeEvent
 	public static void onPlayerAttackEntity(AttackEntityEvent event) {
-		if(RandomTweaks.RANDOMCONFIGS_LOADED || !RTConfig.misc.disableAttacksDuringAttackCooldown) {
+		if(RandomTweaks.RANDOMCONFIGS_LOADED || !RTConfig.Misc.disableAttacksDuringAttackCooldown) {
 			return;
 		}
 

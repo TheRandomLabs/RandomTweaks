@@ -1,6 +1,6 @@
 package com.therandomlabs.randomtweaks.client;
 
-import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityBoat;
@@ -20,12 +20,12 @@ public final class AutoThirdPersonHandler {
 	private static int originalPerspective;
 
 	public static void onClientTick() {
-		if(!RTConfig.autoThirdPerson.enabled || mc.world == null || mc.player == null) {
+		if(!RTConfig.AutoThirdPerson.enabled || mc.world == null || mc.player == null) {
 			return;
 		}
 
 		if(mc.player.isElytraFlying()) {
-			if(!RTConfig.autoThirdPerson.elytra || lastID == ELYTRA) {
+			if(!RTConfig.AutoThirdPerson.elytra || lastID == ELYTRA) {
 				return;
 			}
 
@@ -50,19 +50,19 @@ public final class AutoThirdPersonHandler {
 			lastID = entity.getEntityId();
 
 			if(entity instanceof AbstractHorse) {
-				if(!RTConfig.autoThirdPerson.horse) {
+				if(!RTConfig.AutoThirdPerson.horse) {
 					return;
 				}
 			} else if(entity instanceof EntityPig) {
-				if(!RTConfig.autoThirdPerson.pig) {
+				if(!RTConfig.AutoThirdPerson.pig) {
 					return;
 				}
 			} else if(entity instanceof EntityBoat) {
-				if(!RTConfig.autoThirdPerson.boat) {
+				if(!RTConfig.AutoThirdPerson.boat) {
 					return;
 				}
 			} else if(entity instanceof EntityMinecart) {
-				if(!RTConfig.autoThirdPerson.minecart) {
+				if(!RTConfig.AutoThirdPerson.minecart) {
 					return;
 				}
 			} else {

@@ -1,7 +1,7 @@
 package com.therandomlabs.randomtweaks.common.world;
 
-import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.math.BlockPos;
@@ -26,8 +26,8 @@ public final class WorldHandler {
 
 		final GameRules gameRules = world.getGameRules();
 
-		final String netherPortalCreation = RTConfig.misc.disableNetherPortalCreationGameRuleName;
-		final String fallDamage = RTConfig.misc.fallDamageMultiplierGameRuleName;
+		final String netherPortalCreation = RTConfig.Misc.disableNetherPortalCreationGameRuleName;
+		final String fallDamage = RTConfig.Misc.fallDamageMultiplierGameRuleName;
 
 		if(!netherPortalCreation.isEmpty() && !gameRules.hasRule(netherPortalCreation)) {
 			gameRules.setOrCreateGameRule(netherPortalCreation, "false");
@@ -88,7 +88,7 @@ public final class WorldHandler {
 			final BlockPos pos = world.getTopSolidOrLiquidBlock(new BlockPos(0, 0, 0));
 			newSpawnY = pos.getY() + 1;
 		} else {
-			newSpawnY = RTConfig.voidWorld.ySpawn;
+			newSpawnY = RTConfig.VoidWorld.ySpawn;
 		}
 
 		final BlockPos newSpawn = new BlockPos(0, newSpawnY, 0);
@@ -111,7 +111,7 @@ public final class WorldHandler {
 			return;
 		}
 
-		world.setBlockState(spawnBlock, RTConfig.voidWorld.blockState);
+		world.setBlockState(spawnBlock, RTConfig.VoidWorld.spawnBlockState);
 	}
 
 	private static boolean isSpawnable(World world, BlockPos pos) {

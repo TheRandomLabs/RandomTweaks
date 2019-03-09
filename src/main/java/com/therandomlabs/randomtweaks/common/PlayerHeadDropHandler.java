@@ -1,7 +1,7 @@
 package com.therandomlabs.randomtweaks.common;
 
-import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class PlayerHeadDropHandler {
 	@SubscribeEvent
 	public static void onPlayerDrops(PlayerDropsEvent event) {
-		if(!RTConfig.playerHeadDrops.enabled || RandomTweaks.PLAYERS_DROP_HEADS_LOADED ||
+		if(!RTConfig.PlayerHeadDrops.enabled || RandomTweaks.PLAYERS_DROP_HEADS_LOADED ||
 				RandomTweaks.HEADCRUMBS_LOADED) {
 			return;
 		}
@@ -29,18 +29,18 @@ public final class PlayerHeadDropHandler {
 			final EntityCreeper creeper = (EntityCreeper) source;
 
 			if(creeper.getPowered() && creeper.ableToCauseSkullDrop() &&
-					dropSkull(player, RTConfig.playerHeadDrops.chanceWhenKilledByChargedCreeper)) {
+					dropSkull(player, RTConfig.PlayerHeadDrops.chanceWhenKilledByChargedCreeper)) {
 				creeper.incrementDroppedSkulls();
 				return;
 			}
 		}
 
 		if(source != player && source instanceof EntityPlayer) {
-			dropSkull(player, RTConfig.playerHeadDrops.chanceWhenKilledByPlayer);
+			dropSkull(player, RTConfig.PlayerHeadDrops.chanceWhenKilledByPlayer);
 			return;
 		}
 
-		dropSkull(player, RTConfig.playerHeadDrops.normalChance);
+		dropSkull(player, RTConfig.PlayerHeadDrops.normalChance);
 	}
 
 	public static boolean dropSkull(EntityPlayer player, double chance) {

@@ -1,9 +1,9 @@
 package com.therandomlabs.randomtweaks.client;
 
 import java.lang.reflect.Field;
-import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomtweaks.RandomTweaks;
-import com.therandomlabs.randomtweaks.util.RTUtils;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.client.gui.inventory.GuiContainerCreative;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityList;
@@ -39,7 +39,7 @@ public final class CreativeTabHandler {
 		public void displayAllRelevantItems(NonNullList<ItemStack> itemList) {
 			super.displayAllRelevantItems(itemList);
 
-			if(!RTConfig.creativeTabs.noAISpawnEggs) {
+			if(!RTConfig.CreativeTabs.noAISpawnEggs) {
 				return;
 			}
 
@@ -56,7 +56,7 @@ public final class CreativeTabHandler {
 		}
 	};
 
-	public static final Field TAB_PAGE = RTUtils.findField(GuiContainerCreative.class, "tabPage");
+	public static final Field TAB_PAGE = TRLUtils.findField(GuiContainerCreative.class, "tabPage");
 
 	private static CreativeTabs originalBucketTab;
 	private static boolean bucketSetBefore;
@@ -84,7 +84,7 @@ public final class CreativeTabHandler {
 			final NBTTagCompound entityTag = stackTag.getCompoundTag("EntityTag");
 
 			if(entityTag.getBoolean("NoAI")) {
-				event.getToolTip().add(RTUtils.localize("spawnEgg.noAI"));
+				event.getToolTip().add(TRLUtils.localize("spawnEgg.noAI"));
 			}
 		}
 	}
@@ -97,7 +97,7 @@ public final class CreativeTabHandler {
 	}
 
 	public static void init() {
-		if(RTConfig.creativeTabs.moveBucketCreativeTab) {
+		if(RTConfig.CreativeTabs.moveBucketCreativeTab) {
 			originalBucketTab = Items.BUCKET.getCreativeTab();
 			bucketSetBefore = true;
 			Items.BUCKET.setCreativeTab(CreativeTabs.TOOLS);
@@ -105,7 +105,7 @@ public final class CreativeTabHandler {
 			Items.BUCKET.setCreativeTab(originalBucketTab);
 		}
 
-		if(RTConfig.creativeTabs.setCommandBlockCreativeTab) {
+		if(RTConfig.CreativeTabs.setCommandBlockCreativeTab) {
 			originalCommandBlockTab = Blocks.COMMAND_BLOCK.getCreativeTab();
 			commandBlockSetBefore = true;
 
@@ -118,7 +118,7 @@ public final class CreativeTabHandler {
 			Blocks.REPEATING_COMMAND_BLOCK.setCreativeTab(originalCommandBlockTab);
 		}
 
-		if(RTConfig.creativeTabs.setDragonEggCreativeTab) {
+		if(RTConfig.CreativeTabs.setDragonEggCreativeTab) {
 			originalDragonEggTab = Blocks.DRAGON_EGG.getCreativeTab();
 			dragonEggSetBefore = true;
 
@@ -131,7 +131,7 @@ public final class CreativeTabHandler {
 	}
 
 	private static void registerSpawnEggsTab() {
-		if(RTConfig.creativeTabs.spawnEggsCreativeTab) {
+		if(RTConfig.CreativeTabs.spawnEggsCreativeTab) {
 			if(!ArrayUtils.contains(CreativeTabs.CREATIVE_TAB_ARRAY, SPAWN_EGGS)) {
 				CreativeTabs.CREATIVE_TAB_ARRAY =
 						ArrayUtils.add(CreativeTabs.CREATIVE_TAB_ARRAY, SPAWN_EGGS);

@@ -1,7 +1,7 @@
 package com.therandomlabs.randomtweaks.common;
 
-import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.init.Enchantments;
 import net.minecraft.inventory.EntityEquipmentSlot;
@@ -34,11 +34,11 @@ public final class TrampleHandler {
 
 	@SubscribeEvent
 	public static void onFarmlandTrample(BlockEvent.FarmlandTrampleEvent event) {
-		if(RTConfig.misc.farmlandTrampleBehavior == Behavior.VANILLA) {
+		if(RTConfig.Misc.farmlandTrampleBehavior == Behavior.VANILLA) {
 			return;
 		}
 
-		if(RTConfig.misc.farmlandTrampleBehavior == Behavior.DONT_TRAMPLE) {
+		if(RTConfig.Misc.farmlandTrampleBehavior == Behavior.DONT_TRAMPLE) {
 			event.setCanceled(true);
 			return;
 		}

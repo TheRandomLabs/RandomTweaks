@@ -1,16 +1,17 @@
 package com.therandomlabs.randomtweaks.common.world;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
-import com.therandomlabs.randomtweaks.RTConfig;
-import com.therandomlabs.randomtweaks.util.RTUtils;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.IChunkGenerator;
+import org.apache.commons.lang3.ArrayUtils;
 
 public class ChunkGeneratorVoid implements IChunkGenerator {
 	private final World world;
@@ -23,9 +24,9 @@ public class ChunkGeneratorVoid implements IChunkGenerator {
 
 	@Override
 	public Chunk generateChunk(int x, int z) {
-		return RTUtils.createVoidChunk(
-				world, random, RTConfig.voidWorld.actualBiome,
-				RTConfig.voidWorld.biomeBlacklist, x, z
+		return createVoidChunk(
+				world, random, RTConfig.VoidWorld.biome, RTConfig.VoidWorld.randomBiomeBlacklist,
+				x, z
 		);
 	}
 
@@ -40,7 +41,7 @@ public class ChunkGeneratorVoid implements IChunkGenerator {
 	@Override
 	public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType,
 			BlockPos pos) {
-		return RTConfig.voidWorld.mobSpawning ?
+		return RTConfig.VoidWorld.mobSpawning ?
 				world.getBiome(pos).getSpawnableList(creatureType) : Collections.emptyList();
 	}
 
@@ -56,5 +57,24 @@ public class ChunkGeneratorVoid implements IChunkGenerator {
 	@Override
 	public boolean isInsideStructure(World world, String structureName, BlockPos pos) {
 		return false;
+	}
+
+	public static Chunk createVoidChunk(World world, Random random, Biome biome,
+			Biome[] biomeBlacklist, int x, int z) {
+		final Chunk chunk = new Chunk(world, x, z);
+
+		if(biome == null) {
+			biome = world.getBiomeProvider().getBiome(new BlockPos(x * 16 + 8, 0, z * 16 + 8));
+
+			while(ArrayUtils.contains(biomeBlacklist, biome)) {
+				biome = Biome.REGISTRY.getRandomObject(random);
+			}
+		}
+
+		final byte[] biomeArray = new byte[256];
+		Arrays.fill(biomeArray, (byte) Biome.REGISTRY.getIDForObject(biome));
+		chunk.setBiomeArray(biomeArray);
+
+		return chunk;
 	}
 }

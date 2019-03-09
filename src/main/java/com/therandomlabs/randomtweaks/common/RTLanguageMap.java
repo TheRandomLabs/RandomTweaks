@@ -1,6 +1,6 @@
 package com.therandomlabs.randomtweaks.common;
 
-import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import com.therandomlabs.randomtweaks.util.RomanNumerals;
 import net.minecraft.util.text.translation.LanguageMap;
 
@@ -23,7 +23,7 @@ public class RTLanguageMap extends LanguageMap {
 		}
 
 		//According to OpenEye, key can be null
-		if(!RTConfig.misc.moreRomanNumerals || key == null) {
+		if(!RTConfig.Misc.moreRomanNumerals || key == null) {
 			return key;
 		}
 

@@ -1,8 +1,8 @@
 package com.therandomlabs.randomtweaks.common;
 
 import com.therandomlabs.randomportals.api.event.NetherPortalEvent;
-import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.world.World;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,7 +24,7 @@ public final class NetherPortalSpawnHandler {
 	}
 
 	private static void handle(Event event, World world) {
-		final String name = RTConfig.misc.disableNetherPortalCreationGameRuleName;
+		final String name = RTConfig.Misc.disableNetherPortalCreationGameRuleName;
 
 		if(!name.isEmpty() && world.getGameRules().getBoolean(name)) {
 			event.setCanceled(true);

@@ -46,7 +46,7 @@ public enum Alignment {
 	}
 
 	Alignment(String translationKey, int x, int y) {
-		this.translationKey = "randomtweaks.config.timeOfDay.alignment." + translationKey;
+		this.translationKey = "randomtweaks.config.client.timeOfDay.alignment." + translationKey;
 		defaultX = x;
 		defaultY = y;
 	}

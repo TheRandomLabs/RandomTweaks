@@ -9,12 +9,14 @@ buildscript {
 
 	dependencies {
 		classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+		classpath "com.github.jengelman.gradle.plugins:shadow:2.0.0"
 	}
 }
 
 apply plugin: "net.minecraftforge.gradle.forge"
+apply plugin: "com.github.johnrengelman.shadow"
 
-version = "1.12.2-2.4.3.2"
+version = "1.12.2-2.5.0.0"
 group = "com.therandomlabs.randomtweaks"
 archivesBaseName = "randomtweaks"
 
@@ -22,16 +24,40 @@ sourceCompatibility = targetCompatibility = "1.8"
 
 repositories {
 	maven {
+		url "https://jitpack.io"
+	}
+
+	maven {
 		url "http://www.ryanliptak.com/maven/"
 	}
 }
 
 dependencies {
+	shadow "com.github.TheRandomLabs:RandomLib:1.12-SNAPSHOT"
+	compile "com.github.TheRandomLabs:RandomLib:1.12-SNAPSHOT"
 	deobfCompile "applecore:AppleCore:1.12.2-3.1.4:api"
 }
 
+shadowJar {
+	classifier = ""
+	relocate "com.therandomlabs.randomlib", "com.therandomlabs.randomconfigs.repackage.com.therandomlabs.randomlib"
+	configurations = [project.configurations.shadow]
+}
+
+reobf {
+	shadowJar {
+		mappingType = "SEARGE"
+	}
+}
+
+build.dependsOn shadowJar
+
+artifacts {
+	archives shadowJar
+}
+
 minecraft {
-	version = "1.12.2-latest"
+	version = "1.12.2-14.23.5.2815"
 	runDir = "run"
 	mappings = "stable_39"
 

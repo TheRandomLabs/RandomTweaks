@@ -2,7 +2,7 @@ package com.therandomlabs.randomtweaks.common;
 
 import java.util.AbstractMap;
 import java.util.Map;
-import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import squeek.applecore.api.food.FoodEvent;

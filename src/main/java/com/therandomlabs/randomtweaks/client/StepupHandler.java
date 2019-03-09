@@ -1,7 +1,8 @@
 package com.therandomlabs.randomtweaks.client;
 
-import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import com.therandomlabs.randomtweaks.config.RTConfig;
+import com.therandomlabs.randomtweaks.config.RTData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.potion.Potion;
@@ -40,12 +41,12 @@ public final class StepupHandler {
 
 	@SubscribeEvent
 	public static void onClientTick(TickEvent.ClientTickEvent event) {
-		if(!RTConfig.client.stepup || mc.player == null) {
+		if(!RTConfig.Client.stepup || mc.player == null) {
 			return;
 		}
 
 		if(mode == null) {
-			final RTConfig.Data data = RTConfig.Data.get();
+			final RTData data = RTData.get();
 			if(data.stepup) {
 				//This will be set to STEPUP_AUTO_JUMP
 				mode = Mode.VANILLA_AUTO_JUMP;
@@ -81,7 +82,7 @@ public final class StepupHandler {
 	}
 
 	public static void toggle(boolean sendStatusMessage) {
-		final RTConfig.Data data = RTConfig.Data.get();
+		final RTData data = RTData.get();
 		final boolean autojump =
 				mc.gameSettings.getOptionOrdinalValue(GameSettings.Options.AUTO_JUMP);
 
@@ -102,7 +103,7 @@ public final class StepupHandler {
 		}
 
 		data.stepup = mode == Mode.STEPUP_AUTO_JUMP;
-		RTConfig.Data.save();
+		RTData.save();
 
 		if(autojump) {
 			if(!mode.enabled) {

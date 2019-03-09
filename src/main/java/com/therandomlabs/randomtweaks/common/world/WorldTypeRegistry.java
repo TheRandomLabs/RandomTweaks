@@ -3,8 +3,8 @@ package com.therandomlabs.randomtweaks.common.world;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
-import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.world.WorldType;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -37,7 +37,7 @@ public final class WorldTypeRegistry {
 	}
 
 	public static boolean shouldRegisterRealisticWorldType() {
-		if(!RTConfig.world.realisticWorldType) {
+		if(!RTConfig.World.realisticWorldType) {
 			return false;
 		}
 

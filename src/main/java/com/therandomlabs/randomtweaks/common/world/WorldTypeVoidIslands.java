@@ -1,6 +1,6 @@
 package com.therandomlabs.randomtweaks.common.world;
 
-import com.therandomlabs.randomtweaks.RTConfig;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.world.World;
 
 public class WorldTypeVoidIslands extends RTWorldType {
@@ -12,7 +12,7 @@ public class WorldTypeVoidIslands extends RTWorldType {
 
 	@Override
 	public boolean isEnabled() {
-		return RTConfig.voidIslandsWorld.enabled;
+		return RTConfig.VoidIslandsWorld.enabled;
 	}
 
 	@Override

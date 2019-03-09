@@ -1,7 +1,7 @@
 package com.therandomlabs.randomtweaks.common;
 
-import com.therandomlabs.randomtweaks.RTConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCactus;
 import net.minecraft.block.BlockNetherWart;
@@ -36,14 +36,14 @@ public final class BoneMealHandler {
 		final BlockPos pos = event.getPos();
 
 		if(block == Blocks.CACTUS) {
-			if(RTConfig.boneMeal.cacti != 0) {
-				grow(world, block, pos, BlockCactus.AGE, RTConfig.boneMeal.cacti, event);
+			if(RTConfig.BoneMeal.cacti != 0) {
+				grow(world, block, pos, BlockCactus.AGE, RTConfig.BoneMeal.cacti, event);
 			}
 		} else if(block == Blocks.REEDS) {
-			if(RTConfig.boneMeal.sugarCanes != 0) {
-				grow(world, block, pos, BlockReed.AGE, RTConfig.boneMeal.sugarCanes, event);
+			if(RTConfig.BoneMeal.sugarCanes != 0) {
+				grow(world, block, pos, BlockReed.AGE, RTConfig.BoneMeal.sugarCanes, event);
 			}
-		} else if(block == Blocks.NETHER_WART && RTConfig.boneMeal.netherWart) {
+		} else if(block == Blocks.NETHER_WART && RTConfig.BoneMeal.netherWart) {
 			final int age = state.getValue(BlockNetherWart.AGE);
 
 			if(age < 3) {

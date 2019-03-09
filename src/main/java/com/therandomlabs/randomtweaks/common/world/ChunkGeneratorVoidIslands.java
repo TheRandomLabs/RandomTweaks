@@ -1,8 +1,7 @@
 package com.therandomlabs.randomtweaks.common.world;
 
 import java.util.Random;
-import com.therandomlabs.randomtweaks.RTConfig;
-import com.therandomlabs.randomtweaks.util.RTUtils;
+import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
 import net.minecraft.world.gen.ChunkGeneratorOverworld;
@@ -33,14 +32,14 @@ public class ChunkGeneratorVoidIslands extends ChunkGeneratorOverworld {
 		}
 
 		//If the rarity is set to 1, only the spawn chunk should be generated
-		if(RTConfig.voidIslandsWorld.chunkRarity != ONLY_GENERATE_SPAWN_CHUNK &&
-				random.nextInt(RTConfig.voidIslandsWorld.chunkRarity) == 0) {
+		if(RTConfig.VoidIslandsWorld.chunkRarity != ONLY_GENERATE_SPAWN_CHUNK &&
+				random.nextInt(RTConfig.VoidIslandsWorld.chunkRarity) == 0) {
 			return super.generateChunk(x, z);
 		}
 
-		return RTUtils.createVoidChunk(
-				world, random, RTConfig.voidIslandsWorld.biome,
-				RTConfig.voidIslandsWorld.biomeBlacklist, x, z
+		return ChunkGeneratorVoid.createVoidChunk(
+				world, random, RTConfig.VoidIslandsWorld.voidChunkBiome,
+				RTConfig.VoidIslandsWorld.voidChunkRandomBiomeBlacklist, x, z
 		);
 	}
 }
