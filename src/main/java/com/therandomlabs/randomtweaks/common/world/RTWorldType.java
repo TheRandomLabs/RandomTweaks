@@ -38,6 +38,7 @@ public abstract class RTWorldType extends WorldType {
 			}
 
 			final int oldLength = WORLD_TYPES.length;
+			//TODO could cause multithreading issues in 1.13
 			WORLD_TYPES = Arrays.copyOf(WORLD_TYPES, oldLength + 16);
 			WORLD_TYPES[oldLength] = this;
 			id = oldLength;
