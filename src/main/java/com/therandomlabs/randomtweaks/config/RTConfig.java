@@ -204,8 +204,9 @@ public final class RTConfig {
 	}
 
 	public static final class Ding {
-		@Config.Property("Whether to ignore Dynamic Surroundings' \"Mute when Background\" " +
-				"feature.")
+		@Config.Property(
+				"Whether to ignore Dynamic Surroundings' \"Mute when Background\" feature."
+		)
 		public static boolean ignoreDsurroundMuteWhenBackground = true;
 
 		@Config.RangeDouble(min = 0.5, max = 2.0)
@@ -463,8 +464,9 @@ public final class RTConfig {
 
 	public static final class PlayerHeadDrops {
 		@Config.RangeDouble(min = 0.0, max = 1.0)
-		@Config.Property("The player head drop chance when a player is killed by a charged " +
-				"creeper.")
+		@Config.Property(
+				"The player head drop chance when a player is killed by a charged creeper."
+		)
 		public static double chanceWhenKilledByChargedCreeper = 1.0;
 
 		@Config.RangeDouble(min = 0.0, max = 1.0)
