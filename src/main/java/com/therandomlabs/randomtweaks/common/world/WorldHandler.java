@@ -27,14 +27,21 @@ public final class WorldHandler {
 		final GameRules gameRules = world.getGameRules();
 
 		final String netherPortalCreation = RTConfig.GameRules.disableNetherPortalCreation;
-		final String fallDamage = RTConfig.GameRules.fallDamageMultiplier;
 
 		if(!netherPortalCreation.isEmpty() && !gameRules.hasRule(netherPortalCreation)) {
 			gameRules.setOrCreateGameRule(netherPortalCreation, "false");
 		}
 
-		if(!fallDamage.isEmpty() && !gameRules.hasRule(fallDamage)) {
-			gameRules.setOrCreateGameRule(fallDamage, "1.0");
+		final String[] damageMultipliers = {
+				RTConfig.GameRules.drowningDamageMultiplier,
+				RTConfig.GameRules.fallDamageMultiplier,
+				RTConfig.GameRules.fireDamageMultiplier
+		};
+
+		for(String gameRule : damageMultipliers) {
+			if(!gameRule.isEmpty() && !gameRules.hasRule(gameRule)) {
+				gameRules.setOrCreateGameRule(gameRule, "1.0");
+			}
 		}
 	}
 

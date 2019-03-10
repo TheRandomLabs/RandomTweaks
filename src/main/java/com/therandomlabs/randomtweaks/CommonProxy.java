@@ -2,7 +2,7 @@ package com.therandomlabs.randomtweaks;
 
 import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomlib.config.ConfigManager;
-import com.therandomlabs.randomtweaks.common.ArrowHandler;
+import com.therandomlabs.randomtweaks.common.ArrowImpactHandler;
 import com.therandomlabs.randomtweaks.common.NetherPortalSpawnHandler;
 import com.therandomlabs.randomtweaks.common.RTFoodStats;
 import com.therandomlabs.randomtweaks.common.RTLanguageMap;
@@ -21,7 +21,7 @@ public class CommonProxy {
 
 	public void init() {
 		if("1.12.2".equals(TRLUtils.MC_VERSION)) {
-			MinecraftForge.EVENT_BUS.register(ArrowHandler.class);
+			MinecraftForge.EVENT_BUS.register(ArrowImpactHandler.class);
 			MinecraftForge.EVENT_BUS.register(TrampleHandler.class);
 
 			if(RandomTweaks.RANDOMPORTALS_LOADED) {

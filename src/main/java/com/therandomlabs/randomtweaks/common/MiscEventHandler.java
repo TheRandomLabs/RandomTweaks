@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.UUID;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
@@ -13,17 +14,23 @@ import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.EnumActionResult;
+import net.minecraft.world.World;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
 
 @Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 public final class MiscEventHandler {
@@ -90,12 +97,20 @@ public final class MiscEventHandler {
 		final EntityLivingBase entity = event.getEntityLiving();
 		final DamageSource source = event.getSource();
 
-		//"fallDamageMultiplier" gamerule
+		final String gameRule;
 
-		if(source == DamageSource.FALL) {
-			final String fallDamage = RTConfig.GameRules.fallDamageMultiplier;
+		if(source == DamageSource.DROWN) {
+			gameRule = RTConfig.GameRules.drowningDamageMultiplier;
+		} else if(source == DamageSource.FALL) {
+			gameRule = RTConfig.GameRules.fallDamageMultiplier;
+		} else if(source == DamageSource.IN_FIRE || source == DamageSource.ON_FIRE) {
+			gameRule = RTConfig.GameRules.fireDamageMultiplier;
+		} else {
+			gameRule = null;
+		}
 
-			if(fallDamage.isEmpty()) {
+		if(gameRule != null) {
+			if(gameRule.isEmpty()) {
 				return;
 			}
 
@@ -103,7 +118,7 @@ public final class MiscEventHandler {
 
 			try {
 				multiplier = Float.parseFloat(
-						entity.getEntityWorld().getGameRules().getString(fallDamage)
+						entity.getEntityWorld().getGameRules().getString(gameRule)
 				);
 			} catch(NumberFormatException ignored) {}
 
@@ -199,6 +214,54 @@ public final class MiscEventHandler {
 		if(!player.getEntityWorld().isRemote && player.getCooledAttackStrength(0.5F) != 1.0F) {
 			player.resetCooldown();
 			event.setCanceled(true);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
+		if(!RTConfig.Misc.updateAllMapsInInventory) {
+			return;
+		}
+
+		final EntityPlayer player = event.player;
+		final World world = player.getEntityWorld();
+
+		if(world.isRemote) {
+			return;
+		}
+
+		//Taken from https://github.com/quat1024/Crowmap/blob/master/src/main/java/quaternary/
+		//crowmap/Crowmap.java
+
+		for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
+			if(i == player.inventory.currentItem) {
+				//The map is already being held, so there's no need to update it again
+				return;
+			}
+
+			final ItemStack stack = player.inventory.getStackInSlot(i);
+
+			if(stack.getItem() == Items.FILLED_MAP) {
+				Items.FILLED_MAP.updateMapData(
+						world, player, Items.FILLED_MAP.getMapData(stack, world)
+				);
+			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onArrowNock(ArrowNockEvent event) {
+		if(!RTConfig.Misc.bowInfinityFix) {
+			return;
+		}
+
+		final ItemStack bow = event.getBow();
+
+		//Taken from https://github.com/Parker8283/BowInfinityFix/blob/master/src/main/java/net/
+		//parker8283/bif/BowInfinityFix.java
+		if(EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, bow) > 0) {
+			event.getEntityPlayer().setActiveHand(event.getHand());
+			event.setAction(new ActionResult<>(EnumActionResult.SUCCESS, bow));
 		}
 	}
 }

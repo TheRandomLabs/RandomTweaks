@@ -243,12 +243,24 @@ public final class RTConfig {
 		})
 		public static String disableNetherPortalCreation = "disableNetherPortalCreation";
 
+		@Config.Property({
+				"The name of the gamerule that controls the drowning damage multiplier.",
+				"Set this to an empty string to disable this gamerule."
+		})
+		public static String drowningDamageMultiplier = "drowningDamageMultiplier";
+
 		@Config.Previous("misc.fallDamageMultiplierGameRuleName")
 		@Config.Property({
 				"The name of the gamerule that controls the fall damage multiplier.",
 				"Set this to an empty string to disable this gamerule."
 		})
 		public static String fallDamageMultiplier = "fallDamageMultiplier";
+
+		@Config.Property({
+				"The name of the gamerule that controls the fire damage multiplier.",
+				"Set this to an empty string to disable this gamerule."
+		})
+		public static String fireDamageMultiplier = "fireDamageMultiplier";
 	}
 
 	public static final class Hunger {
@@ -328,6 +340,12 @@ public final class RTConfig {
 		)
 		public static boolean betterButtonNames = RandomTweaks.IS_DEOBFUSCATED;
 
+		@Config.Property(
+				"Removes the need for a player to have an arrow in their inventory to use a " +
+						"bow enchanted with Infinity."
+		)
+		public static boolean bowInfinityFix = true;
+
 		@Config.Property({
 				"When death punishments should be enabled.",
 				"When death punishments are enabled, players lose all XP and 3 hunger points " +
@@ -367,6 +385,12 @@ public final class RTConfig {
 				"This only works on 1.12.2 and above."
 		})
 		public static boolean pickUpSkeletonArrows = RandomTweaks.IS_DEOBFUSCATED;
+
+		@Config.Property(
+				"Whether to update all maps in players' inventories instead of only updating " +
+						"currently held maps."
+		)
+		public static boolean updateAllMapsInInventory = RandomTweaks.IS_DEOBFUSCATED;
 
 		public static void onReload() {
 			if(betterButtonNames) {
