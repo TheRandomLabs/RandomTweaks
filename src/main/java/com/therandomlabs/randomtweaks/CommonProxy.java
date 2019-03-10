@@ -1,9 +1,12 @@
 package com.therandomlabs.randomtweaks;
 
+import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomlib.config.ConfigManager;
+import com.therandomlabs.randomtweaks.common.ArrowHandler;
 import com.therandomlabs.randomtweaks.common.NetherPortalSpawnHandler;
 import com.therandomlabs.randomtweaks.common.RTFoodStats;
 import com.therandomlabs.randomtweaks.common.RTLanguageMap;
+import com.therandomlabs.randomtweaks.common.TrampleHandler;
 import com.therandomlabs.randomtweaks.common.world.WorldGeneratorOceanFloor;
 import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
 import com.therandomlabs.randomtweaks.config.RTConfig;
@@ -17,6 +20,17 @@ public class CommonProxy {
 	}
 
 	public void init() {
+		if("1.12.2".equals(TRLUtils.MC_VERSION)) {
+			MinecraftForge.EVENT_BUS.register(ArrowHandler.class);
+			MinecraftForge.EVENT_BUS.register(TrampleHandler.class);
+
+			if(RandomTweaks.RANDOMPORTALS_LOADED) {
+				MinecraftForge.EVENT_BUS.register(NetherPortalSpawnHandler.RandomPortals.class);
+			} else {
+				MinecraftForge.EVENT_BUS.register(NetherPortalSpawnHandler.Vanilla.class);
+			}
+		}
+
 		WorldTypeRegistry.registerWorldTypes();
 
 		if(RTConfig.OceanFloor.enabled && !RandomTweaks.OCEAN_FLOOR_LOADED) {
@@ -24,11 +38,7 @@ public class CommonProxy {
 		}
 
 		if(RTConfig.Hunger.enabled && RandomTweaks.APPLECORE_LOADED) {
-			MinecraftForge.EVENT_BUS.register(new RTFoodStats.AppleCoreEventHandler());
-		}
-
-		if(RandomTweaks.RANDOMPORTALS_LOADED) {
-			MinecraftForge.EVENT_BUS.register(new NetherPortalSpawnHandler.RPOHandler());
+			MinecraftForge.EVENT_BUS.register(RTFoodStats.AppleCoreEventHandler.class);
 		}
 	}
 }

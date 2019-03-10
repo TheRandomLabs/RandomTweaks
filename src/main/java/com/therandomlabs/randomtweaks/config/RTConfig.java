@@ -346,7 +346,10 @@ public final class RTConfig {
 				"name.")
 		public static boolean entitiesDropNameTags = RandomTweaks.IS_DEOBFUSCATED;
 
-		@Config.Property("The farmland trample behavior.")
+		@Config.Property({
+				"The farmland trample behavior.",
+				"This only works on 1.12.2 and above."
+		})
 		public static TrampleHandler.Behavior farmlandTrampleBehavior =
 				TrampleHandler.Behavior.DONT_TRAMPLE_IF_FEATHER_FALLING;
 
@@ -359,7 +362,10 @@ public final class RTConfig {
 		)
 		public static boolean moreRomanNumerals = true;
 
-		@Config.Property("Allows skeleton arrows to be picked up.")
+		@Config.Property({
+				"Allows skeleton arrows to be picked up.",
+				"This only works on 1.12.2 and above."
+		})
 		public static boolean pickUpSkeletonArrows = RandomTweaks.IS_DEOBFUSCATED;
 
 		public static void onReload() {

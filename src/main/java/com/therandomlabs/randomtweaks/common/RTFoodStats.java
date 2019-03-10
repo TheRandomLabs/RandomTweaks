@@ -11,7 +11,7 @@ import squeek.applecore.api.hunger.ExhaustionEvent;
 public class RTFoodStats extends FoodStats {
 	public static class AppleCoreEventHandler {
 		@SubscribeEvent
-		public void onFoodStatsAddition(FoodEvent.FoodStatsAddition event) {
+		public static void onFoodStatsAddition(FoodEvent.FoodStatsAddition event) {
 			event.setCanceled(true);
 
 			final FoodStats stats = event.player.getFoodStats();
@@ -27,8 +27,8 @@ public class RTFoodStats extends FoodStats {
 		}
 
 		@SubscribeEvent
-		public void onExhaustionAddition(ExhaustionEvent.ExhaustionAddition event) {
-			event.deltaExhaustion *= RTConfig.hunger.exhaustionMultiplier;
+		public static void onExhaustionAddition(ExhaustionEvent.ExhaustionAddition event) {
+			event.deltaExhaustion *= RTConfig.Hunger.exhaustionMultiplier;
 		}
 	}
 
@@ -50,7 +50,7 @@ public class RTFoodStats extends FoodStats {
 
 	@Override
 	public void addExhaustion(float exhaustion) {
-		super.addExhaustion(exhaustion * (float) RTConfig.hunger.exhaustionMultiplier);
+		super.addExhaustion(exhaustion * (float) RTConfig.Hunger.exhaustionMultiplier);
 	}
 
 	public static Map.Entry<Integer, Float> addStats(int originalFoodLevel,
@@ -58,15 +58,15 @@ public class RTFoodStats extends FoodStats {
 		int newFoodLevel = originalFoodLevel + foodLevel;
 		float newSaturation = originalSaturation + foodLevel * foodSaturationModifier * 2.0F;
 
-		if(newFoodLevel > RTConfig.hunger.maximumHungerLevel) {
-			if(RTConfig.hunger.carryExcessHungerToSaturation) {
-				newSaturation += originalFoodLevel - RTConfig.hunger.maximumHungerLevel;
+		if(newFoodLevel > RTConfig.Hunger.maximumHungerLevel) {
+			if(RTConfig.Hunger.carryExcessHungerToSaturation) {
+				newSaturation += originalFoodLevel - RTConfig.Hunger.maximumHungerLevel;
 			}
 
-			newFoodLevel = RTConfig.hunger.maximumHungerLevel;
+			newFoodLevel = RTConfig.Hunger.maximumHungerLevel;
 		}
 
-		float maxSaturationLevel = newFoodLevel + (float) RTConfig.hunger.saturationLimit;
+		float maxSaturationLevel = newFoodLevel + (float) RTConfig.Hunger.saturationLimit;
 
 		//In the unlikely event of overflow
 		if(maxSaturationLevel == Float.NEGATIVE_INFINITY) {

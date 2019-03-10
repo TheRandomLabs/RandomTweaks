@@ -10,16 +10,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.monster.EntitySkeleton;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.projectile.EntityArrow;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.ProjectileImpactEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -30,20 +27,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 public final class MiscEventHandler {
-	@SubscribeEvent
-	public static void onArrowImpact(ProjectileImpactEvent.Arrow event) {
-		if(!RTConfig.Misc.pickUpSkeletonArrows) {
-			return;
-		}
-
-		final EntityArrow arrow = event.getArrow();
-
-		if(!arrow.getEntityWorld().isRemote && arrow.shootingEntity instanceof EntitySkeleton &&
-				arrow.pickupStatus == EntityArrow.PickupStatus.DISALLOWED) {
-			arrow.pickupStatus = EntityArrow.PickupStatus.ALLOWED;
-		}
-	}
-
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
 		if(event.getWorld().isRemote) {

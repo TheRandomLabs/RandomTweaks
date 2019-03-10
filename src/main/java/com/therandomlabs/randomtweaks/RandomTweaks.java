@@ -1,10 +1,13 @@
 package com.therandomlabs.randomtweaks;
 
+import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomtweaks.common.command.CommandRegistry;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
+import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
@@ -16,17 +19,14 @@ import org.apache.logging.log4j.Logger;
 		modid = RandomTweaks.MOD_ID, version = RandomTweaks.VERSION,
 		acceptedMinecraftVersions = RandomTweaks.ACCEPTED_MINECRAFT_VERSIONS,
 		acceptableRemoteVersions = RandomTweaks.ACCEPTABLE_REMOTE_VERSIONS,
-		dependencies = RandomTweaks.DEPENDENCIES, guiFactory = RandomTweaks.GUI_FACTORY,
-		updateJSON = RandomTweaks.UPDATE_JSON,
+		guiFactory = RandomTweaks.GUI_FACTORY, updateJSON = RandomTweaks.UPDATE_JSON,
 		certificateFingerprint = RandomTweaks.CERTIFICATE_FINGERPRINT
 )
 public final class RandomTweaks {
 	public static final String MOD_ID = "randomtweaks";
 	public static final String VERSION = "@VERSION@";
-	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12.2,1.13)";
+	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.12,1.13)";
 	public static final String ACCEPTABLE_REMOTE_VERSIONS = "*";
-	public static final String DEPENDENCIES =
-			"required-after:forge@[14.23.4.2718,);after:comforts@[1.2.0,)";
 	public static final String GUI_FACTORY =
 			"com.therandomlabs.randomtweaks.config.RTGuiConfigFactory";
 	public static final String UPDATE_JSON =
@@ -58,6 +58,15 @@ public final class RandomTweaks {
 			serverSide = "com.therandomlabs.randomtweaks.CommonProxy"
 	)
 	public static CommonProxy proxy;
+
+	@Mod.EventHandler
+	public static void construct(FMLConstructionEvent event) {
+		if("1.12.2".equals(TRLUtils.MC_VERSION) && ForgeVersion.buildVersion < 2718) {
+			throw new IllegalStateException(
+					"On 1.12.2, RandomTweaks only runs on Forge 1.12.2-14.23.4.2718 and higher."
+			);
+		}
+	}
 
 	@Mod.EventHandler
 	public static void preInit(FMLPreInitializationEvent event) {
