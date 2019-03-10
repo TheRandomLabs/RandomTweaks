@@ -26,8 +26,8 @@ public final class WorldHandler {
 
 		final GameRules gameRules = world.getGameRules();
 
-		final String netherPortalCreation = RTConfig.Misc.disableNetherPortalCreationGameRuleName;
-		final String fallDamage = RTConfig.Misc.fallDamageMultiplierGameRuleName;
+		final String netherPortalCreation = RTConfig.GameRules.disableNetherPortalCreation;
+		final String fallDamage = RTConfig.GameRules.fallDamageMultiplier;
 
 		if(!netherPortalCreation.isEmpty() && !gameRules.hasRule(netherPortalCreation)) {
 			gameRules.setOrCreateGameRule(netherPortalCreation, "false");

@@ -3,12 +3,14 @@ package com.therandomlabs.randomtweaks.config;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import org.apache.commons.lang3.StringUtils;
 
 public final class RTData {
 	private static RTData data;
@@ -26,7 +28,7 @@ public final class RTData {
 
 		if(path.toFile().exists()) {
 			try {
-				data = new Gson().fromJson(RTConfig.readFile(path), RTData.class);
+				data = new Gson().fromJson(read(path), RTData.class);
 			} catch(JsonSyntaxException ex) {
 				RandomTweaks.LOGGER.error(
 						"Error in the RandomTweaks data JSON. The file will be replaced.", ex
@@ -62,7 +64,38 @@ public final class RTData {
 	}
 
 	public static Path getPath() {
-		return RTConfig.Client.storeDataInLocal ?
-				RTConfig.getJson("../../local/client/rtdata") : RTConfig.getJson("data");
+		final Path path;
+
+		if(RTConfig.Client.storeDataInLocal) {
+			path = Paths.get("local", "client", "rtdata.json");
+		} else {
+			path = Paths.get("config", RandomTweaks.MOD_ID, "data.json");
+		}
+
+		final Path parent = path.getParent();
+
+		try {
+			if(parent != null) {
+				if(Files.isRegularFile(parent)) {
+					Files.delete(parent);
+				}
+
+				Files.createDirectories(parent);
+			}
+		} catch(IOException ex) {
+			RandomTweaks.LOGGER.error("Failed to create parent: " + path, ex);
+		}
+
+		return path;
+	}
+
+	private static String read(Path path) {
+		try {
+			return StringUtils.join(Files.readAllLines(path), System.lineSeparator());
+		} catch(IOException ex) {
+			RandomTweaks.LOGGER.error("Failed to read file: " + path, ex);
+		}
+
+		return "{}";
 	}
 }

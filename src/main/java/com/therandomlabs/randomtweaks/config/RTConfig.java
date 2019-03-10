@@ -1,13 +1,7 @@
 package com.therandomlabs.randomtweaks.config;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.EnumMap;
 import java.util.Map;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.therandomlabs.randomlib.config.Config;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.common.RespawnHandler;
@@ -23,7 +17,6 @@ import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
-import org.apache.commons.lang3.StringUtils;
 
 @Config(modid = RandomTweaks.MOD_ID, path = RandomTweaks.MOD_ID + "/" + RandomTweaks.MOD_ID)
 public final class RTConfig {
@@ -242,6 +235,22 @@ public final class RTConfig {
 		};
 	}
 
+	public static final class GameRules {
+		@Config.Previous("misc.disableNetherPortalCreationGameRuleName")
+		@Config.Property({
+				"The name of the gamerule that disables nether portal creation.",
+				"Set this to an empty string to disable this gamerule."
+		})
+		public static String disableNetherPortalCreation = "disableNetherPortalCreation";
+
+		@Config.Previous("misc.fallDamageMultiplierGameRuleName")
+		@Config.Property({
+				"The name of the gamerule that controls the fall damage multiplier.",
+				"Set this to an empty string to disable this gamerule."
+		})
+		public static String fallDamageMultiplier = "fallDamageMultiplier";
+	}
+
 	public static final class Hunger {
 		@Config.Property("Carries any excess hunger level gained by eating over to the saturation.")
 		public static boolean carryExcessHungerToSaturation = RandomTweaks.IS_DEOBFUSCATED;
@@ -333,22 +342,9 @@ public final class RTConfig {
 		@Config.Property("Disables cumulative anvil costs.")
 		public static boolean disableCumulativeAnvilCosts = true;
 
-		@Config.Property({
-				"The name of the gamerule that disables nether portal creation.",
-				"Set this to an empty string to disable this gamerule."
-		})
-		public static String disableNetherPortalCreationGameRuleName =
-				"disableNetherPortalCreation";
-
 		@Config.Property("Whether living entities should drop name tags if they have a custom " +
 				"name.")
 		public static boolean entitiesDropNameTags = RandomTweaks.IS_DEOBFUSCATED;
-
-		@Config.Property({
-				"The name of the gamerule that controls the fall damage multiplier.",
-				"Set this to an empty string to disable this gamerule."
-		})
-		public static String fallDamageMultiplierGameRuleName = "fallDamageMultiplier";
 
 		@Config.Property("The farmland trample behavior.")
 		public static TrampleHandler.Behavior farmlandTrampleBehavior =
@@ -725,6 +721,9 @@ public final class RTConfig {
 	@Config.Category("Options related to commands.")
 	public static final Commands commands = null;
 
+	@Config.Category("Options related to gamerules.")
+	public static final GameRules gameRules = null;
+
 	@Config.Category("Options related to hunger behavior.")
 	public static final Hunger hunger = null;
 
@@ -736,41 +735,4 @@ public final class RTConfig {
 
 	@Config.Category("Options related to world generation.")
 	public static final World world = null;
-
-	public static Path getConfig(String name) {
-		final Path path = Paths.get("config", RandomTweaks.MOD_ID, name);
-		final Path parent = path.getParent();
-
-		try {
-			if(parent != null) {
-				if(Files.isRegularFile(parent)) {
-					Files.delete(parent);
-				}
-
-				Files.createDirectories(parent);
-			}
-		} catch(IOException ex) {
-			RandomTweaks.LOGGER.error("Failed to create parent: " + path, ex);
-		}
-
-		return path;
-	}
-
-	public static Path getJson(String name) {
-		return getConfig(name + ".json");
-	}
-
-	public static String readFile(Path path) {
-		try {
-			return StringUtils.join(Files.readAllLines(path), System.lineSeparator());
-		} catch(IOException ex) {
-			RandomTweaks.LOGGER.error("Failed to read file: " + path, ex);
-		}
-
-		return "{}";
-	}
-
-	public static JsonObject readJson(Path path) {
-		return new JsonParser().parse(readFile(path)).getAsJsonObject();
-	}
 }

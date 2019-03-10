@@ -107,10 +107,10 @@ public final class MiscEventHandler {
 		final EntityLivingBase entity = event.getEntityLiving();
 		final DamageSource source = event.getSource();
 
-		//"fallDamage" gamerule
+		//"fallDamageMultiplier" gamerule
 
 		if(source == DamageSource.FALL) {
-			final String fallDamage = RTConfig.Misc.fallDamageMultiplierGameRuleName;
+			final String fallDamage = RTConfig.GameRules.fallDamageMultiplier;
 
 			if(fallDamage.isEmpty()) {
 				return;
