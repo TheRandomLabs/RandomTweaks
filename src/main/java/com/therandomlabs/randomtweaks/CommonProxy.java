@@ -20,6 +20,8 @@ public class CommonProxy {
 	}
 
 	public void init() {
+		ConfigManager.reloadFromDisk(RTConfig.class);
+
 		if("1.12.2".equals(TRLUtils.MC_VERSION)) {
 			MinecraftForge.EVENT_BUS.register(ArrowImpactHandler.class);
 			MinecraftForge.EVENT_BUS.register(TrampleHandler.class);
@@ -41,4 +43,6 @@ public class CommonProxy {
 			MinecraftForge.EVENT_BUS.register(RTFoodStats.AppleCoreEventHandler.class);
 		}
 	}
+
+	public void postInit() {}
 }

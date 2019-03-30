@@ -35,7 +35,7 @@ repositories {
 dependencies {
 	shadow "com.github.TheRandomLabs:RandomLib:1.12-SNAPSHOT"
 	compile "com.github.TheRandomLabs:RandomLib:1.12-SNAPSHOT"
-	deobfCompile "applecore:AppleCore:1.12.2-3.1.4:api"
+	deobfCompile "applecore:AppleCore:1.12.2-3.2.0:api"
 }
 
 shadowJar {
@@ -57,7 +57,7 @@ artifacts {
 }
 
 minecraft {
-	version = "1.12.2-14.23.5.2815"
+	version = "1.12.2-14.23.5.2824"
 	runDir = "run"
 	mappings = "stable_39"
 

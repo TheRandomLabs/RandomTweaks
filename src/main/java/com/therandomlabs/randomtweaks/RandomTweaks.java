@@ -9,6 +9,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartedEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
@@ -42,6 +43,7 @@ public final class RandomTweaks {
 	public static final boolean EXPANDED_BONEMEAL_LOADED = Loader.isModLoaded("expandedbonemeal");
 	public static final boolean HEADCRUMBS_LOADED = Loader.isModLoaded("headcrumbs");
 	public static final boolean HELPFIXER_LOADED = Loader.isModLoaded("helpfixer");
+	public static final boolean NO_NIGHT_VISION_FLASHING_LOADED = Loader.isModLoaded("nonvflash");
 	public static final boolean PLAYERS_DROP_HEADS_LOADED = Loader.isModLoaded("playersdropheads");
 	public static final boolean QUARK_LOADED = Loader.isModLoaded("quark");
 	public static final boolean OCEAN_FLOOR_LOADED = Loader.isModLoaded("samsocean");
@@ -76,6 +78,11 @@ public final class RandomTweaks {
 	@Mod.EventHandler
 	public static void init(FMLInitializationEvent event) {
 		proxy.init();
+	}
+
+	@Mod.EventHandler
+	public static void postInit(FMLPostInitializationEvent event) {
+		proxy.postInit();
 	}
 
 	@Mod.EventHandler

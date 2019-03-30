@@ -108,6 +108,9 @@ public final class RTConfig {
 		@Config.Category("Options related to keybinds.")
 		public static final Keybinds keybinds = null;
 
+		@Config.Category("Options related to Night Vision.")
+		public static final NightVision nightVision = null;
+
 		@Config.Category("Options related to the time of day overlay.")
 		public static final TimeOfDay timeOfDay = null;
 
@@ -413,6 +416,39 @@ public final class RTConfig {
 					Blocks.END_GATEWAY.setTranslationKey(null);
 				}
 			}
+		}
+	}
+
+	public static final class NightVision {
+		@Config.RequiresMCRestart
+		@Config.Property("Whether to enable the following configuration options.")
+		public static boolean enabled = true;
+
+		@Config.RangeDouble(min = 0.0, max = 1.0)
+		@Config.Property("THe default brightness of the Night Vision effect.")
+		public static float brightness = 1.0F;
+
+		@Config.Property(
+				"Whether to disable the flashing effect that shows when the Night Vision effect " +
+						"has less than 10 seconds remaining."
+		)
+		public static boolean disableFlashing = true;
+
+		@Config.Property({
+				"Whether the Night Vision brightness should gradually fade instead of abruptly " +
+						"stopping.",
+				"This requires the flashing effect to be disabled."
+		})
+		public static boolean fadeOut = true;
+
+		@Config.RangeInt(min = 10, max = 200)
+		@Config.Property("How long the Night Vision brightness should fade out for.")
+		public static int fadeOutTicks = 20;
+
+		public static float fadeOutRate;
+
+		public static void onReload() {
+			fadeOutRate = brightness / fadeOutTicks;
 		}
 	}
 

@@ -1,7 +1,7 @@
 package com.therandomlabs.randomtweaks.common.command;
 
 import com.therandomlabs.randomlib.TRLUtils;
-import com.therandomlabs.randompatches.config.RPStaticConfig;
+import com.therandomlabs.randompatches.config.RPConfig;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -32,7 +32,7 @@ public class CommandDisconnect extends CommandBase {
 
 		if(RandomTweaks.RANDOMPATCHES_LOADED) {
 			try {
-				forceTitleScreenOnDisconnect = RPStaticConfig.forceTitleScreenOnDisconnect;
+				forceTitleScreenOnDisconnect = RPConfig.Client.forceTitleScreenOnDisconnect;
 			} catch(Throwable t) {
 				RandomTweaks.LOGGER.error("Failed to disconnect", t);
 				throw new CommandException(TRLUtils.localize(
