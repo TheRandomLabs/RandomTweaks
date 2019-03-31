@@ -2,6 +2,7 @@ package com.therandomlabs.randomtweaks.common;
 
 import java.util.Set;
 import com.google.common.collect.ImmutableSet;
+import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.entity.Entity;
@@ -85,7 +86,7 @@ public final class EntityInteractHandler {
 
 	private static int getHealAmount(EntityTameable entity, ItemStack stack, Set<Item> healItems) {
 		//If the entity is not tamed and this is not a development environment
-		if(!(RandomTweaks.IS_DEOBFUSCATED || entity.isTamed())) {
+		if(!(TRLUtils.IS_DEOBFUSCATED || entity.isTamed())) {
 			return 0;
 		}
 

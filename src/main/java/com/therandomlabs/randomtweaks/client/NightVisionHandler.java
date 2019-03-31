@@ -31,8 +31,8 @@ public final class NightVisionHandler {
 				}
 
 				if(!RTConfig.NightVision.disableFlashing) {
-					return 0.7F + MathHelper.sin((
-							duration - partialTicks) * (float) Math.PI * 0.2F
+					return 0.7F + MathHelper.sin(
+							(duration - partialTicks) * (float) Math.PI * 0.2F
 					) * 0.3F;
 				}
 

@@ -2,6 +2,7 @@ package com.therandomlabs.randomtweaks.client;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.client.Minecraft;
@@ -22,7 +23,6 @@ public final class CapeHandler {
 	public static final ImmutableList<String> CONTRIBUTORS = ImmutableList.of(
 			"de2b3ebd-c0e9-4f43-b0f7-b660d482dd51",
 			"819eb301-e040-4580-9c63-3f98684f58bc",
-			"1dbb2583-db0a-4c8a-b187-f62bdde4595d",
 			"fc2c6552-9a1d-4d7e-b9c1-2fef96cacc6c"
 	);
 
@@ -44,8 +44,7 @@ public final class CapeHandler {
 	}
 
 	public static boolean hasCape(AbstractClientPlayer player) {
-		return RandomTweaks.IS_DEOBFUSCATED ||
-				CONTRIBUTORS.contains(player.getUniqueID().toString());
+		return TRLUtils.IS_DEOBFUSCATED || CONTRIBUTORS.contains(player.getUniqueID().toString());
 	}
 
 	private static void setCape(AbstractClientPlayer player) {

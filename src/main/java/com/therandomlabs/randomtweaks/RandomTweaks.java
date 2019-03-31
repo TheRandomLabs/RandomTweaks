@@ -2,7 +2,6 @@ package com.therandomlabs.randomtweaks;
 
 import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomtweaks.common.command.CommandRegistry;
-import net.minecraft.launchwrapper.Launch;
 import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
@@ -51,9 +50,6 @@ public final class RandomTweaks {
 	public static final boolean RANDOMPATCHES_LOADED = Loader.isModLoaded("randompatches");
 	public static final boolean RANDOMPORTALS_LOADED = Loader.isModLoaded("randomportals");
 	public static final boolean VANILLATWEAKS_LOADED = Loader.isModLoaded("vanillatweaks");
-
-	public static final boolean IS_DEOBFUSCATED =
-			(boolean) Launch.blackboard.get("fml.deobfuscatedEnvironment");
 
 	@SidedProxy(
 			clientSide = "com.therandomlabs.randomtweaks.ClientProxy",

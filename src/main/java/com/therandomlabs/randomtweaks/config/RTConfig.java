@@ -2,6 +2,7 @@ package com.therandomlabs.randomtweaks.config;
 
 import java.util.EnumMap;
 import java.util.Map;
+import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomlib.config.Config;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.common.RespawnHandler;
@@ -58,7 +59,7 @@ public final class RTConfig {
 
 	public static final class AutoThirdPerson {
 		@Config.Property("Enables auto-third person upon entering a boat.")
-		public static boolean boat = RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean boat = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property("Enables auto-third person upon flying with elytra.")
 		public static boolean elytra = true;
@@ -67,13 +68,13 @@ public final class RTConfig {
 		public static boolean enabled = true;
 
 		@Config.Property("Enables auto-third person upon mounting a horse.")
-		public static boolean horse = RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean horse = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property("Enables auto-third person upon entering a minecart.")
-		public static boolean minecart = RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean minecart = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property("Enables auto-third person upon mounting a pig.")
-		public static boolean pig = RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean pig = TRLUtils.IS_DEOBFUSCATED;
 	}
 
 	public static final class BoneMeal {
@@ -125,7 +126,7 @@ public final class RTConfig {
 		public static boolean disableEnderDragonDeathSound;
 
 		@Config.Property("Disables the potion icons at the top right.")
-		public static boolean disablePotionIcons = RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean disablePotionIcons = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property("Stops potion effects from moving GUIs to the right.")
 		public static boolean disablePotionShift = true;
@@ -134,13 +135,13 @@ public final class RTConfig {
 		public static boolean disableWitherSpawnSound;
 
 		@Config.Property("Whether to start the game on the Multiplayer screen.")
-		public static boolean startOnMultiplayerScreen = RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean startOnMultiplayerScreen = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property("Whether to enable stepup.")
-		public static boolean stepup = RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean stepup = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property("Whether stepup is enabled by default.")
-		public static boolean stepupEnabledByDefault = RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean stepupEnabledByDefault = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property(
 				"Whether the toggle states for the time of day overlay, stepup and FoV changes " +
@@ -269,7 +270,7 @@ public final class RTConfig {
 
 	public static final class Hunger {
 		@Config.Property("Carries any excess hunger level gained by eating over to the saturation.")
-		public static boolean carryExcessHungerToSaturation = RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean carryExcessHungerToSaturation = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.RequiresMCRestart
 		@Config.Property("Enables hunger tweaks.")
@@ -277,11 +278,11 @@ public final class RTConfig {
 
 		@Config.RangeDouble(min = 0.0)
 		@Config.Property("The hunger exhaustion multiplier.")
-		public static double exhaustionMultiplier = RandomTweaks.IS_DEOBFUSCATED ? 0.0 : 1.0;
+		public static double exhaustionMultiplier = TRLUtils.IS_DEOBFUSCATED ? 0.0 : 1.0;
 
 		@Config.RangeInt(min = 1)
 		@Config.Property("The maximum hunger level.")
-		public static int maximumHungerLevel = RandomTweaks.IS_DEOBFUSCATED ? 22 : 20;
+		public static int maximumHungerLevel = TRLUtils.IS_DEOBFUSCATED ? 22 : 20;
 
 		@Config.RangeInt(min = 0)
 		@Config.Property("The minimum hunger level on respawn.")
@@ -299,7 +300,7 @@ public final class RTConfig {
 				"The value added to the player's food level to calculate the maximum " +
 						"saturation level."
 		)
-		public static double saturationLimit = RandomTweaks.IS_DEOBFUSCATED ? 100.0 : 0.0;
+		public static double saturationLimit = TRLUtils.IS_DEOBFUSCATED ? 100.0 : 0.0;
 	}
 
 	public static final class Keybinds {
@@ -326,7 +327,7 @@ public final class RTConfig {
 		public static boolean allowSleepNearMobsWithCustomNames = true;
 
 		@Config.Property("Whether attacks should be disabled during the attack cooldown.")
-		public static boolean disableAttacksDuringAttackCooldown = RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean disableAttacksDuringAttackCooldown = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property("Disables the bed proximity requirement.")
 		public static boolean disableBedProximityRequirement = true;
@@ -336,13 +337,13 @@ public final class RTConfig {
 				"The base attack speed for players.",
 				"Set this to 16.0 or higher to remove the attack cooldown."
 		})
-		public static double attackSpeed = RandomTweaks.IS_DEOBFUSCATED ? 24.0 : 4.0;
+		public static double attackSpeed = TRLUtils.IS_DEOBFUSCATED ? 24.0 : 4.0;
 
 		@Config.Property(
 				"Changes the names of the stone and wooden buttons so that they describe " +
 						"their type."
 		)
-		public static boolean betterButtonNames = RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean betterButtonNames = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property(
 				"Removes the need for a player to have an arrow in their inventory to use a " +
@@ -366,7 +367,7 @@ public final class RTConfig {
 
 		@Config.Property("Whether living entities should drop name tags if they have a custom " +
 				"name.")
-		public static boolean entitiesDropNameTags = RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean entitiesDropNameTags = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property({
 				"The farmland trample behavior.",
@@ -388,13 +389,13 @@ public final class RTConfig {
 				"Allows skeleton arrows to be picked up.",
 				"This only works on 1.12.2 and above."
 		})
-		public static boolean pickUpSkeletonArrows = RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean pickUpSkeletonArrows = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property(
 				"Whether to update all maps in players' inventories instead of only updating " +
 						"currently held maps."
 		)
-		public static boolean updateAllMapsInInventory = RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean updateAllMapsInInventory = TRLUtils.IS_DEOBFUSCATED;
 
 		public static void onReload() {
 			if(betterButtonNames) {
@@ -663,7 +664,7 @@ public final class RTConfig {
 		public static Alignment alignment = Alignment.TOPLEFT;
 
 		@Config.Property("Disables the overlay if doDaylightCycle is false.")
-		public static boolean disableIfNoDaylightCycle = !RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean disableIfNoDaylightCycle = !TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property("Disables the overlay in Adventure Mode.")
 		public static boolean disableInAdventureMode = true;
@@ -675,7 +676,7 @@ public final class RTConfig {
 		public static boolean enabled = true;
 
 		@Config.Property("Enables the overlay by default.")
-		public static boolean enabledByDefault = RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean enabledByDefault = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property(
 				"Whether the overlay should say \"Light\" or \"Dark\" instead of " +
@@ -684,7 +685,7 @@ public final class RTConfig {
 		public static boolean lightOrDark;
 
 		@Config.Property("Enables 24-hour time.")
-		public static boolean twentyFourHourTime = RandomTweaks.IS_DEOBFUSCATED;
+		public static boolean twentyFourHourTime = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property("The X offset.")
 		public static int x = 0;
