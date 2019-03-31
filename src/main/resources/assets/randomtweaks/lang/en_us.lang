@@ -88,6 +88,13 @@ randomtweaks.config.client.keybinds.reloadSoundSystem=Enable Reload Sound System
 randomtweaks.config.client.keybinds.toggleFoVChanges=Enable Toggle FoV Changes keybind
 randomtweaks.config.client.keybinds.toggleTimeOfDayOverlay=Enable Toggle Time of Day Overlay keybind
 
+randomtweaks.config.client.nightVision=Night Vision
+randomtweaks.config.client.nightVision.enabled=Enabled
+randomtweaks.config.client.nightVision.brightness=Brightness
+randomtweaks.config.client.nightVision.disableFlashing=Disable flashing
+randomtweaks.config.client.nightVision.fadeOut=Fade out
+randomtweaks.config.client.nightVision.fadeOutTicks=Fade out ticks
+
 randomtweaks.config.misc=Miscellaneous
 randomtweaks.config.misc.tooltip=Options that don't fit into any other categories.
 randomtweaks.config.misc.allowSleepNearMobsWithCustomNames=Allow sleep near mobs with custom names
