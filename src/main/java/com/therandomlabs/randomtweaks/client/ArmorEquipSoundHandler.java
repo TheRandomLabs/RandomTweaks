@@ -15,9 +15,7 @@ import net.minecraft.util.SoundEvent;
 
 public final class ArmorEquipSoundHandler {
 	private static final Minecraft mc = Minecraft.getMinecraft();
-
-	private static final List<ItemStack> previousEquipment =
-			NonNullList.withSize(4, ItemStack.EMPTY);
+	private static final List<ItemStack> previousArmor = NonNullList.withSize(4, ItemStack.EMPTY);
 
 	private ArmorEquipSoundHandler() {}
 
@@ -27,10 +25,10 @@ public final class ArmorEquipSoundHandler {
 		}
 
 		for(int i = 0; i < 4; i++) {
-			final ItemStack previousStack = previousEquipment.get(i);
+			final ItemStack previousStack = previousArmor.get(i);
 
 			final ItemStack stack = mc.player.inventory.armorInventory.get(i);
-			previousEquipment.set(i, stack == ItemStack.EMPTY ? stack : stack.copy());
+			previousArmor.set(i, stack == ItemStack.EMPTY ? stack : stack.copy());
 
 			if(!ItemStack.areItemsEqualIgnoreDurability(stack, previousStack)) {
 				SoundEvent sound = getSound(stack);

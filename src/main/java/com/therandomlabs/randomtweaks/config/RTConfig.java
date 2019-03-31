@@ -789,6 +789,15 @@ public final class RTConfig {
 		public static final VoidIslandsWorld voidIslandsWorld = null;
 
 		@Config.Property({
+				"Whether to fix duplicate entity UUIDs by reassigning them.",
+				"This feature is experimental so worlds should be backed up before this is enabled."
+		})
+		public static boolean fixDuplicateEntityUUIDs = TRLUtils.IS_DEOBFUSCATED;
+
+		@Config.Property("Whether to log entity UUID reassignments.")
+		public static boolean logEntityUUIDReassignments = true;
+
+		@Config.Property({
 				"Enables the Realistic world type",
 				"Name: REALISTIC"
 		})

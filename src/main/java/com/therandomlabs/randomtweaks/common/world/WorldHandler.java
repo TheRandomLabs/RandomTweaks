@@ -1,21 +1,79 @@
 package com.therandomlabs.randomtweaks.common.world;
 
+import java.util.Random;
+import java.util.UUID;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityList;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.util.ClassInheritanceMultiMap;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.DimensionType;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
 import net.minecraft.world.WorldType;
+import net.minecraft.world.chunk.Chunk;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.world.ChunkEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 @Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 public final class WorldHandler {
+	private static final Random random = new Random();
+
+	@SubscribeEvent
+	public static void onChunkLoad(ChunkEvent.Load event) {
+		if(!RTConfig.World.fixDuplicateEntityUUIDs) {
+			return;
+		}
+
+		final World world = event.getWorld();
+
+		if(world.isRemote) {
+			return;
+		}
+
+		final Chunk chunk = event.getChunk();
+		final WorldServer serverWorld = (WorldServer) world;
+
+		//Taken and adapted from:
+		//https://minecraft.curseforge.com/projects/deuf-duplicate-entity-uuid-fix
+
+		for(ClassInheritanceMultiMap<Entity> entities : chunk.getEntityLists()) {
+			for(Entity entity : entities) {
+				if(entity instanceof EntityPlayer) {
+					continue;
+				}
+
+				final UUID uuid = entity.getUniqueID();
+				final Entity entityFromUUID = serverWorld.getEntityFromUuid(uuid);
+
+				if(entityFromUUID != null && entityFromUUID != entity) {
+					UUID newUUID;
+
+					do {
+						newUUID = MathHelper.getRandomUUID(random);
+					} while(serverWorld.getEntityFromUuid(newUUID) != null);
+
+					if(RTConfig.World.logEntityUUIDReassignments) {
+						RandomTweaks.LOGGER.info(
+								"Changing UUID of entity {} from {} to {}",
+								EntityList.getKey(entity), uuid, newUUID
+						);
+					}
+
+					entity.setUniqueId(newUUID);
+				}
+			}
+		}
+	}
+
 	@SubscribeEvent
 	public static void onWorldLoad(WorldEvent.Load event) {
 		final World world = event.getWorld();

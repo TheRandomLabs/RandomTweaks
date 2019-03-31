@@ -183,6 +183,8 @@ randomtweaks.config.playerHeadDrops.normalChance=Normal drop chance
 
 randomtweaks.config.world=World
 randomtweaks.config.world.tooltip=Options related to world generation.
+randomtweaks.config.world.fixDuplicateEntityUUIDs=Fix duplicate entity UUIDs
+randomtweaks.config.world.logEntityUUIDReassignments=Log entity UUID reassignments
 randomtweaks.config.world.realisticWorldType=Enable Realistic world type
 
 randomtweaks.config.world.oceanFloor=Ocean Floor Generation
