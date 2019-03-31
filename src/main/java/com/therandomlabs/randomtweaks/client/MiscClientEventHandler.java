@@ -89,7 +89,12 @@ public final class MiscClientEventHandler {
 
 	@SubscribeEvent
 	public static void onClientTick(TickEvent.ClientTickEvent event) {
+		if(event.phase == TickEvent.Phase.END) {
+			return;
+		}
+
 		AutoThirdPersonHandler.onClientTick();
+		ArmorEquipSoundHandler.onClientTick();
 		DingHandler.onClientTick();
 	}
 }

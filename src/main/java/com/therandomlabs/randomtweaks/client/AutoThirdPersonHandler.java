@@ -19,6 +19,8 @@ public final class AutoThirdPersonHandler {
 	private static int lastID = NO_ENTITY;
 	private static int originalPerspective;
 
+	private AutoThirdPersonHandler() {}
+
 	public static void onClientTick() {
 		if(!RTConfig.AutoThirdPerson.enabled || mc.world == null || mc.player == null) {
 			return;

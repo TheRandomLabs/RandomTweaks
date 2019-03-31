@@ -57,6 +57,20 @@ public final class RTConfig {
 		public static boolean protectPetsFromSneakingOwners;
 	}
 
+	public static final class ArmorEquipSounds {
+		@Config.Property("Whether to enable the armor equip/unequip sounds.")
+		public static boolean enabled = true;
+
+		@Config.Property("The elytra equip/unequip sound.")
+		public static SoundEvent elytraSound = SoundEvents.ITEM_ARMOR_EQIIP_ELYTRA;
+
+		@Config.Property("The pumpkin equip/unequip sound.")
+		public static SoundEvent pumpkinSound = SoundEvents.ITEM_ARMOR_EQUIP_GENERIC;
+
+		@Config.Property("The skull equip/unequip sound.")
+		public static SoundEvent skullSound = SoundEvents.ITEM_ARMOR_EQUIP_GENERIC;
+	}
+
 	public static final class AutoThirdPerson {
 		@Config.Property("Enables auto-third person upon entering a boat.")
 		public static boolean boat = TRLUtils.IS_DEOBFUSCATED;
@@ -97,6 +111,9 @@ public final class RTConfig {
 	}
 
 	public static final class Client {
+		@Config.Category("Options related to armor equip/unequip sounds.")
+		public static final ArmorEquipSounds armorEquipSounds = null;
+
 		@Config.Category("Options related to the auto-third person feature.")
 		public static final AutoThirdPerson autoThirdPerson = null;
 
@@ -371,7 +388,7 @@ public final class RTConfig {
 
 		@Config.Property({
 				"The farmland trample behavior.",
-				"This only works on 1.12.2 and above."
+				"This does not work on versions below 1.12.2."
 		})
 		public static TrampleHandler.Behavior farmlandTrampleBehavior =
 				TrampleHandler.Behavior.DONT_TRAMPLE_IF_FEATHER_FALLING;
@@ -387,7 +404,7 @@ public final class RTConfig {
 
 		@Config.Property({
 				"Allows skeleton arrows to be picked up.",
-				"This only works on 1.12.2 and above."
+				"This does not work on versions below 1.12.2."
 		})
 		public static boolean pickUpSkeletonArrows = TRLUtils.IS_DEOBFUSCATED;
 
