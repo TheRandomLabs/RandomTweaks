@@ -443,6 +443,9 @@ public final class RTConfig {
 		@Config.Property("Whether to localize the Nether Portal, End Portal and End Gateway names.")
 		public static boolean localizePortalNames = true;
 
+		@Config.Property("Whether mobs should drop loot even if they are not killed by players.")
+		public static boolean mobsAlwaysDropLoot = TRLUtils.IS_DEOBFUSCATED;
+
 		@Config.Property(
 				"Generates Roman numerals from " + Short.MIN_VALUE + " to " +
 						Short.MAX_VALUE + " as they are needed."

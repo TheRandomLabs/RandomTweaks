@@ -21,7 +21,10 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
@@ -168,6 +171,28 @@ public final class MiscEventHandler {
 				((EntityLivingBase) attacker).setRevengeTarget(null);
 				event.setCanceled(true);
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onLivingDeath(LivingDeathEvent event) {
+		if(!RTConfig.Misc.mobsAlwaysDropLoot) {
+			return;
+		}
+
+		final EntityLivingBase entity = event.getEntityLiving();
+		final World world = entity.getEntityWorld();
+
+		if(world.isRemote) {
+			return;
+		}
+
+		if(entity.recentlyHit == 0) {
+			entity.recentlyHit = 100;
+		}
+
+		if(entity.attackingPlayer == null) {
+			entity.attackingPlayer = FakePlayerFactory.getMinecraft((WorldServer) world);
 		}
 	}
 
