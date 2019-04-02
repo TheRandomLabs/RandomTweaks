@@ -1,5 +1,4 @@
 randomtweaks.config.animals=Animals
-randomtweaks.config.animals.tooltip=Options related to animals (including villagers).
 randomtweaks.config.animals.batLeatherDropChance=Bat leather drop chance
 randomtweaks.config.animals.coloredSheep=Colored sheep spawns
 randomtweaks.config.animals.leashableVillagers=Leashable villagers
@@ -39,13 +38,11 @@ randomtweaks.config.animals.squids.maxPackSize=Maximum squid spawn pack size
 randomtweaks.config.animals.squids.spawnRadiusLimit=Maximum squid spawn radius from player
 
 randomtweaks.config.boneMeal=Bone Meal
-randomtweaks.config.boneMeal.tooltip=Options related to bone meal.
 randomtweaks.config.boneMeal.cacti=Cacti
 randomtweaks.config.boneMeal.netherWart=Nether wart
 randomtweaks.config.boneMeal.sugarCanes=Sugar canes
 
 randomtweaks.config.client=Client
-randomtweaks.config.client.tooltip=Options related to features that only work client-side.
 randomtweaks.config.client.clearWater=Remove underwater fog
 randomtweaks.config.client.contributorCapes=Enable contributor capes
 randomtweaks.config.client.disableEnderDragonDeathSound=Disable ender dragon death sound
@@ -122,8 +119,18 @@ randomtweaks.config.client.timeOfDay.twentyFourHourTime=Use twenty-four hour tim
 randomtweaks.config.client.timeOfDay.x=X coordinate
 randomtweaks.config.client.timeOfDay.y=Y coordinate
 
+randomtweaks.config.cobwebBurning=Cobweb Burning
+randomtweaks.config.cobwebBurning.enableBurning=Enable burning
+randomtweaks.config.cobwebBurning.disableBurningIfSneaking=Disable burning if sneaking
+randomtweaks.config.cobwebBurning.items=Items
+randomtweaks.config.cobwebBurning.consumeAmount=Consume amount
+randomtweaks.config.cobwebBurning.damageAmount=Damage amount
+randomtweaks.config.cobwebBurning.burnSound=Burn sound
+randomtweaks.config.cobwebBurning.flammableCobwebs=Flammable cobwebs
+randomtweaks.config.cobwebBurning.cobwebFireSpreadSpeed=Cobweb fire spread speed
+randomtweaks.config.cobwebBurning.cobwebFlammability=Cobweb flammability
+
 randomtweaks.config.commands=Commands
-randomtweaks.config.commands.tooltip=Options related to commands.
 randomtweaks.config.commands.deletegamerule=/deletegamerule
 randomtweaks.config.commands.disconnect=/disconnect
 randomtweaks.config.commands.giveTweaks=Tweaks to /give
@@ -139,7 +146,6 @@ randomtweaks.config.gameRules.fallDamageMultiplier=fallDamageMultiplier
 randomtweaks.config.gameRules.fireDamageMultiplier=fireDamageMultiplier
 
 randomtweaks.config.hunger=Hunger
-randomtweaks.config.hunger.tooltip=Options related to hunger behavior.
 randomtweaks.config.hunger.carryExcessHungerToSaturation=Carry excess hunger to saturation
 randomtweaks.config.hunger.enabled=Enable all hunger tweaks
 randomtweaks.config.hunger.exhaustionMultiplier=Exhaustion multiplier
@@ -152,7 +158,6 @@ randomtweaks.config.hunger.respawnResetBehavior.resetUnlessKeepInventory=Reset u
 randomtweaks.config.hunger.saturationLimit=Value added to food level for saturation limit
 
 randomtweaks.config.misc=Miscellaneous
-randomtweaks.config.misc.tooltip=Options that don't fit into any other categories.
 randomtweaks.config.misc.allowSleepNearMobsWithCustomNames=Allow sleep near mobs with custom names
 randomtweaks.config.misc.attackSpeed=Attack speed
 randomtweaks.config.misc.betterButtonNames=Better button names
@@ -175,14 +180,12 @@ randomtweaks.config.misc.pickUpSkeletonArrows=Allow arrows shot by skeletons to 
 randomtweaks.config.misc.updateAllMapsInInventory=Update all maps in inventory
 
 randomtweaks.config.playerHeadDrops=Player Head Drops
-randomtweaks.config.playerHeadDrops.tooltip=Options related to player head drops.
 randomtweaks.config.playerHeadDrops.enabled=Enable player head drops
 randomtweaks.config.playerHeadDrops.chanceWhenKilledByChargedCreeper=Drop chance when killed by a charged creeper
 randomtweaks.config.playerHeadDrops.chanceWhenKilledByPlayer=Drop chance when killed by another player
 randomtweaks.config.playerHeadDrops.normalChance=Normal drop chance
 
 randomtweaks.config.world=World
-randomtweaks.config.world.tooltip=Options related to world generation.
 randomtweaks.config.world.fixDuplicateEntityUUIDs=Fix duplicate entity UUIDs
 randomtweaks.config.world.logEntityUUIDReassignments=Log entity UUID reassignments
 randomtweaks.config.world.realisticWorldType=Enable Realistic world type

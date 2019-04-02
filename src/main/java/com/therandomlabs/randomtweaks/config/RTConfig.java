@@ -14,8 +14,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Biomes;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
+import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
 
@@ -167,6 +169,52 @@ public final class RTConfig {
 		public static boolean storeDataInLocal = true;
 	}
 
+	public static final class CobwebBurning {
+		@Config.Property("Whether the configured items can be used to burn cobwebs.")
+		public static boolean enableBurning = TRLUtils.IS_DEOBFUSCATED;
+
+		@Config.Property("Whether cobweb burning should be disabled if the player is sneaking.")
+		public static boolean disableBurningIfSneaking = true;
+
+		@Config.Blacklist("minecraft:air")
+		@Config.Property("The items that can be used to burn cobwebs.")
+		public static Item[] items = {
+				Items.FLINT_AND_STEEL,
+				Items.FIRE_CHARGE,
+				Item.getItemFromBlock(Blocks.TORCH)
+		};
+
+		@Config.RangeInt(min = 0, max = Short.MAX_VALUE)
+		@Config.Property("How much the configured non-damageable items should be consumed.")
+		public static int consumeAmount = 1;
+
+		@Config.RangeInt(min = 0, max = Short.MAX_VALUE)
+		@Config.Property("How much the configured damageable items should be damaged.")
+		public static int damageAmount = 1;
+
+		@Config.Property("The sound that should be played when cobwebs are burnt.")
+		public static SoundEvent burnSound = SoundEvents.ITEM_FLINTANDSTEEL_USE;
+
+		@Config.Property("Whether cobwebs should be flammable.")
+		public static boolean flammableCobwebs = TRLUtils.IS_DEOBFUSCATED;
+
+		@Config.RangeInt(min = 0)
+		@Config.Property("The encouragement value for burning cobwebs.")
+		public static int cobwebFireSpreadSpeed = 15;
+
+		@Config.RangeInt(min = 0)
+		@Config.Property("The flammability value for burning cobwebs.")
+		public static int cobwebFlammability = 70;
+
+		public static void onReload() {
+			if(flammableCobwebs) {
+				Blocks.FIRE.setFireInfo(Blocks.WEB, cobwebFireSpreadSpeed, cobwebFlammability);
+			} else {
+				Blocks.FIRE.setFireInfo(Blocks.WEB, 0, 0);
+			}
+		}
+	}
+
 	public static final class Commands {
 		@Config.RequiresWorldReload
 		@Config.Property("Enables the /deletegamerule command.")
@@ -174,8 +222,7 @@ public final class RTConfig {
 
 		@Config.RequiresMCRestart
 		@Config.Property(
-				"Enables the client-sided /disconnect command, which leaves the " +
-						"current world."
+				"Enables the client-sided /disconnect command, which leaves the current world."
 		)
 		public static boolean disconnect = true;
 
@@ -812,6 +859,9 @@ public final class RTConfig {
 
 	@Config.Category("Options related to features that only work client-side.")
 	public static final Client client = null;
+
+	@Config.Category("Options related to cobweb burning.")
+	public static final CobwebBurning cobwebBurning = null;
 
 	@Config.Category("Options related to commands.")
 	public static final Commands commands = null;
