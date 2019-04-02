@@ -192,7 +192,7 @@ public final class RTConfig {
 		@Config.Property("How much the configured damageable items should be damaged.")
 		public static int damageAmount = 1;
 
-		@Config.Property("The sound that should be played when cobwebs are burnt.")
+		@Config.Property("The sound that should be played when cobwebs are burned.")
 		public static SoundEvent burnSound = SoundEvents.ITEM_FLINTANDSTEEL_USE;
 
 		@Config.Property("Whether cobwebs should be flammable.")
