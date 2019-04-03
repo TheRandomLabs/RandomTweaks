@@ -508,20 +508,22 @@ public final class RTConfig {
 		public static float brightness = 1.0F;
 
 		@Config.Property(
+				"Whether the Night Vision effect should fade out or stay at its maximum " +
+						"brightness until it runs out."
+		)
+		public static boolean fadeOut = true;
+
+		@Config.Property(
 				"Whether to disable the flashing effect that shows when the Night Vision effect " +
 						"has less than 10 seconds remaining."
 		)
 		public static boolean disableFlashing = true;
 
-		@Config.Property({
-				"Whether the Night Vision brightness should gradually fade instead of abruptly " +
-						"stopping.",
-				"This requires the flashing effect to be disabled."
-		})
-		public static boolean fadeOut = true;
-
 		@Config.RangeInt(min = 10, max = 200)
-		@Config.Property("How long the Night Vision brightness should fade out for.")
+		@Config.Property(
+				"How long the Night Vision brightness should fade out for if the flashing " +
+						"effect is disabled."
+		)
 		public static int fadeOutTicks = 20;
 
 		public static float fadeOutRate;
