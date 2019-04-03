@@ -16,7 +16,7 @@ public class WorldTypeVoid extends RTWorldType {
 	}
 
 	@Override
-	public ChunkGeneratorVoid getChunkGenerator(World world, String generatorOptions) {
-		return new ChunkGeneratorVoid(world);
+	public ChunkProviderVoid getChunkGenerator(World world, String generatorOptions) {
+		return new ChunkProviderVoid(world);
 	}
 }

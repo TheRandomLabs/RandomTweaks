@@ -75,7 +75,7 @@ public final class SquidHandler {
 		}
 
 		final World world = event.getWorld();
-		final Chunk chunk = world.getChunk(event.getEntity().getPosition());
+		final Chunk chunk = world.getChunkFromBlockCoords(event.getEntity().getPosition());
 
 		int squids = 0;
 

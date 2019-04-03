@@ -4,15 +4,15 @@ import java.util.Random;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.ChunkGeneratorOverworld;
+import net.minecraft.world.gen.ChunkProviderOverworld;
 
-public class ChunkGeneratorVoidIslands extends ChunkGeneratorOverworld {
+public class ChunkProviderVoidIslands extends ChunkProviderOverworld {
 	public static final int ONLY_GENERATE_SPAWN_CHUNK = 1;
 
 	private final World world;
 	private final Random random;
 
-	public ChunkGeneratorVoidIslands(World world) {
+	public ChunkProviderVoidIslands(World world) {
 		super(
 				world,
 				world.getSeed(),
@@ -37,7 +37,7 @@ public class ChunkGeneratorVoidIslands extends ChunkGeneratorOverworld {
 			return super.generateChunk(x, z);
 		}
 
-		return ChunkGeneratorVoid.createVoidChunk(
+		return ChunkProviderVoid.createVoidChunk(
 				world, random, RTConfig.VoidIslandsWorld.voidChunkBiome,
 				RTConfig.VoidIslandsWorld.voidChunkRandomBiomeBlacklist, x, z
 		);

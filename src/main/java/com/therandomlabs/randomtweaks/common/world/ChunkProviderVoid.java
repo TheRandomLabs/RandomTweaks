@@ -10,14 +10,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.chunk.Chunk;
-import net.minecraft.world.gen.IChunkGenerator;
+import net.minecraft.world.chunk.IChunkGenerator;
 import org.apache.commons.lang3.ArrayUtils;
 
-public class ChunkGeneratorVoid implements IChunkGenerator {
+public class ChunkProviderVoid implements IChunkGenerator {
 	private final World world;
 	private final Random random;
 
-	public ChunkGeneratorVoid(World world) {
+	public ChunkProviderVoid(World world) {
 		this.world = world;
 		random = new Random(world.getSeed());
 	}
@@ -53,11 +53,6 @@ public class ChunkGeneratorVoid implements IChunkGenerator {
 
 	@Override
 	public void recreateStructures(Chunk chunk, int x, int z) {}
-
-	@Override
-	public boolean isInsideStructure(World world, String structureName, BlockPos pos) {
-		return false;
-	}
 
 	public static Chunk createVoidChunk(World world, Random random, Biome biome,
 			Biome[] biomeBlacklist, int x, int z) {

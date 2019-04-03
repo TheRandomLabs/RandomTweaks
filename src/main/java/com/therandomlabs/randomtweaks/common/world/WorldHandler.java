@@ -84,12 +84,6 @@ public final class WorldHandler {
 
 		final GameRules gameRules = world.getGameRules();
 
-		final String netherPortalCreation = RTConfig.GameRules.disableNetherPortalCreation;
-
-		if(!netherPortalCreation.isEmpty() && !gameRules.hasRule(netherPortalCreation)) {
-			gameRules.setOrCreateGameRule(netherPortalCreation, "false");
-		}
-
 		final String[] damageMultipliers = {
 				RTConfig.GameRules.drowningDamageMultiplier,
 				RTConfig.GameRules.fallDamageMultiplier,

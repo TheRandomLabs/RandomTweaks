@@ -17,8 +17,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class PlayerHeadDropHandler {
 	@SubscribeEvent
 	public static void onPlayerDrops(PlayerDropsEvent event) {
-		if(!RTConfig.PlayerHeadDrops.enabled || RandomTweaks.PLAYERS_DROP_HEADS_LOADED ||
-				RandomTweaks.HEADCRUMBS_LOADED) {
+		if(!RTConfig.PlayerHeadDrops.enabled || RandomTweaks.HEADCRUMBS_LOADED) {
 			return;
 		}
 
@@ -28,7 +27,8 @@ public final class PlayerHeadDropHandler {
 		if(source instanceof EntityCreeper) {
 			final EntityCreeper creeper = (EntityCreeper) source;
 
-			if(creeper.getPowered() && creeper.ableToCauseSkullDrop() &&
+			//isAIEnabled is actually ableToCauseSkullDrop
+			if(creeper.getPowered() && creeper.isAIEnabled() &&
 					dropSkull(player, RTConfig.PlayerHeadDrops.chanceWhenKilledByChargedCreeper)) {
 				creeper.incrementDroppedSkulls();
 				return;

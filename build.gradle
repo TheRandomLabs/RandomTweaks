@@ -8,7 +8,7 @@ buildscript {
 	}
 
 	dependencies {
-		classpath "net.minecraftforge.gradle:ForgeGradle:2.3-SNAPSHOT"
+		classpath "net.minecraftforge.gradle:ForgeGradle:2.2-SNAPSHOT"
 		classpath "com.github.jengelman.gradle.plugins:shadow:2.0.0"
 	}
 }
@@ -16,7 +16,7 @@ buildscript {
 apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: "com.github.johnrengelman.shadow"
 
-version = "1.12.2-2.5.0.1"
+version = "1.11.2-2.5.0.1"
 group = "com.therandomlabs.randomtweaks"
 archivesBaseName = "randomtweaks"
 
@@ -35,7 +35,7 @@ repositories {
 dependencies {
 	shadow "com.github.TheRandomLabs:RandomLib:1.12-SNAPSHOT"
 	compile "com.github.TheRandomLabs:RandomLib:1.12-SNAPSHOT"
-	deobfCompile "applecore:AppleCore:1.12.2-3.2.0:api"
+	deobfCompile "applecore:AppleCore:1.11.2-3.1.5:api"
 }
 
 shadowJar {
@@ -57,9 +57,9 @@ artifacts {
 }
 
 minecraft {
-	version = "1.12.2-14.23.5.2824"
+	version = "1.11.2-13.20.1.2588"
 	runDir = "run"
-	mappings = "stable_39"
+	mappings = "stable_32"
 
 	replace "@VERSION@", project.version
 	replace "@FINGERPRINT@", project.findProperty("signSHA1")

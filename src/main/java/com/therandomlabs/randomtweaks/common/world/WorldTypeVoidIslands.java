@@ -16,7 +16,7 @@ public class WorldTypeVoidIslands extends RTWorldType {
 	}
 
 	@Override
-	public ChunkGeneratorVoidIslands getChunkGenerator(World world, String generatorOptions) {
-		return new ChunkGeneratorVoidIslands(world);
+	public ChunkProviderVoidIslands getChunkGenerator(World world, String generatorOptions) {
+		return new ChunkProviderVoidIslands(world);
 	}
 }

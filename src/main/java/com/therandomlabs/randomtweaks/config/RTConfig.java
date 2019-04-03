@@ -7,8 +7,7 @@ import com.therandomlabs.randomlib.config.Config;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.common.RespawnHandler;
 import com.therandomlabs.randomtweaks.common.SquidHandler;
-import com.therandomlabs.randomtweaks.common.TrampleHandler;
-import com.therandomlabs.randomtweaks.common.world.ChunkGeneratorVoidIslands;
+import com.therandomlabs.randomtweaks.common.world.ChunkProviderVoidIslands;
 import com.therandomlabs.randomtweaks.util.Alignment;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -42,9 +41,6 @@ public final class RTConfig {
 
 		@Config.Property("Whether tamed ocelots can be healed with fish.")
 		public static boolean ocelotsCanBeHealed = true;
-
-		@Config.Property("Whether tamed parrots can be healed with seeds.")
-		public static boolean parrotsCanBeHealed = true;
 
 		@Config.Property("Prevents pets from being attacked by their owner's other pets.")
 		public static boolean protectPetsFromOtherPets = true;
@@ -305,13 +301,6 @@ public final class RTConfig {
 	}
 
 	public static final class GameRules {
-		@Config.Previous("misc.disableNetherPortalCreationGameRuleName")
-		@Config.Property({
-				"The name of the gamerule that disables nether portal creation.",
-				"Set this to an empty string to disable this gamerule."
-		})
-		public static String disableNetherPortalCreation = "disableNetherPortalCreation";
-
 		@Config.Property({
 				"The name of the gamerule that controls the drowning damage multiplier.",
 				"Set this to an empty string to disable this gamerule."
@@ -433,13 +422,6 @@ public final class RTConfig {
 				"name.")
 		public static boolean entitiesDropNameTags = TRLUtils.IS_DEOBFUSCATED;
 
-		@Config.Property({
-				"The farmland trample behavior.",
-				"This does not work on versions below 1.12.2."
-		})
-		public static TrampleHandler.Behavior farmlandTrampleBehavior =
-				TrampleHandler.Behavior.DONT_TRAMPLE_IF_FEATHER_FALLING;
-
 		@Config.Property("Whether to localize the Nether Portal, End Portal and End Gateway names.")
 		public static boolean localizePortalNames = true;
 
@@ -452,12 +434,6 @@ public final class RTConfig {
 		)
 		public static boolean moreRomanNumerals = true;
 
-		@Config.Property({
-				"Allows skeleton arrows to be picked up.",
-				"This does not work on versions below 1.12.2."
-		})
-		public static boolean pickUpSkeletonArrows = TRLUtils.IS_DEOBFUSCATED;
-
 		@Config.Property(
 				"Whether to update all maps in players' inventories instead of only updating " +
 						"currently held maps."
@@ -466,23 +442,21 @@ public final class RTConfig {
 
 		public static void onReload() {
 			if(betterButtonNames) {
-				Blocks.STONE_BUTTON.setTranslationKey("buttonStone");
-				Blocks.WOODEN_BUTTON.setTranslationKey("buttonWood");
+				Blocks.STONE_BUTTON.setUnlocalizedName("buttonStone");
+				Blocks.WOODEN_BUTTON.setUnlocalizedName("buttonWood");
 			} else {
-				Blocks.STONE_BUTTON.setTranslationKey("button");
-				Blocks.WOODEN_BUTTON.setTranslationKey("button");
+				Blocks.STONE_BUTTON.setUnlocalizedName("button");
+				Blocks.WOODEN_BUTTON.setUnlocalizedName("button");
 			}
 
-			if(!RandomTweaks.RANDOMPORTALS_LOADED) {
-				if(localizePortalNames) {
-					Blocks.PORTAL.setTranslationKey("netherPortal");
-					Blocks.END_PORTAL.setTranslationKey("endPortal");
-					Blocks.END_GATEWAY.setTranslationKey("endGateway");
-				} else {
-					Blocks.PORTAL.setTranslationKey(null);
-					Blocks.END_PORTAL.setTranslationKey(null);
-					Blocks.END_GATEWAY.setTranslationKey(null);
-				}
+			if(localizePortalNames) {
+				Blocks.PORTAL.setUnlocalizedName("netherPortal");
+				Blocks.END_PORTAL.setUnlocalizedName("endPortal");
+				Blocks.END_GATEWAY.setUnlocalizedName("endGateway");
+			} else {
+				Blocks.PORTAL.setUnlocalizedName(null);
+				Blocks.END_PORTAL.setUnlocalizedName(null);
+				Blocks.END_GATEWAY.setUnlocalizedName(null);
 			}
 		}
 	}
@@ -804,7 +778,7 @@ public final class RTConfig {
 		@Config.Property({
 				"The rarity of non-empty chunks in a Void Islands world.",
 				"If this is set to n, there is a 1 in n chance of a chunk being non-empty.",
-				"If this is set to " + ChunkGeneratorVoidIslands.ONLY_GENERATE_SPAWN_CHUNK +
+				"If this is set to " + ChunkProviderVoidIslands.ONLY_GENERATE_SPAWN_CHUNK +
 						", only the spawn chunk is generated."
 		})
 		public static int chunkRarity = 10;

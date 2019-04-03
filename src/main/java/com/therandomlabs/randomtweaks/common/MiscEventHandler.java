@@ -68,8 +68,7 @@ public final class MiscEventHandler {
 			return;
 		}
 
-		if(RTConfig.SheepColorWeights.enabled && !RandomTweaks.COLORFUL_SHEEP_LOADED &&
-				entity.getClass() == EntitySheep.class) {
+		if(RTConfig.SheepColorWeights.enabled && entity.getClass() == EntitySheep.class) {
 			ColoredSheepHandler.onSheepSpawn((EntitySheep) entity);
 		}
 

@@ -8,4 +8,10 @@ public class RTGuiConfigFactory extends TRLGuiConfigFactory {
 	public Class<? extends GuiConfig> mainConfigGuiClass() {
 		return RTGuiConfig.class;
 	}
+
+	@SuppressWarnings("deprecation")
+	@Override
+	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
+		return null;
+	}
 }

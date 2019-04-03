@@ -1,7 +1,7 @@
 package com.therandomlabs.randomtweaks.common.world;
 
 import net.minecraft.world.World;
-import net.minecraft.world.gen.ChunkGeneratorOverworld;
+import net.minecraft.world.gen.ChunkProviderOverworld;
 
 public class WorldTypeRealistic extends RTWorldType {
 	public static final String NAME = "realistic";
@@ -42,8 +42,8 @@ public class WorldTypeRealistic extends RTWorldType {
 	}
 
 	@Override
-	public ChunkGeneratorOverworld getChunkGenerator(World world, String generatorOptions) {
-		return new ChunkGeneratorOverworld(
+	public ChunkProviderOverworld getChunkGenerator(World world, String generatorOptions) {
+		return new ChunkProviderOverworld(
 				world, world.getSeed(), world.getWorldInfo().isMapFeaturesEnabled(), PRESET
 		);
 	}

@@ -87,8 +87,6 @@ public final class SleepHandler {
 			return;
 		}
 
-		player.spawnShoulderEntities();
-
 		if(player.isRiding()) {
 			player.dismountRidingEntity();
 		}
@@ -102,8 +100,8 @@ public final class SleepHandler {
 		if(state != null && state.getBlock().isBed(state, world, pos, player)) {
 			player.setRenderOffsetForSleep(facing);
 
-			final float x = 0.5F + facing.getXOffset() * 0.4F;
-			final float z = 0.5F + facing.getZOffset() * 0.4F;
+			final float x = 0.5F + facing.getFrontOffsetX() * 0.4F;
+			final float z = 0.5F + facing.getFrontOffsetZ() * 0.4F;
 
 			player.setPosition(
 					event.getPos().getX() + x,
@@ -141,8 +139,7 @@ public final class SleepHandler {
 						position.getY(),
 						position.getZ()
 				).grow(8.0, 5.0, 8.0),
-				mob -> mob.isPreventingPlayerRest(player) &&
-						(!RTConfig.Misc.allowSleepNearMobsWithCustomNames || !mob.hasCustomName())
+				mob -> !RTConfig.Misc.allowSleepNearMobsWithCustomNames || !mob.hasCustomName()
 		).isEmpty();
 	}
 }

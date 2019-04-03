@@ -1,13 +1,11 @@
 package com.therandomlabs.randomtweaks.common;
 
-import java.util.Set;
 import com.google.common.collect.ImmutableSet;
 import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityOcelot;
-import net.minecraft.entity.passive.EntityParrot;
 import net.minecraft.entity.passive.EntityTameable;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,13 +21,6 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 public final class EntityInteractHandler {
 	public static final ImmutableSet<Item> OCELOT_HEAL_ITEMS = ImmutableSet.of(
 			Items.FISH
-	);
-
-	public static final ImmutableSet<Item> PARROT_HEAL_ITEMS = ImmutableSet.of(
-			Items.WHEAT_SEEDS,
-			Items.MELON_SEEDS,
-			Items.PUMPKIN_SEEDS,
-			Items.BEETROOT_SEEDS
 	);
 
 	@SubscribeEvent
@@ -52,26 +43,12 @@ public final class EntityInteractHandler {
 			return;
 		}
 
-		final Set<Item> healItems;
-
-		if(target instanceof EntityOcelot) {
-			if(!RTConfig.Animals.ocelotsCanBeHealed) {
-				return;
-			}
-
-			healItems = OCELOT_HEAL_ITEMS;
-		} else if(target instanceof EntityParrot) {
-			if(!RTConfig.Animals.parrotsCanBeHealed) {
-				return;
-			}
-
-			healItems = PARROT_HEAL_ITEMS;
-		} else {
+		if(!RTConfig.Animals.ocelotsCanBeHealed || !(target instanceof EntityOcelot)) {
 			return;
 		}
 
 		final EntityTameable tameable = (EntityTameable) target;
-		final int healAmount = getHealAmount(tameable, stack, healItems);
+		final int healAmount = getHealAmount(tameable, stack);
 
 		if(healAmount != 0) {
 			event.setCanceled(true);
@@ -84,7 +61,7 @@ public final class EntityInteractHandler {
 		}
 	}
 
-	private static int getHealAmount(EntityTameable entity, ItemStack stack, Set<Item> healItems) {
+	private static int getHealAmount(EntityTameable entity, ItemStack stack) {
 		//If the entity is not tamed and this is not a development environment
 		if(!(TRLUtils.IS_DEOBFUSCATED || entity.isTamed())) {
 			return 0;
@@ -96,7 +73,7 @@ public final class EntityInteractHandler {
 
 		final Item item = stack.getItem();
 
-		if(!healItems.contains(item)) {
+		if(!OCELOT_HEAL_ITEMS.contains(item)) {
 			return 0;
 		}
 
@@ -109,7 +86,7 @@ public final class EntityInteractHandler {
 			return;
 		}
 
-		if(villager.getLeashed() && villager.getLeashHolder() == player) {
+		if(villager.getLeashed() && villager.getLeashedToEntity() == player) {
 			villager.clearLeashed(true, !player.capabilities.isCreativeMode);
 			event.setCanceled(true);
 			return;
@@ -119,7 +96,7 @@ public final class EntityInteractHandler {
 			return;
 		}
 
-		villager.setLeashHolder(player, true);
+		villager.setLeashedToEntity(player, true);
 
 		if(!player.capabilities.isCreativeMode) {
 			stack.shrink(1);

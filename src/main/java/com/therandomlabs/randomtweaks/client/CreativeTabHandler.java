@@ -29,7 +29,7 @@ public final class CreativeTabHandler {
 	public static final CreativeTabs SPAWN_EGGS = new CreativeTabs("spawnEggs") {
 		@SideOnly(Side.CLIENT)
 		@Override
-		public ItemStack createIcon() {
+		public ItemStack getTabIconItem() {
 			final ItemStack stack = new ItemStack(Items.SPAWN_EGG);
 			ItemMonsterPlacer.applyEntityIdToItemStack(stack, new ResourceLocation("chicken"));
 			return stack;
@@ -106,7 +106,7 @@ public final class CreativeTabHandler {
 		}
 
 		if(RTConfig.CreativeTabs.setCommandBlockCreativeTab) {
-			originalCommandBlockTab = Blocks.COMMAND_BLOCK.getCreativeTab();
+			originalCommandBlockTab = Blocks.COMMAND_BLOCK.getCreativeTabToDisplayOn();
 			commandBlockSetBefore = true;
 
 			Blocks.COMMAND_BLOCK.setCreativeTab(CreativeTabs.REDSTONE);
@@ -119,7 +119,7 @@ public final class CreativeTabHandler {
 		}
 
 		if(RTConfig.CreativeTabs.setDragonEggCreativeTab) {
-			originalDragonEggTab = Blocks.DRAGON_EGG.getCreativeTab();
+			originalDragonEggTab = Blocks.DRAGON_EGG.getCreativeTabToDisplayOn();
 			dragonEggSetBefore = true;
 
 			Blocks.DRAGON_EGG.setCreativeTab(CreativeTabs.DECORATIONS);
@@ -135,7 +135,7 @@ public final class CreativeTabHandler {
 			if(!ArrayUtils.contains(CreativeTabs.CREATIVE_TAB_ARRAY, SPAWN_EGGS)) {
 				CreativeTabs.CREATIVE_TAB_ARRAY =
 						ArrayUtils.add(CreativeTabs.CREATIVE_TAB_ARRAY, SPAWN_EGGS);
-				SPAWN_EGGS.index = CreativeTabs.CREATIVE_TAB_ARRAY.length - 1;
+				SPAWN_EGGS.tabIndex = CreativeTabs.CREATIVE_TAB_ARRAY.length - 1;
 			}
 
 			originalSpawnEggsTab = Items.SPAWN_EGG.getCreativeTab();
@@ -155,7 +155,7 @@ public final class CreativeTabHandler {
 		if(index != ArrayUtils.INDEX_NOT_FOUND) {
 			CreativeTabs.CREATIVE_TAB_ARRAY =
 					ArrayUtils.remove(CreativeTabs.CREATIVE_TAB_ARRAY, index);
-			GuiContainerCreative.selectedTabIndex = CreativeTabs.BUILDING_BLOCKS.index;
+			GuiContainerCreative.selectedTabIndex = CreativeTabs.BUILDING_BLOCKS.tabIndex;
 
 			try {
 				TAB_PAGE.set(null, 0);

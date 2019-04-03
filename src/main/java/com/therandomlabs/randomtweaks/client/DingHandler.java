@@ -92,8 +92,18 @@ public final class DingHandler {
 		final SoundEvent soundEvent = soundEvents[random.nextInt(soundEvents.length)];
 
 		final SoundHandler soundHandler = mc.getSoundHandler();
-		final ISound sound = PositionedSoundRecord.getRecord(
-				soundEvent, (float) pitch, (float) volume
+
+		final ISound sound = new PositionedSoundRecord(
+				soundEvent.getSoundName(),
+				SoundCategory.MASTER,
+				(float) volume,
+				(float) pitch,
+				false,
+				0,
+				ISound.AttenuationType.NONE,
+				0.0F,
+				0.0F,
+				0.0F
 		);
 
 		if(!RTConfig.Ding.ignoreDsurroundMuteWhenBackground || BACKGROUND_MUTE == null) {
