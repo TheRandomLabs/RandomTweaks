@@ -1,6 +1,5 @@
 package com.therandomlabs.randomtweaks.common;
 
-import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntitySquid;
@@ -15,7 +14,7 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
+@Mod.EventBusSubscriber
 public final class SquidHandler {
 	public static final int RADIUS_LIMIT_DISABLED = 0;
 	public static final int CHUNK_LIMIT_DISABLED = -1;
@@ -47,17 +46,17 @@ public final class SquidHandler {
 			return true;
 		}
 
-		final AxisAlignedBB aabb = new AxisAlignedBB(
-				event.getX(),
-				event.getY(),
-				event.getZ(),
-				event.getX(),
-				event.getY(),
-				event.getZ()
-		).expand(radius, radius, radius);
+		final float x = event.getX();
+		final float y = event.getY();
+		final float z = event.getZ();
+
+		final AxisAlignedBB aabb =
+				new AxisAlignedBB(x, y, z, x, y, z).expand(radius, radius, radius);
 
 		for(EntityPlayer player : event.getWorld().playerEntities) {
-			if(player.getEntityBoundingBox().intersects(aabb)) {
+			if(player.getEntityBoundingBox().intersects(
+					aabb.minX, aabb.minY, aabb.minZ, aabb.maxX, aabb.maxY, aabb.maxZ
+			)) {
 				return true;
 			}
 		}
@@ -84,8 +83,8 @@ public final class SquidHandler {
 		for(int i = 0; i < world.loadedEntityList.size(); i++) {
 			final Entity entity = world.loadedEntityList.get(i);
 
-			if(entity.getClass() != EntitySquid.class ||
-					entity.chunkCoordX != chunk.x || entity.chunkCoordZ != chunk.z) {
+			if(entity.getClass() != EntitySquid.class || entity.chunkCoordX != chunk.xPosition ||
+					entity.chunkCoordZ != chunk.zPosition) {
 				continue;
 			}
 

@@ -17,7 +17,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.commons.lang3.ArrayUtils;
 
-@Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
+@Mod.EventBusSubscriber
 public final class CobwebHandler {
 	private static final Random random = new Random();
 
@@ -26,7 +26,7 @@ public final class CobwebHandler {
 		final World world = event.getWorld();
 		final ItemStack stack = event.getItemStack();
 
-		if(stack.isEmpty()) {
+		if(stack == null) {
 			return;
 		}
 
@@ -54,7 +54,7 @@ public final class CobwebHandler {
 			if(stack.isItemStackDamageable()) {
 				stack.damageItem(RTConfig.CobwebBurning.damageAmount, player);
 			} else {
-				stack.shrink(RTConfig.CobwebBurning.consumeAmount);
+				stack.stackSize -= RTConfig.CobwebBurning.consumeAmount;
 			}
 		}
 

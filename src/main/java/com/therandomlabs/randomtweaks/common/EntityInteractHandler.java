@@ -2,7 +2,6 @@ package com.therandomlabs.randomtweaks.common;
 
 import com.google.common.collect.ImmutableSet;
 import com.therandomlabs.randomlib.TRLUtils;
-import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntityOcelot;
@@ -17,7 +16,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
+@Mod.EventBusSubscriber
 public final class EntityInteractHandler {
 	public static final ImmutableSet<Item> OCELOT_HEAL_ITEMS = ImmutableSet.of(
 			Items.FISH
@@ -31,7 +30,7 @@ public final class EntityInteractHandler {
 
 		final ItemStack stack = event.getItemStack();
 
-		if(stack.isEmpty()) {
+		if(stack == null) {
 			return;
 		}
 
@@ -54,7 +53,7 @@ public final class EntityInteractHandler {
 			event.setCanceled(true);
 
 			if(!player.capabilities.isCreativeMode) {
-				stack.shrink(1);
+				stack.stackSize--;
 			}
 
 			tameable.heal(healAmount);
@@ -99,7 +98,7 @@ public final class EntityInteractHandler {
 		villager.setLeashedToEntity(player, true);
 
 		if(!player.capabilities.isCreativeMode) {
-			stack.shrink(1);
+			stack.stackSize--;
 		}
 
 		event.setCanceled(true);

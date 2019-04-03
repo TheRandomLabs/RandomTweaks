@@ -5,7 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityBoat;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.entity.passive.AbstractHorse;
+import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityPig;
 
 public final class AutoThirdPersonHandler {
@@ -51,7 +51,7 @@ public final class AutoThirdPersonHandler {
 
 			lastID = entity.getEntityId();
 
-			if(entity instanceof AbstractHorse) {
+			if(entity instanceof EntityHorse) {
 				if(!RTConfig.AutoThirdPerson.horse) {
 					return;
 				}

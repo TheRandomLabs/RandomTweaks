@@ -18,7 +18,7 @@ import net.minecraftforge.fml.common.network.FMLNetworkEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import paulscode.sound.SoundSystem;
 
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MOD_ID)
+@Mod.EventBusSubscriber(Side.CLIENT)
 public final class DingHandler {
 	private static final Class<?> GENERAL_MOD_OPTIONS;
 	private static final Class<?> BACKGROUND_MUTE;

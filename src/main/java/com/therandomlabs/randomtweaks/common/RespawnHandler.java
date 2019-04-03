@@ -1,6 +1,5 @@
 package com.therandomlabs.randomtweaks.common;
 
-import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.FoodStats;
@@ -8,7 +7,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
+@Mod.EventBusSubscriber
 public final class RespawnHandler {
 	public enum HungerResetBehavior {
 		RESET("reset"),

@@ -2,7 +2,6 @@ package com.therandomlabs.randomtweaks.common;
 
 import java.util.HashMap;
 import java.util.Map;
-import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.EntitySheep;
@@ -11,7 +10,7 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
+@Mod.EventBusSubscriber
 public final class ColoredSheepHandler {
 	private static final Map<Integer, EnumDyeColor> queue = new HashMap<>();
 

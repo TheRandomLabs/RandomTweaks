@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.client;
 
+import java.util.Arrays;
 import java.util.List;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.client.Minecraft;
@@ -10,12 +11,11 @@ import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemElytra;
 import net.minecraft.item.ItemSkull;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.SoundEvent;
 
 public final class ArmorEquipSoundHandler {
 	private static final Minecraft mc = Minecraft.getMinecraft();
-	private static final List<ItemStack> previousArmor = NonNullList.withSize(4, ItemStack.EMPTY);
+	private static final List<ItemStack> previousArmor = Arrays.asList(null, null, null, null);
 
 	private ArmorEquipSoundHandler() {}
 
@@ -27,8 +27,8 @@ public final class ArmorEquipSoundHandler {
 		for(int i = 0; i < 4; i++) {
 			final ItemStack previousStack = previousArmor.get(i);
 
-			final ItemStack stack = mc.player.inventory.armorInventory.get(i);
-			previousArmor.set(i, stack == ItemStack.EMPTY ? stack : stack.copy());
+			final ItemStack stack = mc.player.inventory.armorInventory[i];
+			previousArmor.set(i, stack == null ? null : stack.copy());
 
 			if(!ItemStack.areItemsEqualIgnoreDurability(stack, previousStack)) {
 				SoundEvent sound = getSound(stack);
@@ -45,6 +45,10 @@ public final class ArmorEquipSoundHandler {
 	}
 
 	public static SoundEvent getSound(ItemStack stack) {
+		if(stack == null) {
+			return null;
+		}
+
 		final Item item = stack.getItem();
 
 		if(item instanceof ItemArmor) {

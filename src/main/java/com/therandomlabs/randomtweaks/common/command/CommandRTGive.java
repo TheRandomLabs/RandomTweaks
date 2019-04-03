@@ -87,8 +87,8 @@ public class CommandRTGive extends CommandGive {
 
 			player.inventoryContainer.detectAndSendChanges();
 
-			if(stack.isEmpty()) {
-				stack.setCount(1);
+			if(stack.stackSize <= 0) {
+				stack.stackSize = 1;
 				sender.setCommandStat(CommandResultStats.Type.AFFECTED_ITEMS, amount);
 
 				final EntityItem droppedItem = player.dropItem(stack, false);
@@ -99,7 +99,7 @@ public class CommandRTGive extends CommandGive {
 			} else {
 				sender.setCommandStat(
 						CommandResultStats.Type.AFFECTED_ITEMS,
-						amount - stack.getCount()
+						amount - stack.stackSize
 				);
 
 				final EntityItem droppedItem = player.dropItem(stack, false);

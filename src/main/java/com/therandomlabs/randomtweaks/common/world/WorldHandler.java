@@ -23,7 +23,7 @@ import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
+@Mod.EventBusSubscriber
 public final class WorldHandler {
 	private static final Random random = new Random();
 
@@ -64,7 +64,7 @@ public final class WorldHandler {
 					if(RTConfig.World.logEntityUUIDReassignments) {
 						RandomTweaks.LOGGER.info(
 								"Changing UUID of entity {} from {} to {}",
-								EntityList.getKey(entity), uuid, newUUID
+								EntityList.getEntityString(entity), uuid, newUUID
 						);
 					}
 

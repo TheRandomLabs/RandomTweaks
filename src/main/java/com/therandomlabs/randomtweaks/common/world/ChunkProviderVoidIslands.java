@@ -25,16 +25,16 @@ public class ChunkProviderVoidIslands extends ChunkProviderOverworld {
 	}
 
 	@Override
-	public Chunk generateChunk(int x, int z) {
+	public Chunk provideChunk(int x, int z) {
 		//The spawn chunk should always be generated
 		if(x == 0 && z == 0) {
-			return super.generateChunk(x, z);
+			return super.provideChunk(x, z);
 		}
 
 		//If the rarity is set to 1, only the spawn chunk should be generated
 		if(RTConfig.VoidIslandsWorld.chunkRarity != ONLY_GENERATE_SPAWN_CHUNK &&
 				random.nextInt(RTConfig.VoidIslandsWorld.chunkRarity) == 0) {
-			return super.generateChunk(x, z);
+			return super.provideChunk(x, z);
 		}
 
 		return ChunkProviderVoid.createVoidChunk(

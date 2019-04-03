@@ -13,7 +13,7 @@ import net.minecraftforge.event.entity.player.PlayerDropsEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
+@Mod.EventBusSubscriber
 public final class PlayerHeadDropHandler {
 	@SubscribeEvent
 	public static void onPlayerDrops(PlayerDropsEvent event) {
@@ -22,7 +22,7 @@ public final class PlayerHeadDropHandler {
 		}
 
 		final EntityPlayer player = event.getEntityPlayer();
-		final Entity source = event.getSource().getTrueSource();
+		final Entity source = event.getSource().getSourceOfDamage();
 
 		if(source instanceof EntityCreeper) {
 			final EntityCreeper creeper = (EntityCreeper) source;

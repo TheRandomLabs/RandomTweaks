@@ -35,7 +35,7 @@ import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 
-@Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
+@Mod.EventBusSubscriber
 public final class MiscEventHandler {
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
@@ -101,11 +101,11 @@ public final class MiscEventHandler {
 
 		final String gameRule;
 
-		if(source == DamageSource.DROWN) {
+		if(source == DamageSource.drown) {
 			gameRule = RTConfig.GameRules.drowningDamageMultiplier;
-		} else if(source == DamageSource.FALL) {
+		} else if(source == DamageSource.fall) {
 			gameRule = RTConfig.GameRules.fallDamageMultiplier;
-		} else if(source == DamageSource.IN_FIRE || source == DamageSource.ON_FIRE) {
+		} else if(source == DamageSource.inFire || source == DamageSource.onFire) {
 			gameRule = RTConfig.GameRules.fireDamageMultiplier;
 		} else {
 			gameRule = null;
@@ -141,7 +141,7 @@ public final class MiscEventHandler {
 
 		//Protect pets from owners
 
-		final Entity attacker = source.getTrueSource();
+		final Entity attacker = source.getSourceOfDamage();
 
 		if(attacker == null || !(entity instanceof IEntityOwnable)) {
 			return;
@@ -265,7 +265,7 @@ public final class MiscEventHandler {
 
 			final ItemStack stack = player.inventory.getStackInSlot(i);
 
-			if(stack.getItem() == Items.FILLED_MAP) {
+			if(stack != null && stack.getItem() == Items.FILLED_MAP) {
 				Items.FILLED_MAP.updateMapData(
 						world, player, Items.FILLED_MAP.getMapData(stack, world)
 				);

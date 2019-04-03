@@ -28,7 +28,7 @@ public class CommandDeleteGamerule extends CommandBase {
 		}
 
 		final boolean success =
-				sender.getEntityWorld().getGameRules().rules.remove(args[0]) != null;
+				sender.getEntityWorld().getGameRules().theGameRules.remove(args[0]) != null;
 
 		if(success) {
 			notifyCommandListener(sender, this, "Gamerule \"%s\" successfully deleted!", args[0]);

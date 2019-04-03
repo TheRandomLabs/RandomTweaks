@@ -1,6 +1,7 @@
 package com.therandomlabs.randomtweaks.client;
 
 import java.lang.reflect.Field;
+import java.util.List;
 import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
@@ -9,11 +10,10 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityList;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.NonNullList;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,26 +24,31 @@ import org.apache.commons.lang3.ArrayUtils;
 
 //A lot of this is there just so creative tab configuration options can be toggled in-game
 //Worth it? Maybe
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MOD_ID)
+@Mod.EventBusSubscriber(Side.CLIENT)
 public final class CreativeTabHandler {
 	public static final CreativeTabs SPAWN_EGGS = new CreativeTabs("spawnEggs") {
+		@Override
+		public Item getTabIconItem() {
+			return Items.SPAWN_EGG;
+		}
+
 		@SideOnly(Side.CLIENT)
 		@Override
-		public ItemStack getTabIconItem() {
+		public ItemStack getIconItemStack() {
 			final ItemStack stack = new ItemStack(Items.SPAWN_EGG);
-			ItemMonsterPlacer.applyEntityIdToItemStack(stack, new ResourceLocation("chicken"));
+			ItemMonsterPlacer.applyEntityIdToItemStack(stack, "Chicken");
 			return stack;
 		}
 
 		@Override
-		public void displayAllRelevantItems(NonNullList<ItemStack> itemList) {
+		public void displayAllRelevantItems(List<ItemStack> itemList) {
 			super.displayAllRelevantItems(itemList);
 
 			if(!RTConfig.CreativeTabs.noAISpawnEggs) {
 				return;
 			}
 
-			for(ResourceLocation id : EntityList.ENTITY_EGGS.keySet()) {
+			for(String id : EntityList.ENTITY_EGGS.keySet()) {
 				final ItemStack stack = new ItemStack(Items.SPAWN_EGG);
 
 				ItemMonsterPlacer.applyEntityIdToItemStack(stack, id);

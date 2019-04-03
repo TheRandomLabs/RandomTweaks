@@ -13,7 +13,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MOD_ID)
+@Mod.EventBusSubscriber(Side.CLIENT)
 public final class StepupHandler {
 	private enum Mode {
 		NO_AUTO_JUMP(VANILLA_STEP_HEIGHT, false, "autoJump.disabled"),
@@ -118,7 +118,7 @@ public final class StepupHandler {
 		}
 
 		if(sendStatusMessage) {
-			mc.player.sendStatusMessage(new TextComponentTranslation(mode.message), true);
+			mc.player.sendStatusMessage(new TextComponentTranslation(mode.message));
 		}
 	}
 }

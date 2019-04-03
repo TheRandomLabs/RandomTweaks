@@ -22,7 +22,7 @@ import org.apache.logging.log4j.Logger;
 public final class RandomTweaks {
 	public static final String MOD_ID = "randomtweaks";
 	public static final String VERSION = "@VERSION@";
-	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.11,1.12)";
+	public static final String ACCEPTED_MINECRAFT_VERSIONS = "[1.10,1.11)";
 	public static final String ACCEPTABLE_REMOTE_VERSIONS = "*";
 	public static final String GUI_FACTORY =
 			"com.therandomlabs.randomtweaks.config.RTGuiConfigFactory";

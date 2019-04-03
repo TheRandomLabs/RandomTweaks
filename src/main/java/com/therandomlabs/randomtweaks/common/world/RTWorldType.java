@@ -16,23 +16,23 @@ public abstract class RTWorldType extends WorldType {
 
 	@SideOnly(Side.CLIENT)
 	@Override
-	public boolean hasInfoNotice() {
+	public boolean showWorldInfoNotice() {
 		return true;
 	}
 
 	public abstract boolean isEnabled();
 
 	public void enable() {
-		if(WORLD_TYPES[id] != this) {
-			if(WORLD_TYPES[id] == null) {
-				WORLD_TYPES[id] = this;
+		if(WORLD_TYPES[worldTypeId] != this) {
+			if(WORLD_TYPES[worldTypeId] == null) {
+				WORLD_TYPES[worldTypeId] = this;
 				return;
 			}
 
 			for(int i = 0; i < WORLD_TYPES.length; i++) {
 				if(WORLD_TYPES[i] == null) {
 					WORLD_TYPES[i] = this;
-					id = i;
+					worldTypeId = i;
 					return;
 				}
 			}
@@ -40,7 +40,7 @@ public abstract class RTWorldType extends WorldType {
 			final int oldLength = WORLD_TYPES.length;
 			WORLD_TYPES = Arrays.copyOf(WORLD_TYPES, oldLength + 16);
 			WORLD_TYPES[oldLength] = this;
-			id = oldLength;
+			worldTypeId = oldLength;
 		}
 	}
 

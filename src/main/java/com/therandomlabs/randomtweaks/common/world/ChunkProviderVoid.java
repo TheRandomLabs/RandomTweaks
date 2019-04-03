@@ -23,7 +23,7 @@ public class ChunkProviderVoid implements IChunkGenerator {
 	}
 
 	@Override
-	public Chunk generateChunk(int x, int z) {
+	public Chunk provideChunk(int x, int z) {
 		return createVoidChunk(
 				world, random, RTConfig.VoidWorld.biome, RTConfig.VoidWorld.randomBiomeBlacklist,
 				x, z
@@ -46,8 +46,7 @@ public class ChunkProviderVoid implements IChunkGenerator {
 	}
 
 	@Override
-	public BlockPos getNearestStructurePos(World world, String structureName, BlockPos position,
-			boolean findUnexplored) {
+	public BlockPos getStrongholdGen(World world, String structureName, BlockPos pos) {
 		return null;
 	}
 

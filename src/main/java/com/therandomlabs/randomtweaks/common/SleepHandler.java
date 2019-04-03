@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
+@Mod.EventBusSubscriber
 public final class SleepHandler {
 	public static final Method SET_SIZE = TRLUtils.findMethod(
 			Entity.class, "setSize", "func_70105_a", float.class, float.class
@@ -77,7 +77,7 @@ public final class SleepHandler {
 			return;
 		}
 
-		if(!RTConfig.Misc.disableBedProximityRequirement && !player.bedInRange(pos, facing)) {
+		if(!RTConfig.Misc.disableBedProximityRequirement && !isBedInRange(player, pos, facing)) {
 			event.setResult(EntityPlayer.SleepResult.TOO_FAR_AWAY);
 			return;
 		}
@@ -128,6 +128,23 @@ public final class SleepHandler {
 		event.setResult(EntityPlayer.SleepResult.OK);
 	}
 
+	public static boolean isBedInRange(EntityPlayer player, BlockPos bedPos, EnumFacing facing) {
+		if(Math.abs(player.posX - bedPos.getX()) <= 3.0 &&
+				Math.abs(player.posY - bedPos.getY()) <= 2.0 &&
+				Math.abs(player.posZ - bedPos.getZ()) <= 3.0) {
+			return true;
+		}
+
+		if(facing == null) {
+			return false;
+		}
+
+		final BlockPos pos = bedPos.offset(facing.getOpposite());
+		return Math.abs(player.posX - pos.getX()) <= 3.0 &&
+				Math.abs(player.posY - pos.getY()) <= 2.0 &&
+				Math.abs(player.posZ - pos.getZ()) <= 3.0;
+	}
+
 	public static boolean isMobInRange(EntityPlayer player, World world, BlockPos position) {
 		return !world.getEntitiesWithinAABB(
 				EntityMob.class,
@@ -138,7 +155,7 @@ public final class SleepHandler {
 						position.getX(),
 						position.getY(),
 						position.getZ()
-				).grow(8.0, 5.0, 8.0),
+				).expand(8.0, 5.0, 8.0),
 				mob -> !RTConfig.Misc.allowSleepNearMobsWithCustomNames || !mob.hasCustomName()
 		).isEmpty();
 	}

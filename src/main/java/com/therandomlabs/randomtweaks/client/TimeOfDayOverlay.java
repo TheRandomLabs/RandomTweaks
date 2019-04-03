@@ -3,7 +3,6 @@ package com.therandomlabs.randomtweaks.client;
 import java.io.File;
 import java.util.Map;
 import com.therandomlabs.randomlib.TRLUtils;
-import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import com.therandomlabs.randomtweaks.config.RTData;
 import net.minecraft.client.Minecraft;
@@ -18,7 +17,7 @@ import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
 //Some code has been taken and adapted from https://github.com/Lunatrius/InGame-Info-XML
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MOD_ID)
+@Mod.EventBusSubscriber(Side.CLIENT)
 public final class TimeOfDayOverlay {
 	private static final Minecraft mc = Minecraft.getMinecraft();
 	private static boolean shouldHide;
@@ -84,8 +83,8 @@ public final class TimeOfDayOverlay {
 				"timeOfDayOverlay.text", day, hourString, minuteString, ampm, dayOrNight
 		);
 
-		final int textWidth = mc.fontRenderer.getStringWidth(timeString);
-		final int textHeight = mc.fontRenderer.FONT_HEIGHT;
+		final int textWidth = mc.fontRendererObj.getStringWidth(timeString);
+		final int textHeight = mc.fontRendererObj.FONT_HEIGHT;
 
 		final int x = RTConfig.TimeOfDay.x;
 		final int y = RTConfig.TimeOfDay.y;
@@ -97,7 +96,7 @@ public final class TimeOfDayOverlay {
 		final int actualX = RTConfig.TimeOfDay.alignment.getX(x, displayWidth, textWidth);
 		final int actualY = RTConfig.TimeOfDay.alignment.getY(y, displayHeight, textHeight);
 
-		mc.fontRenderer.drawStringWithShadow(timeString, actualX, actualY, 0xFFFFFF);
+		mc.fontRendererObj.drawStringWithShadow(timeString, actualX, actualY, 0xFFFFFF);
 	}
 
 	public static boolean shouldHide() {

@@ -1,6 +1,5 @@
 package com.therandomlabs.randomtweaks.client;
 
-import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import com.therandomlabs.randomtweaks.config.RTData;
 import net.minecraft.block.material.Material;
@@ -20,7 +19,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import net.minecraftforge.fml.relauncher.Side;
 
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MOD_ID)
+@Mod.EventBusSubscriber(Side.CLIENT)
 public final class MiscClientEventHandler {
 	private static final Minecraft mc = Minecraft.getMinecraft();
 	private static boolean gameStarted;

@@ -5,9 +5,11 @@ import java.util.Map;
 import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomlib.config.Config;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import com.therandomlabs.randomtweaks.client.KeyBindingHandler;
 import com.therandomlabs.randomtweaks.common.RespawnHandler;
 import com.therandomlabs.randomtweaks.common.SquidHandler;
 import com.therandomlabs.randomtweaks.common.world.ChunkProviderVoidIslands;
+import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
 import com.therandomlabs.randomtweaks.util.Alignment;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
@@ -60,7 +62,7 @@ public final class RTConfig {
 		public static boolean enabled = true;
 
 		@Config.Property("The elytra equip/unequip sound.")
-		public static SoundEvent elytraSound = SoundEvents.ITEM_ARMOR_EQIIP_ELYTRA;
+		public static SoundEvent elytraSound = SoundEvents.ITEM_ARMOR_EQUIP_LEATHER;
 
 		@Config.Property("The pumpkin equip/unequip sound.")
 		public static SoundEvent pumpkinSound = SoundEvents.ITEM_ARMOR_EQUIP_GENERIC;
@@ -373,6 +375,10 @@ public final class RTConfig {
 
 		@Config.Property("Enables the Toggle Time of Day Overlay keybind.")
 		public static boolean toggleTimeOfDayOverlay = true;
+
+		public static void onReload() {
+			KeyBindingHandler.registerKeyBindings();
+		}
 	}
 
 	public static final class Misc {
@@ -826,6 +832,10 @@ public final class RTConfig {
 				"Name: REALISTIC"
 		})
 		public static boolean realisticWorldType = true;
+
+		public static void onReload() {
+			WorldTypeRegistry.registerWorldTypes();
+		}
 	}
 
 	@Config.Category("Options related to animals (including villagers).")

@@ -1,6 +1,5 @@
 package com.therandomlabs.randomtweaks.client;
 
-import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import com.therandomlabs.randomtweaks.config.RTData;
 import net.minecraft.client.Minecraft;
@@ -9,7 +8,6 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.client.settings.KeyModifier;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
@@ -17,7 +15,7 @@ import net.minecraftforge.fml.relauncher.Side;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.input.Keyboard;
 
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MOD_ID)
+@Mod.EventBusSubscriber(Side.CLIENT)
 public final class KeyBindingHandler {
 	public static final KeyBinding TOGGLE_FOV_CHANGES = new KeyBinding(
 			"key.toggleFoVChanges",
@@ -76,13 +74,6 @@ public final class KeyBindingHandler {
 	}
 
 	@SubscribeEvent
-	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
-		if(event.getModID().equals(RandomTweaks.MOD_ID)) {
-			registerKeyBindings();
-		}
-	}
-
-	@SubscribeEvent
 	public static void onKeyInput(InputEvent.KeyInputEvent event) {
 		if(!Keyboard.getEventKeyState()) {
 			return;
@@ -115,7 +106,7 @@ public final class KeyBindingHandler {
 		if(RTConfig.Keybinds.fovChangesStatusMessage) {
 			mc.player.sendStatusMessage(new TextComponentTranslation(
 					"toggleFoVChanges." + (data.fovChanges ? "enabled" : "disabled")
-			), true);
+			));
 		}
 	}
 
@@ -126,9 +117,7 @@ public final class KeyBindingHandler {
 		}
 
 		mc.getSoundHandler().sndManager.reloadSoundSystem();
-		mc.player.sendStatusMessage(
-				new TextComponentTranslation("reloadSoundSystem.success"), true
-		);
+		mc.player.sendStatusMessage(new TextComponentTranslation("reloadSoundSystem.success"));
 	}
 
 	private static void register(boolean flag, KeyBinding keyBinding) {
