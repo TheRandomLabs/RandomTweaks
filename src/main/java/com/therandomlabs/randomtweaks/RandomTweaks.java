@@ -32,17 +32,17 @@ public final class RandomTweaks {
 
 	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
-	public static final boolean APPLECORE_LOADED = Loader.isModLoaded("applecore");
+	public static final boolean APPLECORE_LOADED = Loader.isModLoaded("AppleCore");
 	public static final boolean DING_LOADED = Loader.isModLoaded("ding");
 	public static final boolean DYNAMIC_SURROUNDINGS_LOADED = Loader.isModLoaded("dsurround");
 	public static final boolean EXPANDED_BONEMEAL_LOADED = Loader.isModLoaded("expandedbonemeal");
 	public static final boolean HEADCRUMBS_LOADED = Loader.isModLoaded("headcrumbs");
 	public static final boolean HELPFIXER_LOADED = Loader.isModLoaded("helpfixer");
-	public static final boolean QUARK_LOADED = Loader.isModLoaded("quark");
+	public static final boolean QUARK_LOADED = Loader.isModLoaded("Quark");
 	public static final boolean OCEAN_FLOOR_LOADED = Loader.isModLoaded("samsocean");
 	public static final boolean RANDOMCONFIGS_LOADED = Loader.isModLoaded("randomconfigs");
 	public static final boolean RANDOMPATCHES_LOADED = Loader.isModLoaded("randompatches");
-	public static final boolean VANILLATWEAKS_LOADED = Loader.isModLoaded("vanillatweaks");
+	public static final boolean VANILLATWEAKS_LOADED = Loader.isModLoaded("vt");
 
 	@SidedProxy(
 			clientSide = "com.therandomlabs.randomtweaks.ClientProxy",
