@@ -73,7 +73,7 @@ public final class CobwebHandler {
 			//Values taken from
 			//https://github.com/NerdHubMC/Realistic-Cobwebs/blob/master/src/main/java/mod/
 			//upcraftlp/cobwebs/Main.java
-					((WorldServer) world).spawnParticle(
+			((WorldServer) world).spawnParticle(
 					EnumParticleTypes.FLAME,
 					pos.getX() + 0.5,
 					pos.getY() + 0.5,
