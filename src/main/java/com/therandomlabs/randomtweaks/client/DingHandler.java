@@ -145,15 +145,11 @@ public final class DingHandler {
 
 	public static Class<?> getDsurroundClass(String name) {
 		try {
-			return Class.forName("org.orecruncher.dsurround." + name);
+			return Class.forName("org.blockartistry.DynSurround." + name);
 		} catch(ClassNotFoundException ex) {
-			try {
-				return Class.forName("org.blockartistry.DynSurround." + name);
-			} catch(ClassNotFoundException ex2) {
-				RandomTweaks.LOGGER.error(
-						"Failed to find Dynamic Surroundings class: " + name, ex2
-				);
-			}
+			RandomTweaks.LOGGER.error(
+					"Failed to find Dynamic Surroundings class: " + name, ex
+			);
 		}
 
 		return null;
