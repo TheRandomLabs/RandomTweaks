@@ -46,7 +46,7 @@ public class ChunkProviderVoid implements IChunkGenerator {
 	}
 
 	@Override
-	public BlockPos getNearestStructurePos(World world, String structureName, BlockPos position,
+	public BlockPos getNearestStructurePos(World world, String structureName, BlockPos pos,
 			boolean findUnexplored) {
 		return null;
 	}
