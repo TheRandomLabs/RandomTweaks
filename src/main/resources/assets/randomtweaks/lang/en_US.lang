@@ -236,9 +236,9 @@ key.toggleAutoJump=Toggle Auto Jump
 
 reloadSoundSystem.success=§eSound system reloaded!
 
-autoJump.disabled=Auto Jump Disabled
-autoJump.enabled=Auto Jump Enabled
-autoJump.enabledStepup=Stepup Enabled
+autoJump.disabled=Auto jump disabled
+autoJump.enabled=Auto jump enabled
+autoJump.enabledStepup=Stepup enabled
 
 commands.rtreloadclient.usage=/rtreloadclient
 commands.rtreloadclient.success=RandomTweaks client-sided configuration reloaded!
