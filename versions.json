@@ -138,6 +138,7 @@
 		"1.12.1-1.10.0.0": "Changed the versioning scheme.\nChanged the location of logfilters.json.\nAdded /rtreloadclient."
 	},
 	"1.11.2": {
+		"1.11.2-2.5.0.1": "Backported changes from 1.12.2-2.5.0.1.",
 		"1.11.2-1.19.1.1": "Minor fixes.",
 		"1.11.2-1.19.1.0": "The \"ding\" sound can now be disabled without crashing.\nAdded support for multiple world join \"ding\" sounds.",
 		"1.11.2-1.19.0.0": "Reorganized the configuration.\nThe stepup and FoV change toggle states are now stored on disk.\nAdded the disconnect command.\nRemoved the dimension unloader.\nFixed bugs.",
@@ -186,6 +187,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.11": {
+		"1.11.2-2.5.0.1": "Backported changes from 1.12.2-2.5.0.1.",
 		"1.11.2-1.19.1.1": "Minor fixes.",
 		"1.11.2-1.19.1.0": "The \"ding\" sound can now be disabled without crashing.\nAdded support for multiple world join \"ding\" sounds.",
 		"1.11.2-1.19.0.0": "Reorganized the configuration.\nThe stepup and FoV change toggle states are now stored on disk.\nAdded the disconnect command.\nRemoved the dimension unloader.\nFixed bugs.",
@@ -336,10 +338,10 @@
 		"1.12.1-recommended": "1.12.2-2.5.0.1",
 		"1.12-latest": "1.12.2-2.5.0.1",
 		"1.12-recommended": "1.12.2-2.5.0.1",
-		"1.11.2-latest": "1.11.2-1.19.1.1",
-		"1.11.2-recommended": "1.11.2-1.19.1.1",
-		"1.11-latest": "1.11.2-1.19.1.1",
-		"1.11-recommended": "1.11.2-1.19.1.1",
+		"1.11.2-latest": "1.11.2-2.5.0.1",
+		"1.11.2-recommended": "1.11.2-2.5.0.1",
+		"1.11-latest": "1.11.2-2.5.0.1",
+		"1.11-recommended": "1.11.2-2.5.0.1",
 		"1.10.2-latest": "1.11.2-1.19.1.1",
 		"1.10.2-recommended": "1.11.2-1.19.1.1",
 		"1.10-latest": "1.11.2-1.19.1.1",
