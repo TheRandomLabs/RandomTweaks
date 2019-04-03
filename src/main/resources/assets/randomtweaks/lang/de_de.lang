@@ -175,6 +175,7 @@ randomtweaks.config.misc.farmlandTrampleBehavior.vanilla=Vanilla
 randomtweaks.config.misc.farmlandTrampleBehavior.dontTrampleIfFeatherFalling=Don't trample if Feather Falling
 randomtweaks.config.misc.farmlandTrampleBehavior.dontTrample=Don't trample
 randomtweaks.config.misc.localizePortalNames=Localize portal names
+randomtweaks.config.misc.mobsAlwaysDropLoot=Mobs always drop loot
 randomtweaks.config.misc.moreRomanNumerals=More Roman numerals
 randomtweaks.config.misc.pickUpSkeletonArrows=Allow arrows shot by skeletons to be picked up
 randomtweaks.config.misc.updateAllMapsInInventory=Update all maps in inventory
@@ -235,9 +236,9 @@ key.toggleAutoJump=Toggle Auto Jump
 
 reloadSoundSystem.success=§eSoundsystem erfolgreich neugeladen!
 
-autoJump.disabled=Auto Jump Disabled
-autoJump.enabled=Auto Jump Enabled
-autoJump.enabledStepup=Stepup Enabled
+autoJump.disabled=Auto jump disabled
+autoJump.enabled=Auto jump enabled
+autoJump.enabledStepup=Stepup enabled
 
 commands.rtreloadclient.usage=/rtreloadclient
 commands.rtreloadclient.success=RandomTweaks client-sided configuration reloaded!
