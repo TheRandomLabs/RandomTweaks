@@ -49,7 +49,7 @@ public final class RandomTweaks {
 	public static final boolean RANDOMCONFIGS_LOADED = Loader.isModLoaded("randomconfigs");
 	public static final boolean RANDOMPATCHES_LOADED = Loader.isModLoaded("randompatches");
 	public static final boolean RANDOMPORTALS_LOADED = Loader.isModLoaded("randomportals");
-	public static final boolean VANILLATWEAKS_LOADED = Loader.isModLoaded("vanillatweaks");
+	public static final boolean VANILLATWEAKS_LOADED = Loader.isModLoaded("vt");
 
 	@SidedProxy(
 			clientSide = "com.therandomlabs.randomtweaks.ClientProxy",

@@ -6,11 +6,7 @@ import java.util.List;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.world.WorldType;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
-@Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 public final class WorldTypeRegistry {
 	static final List<RTWorldType> worldTypes = new ArrayList<>();
 
@@ -63,12 +59,5 @@ public final class WorldTypeRegistry {
 		}
 
 		return true;
-	}
-
-	@SubscribeEvent
-	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
-		if(event.getModID().equals(RandomTweaks.MOD_ID)) {
-			registerWorldTypes();
-		}
 	}
 }

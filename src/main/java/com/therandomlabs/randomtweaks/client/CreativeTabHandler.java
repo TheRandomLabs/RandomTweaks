@@ -15,8 +15,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.fml.relauncher.SideOnly;
@@ -24,7 +22,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 //A lot of this is there just so creative tab configuration options can be toggled in-game
 //Worth it? Maybe
-@Mod.EventBusSubscriber(value = Side.CLIENT, modid = RandomTweaks.MOD_ID)
 public final class CreativeTabHandler {
 	public static final CreativeTabs SPAWN_EGGS = new CreativeTabs("spawnEggs") {
 		@SideOnly(Side.CLIENT)
@@ -89,14 +86,7 @@ public final class CreativeTabHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
-		if(event.getModID().equals(RandomTweaks.MOD_ID)) {
-			init();
-		}
-	}
-
-	public static void init() {
+	public static void initialize() {
 		if(RTConfig.CreativeTabs.moveBucketCreativeTab) {
 			originalBucketTab = Items.BUCKET.getCreativeTab();
 			bucketSetBefore = true;

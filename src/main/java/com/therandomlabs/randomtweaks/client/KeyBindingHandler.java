@@ -9,7 +9,6 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.text.TextComponentTranslation;
 import net.minecraftforge.client.settings.KeyConflictContext;
 import net.minecraftforge.client.settings.KeyModifier;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.InputEvent;
@@ -72,13 +71,6 @@ public final class KeyBindingHandler {
 			//If none of the keybinds are enabled, then GuiKeyBindingList.getListEntry
 			//returns null for one of the indexes, which causes a NullPointerException
 			KeyBinding.getKeybinds().remove("key.categories.randomtweaks");
-		}
-	}
-
-	@SubscribeEvent
-	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
-		if(event.getModID().equals(RandomTweaks.MOD_ID)) {
-			registerKeyBindings();
 		}
 	}
 

@@ -47,14 +47,12 @@ public final class SquidHandler {
 			return true;
 		}
 
-		final AxisAlignedBB aabb = new AxisAlignedBB(
-				event.getX(),
-				event.getY(),
-				event.getZ(),
-				event.getX(),
-				event.getY(),
-				event.getZ()
-		).expand(radius, radius, radius);
+		final float x = event.getX();
+		final float y = event.getY();
+		final float z = event.getZ();
+
+		final AxisAlignedBB aabb =
+				new AxisAlignedBB(x, y, z, x, y, z).expand(radius, radius, radius);
 
 		for(EntityPlayer player : event.getWorld().playerEntities) {
 			if(player.getEntityBoundingBox().intersects(aabb)) {
