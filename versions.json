@@ -1,6 +1,8 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12.2": {
+		"1.12.2-2.5.0.3": "Fixed a server crash on startup.\nFixed the \"ding\" sounds being reset in the configuration on startup.",
+		"1.12.2-2.5.0.2": "Minor cleanup.",
 		"1.12.2-2.5.0.1": "Fixed contributor capes.\nMade a minor change to a configuration property comment.",
 		"1.12.2-2.5.0.0": "Switched to RandomLib for configuration handling.\nNow runs on Minecraft 1.12 and 1.12.1.\nAdded an option to always update all maps in players' inventories.\nAdded the \"drowningDamageMultiplier\" and \"fireDamageMultiplier\" gamerules.\nPlayers can now shoot bows enchanted with Infinity without an arrow in their inventory by default.\nAdded configuration options for adjusting the brightness and flashing of the Night Vision effect.\nAdded armor equip/unequip sounds.\nAdded an experimental fix for duplicate entity UUIDs which is disabled by default.\nAdded options related to burning cobwebs.\nAdded an option to force mobs to drop loot regardless of whether they were killed by a player.",
 		"1.12.2-2.4.3.2": "Fixed incorrect logging related to the /help tweaks.",
@@ -74,6 +76,8 @@
 		"1.12.1-1.10.0.0": "Changed the versioning scheme.\nChanged the location of logfilters.json.\nAdded /rtreloadclient."
 	},
 	"1.12.1": {
+		"1.12.2-2.5.0.3": "Fixed a server crash on startup.\nFixed the \"ding\" sounds being reset in the configuration on startup.",
+		"1.12.2-2.5.0.2": "Minor cleanup.",
 		"1.12.2-2.5.0.1": "Fixed contributor capes.\nMade a minor change to a configuration property comment.",
 		"1.12.2-2.5.0.0": "Switched to RandomLib for configuration handling.\nNow runs on Minecraft 1.12 and 1.12.1.\nAdded an option to always update all maps in players' inventories.\nAdded the \"drowningDamageMultiplier\" and \"fireDamageMultiplier\" gamerules.\nPlayers can now shoot bows enchanted with Infinity without an arrow in their inventory by default.\nAdded configuration options for adjusting the brightness and flashing of the Night Vision effect.\nAdded armor equip/unequip sounds.\nAdded an experimental fix for duplicate entity UUIDs which is disabled by default.\nAdded options related to burning cobwebs.\nAdded an option to force mobs to drop loot regardless of whether they were killed by a player.",
 		"1.12.2-2.0.2.0": "Added Comforts compatibility thanks to TheIllusiveC4.",
@@ -106,6 +110,8 @@
 		"1.12.1-1.10.0.0": "Changed the versioning scheme.\nChanged the location of logfilters.json.\nAdded /rtreloadclient."
 	},
 	"1.12": {
+		"1.12.2-2.5.0.3": "Fixed a server crash on startup.\nFixed the \"ding\" sounds being reset in the configuration on startup.",
+		"1.12.2-2.5.0.2": "Minor cleanup.",
 		"1.12.2-2.5.0.1": "Fixed contributor capes.\nMade a minor change to a configuration property comment.",
 		"1.12.2-2.5.0.0": "Switched to RandomLib for configuration handling.\nNow runs on Minecraft 1.12 and 1.12.1.\nAdded an option to always update all maps in players' inventories.\nAdded the \"drowningDamageMultiplier\" and \"fireDamageMultiplier\" gamerules.\nPlayers can now shoot bows enchanted with Infinity without an arrow in their inventory by default.\nAdded configuration options for adjusting the brightness and flashing of the Night Vision effect.\nAdded armor equip/unequip sounds.\nAdded an experimental fix for duplicate entity UUIDs which is disabled by default.\nAdded options related to burning cobwebs.\nAdded an option to force mobs to drop loot regardless of whether they were killed by a player.",
 		"1.12.2-2.0.2.0": "Added Comforts compatibility thanks to TheIllusiveC4.",
@@ -138,6 +144,8 @@
 		"1.12.1-1.10.0.0": "Changed the versioning scheme.\nChanged the location of logfilters.json.\nAdded /rtreloadclient."
 	},
 	"1.11.2": {
+		"1.11.2-2.5.0.3": "Fixed a server crash on startup.\nFixed the \"ding\" sounds being reset in the configuration on startup.",
+		"1.11.2-2.5.0.2": "Minor cleanup.",
 		"1.11.2-2.5.0.1": "Backported changes from 1.12.2-2.5.0.1.",
 		"1.11.2-1.19.1.1": "Minor fixes.",
 		"1.11.2-1.19.1.0": "The \"ding\" sound can now be disabled without crashing.\nAdded support for multiple world join \"ding\" sounds.",
@@ -187,6 +195,8 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.11": {
+		"1.11.2-2.5.0.3": "Fixed a server crash on startup.\nFixed the \"ding\" sounds being reset in the configuration on startup.",
+		"1.11.2-2.5.0.2": "Minor cleanup.",
 		"1.11.2-2.5.0.1": "Backported changes from 1.12.2-2.5.0.1.",
 		"1.11.2-1.19.1.1": "Minor fixes.",
 		"1.11.2-1.19.1.0": "The \"ding\" sound can now be disabled without crashing.\nAdded support for multiple world join \"ding\" sounds.",
@@ -236,6 +246,8 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.10.2": {
+		"1.10.2-2.5.0.3": "Fixed a server crash on startup.\nFixed the \"ding\" sounds being reset in the configuration on startup.",
+		"1.10.2-2.5.0.2": "Backported changes from 1.12.2-2.5.0.2.",
 		"1.11.2-1.19.1.1": "Minor fixes.",
 		"1.11.2-1.19.1.0": "The \"ding\" sound can now be disabled without crashing.\nAdded support for multiple world join \"ding\" sounds.",
 		"1.11.2-1.19.0.0": "Reorganized the configuration.\nThe stepup and FoV change toggle states are now stored on disk.\nAdded the disconnect command.\nRemoved the dimension unloader.\nFixed bugs.",
@@ -284,6 +296,8 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.10": {
+		"1.10.2-2.5.0.3": "Fixed a server crash on startup.\nFixed the \"ding\" sounds being reset in the configuration on startup.",
+		"1.10.2-2.5.0.2": "Backported changes from 1.12.2-2.5.0.2.",
 		"1.11.2-1.19.1.1": "Minor fixes.",
 		"1.11.2-1.19.1.0": "The \"ding\" sound can now be disabled without crashing.\nAdded support for multiple world join \"ding\" sounds.",
 		"1.11.2-1.19.0.0": "Reorganized the configuration.\nThe stepup and FoV change toggle states are now stored on disk.\nAdded the disconnect command.\nRemoved the dimension unloader.\nFixed bugs.",
@@ -332,19 +346,19 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"promos": {
-		"1.12.2-latest": "1.12.2-2.5.0.1",
-		"1.12.2-recommended": "1.12.2-2.5.0.1",
-		"1.12.1-latest": "1.12.2-2.5.0.1",
-		"1.12.1-recommended": "1.12.2-2.5.0.1",
-		"1.12-latest": "1.12.2-2.5.0.1",
-		"1.12-recommended": "1.12.2-2.5.0.1",
-		"1.11.2-latest": "1.11.2-2.5.0.1",
-		"1.11.2-recommended": "1.11.2-2.5.0.1",
-		"1.11-latest": "1.11.2-2.5.0.1",
-		"1.11-recommended": "1.11.2-2.5.0.1",
-		"1.10.2-latest": "1.11.2-1.19.1.1",
-		"1.10.2-recommended": "1.11.2-1.19.1.1",
-		"1.10-latest": "1.11.2-1.19.1.1",
-		"1.10-recommended": "1.11.2-1.19.1.1"
+		"1.12.2-latest": "1.12.2-2.5.0.3",
+		"1.12.2-recommended": "1.12.2-2.5.0.3",
+		"1.12.1-latest": "1.12.2-2.5.0.3",
+		"1.12.1-recommended": "1.12.2-2.5.0.3",
+		"1.12-latest": "1.12.2-2.5.0.3",
+		"1.12-recommended": "1.12.2-2.5.0.3",
+		"1.11.2-latest": "1.11.2-2.5.0.3",
+		"1.11.2-recommended": "1.11.2-2.5.0.3",
+		"1.11-latest": "1.11.2-2.5.0.3",
+		"1.11-recommended": "1.11.2-2.5.0.3",
+		"1.10.2-latest": "1.10.2-2.5.0.3",
+		"1.10.2-recommended": "1.10.2-2.5.0.3",
+		"1.10-latest": "1.10.2-2.5.0.3",
+		"1.10-recommended": "1.10.2-2.5.0.3"
 	}
 }
