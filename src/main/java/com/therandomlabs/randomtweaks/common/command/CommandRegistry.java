@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.common.command;
 
+import com.therandomlabs.randomlib.config.CommandConfigReload;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraftforge.client.ClientCommandHandler;
@@ -25,13 +26,17 @@ public final class CommandRegistry {
 		}
 
 		if(RTConfig.Commands.rtreload) {
-			event.registerServerCommand(new CommandRTReload(Side.SERVER));
+			event.registerServerCommand(new CommandConfigReload(
+					"rtreload", RTConfig.class, Side.SERVER, "RandomTweaks configuration reloaded!"
+			));
 		}
 	}
 
 	public static void registerClient() {
 		if(RTConfig.Commands.rtreloadclient) {
-			ClientCommandHandler.instance.registerCommand(new CommandRTReload(Side.CLIENT));
+			ClientCommandHandler.instance.registerCommand(new CommandConfigReload(
+					"rtreloadclient", RTConfig.class, Side.CLIENT
+			));
 		}
 
 		if(RTConfig.Commands.disconnect) {

@@ -269,7 +269,7 @@ public final class RTConfig {
 		@Config.Property("Moves spawn eggs to their own creative tab.")
 		public static boolean spawnEggsCreativeTab = true;
 
-		public static void onReload() {
+		public static void onReloadClient() {
 			CreativeTabHandler.initialize();
 		}
 	}
@@ -381,7 +381,7 @@ public final class RTConfig {
 		@Config.Property("Enables the Toggle Time of Day Overlay keybind.")
 		public static boolean toggleTimeOfDayOverlay = true;
 
-		public static void onReload() {
+		public static void onReloadClient() {
 			KeyBindingHandler.registerKeyBindings();
 		}
 	}
