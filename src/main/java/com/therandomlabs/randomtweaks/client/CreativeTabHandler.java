@@ -15,7 +15,6 @@ import net.minecraft.item.ItemMonsterPlacer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
-import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
@@ -94,14 +93,7 @@ public final class CreativeTabHandler {
 		}
 	}
 
-	@SubscribeEvent
-	public static void onConfigChanged(ConfigChangedEvent.PostConfigChangedEvent event) {
-		if(event.getModID().equals(RandomTweaks.MOD_ID)) {
-			init();
-		}
-	}
-
-	public static void init() {
+	public static void initialize() {
 		if(RTConfig.CreativeTabs.moveBucketCreativeTab) {
 			originalBucketTab = Items.BUCKET.getCreativeTab();
 			bucketSetBefore = true;
