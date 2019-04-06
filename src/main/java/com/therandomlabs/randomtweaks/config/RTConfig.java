@@ -24,7 +24,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
 
-@Config(modid = RandomTweaks.MOD_ID, path = RandomTweaks.MOD_ID + "/" + RandomTweaks.MOD_ID)
+@Config(value = RandomTweaks.MOD_ID, path = RandomTweaks.MOD_ID + "/" + RandomTweaks.MOD_ID)
 public final class RTConfig {
 	public static final class Animals {
 		@Config.Category("Options related to randomized animal ages.")
