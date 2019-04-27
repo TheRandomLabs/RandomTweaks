@@ -24,6 +24,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -108,40 +109,38 @@ public final class MiscEventHandler {
 		} else if(source == DamageSource.IN_FIRE || source == DamageSource.ON_FIRE) {
 			gameRule = RTConfig.GameRules.fireDamageMultiplier;
 		} else {
-			gameRule = null;
-		}
-
-		if(gameRule != null) {
-			if(gameRule.isEmpty()) {
-				return;
-			}
-
-			float multiplier = 0.0F;
-
-			try {
-				multiplier = Float.parseFloat(
-						entity.getEntityWorld().getGameRules().getString(gameRule)
-				);
-			} catch(NumberFormatException ignored) {}
-
-			if(multiplier == 0.0F) {
-				event.setCanceled(true);
-			} else if(multiplier <= 0.0F) {
-				event.setCanceled(true);
-				entity.setHealth(Math.max(
-						entity.getHealth() + event.getAmount() * multiplier,
-						entity.getMaxHealth()
-				));
-			} else {
-				event.setAmount(event.getAmount() * multiplier);
-			}
-
 			return;
 		}
 
-		//Protect pets from owners
+		if(gameRule.isEmpty()) {
+			return;
+		}
 
-		final Entity attacker = source.getTrueSource();
+		float multiplier = 0.0F;
+
+		try {
+			multiplier = Float.parseFloat(
+					entity.getEntityWorld().getGameRules().getString(gameRule)
+			);
+		} catch(NumberFormatException ignored) {}
+
+		if(multiplier == 0.0F) {
+			event.setCanceled(true);
+		} else if(multiplier <= 0.0F) {
+			event.setCanceled(true);
+			entity.setHealth(Math.max(
+					entity.getHealth() + event.getAmount() * multiplier,
+					entity.getMaxHealth()
+			));
+		} else {
+			event.setAmount(event.getAmount() * multiplier);
+		}
+	}
+
+	@SubscribeEvent
+	public static void onLivingAttack(LivingAttackEvent event) {
+		final Entity attacker = event.getSource().getTrueSource();
+		final EntityLivingBase entity = event.getEntityLiving();
 
 		if(attacker == null || !(entity instanceof IEntityOwnable)) {
 			return;
@@ -157,7 +156,7 @@ public final class MiscEventHandler {
 		final boolean protectFromSneaking = RTConfig.Animals.protectPetsFromSneakingOwners;
 
 		if(RTConfig.Animals.protectPetsFromOwners && owner.equals(attacker.getUniqueID()) &&
-				(!protectFromSneaking || (protectFromSneaking && !attacker.isSneaking()))) {
+				(protectFromSneaking || (!protectFromSneaking && !attacker.isSneaking()))) {
 			event.setCanceled(true);
 			return;
 		}
