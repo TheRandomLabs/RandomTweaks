@@ -762,7 +762,7 @@ public final class RTConfig {
 				"Whether the overlay should say \"Light\" or \"Dark\" instead of " +
 						"\"Day\" or \"Night\"."
 		)
-		public static boolean lightOrDark;
+		public static boolean lightOrDark = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property("Enables 24-hour time.")
 		public static boolean twentyFourHourTime = TRLUtils.IS_DEOBFUSCATED;
