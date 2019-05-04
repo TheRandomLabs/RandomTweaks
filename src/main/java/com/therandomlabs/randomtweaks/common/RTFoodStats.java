@@ -1,9 +1,8 @@
 package com.therandomlabs.randomtweaks.common;
 
-import java.util.AbstractMap;
-import java.util.Map;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.util.FoodStats;
+import net.minecraft.util.Tuple;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import squeek.applecore.api.food.FoodEvent;
 import squeek.applecore.api.hunger.ExhaustionEvent;
@@ -15,15 +14,15 @@ public class RTFoodStats extends FoodStats {
 			event.setCanceled(true);
 
 			final FoodStats stats = event.player.getFoodStats();
-			final Map.Entry<Integer, Float> newStats = addStats(
+			final Tuple<Integer, Float> newStats = addStats(
 					stats.foodLevel,
 					stats.foodSaturationLevel,
 					event.foodValuesToBeAdded.hunger,
 					event.foodValuesToBeAdded.saturationModifier
 			);
 
-			stats.foodLevel = newStats.getKey();
-			stats.foodSaturationLevel = newStats.getValue();
+			stats.foodLevel = newStats.getFirst();
+			stats.foodSaturationLevel = newStats.getSecond();
 		}
 
 		@SubscribeEvent
@@ -41,11 +40,15 @@ public class RTFoodStats extends FoodStats {
 
 	@Override
 	public void addStats(int foodLevel, float foodSaturationModifier) {
-		final Map.Entry<Integer, Float> stats =
-				addStats(this.foodLevel, foodSaturationLevel, foodLevel, foodSaturationModifier);
+		final Tuple<Integer, Float> stats = addStats(
+				this.foodLevel,
+				foodSaturationLevel,
+				foodLevel,
+				foodSaturationModifier
+		);
 
-		this.foodLevel = stats.getKey();
-		foodSaturationLevel = stats.getValue();
+		this.foodLevel = stats.getFirst();
+		foodSaturationLevel = stats.getSecond();
 	}
 
 	@Override
@@ -53,8 +56,8 @@ public class RTFoodStats extends FoodStats {
 		super.addExhaustion(exhaustion * (float) RTConfig.Hunger.exhaustionMultiplier);
 	}
 
-	public static Map.Entry<Integer, Float> addStats(int originalFoodLevel,
-			float originalSaturation, int foodLevel, float foodSaturationModifier) {
+	public static Tuple<Integer, Float> addStats(int originalFoodLevel, float originalSaturation,
+			int foodLevel, float foodSaturationModifier) {
 		int newFoodLevel = originalFoodLevel + foodLevel;
 		float newSaturation = originalSaturation + foodLevel * foodSaturationModifier * 2.0F;
 
@@ -75,6 +78,6 @@ public class RTFoodStats extends FoodStats {
 
 		newSaturation = Math.min(newSaturation, maxSaturationLevel);
 
-		return new AbstractMap.SimpleEntry<>(newFoodLevel, newSaturation);
+		return new Tuple<>(newFoodLevel, newSaturation);
 	}
 }
