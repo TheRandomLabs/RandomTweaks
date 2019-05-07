@@ -34,8 +34,8 @@ public final class SquidHandler {
 
 	@SubscribeEvent
 	public static void onCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
-		if(event.getEntity().getClass() == EntitySquid.class && !isInRadiusOfPlayer(event) ||
-				tooManySquids(event)) {
+		if(event.getEntity().getClass() == EntitySquid.class &&
+				(!isInRadiusOfPlayer(event) || tooManySquids(event))) {
 			event.setResult(Event.Result.DENY);
 		}
 	}
