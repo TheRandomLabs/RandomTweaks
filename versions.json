@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12.2": {
+		"1.12.2-2.5.0.6": "Fixed spawn points for the Void and Void Islands world types.",
 		"1.12.2-2.5.0.5": "Fixed the squid spawn configuration affecting non-squid spawns.",
 		"1.12.2-2.5.0.4": "Improved pet protection.",
 		"1.12.2-2.5.0.3": "Fixed a server crash on startup.\nFixed the \"ding\" sounds being reset in the configuration on startup.",
@@ -78,6 +79,7 @@
 		"1.12.1-1.10.0.0": "Changed the versioning scheme.\nChanged the location of logfilters.json.\nAdded /rtreloadclient."
 	},
 	"1.12.1": {
+		"1.12.2-2.5.0.6": "Fixed spawn points for the Void and Void Islands world types.",
 		"1.12.2-2.5.0.5": "Fixed the squid spawn configuration affecting non-squid spawns.",
 		"1.12.2-2.5.0.4": "Improved pet protection.",
 		"1.12.2-2.5.0.3": "Fixed a server crash on startup.\nFixed the \"ding\" sounds being reset in the configuration on startup.",
@@ -114,6 +116,7 @@
 		"1.12.1-1.10.0.0": "Changed the versioning scheme.\nChanged the location of logfilters.json.\nAdded /rtreloadclient."
 	},
 	"1.12": {
+		"1.12.2-2.5.0.6": "Fixed spawn points for the Void and Void Islands world types.",
 		"1.12.2-2.5.0.5": "Fixed the squid spawn configuration affecting non-squid spawns.",
 		"1.12.2-2.5.0.4": "Improved pet protection.",
 		"1.12.2-2.5.0.3": "Fixed a server crash on startup.\nFixed the \"ding\" sounds being reset in the configuration on startup.",
@@ -360,12 +363,12 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"promos": {
-		"1.12.2-latest": "1.12.2-2.5.0.5",
-		"1.12.2-recommended": "1.12.2-2.5.0.5",
-		"1.12.1-latest": "1.12.2-2.5.0.5",
-		"1.12.1-recommended": "1.12.2-2.5.0.5",
-		"1.12-latest": "1.12.2-2.5.0.5",
-		"1.12-recommended": "1.12.2-2.5.0.5",
+		"1.12.2-latest": "1.12.2-2.5.0.6",
+		"1.12.2-recommended": "1.12.2-2.5.0.6",
+		"1.12.1-latest": "1.12.2-2.5.0.6",
+		"1.12.1-recommended": "1.12.2-2.5.0.6",
+		"1.12-latest": "1.12.2-2.5.0.6",
+		"1.12-recommended": "1.12.2-2.5.0.6",
 		"1.11.2-latest": "1.11.2-2.5.0.5",
 		"1.11.2-recommended": "1.11.2-2.5.0.5",
 		"1.11-latest": "1.11.2-2.5.0.5",
