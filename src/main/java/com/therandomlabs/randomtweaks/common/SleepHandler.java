@@ -25,10 +25,17 @@ public final class SleepHandler {
 			Entity.class, "setSize", "func_70105_a", float.class, float.class
 	);
 
-	@SubscribeEvent(priority = EventPriority.HIGHEST)
+	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void onSleep(PlayerSleepInBedEvent event) {
 		if(!RTConfig.Misc.allowSleepNearMobsWithCustomNames &&
 				!RTConfig.Misc.disableBedProximityRequirement) {
+			return;
+		}
+
+		final EntityPlayer.SleepResult result = event.getResultStatus();
+
+		if(result == EntityPlayer.SleepResult.OTHER_PROBLEM ||
+				result == EntityPlayer.SleepResult.OK) {
 			return;
 		}
 

@@ -433,8 +433,8 @@ public final class RTConfig {
 				"name.")
 		public static boolean entitiesDropNameTags = TRLUtils.IS_DEOBFUSCATED;
 
-		@Config.Property("Whether to localize the Nether Portal, End Portal and End Gateway names.")
-		public static boolean localizePortalNames = true;
+		@Config.Property("Whether to localize the End Portal and End Gateway names.")
+		public static boolean localizeEndPortalNames = true;
 
 		@Config.Property("Whether mobs should drop loot even if they are not killed by players.")
 		public static boolean mobsAlwaysDropLoot = TRLUtils.IS_DEOBFUSCATED;
@@ -460,12 +460,10 @@ public final class RTConfig {
 				Blocks.WOODEN_BUTTON.setUnlocalizedName("button");
 			}
 
-			if(localizePortalNames) {
-				Blocks.PORTAL.setUnlocalizedName("netherPortal");
+			if(localizeEndPortalNames) {
 				Blocks.END_PORTAL.setUnlocalizedName("endPortal");
 				Blocks.END_GATEWAY.setUnlocalizedName("endGateway");
 			} else {
-				Blocks.PORTAL.setUnlocalizedName(null);
 				Blocks.END_PORTAL.setUnlocalizedName(null);
 				Blocks.END_GATEWAY.setUnlocalizedName(null);
 			}

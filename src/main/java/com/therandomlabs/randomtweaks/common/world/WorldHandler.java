@@ -4,6 +4,8 @@ import java.util.Random;
 import java.util.UUID;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockBed;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
@@ -126,16 +128,21 @@ public final class WorldHandler {
 	private static void onPlayerSpawnInVoidWorld(EntityPlayer player, boolean voidIslands) {
 		final World world = player.getEntityWorld();
 
-		BlockPos playerSpawnPoint = player.getBedLocation(DimensionType.OVERWORLD.getId());
-		boolean shouldSetWorldSpawn = false;
+		if(isSpawnable(world, world.getTopSolidOrLiquidBlock(player.getPosition()))) {
+			return;
+		}
+
+		BlockPos playerSpawnPoint = player.getBedLocation();
+		boolean usingWorldSpawn = false;
 
 		if(playerSpawnPoint == null) {
 			playerSpawnPoint = world.getSpawnPoint();
-			shouldSetWorldSpawn = true;
+			usingWorldSpawn = true;
 		}
 
-		//Return if there is a block that the player can spawn on
-		if(isSpawnable(world, world.getTopSolidOrLiquidBlock(playerSpawnPoint))) {
+		playerSpawnPoint = world.getTopSolidOrLiquidBlock(playerSpawnPoint).down();
+
+		if(isSpawnable(world, playerSpawnPoint)) {
 			return;
 		}
 
@@ -155,8 +162,8 @@ public final class WorldHandler {
 		player.setPosition(0.5, newSpawnY, 0.5);
 		player.setSpawnPoint(newSpawn, true);
 
-		//If the player doesn't have a bed, i.e. this is the world spawn point
-		if(shouldSetWorldSpawn) {
+		//If this is the world spawn point and it is invalid
+		if(usingWorldSpawn) {
 			world.setSpawnPoint(newSpawn);
 		}
 
@@ -175,6 +182,12 @@ public final class WorldHandler {
 
 	private static boolean isSpawnable(World world, BlockPos pos) {
 		final IBlockState state = world.getBlockState(pos);
-		return state.getMaterial().blocksMovement() && !state.getBlock().isFoliage(world, pos);
+		final Block block = state.getBlock();
+
+		if(block instanceof BlockBed) {
+			return BlockBed.getSafeExitLocation(world, pos, 0) != null;
+		}
+
+		return state.getMaterial().blocksMovement();
 	}
 }
