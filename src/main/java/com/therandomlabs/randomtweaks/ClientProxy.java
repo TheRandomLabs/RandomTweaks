@@ -1,6 +1,5 @@
 package com.therandomlabs.randomtweaks;
 
-import com.therandomlabs.randomtweaks.client.CreativeTabHandler;
 import com.therandomlabs.randomtweaks.client.NightVisionHandler;
 import com.therandomlabs.randomtweaks.common.command.CommandRegistry;
 import com.therandomlabs.randomtweaks.config.RTConfig;

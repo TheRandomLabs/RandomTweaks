@@ -1,7 +1,6 @@
 package com.therandomlabs.randomtweaks.common;
 
 import java.util.Random;
-import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;

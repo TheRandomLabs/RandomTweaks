@@ -1,6 +1,5 @@
 package com.therandomlabs.randomtweaks.client;
 
-import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import com.therandomlabs.randomtweaks.config.RTData;
 import net.minecraft.client.Minecraft;

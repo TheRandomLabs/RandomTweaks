@@ -26,17 +26,17 @@ import org.apache.commons.lang3.ArrayUtils;
 @Mod.EventBusSubscriber(Side.CLIENT)
 public final class CreativeTabHandler {
 	public static final CreativeTabs SPAWN_EGGS = new CreativeTabs("spawnEggs") {
-		@Override
-		public Item getTabIconItem() {
-			return Items.SPAWN_EGG;
-		}
-
 		@SideOnly(Side.CLIENT)
 		@Override
 		public ItemStack getIconItemStack() {
 			final ItemStack stack = new ItemStack(Items.SPAWN_EGG);
 			ItemMonsterPlacer.applyEntityIdToItemStack(stack, "Chicken");
 			return stack;
+		}
+
+		@Override
+		public Item getTabIconItem() {
+			return Items.SPAWN_EGG;
 		}
 
 		@Override
