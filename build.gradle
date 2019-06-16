@@ -16,7 +16,7 @@ buildscript {
 apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: "com.github.johnrengelman.shadow"
 
-version = "1.12.2-2.5.0.6"
+version = "1.12.2-2.5.0.7"
 group = "com.therandomlabs.randomtweaks"
 archivesBaseName = "randomtweaks"
 
@@ -57,7 +57,7 @@ artifacts {
 }
 
 minecraft {
-	version = "1.12.2-14.23.5.2836"
+	version = "1.12.2-14.23.5.2838"
 	runDir = "run"
 	mappings = "stable_39"
 

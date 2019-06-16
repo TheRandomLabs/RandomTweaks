@@ -451,8 +451,8 @@ public final class RTConfig {
 		public static TrampleHandler.Behavior farmlandTrampleBehavior =
 				TrampleHandler.Behavior.DONT_TRAMPLE_IF_FEATHER_FALLING;
 
-		@Config.Property("Whether to localize the Nether Portal, End Portal and End Gateway names.")
-		public static boolean localizePortalNames = true;
+		@Config.Property("Whether to localize the End Portal and End Gateway names.")
+		public static boolean localizeEndPortalNames = true;
 
 		@Config.Property("Whether mobs should drop loot even if they are not killed by players.")
 		public static boolean mobsAlwaysDropLoot = TRLUtils.IS_DEOBFUSCATED;
@@ -475,6 +475,7 @@ public final class RTConfig {
 		)
 		public static boolean updateAllMapsInInventory = TRLUtils.IS_DEOBFUSCATED;
 
+		@SuppressWarnings("ConstantConditions")
 		public static void onReload() {
 			if(betterButtonNames) {
 				Blocks.STONE_BUTTON.setTranslationKey("buttonStone");
@@ -485,12 +486,10 @@ public final class RTConfig {
 			}
 
 			if(!RandomTweaks.RANDOMPORTALS_LOADED) {
-				if(localizePortalNames) {
-					Blocks.PORTAL.setTranslationKey("netherPortal");
+				if(localizeEndPortalNames) {
 					Blocks.END_PORTAL.setTranslationKey("endPortal");
 					Blocks.END_GATEWAY.setTranslationKey("endGateway");
 				} else {
-					Blocks.PORTAL.setTranslationKey(null);
 					Blocks.END_PORTAL.setTranslationKey(null);
 					Blocks.END_GATEWAY.setTranslationKey(null);
 				}
