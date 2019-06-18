@@ -37,8 +37,7 @@ public final class KeyBindingHandler {
 	public static final KeyBinding TOGGLE_TIME_OF_DAY_OVERLAY = new KeyBinding(
 			"key.toggleTimeOfDayOverlay",
 			KeyConflictContext.IN_GAME,
-			KeyModifier.CONTROL,
-			Keyboard.KEY_BACKSLASH,
+			Keyboard.KEY_NONE,
 			"key.categories.randomtweaks"
 	);
 

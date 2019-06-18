@@ -141,7 +141,10 @@ public final class RTConfig {
 		public static boolean clearWater = true;
 
 		@Config.RequiresWorldReload
-		@Config.Property("Whether contributor capes should be enabled.")
+		@Config.Property({
+				"Whether contributor capes should be enabled.",
+				"This only be disabled in-game, not enabled."
+		})
 		public static boolean contributorCapes = true;
 
 		@Config.Property("Disables the ender dragon death sound.")
@@ -444,10 +447,8 @@ public final class RTConfig {
 				"name.")
 		public static boolean entitiesDropNameTags = TRLUtils.IS_DEOBFUSCATED;
 
-		@Config.Property({
-				"The farmland trample behavior.",
-				"This does not work on versions below 1.12.2."
-		})
+		@Config.MinForgeBuild(2718)
+		@Config.Property("The farmland trample behavior.")
 		public static TrampleHandler.Behavior farmlandTrampleBehavior =
 				TrampleHandler.Behavior.DONT_TRAMPLE_IF_FEATHER_FALLING;
 
@@ -463,10 +464,8 @@ public final class RTConfig {
 		)
 		public static boolean moreRomanNumerals = true;
 
-		@Config.Property({
-				"Allows skeleton arrows to be picked up.",
-				"This does not work on versions below 1.12.2."
-		})
+		@Config.MinForgeBuild(2526)
+		@Config.Property("Allows skeleton arrows to be picked up.")
 		public static boolean pickUpSkeletonArrows = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property(
