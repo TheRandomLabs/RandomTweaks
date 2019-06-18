@@ -179,6 +179,7 @@ randomtweaks.config.misc.mobsAlwaysDropLoot=Mobs always drop loot
 randomtweaks.config.misc.moreRomanNumerals=More Roman numerals
 randomtweaks.config.misc.pickUpSkeletonArrows=Allow arrows shot by skeletons to be picked up
 randomtweaks.config.misc.updateAllMapsInInventory=Update all maps in inventory
+randomtweaks.config.misc.zombieTargetDetectionImprovements=Zombie target detection improvements
 
 randomtweaks.config.playerHeadDrops=Player Head Drops
 randomtweaks.config.playerHeadDrops.enabled=Enable player head drops

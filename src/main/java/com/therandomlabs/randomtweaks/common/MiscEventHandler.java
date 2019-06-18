@@ -11,6 +11,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
@@ -46,12 +47,17 @@ public final class MiscEventHandler {
 
 		final Entity entity = event.getEntity();
 
-		if(!(entity instanceof EntityPlayer)) {
+		if(entity instanceof EntityPlayer) {
+			onPlayerJoinWorld((EntityPlayer) entity);
 			return;
 		}
 
-		final EntityPlayer player = (EntityPlayer) event.getEntity();
+		if(entity instanceof EntityZombie) {
+			ZombieAIHandler.onZombieJoinWorld((EntityZombie) entity);
+		}
+	}
 
+	public static void onPlayerJoinWorld(EntityPlayer player) {
 		final IAttributeInstance attackSpeed =
 				player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
 		attackSpeed.setBaseValue(RTConfig.Misc.attackSpeed);

@@ -474,6 +474,10 @@ public final class RTConfig {
 		)
 		public static boolean updateAllMapsInInventory = TRLUtils.IS_DEOBFUSCATED;
 
+		@Config.RequiresWorldReload
+		@Config.Property("Whether to enable zombie target detection improvements.")
+		public static boolean zombieTargetDetectionImprovements = true;
+
 		@SuppressWarnings("ConstantConditions")
 		public static void onReload() {
 			if(betterButtonNames) {
