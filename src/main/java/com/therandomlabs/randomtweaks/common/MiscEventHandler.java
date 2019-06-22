@@ -28,11 +28,13 @@ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
+import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -103,9 +105,41 @@ public final class MiscEventHandler {
 	}
 
 	@SubscribeEvent
+	public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
+		final EntityLivingBase entity = event.getEntityLiving();
+
+		if(entity.getEntityWorld().isRemote) {
+			return;
+		}
+
+		if(RTConfig.Misc.entityNaNHealthFix && Float.isNaN(entity.getHealth())) {
+			entity.setHealth(0.0F);
+			return;
+		}
+
+		if(entity.getClass() == EntitySheep.class) {
+			ColoredSheepHandler.onSheepTick((EntitySheep) entity);
+		}
+	}
+
+	@SubscribeEvent
 	public static void onLivingHurt(LivingHurtEvent event) {
 		final EntityLivingBase entity = event.getEntityLiving();
 		final DamageSource source = event.getSource();
+		final float amount = event.getAmount();
+
+		if(RTConfig.Misc.entityNaNHealthFix && Float.isNaN(amount)) {
+			RandomTweaks.LOGGER.error("{} was damaged by a NaN value.", entity);
+			RandomTweaks.LOGGER.error("Immediate source: " + source);
+			RandomTweaks.LOGGER.error("True source: " + source.getTrueSource());
+			RandomTweaks.LOGGER.error(
+					"This damage will be canceled. Please report this to the relevant mod author."
+			);
+
+			event.setResult(Event.Result.DENY);
+			event.setCanceled(true);
+			return;
+		}
 
 		final String gameRule;
 
@@ -136,11 +170,11 @@ public final class MiscEventHandler {
 		} else if(multiplier <= 0.0F) {
 			event.setCanceled(true);
 			entity.setHealth(Math.max(
-					entity.getHealth() + event.getAmount() * multiplier,
+					entity.getHealth() + amount * multiplier,
 					entity.getMaxHealth()
 			));
 		} else {
-			event.setAmount(event.getAmount() * multiplier);
+			event.setAmount(amount * multiplier);
 		}
 	}
 

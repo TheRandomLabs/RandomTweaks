@@ -443,9 +443,13 @@ public final class RTConfig {
 		@Config.Property("Disables cumulative anvil costs.")
 		public static boolean disableCumulativeAnvilCosts = true;
 
-		@Config.Property("Whether living entities should drop name tags if they have a custom " +
-				"name.")
+		@Config.Property(
+				"Whether living entities should drop name tags if they have a custom name."
+		)
 		public static boolean entitiesDropNameTags = TRLUtils.IS_DEOBFUSCATED;
+
+		@Config.Property("Whether to fix entities with NaN health.")
+		public static boolean entityNaNHealthFix = true;
 
 		@Config.MinForgeBuild(2718)
 		@Config.Property("The farmland trample behavior.")
@@ -743,7 +747,7 @@ public final class RTConfig {
 
 	public static final class TimeOfDay {
 		@Config.Property("The alignment.")
-		public static Alignment alignment = Alignment.TOPLEFT;
+		public static Alignment alignment = Alignment.TOP_LEFT;
 
 		@Config.Property("Disables the overlay if doDaylightCycle is false.")
 		public static boolean disableIfNoDaylightCycle = !TRLUtils.IS_DEOBFUSCATED;

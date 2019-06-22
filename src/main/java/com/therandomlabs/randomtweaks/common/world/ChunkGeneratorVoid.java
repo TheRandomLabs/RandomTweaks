@@ -39,15 +39,17 @@ public class ChunkGeneratorVoid implements IChunkGenerator {
 	}
 
 	@Override
-	public List<Biome.SpawnListEntry> getPossibleCreatures(EnumCreatureType creatureType,
-			BlockPos pos) {
+	public List<Biome.SpawnListEntry> getPossibleCreatures(
+			EnumCreatureType creatureType, BlockPos pos
+	) {
 		return RTConfig.VoidWorld.mobSpawning ?
 				world.getBiome(pos).getSpawnableList(creatureType) : Collections.emptyList();
 	}
 
 	@Override
-	public BlockPos getNearestStructurePos(World world, String structureName, BlockPos pos,
-			boolean findUnexplored) {
+	public BlockPos getNearestStructurePos(
+			World world, String structureName, BlockPos pos, boolean findUnexplored
+	) {
 		return null;
 	}
 
@@ -59,8 +61,9 @@ public class ChunkGeneratorVoid implements IChunkGenerator {
 		return false;
 	}
 
-	public static Chunk createVoidChunk(World world, Random random, Biome biome,
-			Biome[] biomeBlacklist, int x, int z) {
+	public static Chunk createVoidChunk(
+			World world, Random random, Biome biome, Biome[] biomeBlacklist, int x, int z
+	) {
 		final Chunk chunk = new Chunk(world, x, z);
 
 		if(biome == null) {

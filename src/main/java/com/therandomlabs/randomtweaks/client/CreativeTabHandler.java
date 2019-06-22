@@ -65,7 +65,6 @@ public final class CreativeTabHandler {
 	private static boolean dragonEggSetBefore;
 
 	private static CreativeTabs originalSpawnEggsTab;
-	private static boolean spawnEggsSetBefore;
 
 	@SubscribeEvent
 	public static void onItemTooltip(ItemTooltipEvent event) {
@@ -129,22 +128,21 @@ public final class CreativeTabHandler {
 			}
 
 			originalSpawnEggsTab = Items.SPAWN_EGG.getCreativeTab();
-			spawnEggsSetBefore = true;
 			Items.SPAWN_EGG.setCreativeTab(SPAWN_EGGS);
 
 			return;
 		}
-
-		if(!spawnEggsSetBefore) {
-			return;
-		}
-
 
 		final int index = ArrayUtils.indexOf(CreativeTabs.CREATIVE_TAB_ARRAY, SPAWN_EGGS);
 
 		if(index != ArrayUtils.INDEX_NOT_FOUND) {
 			CreativeTabs.CREATIVE_TAB_ARRAY =
 					ArrayUtils.remove(CreativeTabs.CREATIVE_TAB_ARRAY, index);
+
+			for(int i = index; i < CreativeTabs.CREATIVE_TAB_ARRAY.length; i++) {
+				CreativeTabs.CREATIVE_TAB_ARRAY[i].index = i;
+			}
+
 			GuiContainerCreative.selectedTabIndex = CreativeTabs.BUILDING_BLOCKS.index;
 
 			try {
@@ -154,6 +152,8 @@ public final class CreativeTabHandler {
 			}
 		}
 
-		Items.SPAWN_EGG.setCreativeTab(originalSpawnEggsTab);
+		if(originalSpawnEggsTab != null) {
+			Items.SPAWN_EGG.setCreativeTab(originalSpawnEggsTab);
+		}
 	}
 }

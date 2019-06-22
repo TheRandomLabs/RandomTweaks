@@ -53,8 +53,10 @@ public final class BoneMealHandler {
 		}
 	}
 
-	public static void grow(World world, Block block, BlockPos pos, PropertyInteger ageProperty,
-			int stages, BonemealEvent event) {
+	public static void grow(
+			World world, Block block, BlockPos pos, PropertyInteger ageProperty, int stages,
+			BonemealEvent event
+	) {
 		BlockPos tempPos;
 		int i = 0;
 

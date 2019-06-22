@@ -40,8 +40,9 @@ public class CommandDeleteGamerule extends CommandBase {
 	}
 
 	@Override
-	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender,
-			String[] args, BlockPos targetPos) {
+	public List<String> getTabCompletions(
+			MinecraftServer server, ICommandSender sender, String[] args, BlockPos targetPos
+	) {
 		return getListOfStringsMatchingLastWord(
 				args, sender.getEntityWorld().getGameRules().getRules()
 		);
