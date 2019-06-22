@@ -405,6 +405,11 @@ public final class RTConfig {
 		@Config.Property("Allows players to sleep near mobs with custom names.")
 		public static boolean allowSleepNearMobsWithCustomNames = true;
 
+		@Config.Property(
+				"Whether to play eating sounds and display crumb particles when eating cakes."
+		)
+		public static boolean cakeSoundsAndParticles = true;
+
 		@Config.Property("Whether attacks should be disabled during the attack cooldown.")
 		public static boolean disableAttacksDuringAttackCooldown = TRLUtils.IS_DEOBFUSCATED;
 

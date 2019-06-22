@@ -36,9 +36,13 @@ public final class RandomTweaks {
 	public static final Logger LOGGER = LogManager.getLogger(MOD_ID);
 
 	public static final boolean APPLECORE_LOADED = Loader.isModLoaded("applecore");
+	public static final boolean CAKE_CHOMPS_LOADED = Loader.isModLoaded("cakechomps");
+	public static final boolean CALM_DOWN_ZOMBIE_GUY_LOADED =
+			Loader.isModLoaded("calmdownzombieguy");
 	public static final boolean COLORFUL_SHEEP_LOADED = Loader.isModLoaded("colorful-sheep");
 	public static final boolean DING_LOADED = Loader.isModLoaded("ding");
 	public static final boolean DYNAMIC_SURROUNDINGS_LOADED = Loader.isModLoaded("dsurround");
+	public static final boolean ENTITY_NAN_HEALTH_FIX_LOADED = Loader.isModLoaded("nanfix");
 	public static final boolean EXPANDED_BONEMEAL_LOADED = Loader.isModLoaded("expandedbonemeal");
 	public static final boolean HEADCRUMBS_LOADED = Loader.isModLoaded("headcrumbs");
 	public static final boolean HELPFIXER_LOADED = Loader.isModLoaded("helpfixer");

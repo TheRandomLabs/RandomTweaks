@@ -4,6 +4,9 @@ import java.util.Random;
 import java.util.UUID;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockCake;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
@@ -17,10 +20,15 @@ import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
+import net.minecraft.init.SoundEvents;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
+import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.util.FakePlayerFactory;
@@ -33,6 +41,7 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -112,7 +121,8 @@ public final class MiscEventHandler {
 			return;
 		}
 
-		if(RTConfig.Misc.entityNaNHealthFix && Float.isNaN(entity.getHealth())) {
+		if(RTConfig.Misc.entityNaNHealthFix && !RandomTweaks.ENTITY_NAN_HEALTH_FIX_LOADED &&
+				Float.isNaN(entity.getHealth())) {
 			entity.setHealth(0.0F);
 			return;
 		}
@@ -128,7 +138,8 @@ public final class MiscEventHandler {
 		final DamageSource source = event.getSource();
 		final float amount = event.getAmount();
 
-		if(RTConfig.Misc.entityNaNHealthFix && Float.isNaN(amount)) {
+		if(RTConfig.Misc.entityNaNHealthFix && !RandomTweaks.ENTITY_NAN_HEALTH_FIX_LOADED &&
+				Float.isNaN(amount)) {
 			RandomTweaks.LOGGER.error("{} was damaged by a NaN value.", entity);
 			RandomTweaks.LOGGER.error("Immediate source: " + source);
 			RandomTweaks.LOGGER.error("True source: " + source.getTrueSource());
@@ -327,5 +338,62 @@ public final class MiscEventHandler {
 			event.getEntityPlayer().setActiveHand(event.getHand());
 			event.setAction(new ActionResult<>(EnumActionResult.SUCCESS, bow));
 		}
+	}
+
+	@SubscribeEvent
+	public static void onBlockRightClick(PlayerInteractEvent.RightClickBlock event) {
+		if(!RTConfig.Misc.cakeSoundsAndParticles || RandomTweaks.CAKE_CHOMPS_LOADED) {
+			return;
+		}
+
+		final World world = event.getWorld();
+		final EntityPlayer player = event.getEntityPlayer();
+		final BlockPos pos = event.getPos();
+		final IBlockState state = world.getBlockState(pos);
+		final Block block = state.getBlock();
+
+		if(!(block instanceof BlockCake) || !player.canEat(false)) {
+			return;
+		}
+
+		final Random random = player.getRNG();
+
+		final ItemStack stack = block.getPickBlock(state, null, world, pos, player);
+		final int id = Item.getIdFromItem(stack.getItem());
+		final int meta = stack.getMetadata();
+
+		//Taken from EntityLivingBase#updateItemUse
+		for(int i = 0; i < 5; i++) {
+			final Vec3d particlePos = new Vec3d(
+					(random.nextFloat() - 0.5) * 0.3, (-random.nextFloat()) * 0.6 - 0.3, 0.6
+			).rotatePitch(
+					-player.rotationPitch * 0.017453292F
+			).rotateYaw(
+					-player.rotationYaw * 0.017453292F
+			).add(
+					player.posX, player.posY + player.getEyeHeight() + 0.05, player.posZ
+			);
+
+			final Vec3d particleSpeed = new Vec3d(
+					(random.nextFloat() - 0.5) * 0.1, Math.random() * 0.1 + 0.1, 0.0
+			).rotatePitch(
+					-player.rotationPitch * 0.017453292F
+			).rotateYaw(
+					-player.rotationYaw * 0.017453292F
+			);
+
+			world.spawnParticle(
+					EnumParticleTypes.ITEM_CRACK,
+					particlePos.x, particlePos.y, particlePos.z,
+					particleSpeed.x, particleSpeed.y, particleSpeed.z,
+					id, meta
+			);
+		}
+
+		player.playSound(
+				SoundEvents.ENTITY_GENERIC_EAT,
+				0.5F + 0.5F * random.nextInt(2),
+				(random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F
+		);
 	}
 }

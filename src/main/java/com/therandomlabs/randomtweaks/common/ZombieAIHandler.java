@@ -3,6 +3,7 @@ package com.therandomlabs.randomtweaks.common;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITasks;
@@ -44,7 +45,8 @@ public final class ZombieAIHandler {
 	}
 
 	public static void onZombieJoinWorld(EntityZombie zombie) {
-		if(!RTConfig.Misc.zombieTargetDetectionImprovements) {
+		if(!RTConfig.Misc.zombieTargetDetectionImprovements ||
+				RandomTweaks.CALM_DOWN_ZOMBIE_GUY_LOADED) {
 			return;
 		}
 
