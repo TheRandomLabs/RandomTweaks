@@ -22,10 +22,10 @@ public class CommonProxy {
 	public void init() {
 		ConfigManager.reloadFromDisk(RTConfig.class);
 
-		if(ForgeVersion.buildVersion > 2526) {
+		if(ForgeVersion.getBuildVersion() > 2526) {
 			MinecraftForge.EVENT_BUS.register(ArrowImpactHandler.class);
 
-			if(ForgeVersion.buildVersion > 2718) {
+			if(ForgeVersion.getBuildVersion() > 2718) {
 				MinecraftForge.EVENT_BUS.register(TrampleHandler.class);
 			}
 

@@ -8,7 +8,7 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 
 public final class ArrowImpactHandler {
 	@SubscribeEvent
-	public static void onArrowImpact(ProjectileImpactEvent.Arrow event) {
+	public void onArrowImpact(ProjectileImpactEvent.Arrow event) {
 		if(!RTConfig.Misc.pickUpSkeletonArrows) {
 			return;
 		}

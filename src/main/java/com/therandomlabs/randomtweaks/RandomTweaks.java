@@ -1,12 +1,9 @@
 package com.therandomlabs.randomtweaks;
 
-import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomtweaks.common.command.CommandRegistry;
-import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.fml.common.Loader;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLConstructionEvent;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPostInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
@@ -60,15 +57,6 @@ public final class RandomTweaks {
 			serverSide = "com.therandomlabs.randomtweaks.CommonProxy"
 	)
 	public static CommonProxy proxy;
-
-	@Mod.EventHandler
-	public static void construct(FMLConstructionEvent event) {
-		if("1.12.2".equals(TRLUtils.MC_VERSION) && ForgeVersion.buildVersion < 2718) {
-			throw new IllegalStateException(
-					"On 1.12.2, RandomTweaks only runs on Forge 1.12.2-14.23.4.2718 and higher."
-			);
-		}
-	}
 
 	@Mod.EventHandler
 	public static void preInit(FMLPreInitializationEvent event) {
