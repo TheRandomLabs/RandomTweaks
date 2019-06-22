@@ -132,6 +132,10 @@ public final class WorldHandler {
 	}
 
 	private static void onPlayerSpawnInVoidWorld(EntityPlayer player, boolean voidIslands) {
+		if(player.capabilities.isFlying) {
+			return;
+		}
+
 		final World world = player.getEntityWorld();
 
 		if(isSpawnable(world, world.getTopSolidOrLiquidBlock(player.getPosition()))) {
