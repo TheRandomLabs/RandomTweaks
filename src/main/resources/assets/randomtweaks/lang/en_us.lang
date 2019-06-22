@@ -170,6 +170,7 @@ randomtweaks.config.misc.deathPunishmentMode.disabled=Disabled
 randomtweaks.config.misc.disableBedProximityRequirement=Disable bed proximity requirement
 randomtweaks.config.misc.disableCumulativeAnvilCosts=Disable cumulative anvil cost
 randomtweaks.config.misc.entitiesDropNameTags=Enable living entities with custom names dropping nametags
+randomtweaks.config.misc.entityNaNHealthFix=Entity NaN Health Fix
 randomtweaks.config.misc.farmlandTrampleBehavior=Farmland trample behavior
 randomtweaks.config.misc.farmlandTrampleBehavior.vanilla=Vanilla
 randomtweaks.config.misc.farmlandTrampleBehavior.dontTrampleIfFeatherFalling=Don't trample if Feather Falling
@@ -188,6 +189,7 @@ randomtweaks.config.playerHeadDrops.chanceWhenKilledByPlayer=Drop chance when ki
 randomtweaks.config.playerHeadDrops.normalChance=Normal drop chance
 
 randomtweaks.config.world=World
+randomtweaks.config.world.cactusSpawnRate=Cactus spawn rate
 randomtweaks.config.world.fixDuplicateEntityUUIDs=Fix duplicate entity UUIDs
 randomtweaks.config.world.logEntityUUIDReassignments=Log entity UUID reassignments
 randomtweaks.config.world.realisticWorldType=Enable Realistic world type

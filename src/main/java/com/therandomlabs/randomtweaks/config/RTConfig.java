@@ -1,6 +1,7 @@
 package com.therandomlabs.randomtweaks.config;
 
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomlib.config.Config;
@@ -858,6 +859,14 @@ public final class RTConfig {
 		public static final VoidIslandsWorld voidIslandsWorld = null;
 
 		@Config.Property({
+				"The cactus spawn rate for every biome.",
+				"This only applies for sandy biomes.",
+				"Set this to -1 to leave the spawn rates as the vanilla defaults.",
+				"Try setting this to 99 to get cacti in every sandy biome."
+		})
+		public static int cactusSpawnRate = TRLUtils.IS_DEOBFUSCATED ? 99 : -1;
+
+		@Config.Property({
 				"Whether to fix duplicate entity UUIDs by reassigning them.",
 				"This feature is experimental so worlds should be backed up before this is enabled."
 		})
@@ -872,8 +881,23 @@ public final class RTConfig {
 		})
 		public static boolean realisticWorldType = true;
 
+		private static Map<Biome, Integer> originalCactusSpawnRates = new HashMap<>();
+
 		public static void onReload() {
 			WorldTypeRegistry.registerWorldTypes();
+
+			if(cactusSpawnRate != -1) {
+				for(Biome biome : Biome.REGISTRY) {
+					originalCactusSpawnRates.put(biome, biome.decorator.cactiPerChunk);
+					biome.decorator.cactiPerChunk = cactusSpawnRate;
+				}
+			} else {
+				for(Map.Entry<Biome, Integer> spawnRate : originalCactusSpawnRates.entrySet()) {
+					spawnRate.getKey().decorator.cactiPerChunk = spawnRate.getValue();
+				}
+
+				originalCactusSpawnRates.clear();
+			}
 		}
 	}
 
