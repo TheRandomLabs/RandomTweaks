@@ -28,6 +28,10 @@ repositories {
 	}
 
 	maven {
+		url "https://minecraft.curseforge.com/api/maven"
+	}
+
+	maven {
 		url "http://www.ryanliptak.com/maven/"
 	}
 }
@@ -35,6 +39,8 @@ repositories {
 dependencies {
 	shadow "com.github.TheRandomLabs:RandomLib:1.12-SNAPSHOT"
 	compile "com.github.TheRandomLabs:RandomLib:1.12-SNAPSHOT"
+	deobfCompile "randompatches:randompatches:1.12.2:1.16.2.0"
+	deobfCompile "randomportals:randomportals:1.12.2:1.8.1.1"
 	deobfCompile "applecore:AppleCore:1.12.2-3.2.0:api"
 }
 

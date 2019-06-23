@@ -1,6 +1,7 @@
 package com.therandomlabs.randomtweaks.common;
 
 import java.lang.reflect.Method;
+import java.util.List;
 import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
@@ -9,6 +10,8 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.MobEffects;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -27,8 +30,9 @@ public final class SleepHandler {
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void onSleep(PlayerSleepInBedEvent event) {
-		if(!RTConfig.Misc.allowSleepNearMobsWithCustomNames &&
-				!RTConfig.Misc.disableBedProximityRequirement) {
+		if(!RTConfig.Sleep.allowSleepNearMobsWithCustomNames &&
+				!RTConfig.Sleep.disableBedProximityRequirement &&
+				RTConfig.Sleep.nearbyMonsterGlowDuration == 0) {
 			return;
 		}
 
@@ -84,12 +88,23 @@ public final class SleepHandler {
 			return;
 		}
 
-		if(!RTConfig.Misc.disableBedProximityRequirement && !player.bedInRange(pos, facing)) {
+		if(!RTConfig.Sleep.disableBedProximityRequirement && !player.bedInRange(pos, facing)) {
 			event.setResult(EntityPlayer.SleepResult.TOO_FAR_AWAY);
 			return;
 		}
 
-		if(isMobInRange(player, world, pos)) {
+		final List<EntityMob> mobsInRange = getMobsInRange(player, world, pos);
+
+		if(!mobsInRange.isEmpty()) {
+			if(RTConfig.Sleep.nearbyMonsterGlowDuration != 0) {
+				for(EntityMob mob : mobsInRange) {
+					mob.addPotionEffect(new PotionEffect(
+							MobEffects.GLOWING, RTConfig.Sleep.nearbyMonsterGlowDuration,
+							0, false, RTConfig.Sleep.nearbyMonsterGlowParticles
+					));
+				}
+			}
+
 			event.setResult(EntityPlayer.SleepResult.NOT_SAFE);
 			return;
 		}
@@ -137,8 +152,10 @@ public final class SleepHandler {
 		event.setResult(EntityPlayer.SleepResult.OK);
 	}
 
-	public static boolean isMobInRange(EntityPlayer player, World world, BlockPos position) {
-		return !world.getEntitiesWithinAABB(
+	public static List<EntityMob> getMobsInRange(
+			EntityPlayer player, World world, BlockPos position
+	) {
+		return world.getEntitiesWithinAABB(
 				EntityMob.class,
 				new AxisAlignedBB(
 						position.getX(),
@@ -149,7 +166,7 @@ public final class SleepHandler {
 						position.getZ()
 				).grow(8.0, 5.0, 8.0),
 				mob -> mob.isPreventingPlayerRest(player) &&
-						(!RTConfig.Misc.allowSleepNearMobsWithCustomNames || !mob.hasCustomName())
-		).isEmpty();
+						(!RTConfig.Sleep.allowSleepNearMobsWithCustomNames || !mob.hasCustomName())
+		);
 	}
 }

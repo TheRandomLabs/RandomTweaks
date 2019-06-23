@@ -316,7 +316,6 @@ public final class RTConfig {
 	}
 
 	public static final class GameRules {
-		@Config.Previous("misc.disableNetherPortalCreationGameRuleName")
 		@Config.Property({
 				"The name of the gamerule that disables nether portal creation.",
 				"Set this to an empty string to disable this gamerule."
@@ -329,7 +328,6 @@ public final class RTConfig {
 		})
 		public static String drowningDamageMultiplier = "drowningDamageMultiplier";
 
-		@Config.Previous("misc.fallDamageMultiplierGameRuleName")
 		@Config.Property({
 				"The name of the gamerule that controls the fall damage multiplier.",
 				"Set this to an empty string to disable this gamerule."
@@ -402,9 +400,6 @@ public final class RTConfig {
 	}
 
 	public static final class Misc {
-		@Config.Property("Allows players to sleep near mobs with custom names.")
-		public static boolean allowSleepNearMobsWithCustomNames = true;
-
 		@Config.Property(
 				"Whether to play eating sounds and display crumb particles when eating cakes."
 		)
@@ -412,9 +407,6 @@ public final class RTConfig {
 
 		@Config.Property("Whether attacks should be disabled during the attack cooldown.")
 		public static boolean disableAttacksDuringAttackCooldown = TRLUtils.IS_DEOBFUSCATED;
-
-		@Config.Property("Disables the bed proximity requirement.")
-		public static boolean disableBedProximityRequirement = true;
 
 		@Config.RangeDouble(min = 0.0, max = 1024.0)
 		@Config.Property({
@@ -726,6 +718,27 @@ public final class RTConfig {
 		}
 	}
 
+	public static final class Sleep {
+		@Config.Previous("misc.allowSleepNearMobsWithCustomNames")
+		@Config.Property("Allows players to sleep near mobs with custom names.")
+		public static boolean allowSleepNearMobsWithCustomNames = true;
+
+		@Config.Previous("misc.disableBedProximityRequirement")
+		@Config.Property("Disables the bed proximity requirement.")
+		public static boolean disableBedProximityRequirement = true;
+
+		@Config.RangeInt(min = 0)
+		@Config.Property({
+				"The number of ticks nearby monsters should glow for.",
+				"Setting this to 60 will make nearby monsters glow for 3 seconds when a player " +
+						"attempts to sleep in a bed."
+		})
+		public static int nearbyMonsterGlowDuration = TRLUtils.IS_DEOBFUSCATED ? 60 : 0;
+
+		@Config.Property("Whether the glow effect for nearby monsters should display particles.")
+		public static boolean nearbyMonsterGlowParticles;
+	}
+
 	public static final class Squids {
 		@Config.RangeInt(min = -1)
 		@Config.Property({
@@ -932,6 +945,9 @@ public final class RTConfig {
 
 	@Config.Category("Options related to player head drops.")
 	public static final PlayerHeadDrops playerHeadDrops = null;
+
+	@Config.Category("Options related to sleep.")
+	public static final Sleep sleep = null;
 
 	@Config.Category("Options related to world generation.")
 	public static final World world = null;

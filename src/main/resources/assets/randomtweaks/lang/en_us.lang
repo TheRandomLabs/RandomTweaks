@@ -158,7 +158,6 @@ randomtweaks.config.hunger.respawnResetBehavior.resetUnlessKeepInventory=Reset u
 randomtweaks.config.hunger.saturationLimit=Value added to food level for saturation limit
 
 randomtweaks.config.misc=Miscellaneous
-randomtweaks.config.misc.allowSleepNearMobsWithCustomNames=Allow sleep near mobs with custom names
 randomtweaks.config.misc.attackSpeed=Attack speed
 randomtweaks.config.misc.betterButtonNames=Better button names
 randomtweaks.config.misc.bowInfinityFix=Bow Infinity fix
@@ -168,7 +167,6 @@ randomtweaks.config.misc.deathPunishmentMode=Death punishment mode
 randomtweaks.config.misc.deathPunishmentMode.enabled=Enabled
 randomtweaks.config.misc.deathPunishmentMode.enabledIfKeepInventory=Enabled if keepInventory
 randomtweaks.config.misc.deathPunishmentMode.disabled=Disabled
-randomtweaks.config.misc.disableBedProximityRequirement=Disable bed proximity requirement
 randomtweaks.config.misc.disableCumulativeAnvilCosts=Disable cumulative anvil cost
 randomtweaks.config.misc.entitiesDropNameTags=Enable living entities with custom names dropping nametags
 randomtweaks.config.misc.entityNaNHealthFix=Entity NaN Health Fix
@@ -188,6 +186,12 @@ randomtweaks.config.playerHeadDrops.enabled=Enable player head drops
 randomtweaks.config.playerHeadDrops.chanceWhenKilledByChargedCreeper=Drop chance when killed by a charged creeper
 randomtweaks.config.playerHeadDrops.chanceWhenKilledByPlayer=Drop chance when killed by another player
 randomtweaks.config.playerHeadDrops.normalChance=Normal drop chance
+
+randomtweaks.config.sleep=Sleep
+randomtweaks.config.sleep.allowSleepNearMobsWithCustomNames=Allow sleep near mobs with custom names
+randomtweaks.config.sleep.disableBedProximityRequirement=Disable bed proximity requirement
+randomtweaks.config.sleep.nearbyMonsterGlowDuration=Nearby monster glow duration
+randomtweaks.config.sleep.nearbyMonsterGlowParticles=Nearby monster glow particles
 
 randomtweaks.config.world=World
 randomtweaks.config.world.cactusSpawnRate=Cactus spawn rate
