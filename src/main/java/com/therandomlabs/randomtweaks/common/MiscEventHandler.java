@@ -231,8 +231,9 @@ public final class MiscEventHandler {
 		final EntityLivingBase entity = event.getEntityLiving();
 
 		if(RTConfig.Misc.mobsDropAllArmorAndEquipment && entity instanceof EntityLiving) {
-			Arrays.fill(((EntityLiving) entity).inventoryHandsDropChances, 1.0F);
-			Arrays.fill(((EntityLiving) entity).inventoryArmorDropChances, 1.0F);
+			final EntityLiving living = (EntityLiving) entity;
+			Arrays.fill(living.inventoryHandsDropChances, 1.0F);
+			Arrays.fill(living.inventoryArmorDropChances, 1.0F);
 		}
 
 		if(!RTConfig.Misc.mobsAlwaysDropLoot) {
