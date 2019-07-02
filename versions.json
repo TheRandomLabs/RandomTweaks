@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12.2": {
+		"1.12.2-2.7.0.0": "Added an option to make nearby monsters glow when a player attempts to sleep.\nAdded an option to make torches reorient themselves when the block they are attached to is broken.\nAdded an option to force mobs to drop all of their armor and equipment along with their loot on death.",
 		"1.12.2-2.6.0.0": "RandomTweaks no longer requires Forge 1.12.2-14.23.4.2718 or newer on 1.12.2.\nThe \"Toggle Time of Day Overlay\" keybind is no longer bound by default.\nAdded zombie target detection improvements.\nAdded a fix for entities with NaN health.\nFixed the Spawn Eggs tab not disabling properly.\nImproved Void and Void Island world player spawns.\nAdded an option to set the cactus spawn rate in every sandy biome.\nAdded cake particles and sounds.",
 		"1.12.2-2.5.0.7": "The Nether portal name localization is no longer changed.\nFixed Bloodmoon compatibility.",
 		"1.12.2-2.5.0.6": "Fixed spawn points for the Void and Void Islands world types.",
