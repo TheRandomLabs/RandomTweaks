@@ -460,8 +460,10 @@ public final class RTConfig {
 		@Config.Property("Whether to localize the End Portal and End Gateway names.")
 		public static boolean localizeEndPortalNames = true;
 
-		@Config.Property("Whether mobs should drop all of their armor along with their loot.")
-		public static boolean mobsDropAllArmor = TRLUtils.IS_DEOBFUSCATED;
+		@Config.Property(
+				"Whether mobs should drop all of their armor and equipment along with their loot."
+		)
+		public static boolean mobsDropAllArmorAndEquipment = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property("Whether mobs should drop loot even if they are not killed by players.")
 		public static boolean mobsAlwaysDropLoot = TRLUtils.IS_DEOBFUSCATED;

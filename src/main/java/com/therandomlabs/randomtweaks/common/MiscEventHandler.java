@@ -230,7 +230,8 @@ public final class MiscEventHandler {
 	public static void onLivingDeath(LivingDeathEvent event) {
 		final EntityLivingBase entity = event.getEntityLiving();
 
-		if(RTConfig.Misc.mobsDropAllArmor && entity instanceof EntityLiving) {
+		if(RTConfig.Misc.mobsDropAllArmorAndEquipment && entity instanceof EntityLiving) {
+			Arrays.fill(((EntityLiving) entity).inventoryHandsDropChances, 1.0F);
 			Arrays.fill(((EntityLiving) entity).inventoryArmorDropChances, 1.0F);
 		}
 
