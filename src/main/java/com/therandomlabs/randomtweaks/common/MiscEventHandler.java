@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.common;
 
+import java.util.Arrays;
 import java.util.Random;
 import java.util.UUID;
 import com.therandomlabs.randomtweaks.RandomTweaks;
@@ -10,6 +11,7 @@ import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
+import net.minecraft.entity.EntityLiving;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -226,11 +228,16 @@ public final class MiscEventHandler {
 
 	@SubscribeEvent
 	public static void onLivingDeath(LivingDeathEvent event) {
+		final EntityLivingBase entity = event.getEntityLiving();
+
+		if(RTConfig.Misc.mobsDropAllArmor && entity instanceof EntityLiving) {
+			Arrays.fill(((EntityLiving) entity).inventoryArmorDropChances, 1.0F);
+		}
+
 		if(!RTConfig.Misc.mobsAlwaysDropLoot) {
 			return;
 		}
 
-		final EntityLivingBase entity = event.getEntityLiving();
 		final World world = entity.getEntityWorld();
 
 		if(world.isRemote) {
