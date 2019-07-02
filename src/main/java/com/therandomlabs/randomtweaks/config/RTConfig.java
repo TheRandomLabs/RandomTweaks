@@ -1,5 +1,6 @@
 package com.therandomlabs.randomtweaks.config;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,6 +11,7 @@ import com.therandomlabs.randomtweaks.client.CreativeTabHandler;
 import com.therandomlabs.randomtweaks.client.KeyBindingHandler;
 import com.therandomlabs.randomtweaks.common.RespawnHandler;
 import com.therandomlabs.randomtweaks.common.SquidHandler;
+import com.therandomlabs.randomtweaks.common.TorchHandler;
 import com.therandomlabs.randomtweaks.common.TrampleHandler;
 import com.therandomlabs.randomtweaks.common.world.ChunkGeneratorVoidIslands;
 import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
@@ -22,6 +24,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
 
@@ -471,6 +474,20 @@ public final class RTConfig {
 		public static boolean pickUpSkeletonArrows = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property(
+				"In which circumstance a torch should be reoriented when the block it is " +
+						"attached to is broken."
+		)
+		public static TorchHandler.Behavior torchReorientationBehavior = TRLUtils.IS_DEOBFUSCATED ?
+				TorchHandler.Behavior.SNEAKING : TorchHandler.Behavior.NEVER;
+
+		@Config.Property({
+				"The order that torch reorientations should be attempted in.",
+				"Disable an orientation by not specifying it here."
+		})
+		public static TorchHandler.Orientation[] torchReorientationPriority =
+				TorchHandler.Orientation.values();
+
+		@Config.Property(
 				"Whether to update all maps in players' inventories instead of only updating " +
 						"currently held maps."
 		)
@@ -479,6 +496,8 @@ public final class RTConfig {
 		@Config.RequiresWorldReload
 		@Config.Property("Whether to enable zombie target detection improvements.")
 		public static boolean zombieTargetDetectionImprovements = true;
+
+		public static EnumFacing[] torchOrientations;
 
 		@SuppressWarnings("ConstantConditions")
 		public static void onReload() {
@@ -499,6 +518,10 @@ public final class RTConfig {
 					Blocks.END_GATEWAY.setTranslationKey(null);
 				}
 			}
+
+			torchOrientations = Arrays.stream(torchReorientationPriority).
+					map(TorchHandler.Orientation::get).
+					toArray(EnumFacing[]::new);
 		}
 	}
 
