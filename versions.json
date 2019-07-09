@@ -273,6 +273,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.10.2": {
+		"1.10.2-2.7.0.1": "The \"Toggle Time of Day Overlay\" keybind is no longer bound by default.\nAdded zombie target detection improvements.\nAdded a fix for entities with NaN health.\nFixed the Spawn Eggs tab not disabling properly.\nImproved Void and Void Island world player spawns.\nAdded an option to set the cactus spawn rate in every sandy biome.\nAdded cake particles and sounds.\nAdded an option to make nearby monsters glow when a player attempts to sleep.\nAdded an option to make torches reorient themselves when the block they are attached to is broken.\nAdded an option to force mobs to drop all of their armor and equipment along with their loot on death.\nWet sponges now dry when placed in the Nether.\nFixed the armor equip sounds not playing when the inventory is not open.\nPlayers can now swap their armor with armor stands by right-clicking on them while sneaking.\nFixed skeleton arrows not picking up.\nBurning arrows can now set blocks on fire.",
 		"1.10.2-2.5.0.7": "Fixed spawn points for the Void and Void Islands world types.\nThe Nether portal name localization is no longer changed.\nFixed Bloodmoon compatibility.",
 		"1.10.2-2.5.0.5": "Fixed the squid spawn configuration affecting non-squid spawns.",
 		"1.10.2-2.5.0.4": "Improved pet protection.",
@@ -326,6 +327,7 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"1.10": {
+		"1.10.2-2.7.0.1": "The \"Toggle Time of Day Overlay\" keybind is no longer bound by default.\nAdded zombie target detection improvements.\nAdded a fix for entities with NaN health.\nFixed the Spawn Eggs tab not disabling properly.\nImproved Void and Void Island world player spawns.\nAdded an option to set the cactus spawn rate in every sandy biome.\nAdded cake particles and sounds.\nAdded an option to make nearby monsters glow when a player attempts to sleep.\nAdded an option to make torches reorient themselves when the block they are attached to is broken.\nAdded an option to force mobs to drop all of their armor and equipment along with their loot on death.\nWet sponges now dry when placed in the Nether.\nFixed the armor equip sounds not playing when the inventory is not open.\nPlayers can now swap their armor with armor stands by right-clicking on them while sneaking.\nFixed skeleton arrows not picking up.\nBurning arrows can now set blocks on fire.",
 		"1.10.2-2.5.0.7": "Fixed spawn points for the Void and Void Islands world types.\nThe Nether portal name localization is no longer changed.\nFixed Bloodmoon compatibility.",
 		"1.10.2-2.5.0.5": "Fixed the squid spawn configuration affecting non-squid spawns.",
 		"1.10.2-2.5.0.4": "Improved pet protection.",
@@ -389,9 +391,9 @@
 		"1.11.2-recommended": "1.11.2-2.5.0.7",
 		"1.11-latest": "1.11.2-2.5.0.7",
 		"1.11-recommended": "1.11.2-2.5.0.7",
-		"1.10.2-latest": "1.10.2-2.5.0.7",
-		"1.10.2-recommended": "1.10.2-2.5.0.7",
-		"1.10-latest": "1.10.2-2.5.0.7",
-		"1.10-recommended": "1.10.2-2.5.0.7"
+		"1.10.2-latest": "1.10.2-2.7.0.1",
+		"1.10.2-recommended": "1.10.2-2.7.0.1",
+		"1.10-latest": "1.10.2-2.7.0.1",
+		"1.10-recommended": "1.10.2-2.7.0.1"
 	}
 }
