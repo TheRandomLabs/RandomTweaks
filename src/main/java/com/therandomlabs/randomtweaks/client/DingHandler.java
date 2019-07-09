@@ -64,7 +64,7 @@ public final class DingHandler {
 			return;
 		}
 
-		if(mc.player.ticksExisted > 20 || mc.isGamePaused()) {
+		if(mc.player.ticksExisted >= 20 || mc.isGamePaused()) {
 			playSound(
 					RTConfig.Ding.worldLoadSounds,
 					RTConfig.Ding.worldLoadSoundPitch,

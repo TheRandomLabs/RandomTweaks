@@ -120,7 +120,10 @@ public final class RTConfig {
 	}
 
 	public static final class Client {
-		@Config.Category("Options related to armor equip/unequip sounds.")
+		@Config.Category({
+				"Options related to armor equip/unequip sounds.",
+				"These options also have an effect server-side if armor stand swapping is enabled."
+		})
 		public static final ArmorEquipSounds armorEquipSounds = null;
 
 		@Config.Category("Options related to the auto-third person feature.")
@@ -404,6 +407,16 @@ public final class RTConfig {
 
 	public static final class Misc {
 		@Config.Property(
+				"Whether to allow swapping armor with armor stands by right-clicking on them " +
+						"while sneaking."
+		)
+		public static boolean armorStandSwapping = true;
+
+		@Config.MinForgeBuild(2526)
+		@Config.Property("Whether burning arrows can set blocks on fire.")
+		public static boolean burningArrowsSetBlocksOnFire = true;
+
+		@Config.Property(
 				"Whether to play eating sounds and display crumb particles when eating cakes."
 		)
 		public static boolean cakeSoundsAndParticles = true;
@@ -497,6 +510,9 @@ public final class RTConfig {
 						"currently held maps."
 		)
 		public static boolean updateAllMapsInInventory = TRLUtils.IS_DEOBFUSCATED;
+
+		@Config.Property("Whether wet sponges should dry in the Nether.")
+		public static boolean wetSpongesDryInNether = true;
 
 		@Config.RequiresWorldReload
 		@Config.Property("Whether to enable zombie target detection improvements.")
@@ -815,7 +831,7 @@ public final class RTConfig {
 				"Whether the overlay should say \"Light\" or \"Dark\" instead of " +
 						"\"Day\" or \"Night\"."
 		)
-		public static boolean lightOrDark = TRLUtils.IS_DEOBFUSCATED;
+		public static boolean lightOrDark = true;
 
 		@Config.Property("Enables 24-hour time.")
 		public static boolean twentyFourHourTime = TRLUtils.IS_DEOBFUSCATED;

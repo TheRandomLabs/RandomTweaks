@@ -3,7 +3,6 @@ package com.therandomlabs.randomtweaks.client;
 import java.util.List;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
@@ -20,7 +19,7 @@ public final class ArmorEquipSoundHandler {
 	private ArmorEquipSoundHandler() {}
 
 	public static void onClientTick() {
-		if(!RTConfig.ArmorEquipSounds.enabled || !(mc.currentScreen instanceof GuiContainer)) {
+		if(!RTConfig.ArmorEquipSounds.enabled || mc.player == null) {
 			return;
 		}
 
@@ -45,6 +44,10 @@ public final class ArmorEquipSoundHandler {
 	}
 
 	public static SoundEvent getSound(ItemStack stack) {
+		if(mc.player.ticksExisted < 20) {
+			return null;
+		}
+
 		final Item item = stack.getItem();
 
 		if(item instanceof ItemArmor) {

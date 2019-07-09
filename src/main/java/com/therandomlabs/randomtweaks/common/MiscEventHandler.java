@@ -1,12 +1,16 @@
 package com.therandomlabs.randomtweaks.common;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import com.therandomlabs.randomlib.EntityUtils;
 import com.therandomlabs.randomtweaks.RandomTweaks;
+import com.therandomlabs.randomtweaks.client.ArmorEquipSoundHandler;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCake;
+import net.minecraft.block.BlockSponge;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
@@ -16,23 +20,29 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.item.EntityArmorStand;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Enchantments;
 import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
+import net.minecraft.inventory.EntityEquipmentSlot;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.EnumActionResult;
 import net.minecraft.util.EnumParticleTypes;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
@@ -44,6 +54,7 @@ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
 import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -404,5 +415,89 @@ public final class MiscEventHandler {
 				0.5F + 0.5F * random.nextInt(2),
 				(random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F
 		);
+	}
+
+	@SubscribeEvent
+	public static void onBlockPlaced(BlockEvent.EntityPlaceEvent event) {
+		if(!RTConfig.Misc.wetSpongesDryInNether) {
+			return;
+		}
+
+		final World world = event.getWorld();
+
+		if(world.isRemote) {
+			return;
+		}
+
+		final IBlockState state = event.getPlacedBlock();
+
+		if(state.getBlock() != Blocks.SPONGE || !state.getValue(BlockSponge.WET)) {
+			return;
+		}
+
+		final BlockPos pos = event.getPos();
+
+		if(!BiomeDictionary.getTypes(world.getBiome(pos)).contains(BiomeDictionary.Type.NETHER)) {
+			return;
+		}
+		world.setBlockState(pos, state.withProperty(BlockSponge.WET, false));
+
+		world.playSound(
+				null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.3F,
+				2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F
+		);
+
+		for(int i = 0; i < 8; i++) {
+			world.spawnParticle(
+					EnumParticleTypes.SMOKE_NORMAL, pos.getX() + Math.random(),
+					pos.getY() + Math.random(), pos.getZ() + Math.random(), 0.0D, 0.0D, 0.0D
+			);
+		}
+	}
+
+	@SubscribeEvent(priority = EventPriority.LOW)
+	public static void onEntityInteractSpecific(PlayerInteractEvent.EntityInteractSpecific event) {
+		if(!RTConfig.Misc.armorStandSwapping) {
+			return;
+		}
+
+		final EntityPlayer player = event.getEntityPlayer();
+
+		if(player.getEntityWorld().isRemote || !player.isSneaking() || player.isSpectator()) {
+			return;
+		}
+
+		final Entity target = event.getTarget();
+
+		if(!(target instanceof EntityArmorStand)) {
+			return;
+		}
+
+		event.setCanceled(true);
+
+		final EntityArmorStand armorStand = (EntityArmorStand) target;
+		final List<ItemStack> armorStandInventory =
+				(List<ItemStack>) armorStand.getArmorInventoryList();
+
+		for(EntityEquipmentSlot slot : EntityUtils.ARMOR_SLOTS) {
+			final ItemStack playerStack = player.getItemStackFromSlot(slot);
+			final ItemStack armorStandStack = armorStand.getItemStackFromSlot(slot);
+
+			final int index = slot.getIndex();
+
+			player.inventory.armorInventory.set(index, armorStandStack);
+			armorStandInventory.set(index, playerStack);
+
+			final SoundEvent playerEquipSound = ArmorEquipSoundHandler.getSound(armorStandStack);
+			final SoundEvent armorStandEquipSound = ArmorEquipSoundHandler.getSound(playerStack);
+
+			if(playerEquipSound != null) {
+				player.playSound(playerEquipSound, 1.0F, 1.0F);
+			}
+
+			if(armorStandEquipSound != null) {
+				armorStand.playSound(armorStandEquipSound, 1.0F, 1.0F);
+			}
+		}
 	}
 }

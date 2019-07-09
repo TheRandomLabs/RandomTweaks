@@ -159,8 +159,10 @@ randomtweaks.config.hunger.saturationLimit=Value added to food level for saturat
 
 randomtweaks.config.misc=Miscellaneous
 randomtweaks.config.misc.attackSpeed=Attack speed
+randomtweaks.config.misc.armorStandSwapping=Armor stand swapping
 randomtweaks.config.misc.betterButtonNames=Better button names
 randomtweaks.config.misc.bowInfinityFix=Bow Infinity fix
+randomtweaks.config.misc.burningArrowsSetBlocksOnFire=Burning arrows set blocks on fire
 randomtweaks.config.misc.cakeSoundsAndParticles=Cake sounds and particles
 randomtweaks.config.misc.disableAttacksDuringAttackCooldown=Disable attacks during attack cooldown
 randomtweaks.config.misc.deathPunishmentMode=Death punishment mode
@@ -186,6 +188,7 @@ randomtweaks.config.misc.torchReorientationBehavior.notSneaking=Not sneaking
 randomtweaks.config.misc.torchReorientationBehavior.always=Always
 randomtweaks.config.misc.torchReorientationPriority=Torch reorientation priority
 randomtweaks.config.misc.updateAllMapsInInventory=Update all maps in inventory
+randomtweaks.config.misc.wetSpongesDryInNether=Wet sponges dry in the Nether
 randomtweaks.config.misc.zombieTargetDetectionImprovements=Zombie target detection improvements
 
 randomtweaks.config.playerHeadDrops=Player Head Drops
