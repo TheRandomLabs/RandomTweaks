@@ -417,8 +417,10 @@ public final class MiscEventHandler {
 		);
 	}
 
+	//EntityPlaceEvent requires Forge 2817+
+	@SuppressWarnings("deprecation")
 	@SubscribeEvent
-	public static void onBlockPlaced(BlockEvent.EntityPlaceEvent event) {
+	public static void onBlockPlaced(BlockEvent.PlaceEvent event) {
 		if(!RTConfig.Misc.wetSpongesDryInNether) {
 			return;
 		}
