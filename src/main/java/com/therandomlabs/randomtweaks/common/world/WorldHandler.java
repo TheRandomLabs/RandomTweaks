@@ -150,9 +150,7 @@ public final class WorldHandler {
 			usingWorldSpawn = true;
 		}
 
-		playerSpawnPoint = world.getTopSolidOrLiquidBlock(playerSpawnPoint).down();
-
-		if(isSpawnable(world, playerSpawnPoint)) {
+		if(isSpawnable(world, world.getTopSolidOrLiquidBlock(playerSpawnPoint))) {
 			return;
 		}
 
