@@ -79,8 +79,10 @@ public final class EntityInteractHandler {
 		return ((ItemFood) item).getHealAmount(stack);
 	}
 
-	private static void onVillagerInteract(EntityPlayer player, EntityVillager villager,
-			ItemStack stack, PlayerInteractEvent.EntityInteract event) {
+	private static void onVillagerInteract(
+			EntityPlayer player, EntityVillager villager, ItemStack stack,
+			PlayerInteractEvent.EntityInteract event
+	) {
 		if(!RTConfig.Animals.leashableVillagers) {
 			return;
 		}

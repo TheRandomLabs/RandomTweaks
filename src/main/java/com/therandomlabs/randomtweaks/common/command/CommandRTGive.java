@@ -118,8 +118,9 @@ public class CommandRTGive extends CommandGive {
 	}
 
 	@Override
-	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender,
-			String[] args, BlockPos targetPos) {
+	public List<String> getTabCompletions(
+			MinecraftServer server, ICommandSender sender, String[] args, BlockPos targetPos
+	) {
 		final List<String> tabCompletions =
 				super.getTabCompletions(server, sender, args, targetPos);
 

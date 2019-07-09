@@ -76,7 +76,7 @@ public final class RespawnHandler {
 		final int minimum = RTConfig.Hunger.minimumRespawnHungerLevel;
 		final FoodStats newStats = player.getFoodStats();
 
-		newStats.foodLevel = newFoodLevel < minimum ? minimum : newFoodLevel;
+		newStats.foodLevel = Math.max(newFoodLevel, minimum);
 		newStats.foodSaturationLevel = oldSaturationLevel;
 	}
 

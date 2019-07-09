@@ -45,8 +45,9 @@ public class CommandHunger extends CommandBase {
 	}
 
 	@Override
-	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender,
-			String[] args, BlockPos targetPos) {
+	public List<String> getTabCompletions(
+			MinecraftServer server, ICommandSender sender, String[] args, BlockPos targetPos
+	) {
 		return args.length == 1 ?
 				getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames()) :
 				Collections.emptyList();

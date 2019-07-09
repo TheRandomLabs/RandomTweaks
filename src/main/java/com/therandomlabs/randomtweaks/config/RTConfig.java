@@ -1,6 +1,8 @@
 package com.therandomlabs.randomtweaks.config;
 
+import java.util.Arrays;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Map;
 import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomlib.config.Config;
@@ -9,6 +11,7 @@ import com.therandomlabs.randomtweaks.client.CreativeTabHandler;
 import com.therandomlabs.randomtweaks.client.KeyBindingHandler;
 import com.therandomlabs.randomtweaks.common.RespawnHandler;
 import com.therandomlabs.randomtweaks.common.SquidHandler;
+import com.therandomlabs.randomtweaks.common.TorchHandler;
 import com.therandomlabs.randomtweaks.common.world.ChunkProviderVoidIslands;
 import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
 import com.therandomlabs.randomtweaks.util.Alignment;
@@ -20,6 +23,7 @@ import net.minecraft.init.Items;
 import net.minecraft.init.SoundEvents;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.Item;
+import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
 
@@ -112,7 +116,10 @@ public final class RTConfig {
 	}
 
 	public static final class Client {
-		@Config.Category("Options related to armor equip/unequip sounds.")
+		@Config.Category({
+				"Options related to armor equip/unequip sounds.",
+				"These options also have an effect server-side if armor stand swapping is enabled."
+		})
 		public static final ArmorEquipSounds armorEquipSounds = null;
 
 		@Config.Category("Options related to the auto-third person feature.")
@@ -137,7 +144,10 @@ public final class RTConfig {
 		public static boolean clearWater = true;
 
 		@Config.RequiresWorldReload
-		@Config.Property("Whether contributor capes should be enabled.")
+		@Config.Property({
+				"Whether contributor capes should be enabled.",
+				"This only be disabled in-game, not enabled."
+		})
 		public static boolean contributorCapes = true;
 
 		@Config.Property("Disables the ender dragon death sound.")
@@ -314,7 +324,6 @@ public final class RTConfig {
 		})
 		public static String drowningDamageMultiplier = "drowningDamageMultiplier";
 
-		@Config.Previous("misc.fallDamageMultiplierGameRuleName")
 		@Config.Property({
 				"The name of the gamerule that controls the fall damage multiplier.",
 				"Set this to an empty string to disable this gamerule."
@@ -387,14 +396,19 @@ public final class RTConfig {
 	}
 
 	public static final class Misc {
-		@Config.Property("Allows players to sleep near mobs with custom names.")
-		public static boolean allowSleepNearMobsWithCustomNames = true;
+		@Config.Property(
+				"Whether to allow swapping armor with armor stands by right-clicking on them " +
+						"while sneaking."
+		)
+		public static boolean armorStandSwapping = true;
+
+		@Config.Property(
+				"Whether to play eating sounds and display crumb particles when eating cakes."
+		)
+		public static boolean cakeSoundsAndParticles = true;
 
 		@Config.Property("Whether attacks should be disabled during the attack cooldown.")
 		public static boolean disableAttacksDuringAttackCooldown = TRLUtils.IS_DEOBFUSCATED;
-
-		@Config.Property("Disables the bed proximity requirement.")
-		public static boolean disableBedProximityRequirement = true;
 
 		@Config.RangeDouble(min = 0.0, max = 1024.0)
 		@Config.Property({
@@ -429,12 +443,21 @@ public final class RTConfig {
 		@Config.Property("Disables cumulative anvil costs.")
 		public static boolean disableCumulativeAnvilCosts = true;
 
-		@Config.Property("Whether living entities should drop name tags if they have a custom " +
-				"name.")
+		@Config.Property(
+				"Whether living entities should drop name tags if they have a custom name."
+		)
 		public static boolean entitiesDropNameTags = TRLUtils.IS_DEOBFUSCATED;
+
+		@Config.Property("Whether to fix entities with NaN health.")
+		public static boolean entityNaNHealthFix = true;
 
 		@Config.Property("Whether to localize the End Portal and End Gateway names.")
 		public static boolean localizeEndPortalNames = true;
+
+		@Config.Property(
+				"Whether mobs should drop all of their armor and equipment along with their loot."
+		)
+		public static boolean mobsDropAllArmorAndEquipment = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property("Whether mobs should drop loot even if they are not killed by players.")
 		public static boolean mobsAlwaysDropLoot = TRLUtils.IS_DEOBFUSCATED;
@@ -446,10 +469,33 @@ public final class RTConfig {
 		public static boolean moreRomanNumerals = true;
 
 		@Config.Property(
+				"In which circumstance a torch should be reoriented when the block it is " +
+						"attached to is broken."
+		)
+		public static TorchHandler.Behavior torchReorientationBehavior = TRLUtils.IS_DEOBFUSCATED ?
+				TorchHandler.Behavior.SNEAKING : TorchHandler.Behavior.NEVER;
+
+		@Config.Property({
+				"The order that torch reorientations should be attempted in.",
+				"Disable an orientation by not specifying it here."
+		})
+		public static TorchHandler.Orientation[] torchReorientationPriority =
+				TorchHandler.Orientation.values();
+
+		@Config.Property(
 				"Whether to update all maps in players' inventories instead of only updating " +
 						"currently held maps."
 		)
 		public static boolean updateAllMapsInInventory = TRLUtils.IS_DEOBFUSCATED;
+
+		@Config.Property("Whether wet sponges should dry when placed in the Nether.")
+		public static boolean wetSpongesDryInNether = true;
+
+		@Config.RequiresWorldReload
+		@Config.Property("Whether to enable zombie target detection improvements.")
+		public static boolean zombieTargetDetectionImprovements = true;
+
+		public static EnumFacing[] torchOrientations;
 
 		public static void onReload() {
 			if(betterButtonNames) {
@@ -467,6 +513,10 @@ public final class RTConfig {
 				Blocks.END_PORTAL.setUnlocalizedName(null);
 				Blocks.END_GATEWAY.setUnlocalizedName(null);
 			}
+
+			torchOrientations = Arrays.stream(torchReorientationPriority).
+					map(TorchHandler.Orientation::get).
+					toArray(EnumFacing[]::new);
 		}
 	}
 
@@ -686,6 +736,27 @@ public final class RTConfig {
 		}
 	}
 
+	public static final class Sleep {
+		@Config.Previous("misc.allowSleepNearMobsWithCustomNames")
+		@Config.Property("Allows players to sleep near mobs with custom names.")
+		public static boolean allowSleepNearMobsWithCustomNames = true;
+
+		@Config.Previous("misc.disableBedProximityRequirement")
+		@Config.Property("Disables the bed proximity requirement.")
+		public static boolean disableBedProximityRequirement = true;
+
+		@Config.RangeInt(min = 0)
+		@Config.Property({
+				"The number of ticks nearby monsters should glow for.",
+				"Setting this to 60 will make nearby monsters glow for 3 seconds when a player " +
+						"attempts to sleep in a bed."
+		})
+		public static int nearbyMonsterGlowDuration = TRLUtils.IS_DEOBFUSCATED ? 60 : 0;
+
+		@Config.Property("Whether the glow effect for nearby monsters should display particles.")
+		public static boolean nearbyMonsterGlowParticles;
+	}
+
 	public static final class Squids {
 		@Config.RangeInt(min = -1)
 		@Config.Property({
@@ -713,7 +784,7 @@ public final class RTConfig {
 
 	public static final class TimeOfDay {
 		@Config.Property("The alignment.")
-		public static Alignment alignment = Alignment.TOPLEFT;
+		public static Alignment alignment = Alignment.TOP_LEFT;
 
 		@Config.Property("Disables the overlay if doDaylightCycle is false.")
 		public static boolean disableIfNoDaylightCycle = !TRLUtils.IS_DEOBFUSCATED;
@@ -824,6 +895,14 @@ public final class RTConfig {
 		public static final VoidIslandsWorld voidIslandsWorld = null;
 
 		@Config.Property({
+				"The cactus spawn rate for every biome.",
+				"This only applies for sandy biomes.",
+				"Set this to -1 to leave the spawn rates as the vanilla defaults.",
+				"Try setting this to 99 to get cacti in every sandy biome."
+		})
+		public static int cactusSpawnRate = TRLUtils.IS_DEOBFUSCATED ? 99 : -1;
+
+		@Config.Property({
 				"Whether to fix duplicate entity UUIDs by reassigning them.",
 				"This feature is experimental so worlds should be backed up before this is enabled."
 		})
@@ -838,8 +917,23 @@ public final class RTConfig {
 		})
 		public static boolean realisticWorldType = true;
 
+		private static Map<Biome, Integer> originalCactusSpawnRates = new HashMap<>();
+
 		public static void onReload() {
 			WorldTypeRegistry.registerWorldTypes();
+
+			if(cactusSpawnRate != -1) {
+				for(Biome biome : Biome.REGISTRY) {
+					originalCactusSpawnRates.put(biome, biome.theBiomeDecorator.cactiPerChunk);
+					biome.theBiomeDecorator.cactiPerChunk = cactusSpawnRate;
+				}
+			} else {
+				for(Map.Entry<Biome, Integer> spawnRate : originalCactusSpawnRates.entrySet()) {
+					spawnRate.getKey().theBiomeDecorator.cactiPerChunk = spawnRate.getValue();
+				}
+
+				originalCactusSpawnRates.clear();
+			}
 		}
 	}
 
@@ -869,6 +963,9 @@ public final class RTConfig {
 
 	@Config.Category("Options related to player head drops.")
 	public static final PlayerHeadDrops playerHeadDrops = null;
+
+	@Config.Category("Options related to sleep.")
+	public static final Sleep sleep = null;
 
 	@Config.Category("Options related to world generation.")
 	public static final World world = null;

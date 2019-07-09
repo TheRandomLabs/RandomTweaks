@@ -6,6 +6,7 @@ import com.therandomlabs.randomtweaks.common.RTLanguageMap;
 import com.therandomlabs.randomtweaks.common.world.WorldGeneratorOceanFloor;
 import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
 import com.therandomlabs.randomtweaks.config.RTConfig;
+import net.minecraftforge.common.ForgeVersion;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 

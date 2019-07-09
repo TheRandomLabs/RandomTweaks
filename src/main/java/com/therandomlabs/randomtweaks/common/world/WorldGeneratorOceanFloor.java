@@ -44,8 +44,10 @@ public class WorldGeneratorOceanFloor implements IWorldGenerator {
 	}
 
 	@Override
-	public void generate(Random random, int chunkX, int chunkZ, World world,
-			IChunkGenerator generator, IChunkProvider provider) {
+	public void generate(
+			Random random, int chunkX, int chunkZ, World world, IChunkGenerator generator,
+			IChunkProvider provider
+	) {
 		if(world.provider.getDimensionType() == DimensionType.OVERWORLD) {
 			generate(CLAY, RTConfig.OceanFloor.clayChance, random, chunkX, chunkZ, world);
 			generate(SAND, RTConfig.OceanFloor.sandChance, random, chunkX, chunkZ, world);
@@ -53,8 +55,10 @@ public class WorldGeneratorOceanFloor implements IWorldGenerator {
 		}
 	}
 
-	private void generate(WorldGenerator generator, int chance, Random random, int chunkX,
-			int chunkZ, World world) {
+	private void generate(
+			WorldGenerator generator, int chance, Random random, int chunkX, int chunkZ,
+			World world
+	) {
 		final int yDifference = RTConfig.OceanFloor.maxY - RTConfig.OceanFloor.minY;
 		final int x = chunkX * 16;
 		final int z = chunkZ * 16;
