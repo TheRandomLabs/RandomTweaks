@@ -442,6 +442,7 @@ public final class MiscEventHandler {
 		if(!BiomeDictionary.getTypes(world.getBiome(pos)).contains(BiomeDictionary.Type.NETHER)) {
 			return;
 		}
+
 		world.setBlockState(pos, state.withProperty(BlockSponge.WET, false));
 
 		world.playSound(
