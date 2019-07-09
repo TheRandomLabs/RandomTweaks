@@ -452,7 +452,7 @@ public final class MiscEventHandler {
 		for(int i = 0; i < 8; i++) {
 			world.spawnParticle(
 					EnumParticleTypes.SMOKE_NORMAL, pos.getX() + Math.random(),
-					pos.getY() + Math.random(), pos.getZ() + Math.random(), 0.0D, 0.0D, 0.0D
+					pos.getY() + Math.random(), pos.getZ() + Math.random(), 0.0, 0.0, 0.0
 			);
 		}
 	}
