@@ -511,7 +511,7 @@ public final class RTConfig {
 		)
 		public static boolean updateAllMapsInInventory = TRLUtils.IS_DEOBFUSCATED;
 
-		@Config.Property("Whether wet sponges should dry in the Nether.")
+		@Config.Property("Whether wet sponges should dry when placed in the Nether.")
 		public static boolean wetSpongesDryInNether = true;
 
 		@Config.RequiresWorldReload
