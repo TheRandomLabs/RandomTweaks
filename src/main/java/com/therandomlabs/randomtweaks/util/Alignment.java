@@ -5,15 +5,15 @@ package com.therandomlabs.randomtweaks.util;
 //ingameinfo/Alignment.java
 //License: https://github.com/Lunatrius/InGame-Info-XML/blob/master/LICENSE
 public enum Alignment {
-	TOPLEFT("topLeft", 2, 2),
-	TOPCENTER("topCenter", 0, 2),
-	TOPRIGHT("topRight", -2, 2),
-	MIDDLELEFT("middleLeft", 2, 0),
-	MIDDLECENTER("middleCenter", 0, 0),
-	MIDDLERIGHT("middleRight", -2, 0),
-	BOTTOMLEFT("bottomLeft", 2, -2),
-	BOTTOMCENTER("bottomCenter", 0, -45),
-	BOTTOMRIGHT("bottomRight", -2, -2);
+	TOP_LEFT("topLeft", 2, 2),
+	TOP_CENTER("topCenter", 0, 2),
+	TOP_RIGHT("topRight", -2, 2),
+	MIDDLE_LEFT("middleLeft", 2, 0),
+	MIDDLE_CENTER("middleCenter", 0, 0),
+	MIDDLE_RIGHT("middleRight", -2, 0),
+	BOTTOM_LEFT("bottomLeft", 2, -2),
+	BOTTOM_CENTER("bottomCenter", 0, -45),
+	BOTTOM_RIGHT("bottomRight", -2, -2);
 
 	private static final int MASK_X = 0x0C;
 	private static final int MASK_Y = 0x03;
@@ -34,15 +34,15 @@ public enum Alignment {
 	private int alignment;
 
 	static {
-		TOPLEFT.alignment = TOP | LEFT;
-		TOPCENTER.alignment = TOP | CENTER;
-		TOPRIGHT.alignment = TOP | RIGHT;
-		MIDDLELEFT.alignment = MIDDLE | LEFT;
-		MIDDLECENTER.alignment = MIDDLE | CENTER;
-		MIDDLERIGHT.alignment = MIDDLE | RIGHT;
-		BOTTOMLEFT.alignment = BOTTOM | LEFT;
-		BOTTOMCENTER.alignment = BOTTOM | CENTER;
-		BOTTOMRIGHT.alignment = BOTTOM | RIGHT;
+		TOP_LEFT.alignment = TOP | LEFT;
+		TOP_CENTER.alignment = TOP | CENTER;
+		TOP_RIGHT.alignment = TOP | RIGHT;
+		MIDDLE_LEFT.alignment = MIDDLE | LEFT;
+		MIDDLE_CENTER.alignment = MIDDLE | CENTER;
+		MIDDLE_RIGHT.alignment = MIDDLE | RIGHT;
+		BOTTOM_LEFT.alignment = BOTTOM | LEFT;
+		BOTTOM_CENTER.alignment = BOTTOM | CENTER;
+		BOTTOM_RIGHT.alignment = BOTTOM | RIGHT;
 	}
 
 	Alignment(String translationKey, int x, int y) {

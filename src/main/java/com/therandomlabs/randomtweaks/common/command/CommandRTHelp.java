@@ -40,8 +40,9 @@ public class CommandRTHelp extends CommandHelp {
 	private static final ICommand testCommand2 = new TestCommand("z");
 
 	@Override
-	protected List<ICommand> getSortedPossibleCommands(ICommandSender sender,
-			MinecraftServer server) {
+	protected List<ICommand> getSortedPossibleCommands(
+			ICommandSender sender, MinecraftServer server
+	) {
 		final List<ICommand> commands = server.getCommandManager().getPossibleCommands(sender);
 		final Iterator<ICommand> it = commands.iterator();
 

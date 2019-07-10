@@ -56,8 +56,10 @@ public class RTFoodStats extends FoodStats {
 		super.addExhaustion(exhaustion * (float) RTConfig.Hunger.exhaustionMultiplier);
 	}
 
-	public static Tuple<Integer, Float> addStats(int originalFoodLevel, float originalSaturation,
-			int foodLevel, float foodSaturationModifier) {
+	public static Tuple<Integer, Float> addStats(
+			int originalFoodLevel, float originalSaturation, int foodLevel,
+			float foodSaturationModifier
+	) {
 		int newFoodLevel = originalFoodLevel + foodLevel;
 		float newSaturation = originalSaturation + foodLevel * foodSaturationModifier * 2.0F;
 

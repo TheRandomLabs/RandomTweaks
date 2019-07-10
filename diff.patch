@@ -1,0 +1,1516 @@
+diff --git a/build.gradle b/build.gradle
+index f531162..3011a17 100644
+--- a/build.gradle
++++ b/build.gradle
+@@ -16,7 +16,7 @@ buildscript {
+ apply plugin: "net.minecraftforge.gradle.forge"
+ apply plugin: "com.github.johnrengelman.shadow"
+ 
+-version = "1.10.2-2.5.0.7"
++version = "1.10.2-2.7.0.1"
+ group = "com.therandomlabs.randomtweaks"
+ archivesBaseName = "randomtweaks"
+ 
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/ClientProxy.java b/src/main/java/com/therandomlabs/randomtweaks/ClientProxy.java
+index ba99054..2d91627 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/ClientProxy.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/ClientProxy.java
+@@ -1,5 +1,6 @@
+ package com.therandomlabs.randomtweaks;
+ 
++import com.therandomlabs.randomtweaks.client.CapeHandler;
+ import com.therandomlabs.randomtweaks.client.NightVisionHandler;
+ import com.therandomlabs.randomtweaks.common.command.CommandRegistry;
+ import com.therandomlabs.randomtweaks.config.RTConfig;
+@@ -8,6 +9,11 @@ public final class ClientProxy extends CommonProxy {
+ 	@Override
+ 	public void preInit() {
+ 		super.preInit();
++
++		if(RTConfig.Client.contributorCapes) {
++			CapeHandler.downloadPlayers();
++		}
++
+ 		CommandRegistry.registerClient();
+ 	}
+ 
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/CommonProxy.java b/src/main/java/com/therandomlabs/randomtweaks/CommonProxy.java
+index c0ae656..f9941c3 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/CommonProxy.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/CommonProxy.java
+@@ -6,6 +6,7 @@ import com.therandomlabs.randomtweaks.common.RTLanguageMap;
+ import com.therandomlabs.randomtweaks.common.world.WorldGeneratorOceanFloor;
+ import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
+ import com.therandomlabs.randomtweaks.config.RTConfig;
++import net.minecraftforge.common.ForgeVersion;
+ import net.minecraftforge.common.MinecraftForge;
+ import net.minecraftforge.fml.common.registry.GameRegistry;
+ 
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/client/ArmorEquipSoundHandler.java b/src/main/java/com/therandomlabs/randomtweaks/client/ArmorEquipSoundHandler.java
+index 866b2f7..dfecbe6 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/client/ArmorEquipSoundHandler.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/client/ArmorEquipSoundHandler.java
+@@ -4,7 +4,6 @@ import java.util.Arrays;
+ import java.util.List;
+ import com.therandomlabs.randomtweaks.config.RTConfig;
+ import net.minecraft.client.Minecraft;
+-import net.minecraft.client.gui.inventory.GuiContainer;
+ import net.minecraft.init.Blocks;
+ import net.minecraft.item.Item;
+ import net.minecraft.item.ItemArmor;
+@@ -20,7 +19,7 @@ public final class ArmorEquipSoundHandler {
+ 	private ArmorEquipSoundHandler() {}
+ 
+ 	public static void onClientTick() {
+-		if(!RTConfig.ArmorEquipSounds.enabled || !(mc.currentScreen instanceof GuiContainer)) {
++		if(!RTConfig.ArmorEquipSounds.enabled || mc.player == null) {
+ 			return;
+ 		}
+ 
+@@ -45,7 +44,7 @@ public final class ArmorEquipSoundHandler {
+ 	}
+ 
+ 	public static SoundEvent getSound(ItemStack stack) {
+-		if(stack == null) {
++		if(mc.player.ticksExisted < 20 || stack == null) {
+ 			return null;
+ 		}
+ 
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/client/CapeHandler.java b/src/main/java/com/therandomlabs/randomtweaks/client/CapeHandler.java
+index 9a6ff2c..9b85a96 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/client/CapeHandler.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/client/CapeHandler.java
+@@ -1,6 +1,11 @@
+ package com.therandomlabs.randomtweaks.client;
+ 
+-import com.google.common.collect.ImmutableList;
++import java.io.IOException;
++import java.net.HttpURLConnection;
++import java.net.URL;
++import java.nio.charset.StandardCharsets;
++import java.util.Collections;
++import java.util.List;
+ import com.mojang.authlib.minecraft.MinecraftProfileTexture;
+ import com.therandomlabs.randomlib.TRLUtils;
+ import com.therandomlabs.randomtweaks.RandomTweaks;
+@@ -13,17 +18,17 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
+ import net.minecraftforge.fml.common.Mod;
+ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+ import net.minecraftforge.fml.relauncher.Side;
++import org.apache.commons.io.IOUtils;
+ 
+ @Mod.EventBusSubscriber(Side.CLIENT)
+ public final class CapeHandler {
+ 	public static final ResourceLocation CAPE_LOCATION =
+ 			new ResourceLocation(RandomTweaks.MOD_ID, "textures/cape.png");
+ 
+-	public static final ImmutableList<String> CONTRIBUTORS = ImmutableList.of(
+-			"de2b3ebd-c0e9-4f43-b0f7-b660d482dd51",
+-			"819eb301-e040-4580-9c63-3f98684f58bc",
+-			"fc2c6552-9a1d-4d7e-b9c1-2fef96cacc6c"
+-	);
++	public static final String CONTRIBUTORS_URL =
++			"https://raw.githubusercontent.com/TheRandomLabs/RandomTweaks/misc/contributors.txt";
++
++	private static List<String> contributors = Collections.emptyList();
+ 
+ 	@SubscribeEvent
+ 	public static void onRenderPlayerPre(RenderPlayerEvent.Pre event) {
+@@ -66,7 +71,25 @@ public final class CapeHandler {
+ 		}
+ 	}
+ 
++	public static void downloadPlayers() {
++		new Thread(() -> {
++			try {
++				final HttpURLConnection connection =
++						(HttpURLConnection) new URL(CONTRIBUTORS_URL).openConnection();
++				connection.setConnectTimeout(1000);
++
++				contributors = IOUtils.readLines(
++						connection.getInputStream(), StandardCharsets.UTF_8
++				);
++
++				connection.disconnect();
++			} catch(IOException ex) {
++				RandomTweaks.LOGGER.error("Failed to download conbtributor list", ex);
++			}
++		}).start();
++	}
++
+ 	public static boolean hasCape(EntityPlayer player) {
+-		return TRLUtils.IS_DEOBFUSCATED || CONTRIBUTORS.contains(player.getUniqueID().toString());
++		return TRLUtils.IS_DEOBFUSCATED || contributors.contains(player.getUniqueID().toString());
+ 	}
+ }
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/client/CreativeTabHandler.java b/src/main/java/com/therandomlabs/randomtweaks/client/CreativeTabHandler.java
+index bf89170..7db2d87 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/client/CreativeTabHandler.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/client/CreativeTabHandler.java
+@@ -72,7 +72,6 @@ public final class CreativeTabHandler {
+ 	private static boolean dragonEggSetBefore;
+ 
+ 	private static CreativeTabs originalSpawnEggsTab;
+-	private static boolean spawnEggsSetBefore;
+ 
+ 	@SubscribeEvent
+ 	public static void onItemTooltip(ItemTooltipEvent event) {
+@@ -136,22 +135,21 @@ public final class CreativeTabHandler {
+ 			}
+ 
+ 			originalSpawnEggsTab = Items.SPAWN_EGG.getCreativeTab();
+-			spawnEggsSetBefore = true;
+ 			Items.SPAWN_EGG.setCreativeTab(SPAWN_EGGS);
+ 
+ 			return;
+ 		}
+ 
+-		if(!spawnEggsSetBefore) {
+-			return;
+-		}
+-
+-
+ 		final int index = ArrayUtils.indexOf(CreativeTabs.CREATIVE_TAB_ARRAY, SPAWN_EGGS);
+ 
+ 		if(index != ArrayUtils.INDEX_NOT_FOUND) {
+ 			CreativeTabs.CREATIVE_TAB_ARRAY =
+ 					ArrayUtils.remove(CreativeTabs.CREATIVE_TAB_ARRAY, index);
++
++			for(int i = index; i < CreativeTabs.CREATIVE_TAB_ARRAY.length; i++) {
++				CreativeTabs.CREATIVE_TAB_ARRAY[i].tabIndex = i;
++			}
++
+ 			GuiContainerCreative.selectedTabIndex = CreativeTabs.BUILDING_BLOCKS.tabIndex;
+ 
+ 			try {
+@@ -161,6 +159,8 @@ public final class CreativeTabHandler {
+ 			}
+ 		}
+ 
+-		Items.SPAWN_EGG.setCreativeTab(originalSpawnEggsTab);
++		if(originalSpawnEggsTab != null) {
++			Items.SPAWN_EGG.setCreativeTab(originalSpawnEggsTab);
++		}
+ 	}
+ }
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/client/DingHandler.java b/src/main/java/com/therandomlabs/randomtweaks/client/DingHandler.java
+index 19e024c..950a0f3 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/client/DingHandler.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/client/DingHandler.java
+@@ -64,7 +64,7 @@ public final class DingHandler {
+ 			return;
+ 		}
+ 
+-		if(mc.player.ticksExisted > 20 || mc.isGamePaused()) {
++		if(mc.player.ticksExisted >= 20 || mc.isGamePaused()) {
+ 			playSound(
+ 					RTConfig.Ding.worldLoadSounds,
+ 					RTConfig.Ding.worldLoadSoundPitch,
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/client/KeyBindingHandler.java b/src/main/java/com/therandomlabs/randomtweaks/client/KeyBindingHandler.java
+index 5315948..7b78f6e 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/client/KeyBindingHandler.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/client/KeyBindingHandler.java
+@@ -36,8 +36,7 @@ public final class KeyBindingHandler {
+ 	public static final KeyBinding TOGGLE_TIME_OF_DAY_OVERLAY = new KeyBinding(
+ 			"key.toggleTimeOfDayOverlay",
+ 			KeyConflictContext.IN_GAME,
+-			KeyModifier.CONTROL,
+-			Keyboard.KEY_BACKSLASH,
++			Keyboard.KEY_NONE,
+ 			"key.categories.randomtweaks"
+ 	);
+ 
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/common/BoneMealHandler.java b/src/main/java/com/therandomlabs/randomtweaks/common/BoneMealHandler.java
+index 32a1cf3..ad2f910 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/common/BoneMealHandler.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/common/BoneMealHandler.java
+@@ -53,8 +53,10 @@ public final class BoneMealHandler {
+ 		}
+ 	}
+ 
+-	public static void grow(World world, Block block, BlockPos pos, PropertyInteger ageProperty,
+-			int stages, BonemealEvent event) {
++	public static void grow(
++			World world, Block block, BlockPos pos, PropertyInteger ageProperty, int stages,
++			BonemealEvent event
++	) {
+ 		BlockPos tempPos;
+ 		int i = 0;
+ 
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/common/ColoredSheepHandler.java b/src/main/java/com/therandomlabs/randomtweaks/common/ColoredSheepHandler.java
+index 35e084e..f2b6c50 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/common/ColoredSheepHandler.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/common/ColoredSheepHandler.java
+@@ -3,14 +3,10 @@ package com.therandomlabs.randomtweaks.common;
+ import java.util.HashMap;
+ import java.util.Map;
+ import com.therandomlabs.randomtweaks.config.RTConfig;
+-import net.minecraft.entity.Entity;
+ import net.minecraft.entity.passive.EntitySheep;
+ import net.minecraft.item.EnumDyeColor;
+-import net.minecraftforge.event.entity.living.LivingEvent;
+ import net.minecraftforge.fml.common.Mod;
+-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+ 
+-@Mod.EventBusSubscriber
+ public final class ColoredSheepHandler {
+ 	private static final Map<Integer, EnumDyeColor> queue = new HashMap<>();
+ 
+@@ -29,16 +25,7 @@ public final class ColoredSheepHandler {
+ 		}
+ 	}
+ 
+-	@SubscribeEvent
+-	public static void onSheepTick(LivingEvent.LivingUpdateEvent event) {
+-		final Entity entity = event.getEntity();
+-
+-		if(entity.getEntityWorld().isRemote || entity.getClass() != EntitySheep.class) {
+-			return;
+-		}
+-
+-		final EntitySheep sheep = (EntitySheep) entity;
+-
++	public static void onSheepTick(EntitySheep sheep) {
+ 		final int id = sheep.getEntityId();
+ 		final EnumDyeColor color = queue.get(id);
+ 
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/common/EntityInteractHandler.java b/src/main/java/com/therandomlabs/randomtweaks/common/EntityInteractHandler.java
+index 35ebe82..8789078 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/common/EntityInteractHandler.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/common/EntityInteractHandler.java
+@@ -79,8 +79,10 @@ public final class EntityInteractHandler {
+ 		return ((ItemFood) item).getHealAmount(stack);
+ 	}
+ 
+-	private static void onVillagerInteract(EntityPlayer player, EntityVillager villager,
+-			ItemStack stack, PlayerInteractEvent.EntityInteract event) {
++	private static void onVillagerInteract(
++			EntityPlayer player, EntityVillager villager, ItemStack stack,
++			PlayerInteractEvent.EntityInteract event
++	) {
+ 		if(!RTConfig.Animals.leashableVillagers) {
+ 			return;
+ 		}
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/common/MiscEventHandler.java b/src/main/java/com/therandomlabs/randomtweaks/common/MiscEventHandler.java
+index b8d2b9a..49ced8b 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/common/MiscEventHandler.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/common/MiscEventHandler.java
+@@ -1,40 +1,66 @@
+ package com.therandomlabs.randomtweaks.common;
+ 
++import java.util.Arrays;
++import java.util.List;
+ import java.util.Random;
+ import java.util.UUID;
++import com.therandomlabs.randomlib.EntityUtils;
+ import com.therandomlabs.randomtweaks.RandomTweaks;
++import com.therandomlabs.randomtweaks.client.ArmorEquipSoundHandler;
+ import com.therandomlabs.randomtweaks.config.RTConfig;
++import net.minecraft.block.Block;
++import net.minecraft.block.BlockCake;
++import net.minecraft.block.BlockSponge;
++import net.minecraft.block.state.IBlockState;
+ import net.minecraft.enchantment.EnchantmentHelper;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.EntityAgeable;
++import net.minecraft.entity.EntityLiving;
+ import net.minecraft.entity.EntityLivingBase;
+ import net.minecraft.entity.IEntityOwnable;
+ import net.minecraft.entity.SharedMonsterAttributes;
+ import net.minecraft.entity.ai.attributes.IAttributeInstance;
++import net.minecraft.entity.item.EntityArmorStand;
++import net.minecraft.entity.monster.EntityZombie;
+ import net.minecraft.entity.passive.EntityBat;
+ import net.minecraft.entity.passive.EntitySheep;
+ import net.minecraft.entity.player.EntityPlayer;
++import net.minecraft.init.Blocks;
+ import net.minecraft.init.Enchantments;
+ import net.minecraft.init.Items;
++import net.minecraft.init.SoundEvents;
++import net.minecraft.inventory.EntityEquipmentSlot;
++import net.minecraft.item.Item;
+ import net.minecraft.item.ItemStack;
+ import net.minecraft.util.ActionResult;
+ import net.minecraft.util.DamageSource;
+ import net.minecraft.util.EnumActionResult;
++import net.minecraft.util.EnumParticleTypes;
++import net.minecraft.util.SoundCategory;
++import net.minecraft.util.SoundEvent;
++import net.minecraft.util.math.BlockPos;
++import net.minecraft.util.math.Vec3d;
+ import net.minecraft.world.World;
+ import net.minecraft.world.WorldServer;
++import net.minecraftforge.common.BiomeDictionary;
+ import net.minecraftforge.common.util.FakePlayerFactory;
+ import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+ import net.minecraftforge.event.entity.living.LivingAttackEvent;
+ import net.minecraftforge.event.entity.living.LivingDeathEvent;
+ import net.minecraftforge.event.entity.living.LivingDropsEvent;
++import net.minecraftforge.event.entity.living.LivingEvent;
+ import net.minecraftforge.event.entity.living.LivingHurtEvent;
+ import net.minecraftforge.event.entity.living.LivingSpawnEvent;
+ import net.minecraftforge.event.entity.player.ArrowNockEvent;
+ import net.minecraftforge.event.entity.player.AttackEntityEvent;
++import net.minecraftforge.event.entity.player.PlayerInteractEvent;
++import net.minecraftforge.event.world.BlockEvent;
+ import net.minecraftforge.fml.common.Mod;
++import net.minecraftforge.fml.common.eventhandler.Event;
+ import net.minecraftforge.fml.common.eventhandler.EventPriority;
+ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
+ import net.minecraftforge.fml.common.gameevent.TickEvent;
++import org.apache.commons.lang3.ArrayUtils;
+ 
+ @Mod.EventBusSubscriber
+ public final class MiscEventHandler {
+@@ -46,12 +72,17 @@ public final class MiscEventHandler {
+ 
+ 		final Entity entity = event.getEntity();
+ 
+-		if(!(entity instanceof EntityPlayer)) {
++		if(entity instanceof EntityPlayer) {
++			onPlayerJoinWorld((EntityPlayer) entity);
+ 			return;
+ 		}
+ 
+-		final EntityPlayer player = (EntityPlayer) event.getEntity();
++		if(entity instanceof EntityZombie) {
++			ZombieAIHandler.onZombieJoinWorld((EntityZombie) entity);
++		}
++	}
+ 
++	public static void onPlayerJoinWorld(EntityPlayer player) {
+ 		final IAttributeInstance attackSpeed =
+ 				player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
+ 		attackSpeed.setBaseValue(RTConfig.Misc.attackSpeed);
+@@ -95,10 +126,42 @@ public final class MiscEventHandler {
+ 		}
+ 	}
+ 
++	@SubscribeEvent
++	public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
++		final EntityLivingBase entity = event.getEntityLiving();
++
++		if(entity.getEntityWorld().isRemote) {
++			return;
++		}
++
++		if(RTConfig.Misc.entityNaNHealthFix && Float.isNaN(entity.getHealth())) {
++			entity.setHealth(0.0F);
++			return;
++		}
++
++		if(entity.getClass() == EntitySheep.class) {
++			ColoredSheepHandler.onSheepTick((EntitySheep) entity);
++		}
++	}
++
+ 	@SubscribeEvent
+ 	public static void onLivingHurt(LivingHurtEvent event) {
+ 		final EntityLivingBase entity = event.getEntityLiving();
+ 		final DamageSource source = event.getSource();
++		final float amount = event.getAmount();
++
++		if(RTConfig.Misc.entityNaNHealthFix && Float.isNaN(amount)) {
++			RandomTweaks.LOGGER.error("{} was damaged by a NaN value.", entity);
++			RandomTweaks.LOGGER.error("Immediate source: " + source);
++			RandomTweaks.LOGGER.error("True source: " + source.getSourceOfDamage());
++			RandomTweaks.LOGGER.error(
++					"This damage will be canceled. Please report this to the relevant mod author."
++			);
++
++			event.setResult(Event.Result.DENY);
++			event.setCanceled(true);
++			return;
++		}
+ 
+ 		final String gameRule;
+ 
+@@ -129,11 +192,11 @@ public final class MiscEventHandler {
+ 		} else if(multiplier <= 0.0F) {
+ 			event.setCanceled(true);
+ 			entity.setHealth(Math.max(
+-					entity.getHealth() + event.getAmount() * multiplier,
++					entity.getHealth() + amount * multiplier,
+ 					entity.getMaxHealth()
+ 			));
+ 		} else {
+-			event.setAmount(event.getAmount() * multiplier);
++			event.setAmount(amount * multiplier);
+ 		}
+ 	}
+ 
+@@ -174,11 +237,18 @@ public final class MiscEventHandler {
+ 
+ 	@SubscribeEvent
+ 	public static void onLivingDeath(LivingDeathEvent event) {
++		final EntityLivingBase entity = event.getEntityLiving();
++
++		if(RTConfig.Misc.mobsDropAllArmorAndEquipment && entity instanceof EntityLiving) {
++			final EntityLiving living = (EntityLiving) entity;
++			Arrays.fill(living.inventoryHandsDropChances, 1.0F);
++			Arrays.fill(living.inventoryArmorDropChances, 1.0F);
++		}
++
+ 		if(!RTConfig.Misc.mobsAlwaysDropLoot) {
+ 			return;
+ 		}
+ 
+-		final EntityLivingBase entity = event.getEntityLiving();
+ 		final World world = entity.getEntityWorld();
+ 
+ 		if(world.isRemote) {
+@@ -287,4 +357,148 @@ public final class MiscEventHandler {
+ 			event.setAction(new ActionResult<>(EnumActionResult.SUCCESS, bow));
+ 		}
+ 	}
++
++	@SubscribeEvent
++	public static void onBlockRightClick(PlayerInteractEvent.RightClickBlock event) {
++		if(!RTConfig.Misc.cakeSoundsAndParticles) {
++			return;
++		}
++
++		final World world = event.getWorld();
++		final EntityPlayer player = event.getEntityPlayer();
++		final BlockPos pos = event.getPos();
++		final IBlockState state = world.getBlockState(pos);
++		final Block block = state.getBlock();
++
++		if(!(block instanceof BlockCake) || !player.canEat(false)) {
++			return;
++		}
++
++		final Random random = player.getRNG();
++
++		final ItemStack stack = block.getPickBlock(state, null, world, pos, player);
++		final int id = Item.getIdFromItem(stack.getItem());
++		final int meta = stack.getMetadata();
++
++		//Taken from EntityLivingBase#updateItemUse
++		for(int i = 0; i < 5; i++) {
++			final Vec3d particlePos = new Vec3d(
++					(random.nextFloat() - 0.5) * 0.3, (-random.nextFloat()) * 0.6 - 0.3, 0.6
++			).rotatePitch(
++					-player.rotationPitch * 0.017453292F
++			).rotateYaw(
++					-player.rotationYaw * 0.017453292F
++			).addVector(
++					player.posX, player.posY + player.getEyeHeight() + 0.05, player.posZ
++			);
++
++			final Vec3d particleSpeed = new Vec3d(
++					(random.nextFloat() - 0.5) * 0.1, Math.random() * 0.1 + 0.1, 0.0
++			).rotatePitch(
++					-player.rotationPitch * 0.017453292F
++			).rotateYaw(
++					-player.rotationYaw * 0.017453292F
++			);
++
++			world.spawnParticle(
++					EnumParticleTypes.ITEM_CRACK,
++					particlePos.xCoord, particlePos.yCoord, particlePos.zCoord,
++					particleSpeed.xCoord, particleSpeed.yCoord, particleSpeed.zCoord,
++					id, meta
++			);
++		}
++
++		player.playSound(
++				SoundEvents.ENTITY_GENERIC_EAT,
++				0.5F + 0.5F * random.nextInt(2),
++				(random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F
++		);
++	}
++
++	@SubscribeEvent
++	public static void onBlockPlaced(BlockEvent.PlaceEvent event) {
++		if(!RTConfig.Misc.wetSpongesDryInNether) {
++			return;
++		}
++
++		final World world = event.getWorld();
++
++		if(world.isRemote) {
++			return;
++		}
++
++		final IBlockState state = event.getPlacedBlock();
++
++		if(state.getBlock() != Blocks.SPONGE || !state.getValue(BlockSponge.WET)) {
++			return;
++		}
++
++		final BlockPos pos = event.getPos();
++
++		if(!ArrayUtils.contains(
++				BiomeDictionary.getTypesForBiome(world.getBiome(pos)), BiomeDictionary.Type.NETHER
++		)) {
++			return;
++		}
++
++		world.setBlockState(pos, state.withProperty(BlockSponge.WET, false));
++
++		world.playSound(
++				null, pos, SoundEvents.BLOCK_FIRE_EXTINGUISH, SoundCategory.BLOCKS, 0.3F,
++				2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F
++		);
++
++		for(int i = 0; i < 8; i++) {
++			world.spawnParticle(
++					EnumParticleTypes.SMOKE_NORMAL, pos.getX() + Math.random(),
++					pos.getY() + Math.random(), pos.getZ() + Math.random(), 0.0, 0.0, 0.0
++			);
++		}
++	}
++
++	@SubscribeEvent(priority = EventPriority.LOW)
++	public static void onEntityInteractSpecific(PlayerInteractEvent.EntityInteractSpecific event) {
++		if(!RTConfig.Misc.armorStandSwapping) {
++			return;
++		}
++
++		final EntityPlayer player = event.getEntityPlayer();
++
++		if(player.getEntityWorld().isRemote || !player.isSneaking() || player.isSpectator()) {
++			return;
++		}
++
++		final Entity target = event.getTarget();
++
++		if(!(target instanceof EntityArmorStand)) {
++			return;
++		}
++
++		event.setCanceled(true);
++
++		final EntityArmorStand armorStand = (EntityArmorStand) target;
++		final List<ItemStack> armorStandInventory =
++				(List<ItemStack>) armorStand.getArmorInventoryList();
++
++		for(EntityEquipmentSlot slot : EntityUtils.ARMOR_SLOTS) {
++			final ItemStack playerStack = player.getItemStackFromSlot(slot);
++			final ItemStack armorStandStack = armorStand.getItemStackFromSlot(slot);
++
++			final int index = slot.getIndex();
++
++			player.inventory.armorInventory[index] = armorStandStack;
++			armorStandInventory.set(index, playerStack);
++
++			final SoundEvent playerEquipSound = ArmorEquipSoundHandler.getSound(armorStandStack);
++			final SoundEvent armorStandEquipSound = ArmorEquipSoundHandler.getSound(playerStack);
++
++			if(playerEquipSound != null) {
++				player.playSound(playerEquipSound, 1.0F, 1.0F);
++			}
++
++			if(armorStandEquipSound != null) {
++				armorStand.playSound(armorStandEquipSound, 1.0F, 1.0F);
++			}
++		}
++	}
+ }
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/common/RTFoodStats.java b/src/main/java/com/therandomlabs/randomtweaks/common/RTFoodStats.java
+index afeb1b4..234cefb 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/common/RTFoodStats.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/common/RTFoodStats.java
+@@ -56,8 +56,10 @@ public class RTFoodStats extends FoodStats {
+ 		super.addExhaustion(exhaustion * (float) RTConfig.Hunger.exhaustionMultiplier);
+ 	}
+ 
+-	public static Tuple<Integer, Float> addStats(int originalFoodLevel, float originalSaturation,
+-			int foodLevel, float foodSaturationModifier) {
++	public static Tuple<Integer, Float> addStats(
++			int originalFoodLevel, float originalSaturation, int foodLevel,
++			float foodSaturationModifier
++	) {
+ 		int newFoodLevel = originalFoodLevel + foodLevel;
+ 		float newSaturation = originalSaturation + foodLevel * foodSaturationModifier * 2.0F;
+ 
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/common/RespawnHandler.java b/src/main/java/com/therandomlabs/randomtweaks/common/RespawnHandler.java
+index ab7a3c8..02c3111 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/common/RespawnHandler.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/common/RespawnHandler.java
+@@ -76,7 +76,7 @@ public final class RespawnHandler {
+ 		final int minimum = RTConfig.Hunger.minimumRespawnHungerLevel;
+ 		final FoodStats newStats = player.getFoodStats();
+ 
+-		newStats.foodLevel = newFoodLevel < minimum ? minimum : newFoodLevel;
++		newStats.foodLevel = Math.max(newFoodLevel, minimum);
+ 		newStats.foodSaturationLevel = oldSaturationLevel;
+ 	}
+ 
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/common/SleepHandler.java b/src/main/java/com/therandomlabs/randomtweaks/common/SleepHandler.java
+index 98f5c1c..6e3bc01 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/common/SleepHandler.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/common/SleepHandler.java
+@@ -1,6 +1,7 @@
+ package com.therandomlabs.randomtweaks.common;
+ 
+ import java.lang.reflect.Method;
++import java.util.List;
+ import com.therandomlabs.randomlib.TRLUtils;
+ import com.therandomlabs.randomtweaks.RandomTweaks;
+ import com.therandomlabs.randomtweaks.config.RTConfig;
+@@ -9,6 +10,8 @@ import net.minecraft.block.state.IBlockState;
+ import net.minecraft.entity.Entity;
+ import net.minecraft.entity.monster.EntityMob;
+ import net.minecraft.entity.player.EntityPlayer;
++import net.minecraft.init.MobEffects;
++import net.minecraft.potion.PotionEffect;
+ import net.minecraft.util.EnumFacing;
+ import net.minecraft.util.ResourceLocation;
+ import net.minecraft.util.math.AxisAlignedBB;
+@@ -27,8 +30,9 @@ public final class SleepHandler {
+ 
+ 	@SubscribeEvent(priority = EventPriority.LOWEST)
+ 	public static void onSleep(PlayerSleepInBedEvent event) {
+-		if(!RTConfig.Misc.allowSleepNearMobsWithCustomNames &&
+-				!RTConfig.Misc.disableBedProximityRequirement) {
++		if(!RTConfig.Sleep.allowSleepNearMobsWithCustomNames &&
++				!RTConfig.Sleep.disableBedProximityRequirement &&
++				RTConfig.Sleep.nearbyMonsterGlowDuration == 0) {
+ 			return;
+ 		}
+ 
+@@ -84,12 +88,23 @@ public final class SleepHandler {
+ 			return;
+ 		}
+ 
+-		if(!RTConfig.Misc.disableBedProximityRequirement && !isBedInRange(player, pos, facing)) {
++		if(!RTConfig.Sleep.disableBedProximityRequirement && !isBedInRange(player, pos, facing)) {
+ 			event.setResult(EntityPlayer.SleepResult.TOO_FAR_AWAY);
+ 			return;
+ 		}
+ 
+-		if(isMobInRange(player, world, pos)) {
++		final List<EntityMob> mobsInRange = getMobsInRange(player, world, pos);
++
++		if(!mobsInRange.isEmpty()) {
++			if(RTConfig.Sleep.nearbyMonsterGlowDuration != 0) {
++				for(EntityMob mob : mobsInRange) {
++					mob.addPotionEffect(new PotionEffect(
++							MobEffects.GLOWING, RTConfig.Sleep.nearbyMonsterGlowDuration,
++							0, false, RTConfig.Sleep.nearbyMonsterGlowParticles
++					));
++				}
++			}
++
+ 			event.setResult(EntityPlayer.SleepResult.NOT_SAFE);
+ 			return;
+ 		}
+@@ -152,8 +167,10 @@ public final class SleepHandler {
+ 				Math.abs(player.posZ - pos.getZ()) <= 3.0;
+ 	}
+ 
+-	public static boolean isMobInRange(EntityPlayer player, World world, BlockPos position) {
+-		return !world.getEntitiesWithinAABB(
++	public static List<EntityMob> getMobsInRange(
++			EntityPlayer player, World world, BlockPos position
++	) {
++		return world.getEntitiesWithinAABB(
+ 				EntityMob.class,
+ 				new AxisAlignedBB(
+ 						position.getX(),
+@@ -163,7 +180,7 @@ public final class SleepHandler {
+ 						position.getY(),
+ 						position.getZ()
+ 				).expand(8.0, 5.0, 8.0),
+-				mob -> !RTConfig.Misc.allowSleepNearMobsWithCustomNames || !mob.hasCustomName()
+-		).isEmpty();
++				mob -> !RTConfig.Sleep.allowSleepNearMobsWithCustomNames || !mob.hasCustomName()
++		);
+ 	}
+ }
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/common/TorchHandler.java b/src/main/java/com/therandomlabs/randomtweaks/common/TorchHandler.java
+new file mode 100644
+index 0000000..c82244c
+--- /dev/null
++++ b/src/main/java/com/therandomlabs/randomtweaks/common/TorchHandler.java
+@@ -0,0 +1,116 @@
++package com.therandomlabs.randomtweaks.common;
++
++import java.util.function.Predicate;
++import com.therandomlabs.randomtweaks.config.RTConfig;
++import net.minecraft.block.Block;
++import net.minecraft.block.BlockTorch;
++import net.minecraft.block.state.IBlockState;
++import net.minecraft.entity.player.EntityPlayer;
++import net.minecraft.util.EnumFacing;
++import net.minecraft.util.math.BlockPos;
++import net.minecraft.world.World;
++import net.minecraftforge.event.world.BlockEvent;
++import net.minecraftforge.fml.common.Mod;
++import net.minecraftforge.fml.common.eventhandler.EventPriority;
++import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
++
++@Mod.EventBusSubscriber
++public final class TorchHandler {
++	public enum Behavior {
++		NEVER("never", player -> false),
++		SNEAKING("sneaking", EntityPlayer::isSneaking),
++		NOT_SNEAKING("notSneaking", player -> !player.isSneaking()),
++		ALWAYS("always", player -> true);
++
++		private final String translationKey;
++		private final Predicate<EntityPlayer> predicate;
++
++		Behavior(String translationKey, Predicate<EntityPlayer> predicate) {
++			this.translationKey = translationKey;
++			this.predicate = predicate;
++		}
++
++		@Override
++		public String toString() {
++			return "randomtweaks.config.misc.torchReorientationBehavior." + translationKey;
++		}
++
++		public boolean test(EntityPlayer player) {
++			return predicate.test(player);
++		}
++	}
++
++	public enum Orientation {
++		NORTH(EnumFacing.NORTH),
++		SOUTH(EnumFacing.SOUTH),
++		EAST(EnumFacing.EAST),
++		WEST(EnumFacing.WEST),
++		UP(EnumFacing.UP);
++
++		private final EnumFacing facing;
++
++		Orientation(EnumFacing facing) {
++			this.facing = facing;
++		}
++
++		public EnumFacing get() {
++			return facing;
++		}
++	}
++
++	private static EnumFacing[] TORCH_ORIENTATIONS =
++			BlockTorch.FACING.getAllowedValues().toArray(new EnumFacing[0]);
++
++	@SubscribeEvent(priority = EventPriority.LOWEST)
++	public static void onBlockBreak(BlockEvent.BreakEvent event) {
++		if(!RTConfig.Misc.torchReorientationBehavior.test(event.getPlayer())) {
++			return;
++		}
++
++		final World world = event.getWorld();
++		final BlockPos pos = event.getPos();
++
++		for(EnumFacing neighboringSide : TORCH_ORIENTATIONS) {
++			final BlockPos torchPos = pos.offset(neighboringSide);
++			final IBlockState torchState = world.getBlockState(torchPos);
++			final Block block = torchState.getBlock();
++
++			if(!(block instanceof BlockTorch) ||
++					canPlaceAt(world, pos, torchPos, torchState.getValue(BlockTorch.FACING))) {
++				continue;
++			}
++
++			for(EnumFacing orientation : RTConfig.Misc.torchOrientations) {
++				if(canPlaceAt(world, pos, torchPos, orientation)) {
++					world.setBlockState(
++							torchPos, torchState.withProperty(BlockTorch.FACING, orientation)
++					);
++					break;
++				}
++			}
++		}
++	}
++
++	//Taken and adapted from BlockTorch#canPlaceAt
++	public static boolean canPlaceAt(
++			World world, BlockPos brokenPos, BlockPos torchPos, EnumFacing orientation
++	) {
++		final BlockPos attachPos = torchPos.offset(orientation.getOpposite());
++
++		if(brokenPos.equals(attachPos)) {
++			return false;
++		}
++
++		final IBlockState attachState = world.getBlockState(attachPos);
++		final Block attachBlock = attachState.getBlock();
++
++		//orientation will never be EnumFacing.DOWN so we don't bother checking for it
++
++		if(orientation == EnumFacing.UP) {
++			return attachState.isSideSolid(world, attachPos, EnumFacing.UP) ||
++					attachBlock.canPlaceTorchOnTop(attachState, world, torchPos);
++		}
++
++		return world.isSideSolid(attachPos, orientation, true);
++	}
++}
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/common/ZombieAIHandler.java b/src/main/java/com/therandomlabs/randomtweaks/common/ZombieAIHandler.java
+new file mode 100644
+index 0000000..a9cd594
+--- /dev/null
++++ b/src/main/java/com/therandomlabs/randomtweaks/common/ZombieAIHandler.java
+@@ -0,0 +1,74 @@
++package com.therandomlabs.randomtweaks.common;
++
++import java.util.ArrayList;
++import java.util.Iterator;
++import java.util.List;
++import com.therandomlabs.randomtweaks.config.RTConfig;
++import net.minecraft.entity.EntityLivingBase;
++import net.minecraft.entity.ai.EntityAITasks;
++import net.minecraft.entity.ai.EntityAIZombieAttack;
++import net.minecraft.entity.monster.EntityZombie;
++
++public final class ZombieAIHandler {
++	public static final class RTEntityAIZombieAttack extends EntityAIZombieAttack {
++		public RTEntityAIZombieAttack(EntityZombie zombie, double speed, boolean longMemory) {
++			super(zombie, speed, longMemory);
++		}
++
++		@Override
++		public boolean shouldExecute() {
++			final EntityLivingBase target = attacker.getAttackTarget();
++
++			if(target == null || !target.isEntityAlive() ||
++					target.dimension != attacker.dimension) {
++				return false;
++			}
++
++			if(--delayCounter <= 0) {
++				entityPathEntity = attacker.getNavigator().getPathToEntityLiving(target);
++
++				if(entityPathEntity != null) {
++					return true;
++				}
++
++				delayCounter = Math.min(30, (int) Math.max(
++						attacker.getDistanceSq(
++								target.posX, target.getEntityBoundingBox().minY, target.posZ
++						),
++						10.0
++				));
++			}
++
++			return false;
++		}
++	}
++
++	public static void onZombieJoinWorld(EntityZombie zombie) {
++		if(!RTConfig.Misc.zombieTargetDetectionImprovements) {
++			return;
++		}
++
++		final List<EntityAITasks.EntityAITaskEntry> overrides = new ArrayList<>();
++		final Iterator<EntityAITasks.EntityAITaskEntry> it = zombie.tasks.taskEntries.iterator();
++
++		while(it.hasNext()) {
++			final EntityAITasks.EntityAITaskEntry entry = it.next();
++
++			if(entry.action instanceof EntityAIZombieAttack &&
++					!(entry.action instanceof RTEntityAIZombieAttack)) {
++				final EntityAIZombieAttack action = (EntityAIZombieAttack) entry.action;
++
++				overrides.add(zombie.tasks.new EntityAITaskEntry(
++						entry.priority,
++						new RTEntityAIZombieAttack(
++								zombie, action.speedTowardsTarget, action.longMemory
++						)
++				));
++
++				it.remove();
++			}
++		}
++
++		zombie.tasks.taskEntries.addAll(overrides);
++	}
++}
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandDeleteGamerule.java b/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandDeleteGamerule.java
+index 337dfe8..09a1dc8 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandDeleteGamerule.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandDeleteGamerule.java
+@@ -40,8 +40,9 @@ public class CommandDeleteGamerule extends CommandBase {
+ 	}
+ 
+ 	@Override
+-	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender,
+-			String[] args, BlockPos targetPos) {
++	public List<String> getTabCompletions(
++			MinecraftServer server, ICommandSender sender, String[] args, BlockPos targetPos
++	) {
+ 		return getListOfStringsMatchingLastWord(
+ 				args, sender.getEntityWorld().getGameRules().getRules()
+ 		);
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandHunger.java b/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandHunger.java
+index 01bfe16..28074c8 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandHunger.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandHunger.java
+@@ -45,8 +45,9 @@ public class CommandHunger extends CommandBase {
+ 	}
+ 
+ 	@Override
+-	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender,
+-			String[] args, BlockPos targetPos) {
++	public List<String> getTabCompletions(
++			MinecraftServer server, ICommandSender sender, String[] args, BlockPos targetPos
++	) {
+ 		return args.length == 1 ?
+ 				getListOfStringsMatchingLastWord(args, server.getOnlinePlayerNames()) :
+ 				Collections.emptyList();
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandRTGive.java b/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandRTGive.java
+index 7a92d8e..fb7a36b 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandRTGive.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandRTGive.java
+@@ -118,8 +118,9 @@ public class CommandRTGive extends CommandGive {
+ 	}
+ 
+ 	@Override
+-	public List<String> getTabCompletions(MinecraftServer server, ICommandSender sender,
+-			String[] args, BlockPos targetPos) {
++	public List<String> getTabCompletions(
++			MinecraftServer server, ICommandSender sender, String[] args, BlockPos targetPos
++	) {
+ 		final List<String> tabCompletions =
+ 				super.getTabCompletions(server, sender, args, targetPos);
+ 
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandRTHelp.java b/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandRTHelp.java
+index 621da06..3f0a88c 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandRTHelp.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandRTHelp.java
+@@ -40,8 +40,9 @@ public class CommandRTHelp extends CommandHelp {
+ 	private static final ICommand testCommand2 = new TestCommand("z");
+ 
+ 	@Override
+-	protected List<ICommand> getSortedPossibleCommands(ICommandSender sender,
+-			MinecraftServer server) {
++	protected List<ICommand> getSortedPossibleCommands(
++			ICommandSender sender, MinecraftServer server
++	) {
+ 		final List<ICommand> commands = server.getCommandManager().getPossibleCommands(sender);
+ 		final Iterator<ICommand> it = commands.iterator();
+ 
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandRegistry.java b/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandRegistry.java
+index 816da1c..c2c5dbc 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandRegistry.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/common/command/CommandRegistry.java
+@@ -5,7 +5,6 @@ import com.therandomlabs.randomtweaks.RandomTweaks;
+ import com.therandomlabs.randomtweaks.config.RTConfig;
+ import net.minecraftforge.client.ClientCommandHandler;
+ import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
+-import net.minecraftforge.fml.relauncher.Side;
+ 
+ public final class CommandRegistry {
+ 	public static void register(FMLServerStartingEvent event) {
+@@ -26,16 +25,17 @@ public final class CommandRegistry {
+ 		}
+ 
+ 		if(RTConfig.Commands.rtreload) {
+-			event.registerServerCommand(new CommandConfigReload(
+-					"rtreload", RTConfig.class, Side.SERVER, "RandomTweaks configuration reloaded!"
++			event.registerServerCommand(CommandConfigReload.server(
++					"rtreload", "rtreloadclient", RTConfig.class,
++					"RandomTweaks configuration reloaded!"
+ 			));
+ 		}
+ 	}
+ 
+ 	public static void registerClient() {
+ 		if(RTConfig.Commands.rtreloadclient) {
+-			ClientCommandHandler.instance.registerCommand(new CommandConfigReload(
+-					"rtreloadclient", RTConfig.class, Side.CLIENT
++			ClientCommandHandler.instance.registerCommand(CommandConfigReload.client(
++					"rtreloadclient", RTConfig.class
+ 			));
+ 		}
+ 
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/common/world/WorldGeneratorOceanFloor.java b/src/main/java/com/therandomlabs/randomtweaks/common/world/WorldGeneratorOceanFloor.java
+index a83f728..782eed2 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/common/world/WorldGeneratorOceanFloor.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/common/world/WorldGeneratorOceanFloor.java
+@@ -44,8 +44,10 @@ public class WorldGeneratorOceanFloor implements IWorldGenerator {
+ 	}
+ 
+ 	@Override
+-	public void generate(Random random, int chunkX, int chunkZ, World world,
+-			IChunkGenerator generator, IChunkProvider provider) {
++	public void generate(
++			Random random, int chunkX, int chunkZ, World world, IChunkGenerator generator,
++			IChunkProvider provider
++	) {
+ 		if(world.provider.getDimensionType() == DimensionType.OVERWORLD) {
+ 			generate(CLAY, RTConfig.OceanFloor.clayChance, random, chunkX, chunkZ, world);
+ 			generate(SAND, RTConfig.OceanFloor.sandChance, random, chunkX, chunkZ, world);
+@@ -53,8 +55,10 @@ public class WorldGeneratorOceanFloor implements IWorldGenerator {
+ 		}
+ 	}
+ 
+-	private void generate(WorldGenerator generator, int chance, Random random, int chunkX,
+-			int chunkZ, World world) {
++	private void generate(
++			WorldGenerator generator, int chance, Random random, int chunkX, int chunkZ,
++			World world
++	) {
+ 		final int yDifference = RTConfig.OceanFloor.maxY - RTConfig.OceanFloor.minY;
+ 		final int x = chunkX * 16;
+ 		final int z = chunkZ * 16;
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/common/world/WorldHandler.java b/src/main/java/com/therandomlabs/randomtweaks/common/world/WorldHandler.java
+index 4fed51c..076f67a 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/common/world/WorldHandler.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/common/world/WorldHandler.java
+@@ -126,6 +126,10 @@ public final class WorldHandler {
+ 	}
+ 
+ 	private static void onPlayerSpawnInVoidWorld(EntityPlayer player, boolean voidIslands) {
++		if(player.capabilities.isFlying) {
++			return;
++		}
++
+ 		final World world = player.getEntityWorld();
+ 
+ 		if(isSpawnable(world, world.getTopSolidOrLiquidBlock(player.getPosition()))) {
+@@ -140,9 +144,7 @@ public final class WorldHandler {
+ 			usingWorldSpawn = true;
+ 		}
+ 
+-		playerSpawnPoint = world.getTopSolidOrLiquidBlock(playerSpawnPoint).down();
+-
+-		if(isSpawnable(world, playerSpawnPoint)) {
++		if(isSpawnable(world, world.getTopSolidOrLiquidBlock(playerSpawnPoint))) {
+ 			return;
+ 		}
+ 
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/config/RTConfig.java b/src/main/java/com/therandomlabs/randomtweaks/config/RTConfig.java
+index e84040d..85db9e3 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/config/RTConfig.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/config/RTConfig.java
+@@ -1,6 +1,8 @@
+ package com.therandomlabs.randomtweaks.config;
+ 
++import java.util.Arrays;
+ import java.util.EnumMap;
++import java.util.HashMap;
+ import java.util.Map;
+ import com.therandomlabs.randomlib.TRLUtils;
+ import com.therandomlabs.randomlib.config.Config;
+@@ -9,6 +11,7 @@ import com.therandomlabs.randomtweaks.client.CreativeTabHandler;
+ import com.therandomlabs.randomtweaks.client.KeyBindingHandler;
+ import com.therandomlabs.randomtweaks.common.RespawnHandler;
+ import com.therandomlabs.randomtweaks.common.SquidHandler;
++import com.therandomlabs.randomtweaks.common.TorchHandler;
+ import com.therandomlabs.randomtweaks.common.world.ChunkProviderVoidIslands;
+ import com.therandomlabs.randomtweaks.common.world.WorldTypeRegistry;
+ import com.therandomlabs.randomtweaks.util.Alignment;
+@@ -20,6 +23,7 @@ import net.minecraft.init.Items;
+ import net.minecraft.init.SoundEvents;
+ import net.minecraft.item.EnumDyeColor;
+ import net.minecraft.item.Item;
++import net.minecraft.util.EnumFacing;
+ import net.minecraft.util.SoundEvent;
+ import net.minecraft.world.biome.Biome;
+ 
+@@ -112,7 +116,10 @@ public final class RTConfig {
+ 	}
+ 
+ 	public static final class Client {
+-		@Config.Category("Options related to armor equip/unequip sounds.")
++		@Config.Category({
++				"Options related to armor equip/unequip sounds.",
++				"These options also have an effect server-side if armor stand swapping is enabled."
++		})
+ 		public static final ArmorEquipSounds armorEquipSounds = null;
+ 
+ 		@Config.Category("Options related to the auto-third person feature.")
+@@ -137,7 +144,10 @@ public final class RTConfig {
+ 		public static boolean clearWater = true;
+ 
+ 		@Config.RequiresWorldReload
+-		@Config.Property("Whether contributor capes should be enabled.")
++		@Config.Property({
++				"Whether contributor capes should be enabled.",
++				"This only be disabled in-game, not enabled."
++		})
+ 		public static boolean contributorCapes = true;
+ 
+ 		@Config.Property("Disables the ender dragon death sound.")
+@@ -314,7 +324,6 @@ public final class RTConfig {
+ 		})
+ 		public static String drowningDamageMultiplier = "drowningDamageMultiplier";
+ 
+-		@Config.Previous("misc.fallDamageMultiplierGameRuleName")
+ 		@Config.Property({
+ 				"The name of the gamerule that controls the fall damage multiplier.",
+ 				"Set this to an empty string to disable this gamerule."
+@@ -387,15 +396,20 @@ public final class RTConfig {
+ 	}
+ 
+ 	public static final class Misc {
+-		@Config.Property("Allows players to sleep near mobs with custom names.")
+-		public static boolean allowSleepNearMobsWithCustomNames = true;
++		@Config.Property(
++				"Whether to allow swapping armor with armor stands by right-clicking on them " +
++						"while sneaking."
++		)
++		public static boolean armorStandSwapping = true;
++
++		@Config.Property(
++				"Whether to play eating sounds and display crumb particles when eating cakes."
++		)
++		public static boolean cakeSoundsAndParticles = true;
+ 
+ 		@Config.Property("Whether attacks should be disabled during the attack cooldown.")
+ 		public static boolean disableAttacksDuringAttackCooldown = TRLUtils.IS_DEOBFUSCATED;
+ 
+-		@Config.Property("Disables the bed proximity requirement.")
+-		public static boolean disableBedProximityRequirement = true;
+-
+ 		@Config.RangeDouble(min = 0.0, max = 1024.0)
+ 		@Config.Property({
+ 				"The base attack speed for players.",
+@@ -429,13 +443,22 @@ public final class RTConfig {
+ 		@Config.Property("Disables cumulative anvil costs.")
+ 		public static boolean disableCumulativeAnvilCosts = true;
+ 
+-		@Config.Property("Whether living entities should drop name tags if they have a custom " +
+-				"name.")
++		@Config.Property(
++				"Whether living entities should drop name tags if they have a custom name."
++		)
+ 		public static boolean entitiesDropNameTags = TRLUtils.IS_DEOBFUSCATED;
+ 
++		@Config.Property("Whether to fix entities with NaN health.")
++		public static boolean entityNaNHealthFix = true;
++
+ 		@Config.Property("Whether to localize the End Portal and End Gateway names.")
+ 		public static boolean localizeEndPortalNames = true;
+ 
++		@Config.Property(
++				"Whether mobs should drop all of their armor and equipment along with their loot."
++		)
++		public static boolean mobsDropAllArmorAndEquipment = TRLUtils.IS_DEOBFUSCATED;
++
+ 		@Config.Property("Whether mobs should drop loot even if they are not killed by players.")
+ 		public static boolean mobsAlwaysDropLoot = TRLUtils.IS_DEOBFUSCATED;
+ 
+@@ -445,12 +468,35 @@ public final class RTConfig {
+ 		)
+ 		public static boolean moreRomanNumerals = true;
+ 
++		@Config.Property(
++				"In which circumstance a torch should be reoriented when the block it is " +
++						"attached to is broken."
++		)
++		public static TorchHandler.Behavior torchReorientationBehavior = TRLUtils.IS_DEOBFUSCATED ?
++				TorchHandler.Behavior.SNEAKING : TorchHandler.Behavior.NEVER;
++
++		@Config.Property({
++				"The order that torch reorientations should be attempted in.",
++				"Disable an orientation by not specifying it here."
++		})
++		public static TorchHandler.Orientation[] torchReorientationPriority =
++				TorchHandler.Orientation.values();
++
+ 		@Config.Property(
+ 				"Whether to update all maps in players' inventories instead of only updating " +
+ 						"currently held maps."
+ 		)
+ 		public static boolean updateAllMapsInInventory = TRLUtils.IS_DEOBFUSCATED;
+ 
++		@Config.Property("Whether wet sponges should dry when placed in the Nether.")
++		public static boolean wetSpongesDryInNether = true;
++
++		@Config.RequiresWorldReload
++		@Config.Property("Whether to enable zombie target detection improvements.")
++		public static boolean zombieTargetDetectionImprovements = true;
++
++		public static EnumFacing[] torchOrientations;
++
+ 		public static void onReload() {
+ 			if(betterButtonNames) {
+ 				Blocks.STONE_BUTTON.setUnlocalizedName("buttonStone");
+@@ -467,6 +513,10 @@ public final class RTConfig {
+ 				Blocks.END_PORTAL.setUnlocalizedName(null);
+ 				Blocks.END_GATEWAY.setUnlocalizedName(null);
+ 			}
++
++			torchOrientations = Arrays.stream(torchReorientationPriority).
++					map(TorchHandler.Orientation::get).
++					toArray(EnumFacing[]::new);
+ 		}
+ 	}
+ 
+@@ -686,6 +736,27 @@ public final class RTConfig {
+ 		}
+ 	}
+ 
++	public static final class Sleep {
++		@Config.Previous("misc.allowSleepNearMobsWithCustomNames")
++		@Config.Property("Allows players to sleep near mobs with custom names.")
++		public static boolean allowSleepNearMobsWithCustomNames = true;
++
++		@Config.Previous("misc.disableBedProximityRequirement")
++		@Config.Property("Disables the bed proximity requirement.")
++		public static boolean disableBedProximityRequirement = true;
++
++		@Config.RangeInt(min = 0)
++		@Config.Property({
++				"The number of ticks nearby monsters should glow for.",
++				"Setting this to 60 will make nearby monsters glow for 3 seconds when a player " +
++						"attempts to sleep in a bed."
++		})
++		public static int nearbyMonsterGlowDuration = TRLUtils.IS_DEOBFUSCATED ? 60 : 0;
++
++		@Config.Property("Whether the glow effect for nearby monsters should display particles.")
++		public static boolean nearbyMonsterGlowParticles;
++	}
++
+ 	public static final class Squids {
+ 		@Config.RangeInt(min = -1)
+ 		@Config.Property({
+@@ -713,7 +784,7 @@ public final class RTConfig {
+ 
+ 	public static final class TimeOfDay {
+ 		@Config.Property("The alignment.")
+-		public static Alignment alignment = Alignment.TOPLEFT;
++		public static Alignment alignment = Alignment.TOP_LEFT;
+ 
+ 		@Config.Property("Disables the overlay if doDaylightCycle is false.")
+ 		public static boolean disableIfNoDaylightCycle = !TRLUtils.IS_DEOBFUSCATED;
+@@ -823,6 +894,14 @@ public final class RTConfig {
+ 		@Config.Category("Options regarding Void Islands worlds.")
+ 		public static final VoidIslandsWorld voidIslandsWorld = null;
+ 
++		@Config.Property({
++				"The cactus spawn rate for every biome.",
++				"This only applies for sandy biomes.",
++				"Set this to -1 to leave the spawn rates as the vanilla defaults.",
++				"Try setting this to 99 to get cacti in every sandy biome."
++		})
++		public static int cactusSpawnRate = TRLUtils.IS_DEOBFUSCATED ? 99 : -1;
++
+ 		@Config.Property({
+ 				"Whether to fix duplicate entity UUIDs by reassigning them.",
+ 				"This feature is experimental so worlds should be backed up before this is enabled."
+@@ -838,8 +917,23 @@ public final class RTConfig {
+ 		})
+ 		public static boolean realisticWorldType = true;
+ 
++		private static Map<Biome, Integer> originalCactusSpawnRates = new HashMap<>();
++
+ 		public static void onReload() {
+ 			WorldTypeRegistry.registerWorldTypes();
++
++			if(cactusSpawnRate != -1) {
++				for(Biome biome : Biome.REGISTRY) {
++					originalCactusSpawnRates.put(biome, biome.theBiomeDecorator.cactiPerChunk);
++					biome.theBiomeDecorator.cactiPerChunk = cactusSpawnRate;
++				}
++			} else {
++				for(Map.Entry<Biome, Integer> spawnRate : originalCactusSpawnRates.entrySet()) {
++					spawnRate.getKey().theBiomeDecorator.cactiPerChunk = spawnRate.getValue();
++				}
++
++				originalCactusSpawnRates.clear();
++			}
+ 		}
+ 	}
+ 
+@@ -870,6 +964,9 @@ public final class RTConfig {
+ 	@Config.Category("Options related to player head drops.")
+ 	public static final PlayerHeadDrops playerHeadDrops = null;
+ 
++	@Config.Category("Options related to sleep.")
++	public static final Sleep sleep = null;
++
+ 	@Config.Category("Options related to world generation.")
+ 	public static final World world = null;
+ }
+diff --git a/src/main/java/com/therandomlabs/randomtweaks/util/Alignment.java b/src/main/java/com/therandomlabs/randomtweaks/util/Alignment.java
+index 6f8f0e8..45a0eae 100644
+--- a/src/main/java/com/therandomlabs/randomtweaks/util/Alignment.java
++++ b/src/main/java/com/therandomlabs/randomtweaks/util/Alignment.java
+@@ -5,15 +5,15 @@ package com.therandomlabs.randomtweaks.util;
+ //ingameinfo/Alignment.java
+ //License: https://github.com/Lunatrius/InGame-Info-XML/blob/master/LICENSE
+ public enum Alignment {
+-	TOPLEFT("topLeft", 2, 2),
+-	TOPCENTER("topCenter", 0, 2),
+-	TOPRIGHT("topRight", -2, 2),
+-	MIDDLELEFT("middleLeft", 2, 0),
+-	MIDDLECENTER("middleCenter", 0, 0),
+-	MIDDLERIGHT("middleRight", -2, 0),
+-	BOTTOMLEFT("bottomLeft", 2, -2),
+-	BOTTOMCENTER("bottomCenter", 0, -45),
+-	BOTTOMRIGHT("bottomRight", -2, -2);
++	TOP_LEFT("topLeft", 2, 2),
++	TOP_CENTER("topCenter", 0, 2),
++	TOP_RIGHT("topRight", -2, 2),
++	MIDDLE_LEFT("middleLeft", 2, 0),
++	MIDDLE_CENTER("middleCenter", 0, 0),
++	MIDDLE_RIGHT("middleRight", -2, 0),
++	BOTTOM_LEFT("bottomLeft", 2, -2),
++	BOTTOM_CENTER("bottomCenter", 0, -45),
++	BOTTOM_RIGHT("bottomRight", -2, -2);
+ 
+ 	private static final int MASK_X = 0x0C;
+ 	private static final int MASK_Y = 0x03;
+@@ -34,15 +34,15 @@ public enum Alignment {
+ 	private int alignment;
+ 
+ 	static {
+-		TOPLEFT.alignment = TOP | LEFT;
+-		TOPCENTER.alignment = TOP | CENTER;
+-		TOPRIGHT.alignment = TOP | RIGHT;
+-		MIDDLELEFT.alignment = MIDDLE | LEFT;
+-		MIDDLECENTER.alignment = MIDDLE | CENTER;
+-		MIDDLERIGHT.alignment = MIDDLE | RIGHT;
+-		BOTTOMLEFT.alignment = BOTTOM | LEFT;
+-		BOTTOMCENTER.alignment = BOTTOM | CENTER;
+-		BOTTOMRIGHT.alignment = BOTTOM | RIGHT;
++		TOP_LEFT.alignment = TOP | LEFT;
++		TOP_CENTER.alignment = TOP | CENTER;
++		TOP_RIGHT.alignment = TOP | RIGHT;
++		MIDDLE_LEFT.alignment = MIDDLE | LEFT;
++		MIDDLE_CENTER.alignment = MIDDLE | CENTER;
++		MIDDLE_RIGHT.alignment = MIDDLE | RIGHT;
++		BOTTOM_LEFT.alignment = BOTTOM | LEFT;
++		BOTTOM_CENTER.alignment = BOTTOM | CENTER;
++		BOTTOM_RIGHT.alignment = BOTTOM | RIGHT;
+ 	}
+ 
+ 	Alignment(String translationKey, int x, int y) {
+diff --git a/src/main/resources/META-INF/randomtweaks_at.cfg b/src/main/resources/META-INF/randomtweaks_at.cfg
+index 6032079..6e39868 100644
+--- a/src/main/resources/META-INF/randomtweaks_at.cfg
++++ b/src/main/resources/META-INF/randomtweaks_at.cfg
+@@ -5,9 +5,16 @@ public-f net.minecraft.util.text.translation.LanguageMap field_74816_c # languag
+ public net.minecraft.client.audio.SoundHandler field_147694_f # sndManager
+ public net.minecraft.client.audio.SoundManager field_148620_e # sndSystem
+ 
++public net.minecraft.entity.ai.EntityAIAttackMelee field_75440_e # speedTowardsTarget
++public net.minecraft.entity.ai.EntityAIAttackMelee field_75437_f # longMemory
++public net.minecraft.entity.ai.EntityAIAttackMelee field_75438_g # entityPathEntity
++public net.minecraft.entity.ai.EntityAIAttackMelee field_75445_i # delayCounter
++
+ public net.minecraft.client.renderer.EntityRenderer func_180438_a(Lnet/minecraft/entity/EntityLivingBase;F)F # getNightVisionBrightness
+ public net.minecraft.client.resources.SimpleReloadableResourceManager field_110546_b # reloadListeners
+ 
++public net.minecraft.entity.EntityLiving field_82174_bp # inventoryHandsDropChances
++public net.minecraft.entity.EntityLiving field_184655_bs # inventoryArmorDropChances
+ public net.minecraft.entity.EntityLivingBase field_70717_bb # attackingPlayer
+ public net.minecraft.entity.EntityLivingBase field_70718_bc # recentlyHit
+ 
+diff --git a/src/main/resources/assets/randomtweaks/lang/de_DE.lang b/src/main/resources/assets/randomtweaks/lang/de_DE.lang
+index 8099ec6..24df03f 100644
+--- a/src/main/resources/assets/randomtweaks/lang/de_DE.lang
++++ b/src/main/resources/assets/randomtweaks/lang/de_DE.lang
+@@ -157,27 +157,32 @@ randomtweaks.config.hunger.respawnResetBehavior.resetUnlessKeepInventory=Reset u
+ randomtweaks.config.hunger.saturationLimit=Value added to food level for saturation limit
+ 
+ randomtweaks.config.misc=Miscellaneous
+-randomtweaks.config.misc.allowSleepNearMobsWithCustomNames=Allow sleep near mobs with custom names
+ randomtweaks.config.misc.attackSpeed=Attack speed
++randomtweaks.config.misc.armorStandSwapping=Armor stand swapping
+ randomtweaks.config.misc.betterButtonNames=Better button names
+ randomtweaks.config.misc.bowInfinityFix=Bow Infinity fix
++randomtweaks.config.misc.cakeSoundsAndParticles=Cake sounds and particles
+ randomtweaks.config.misc.disableAttacksDuringAttackCooldown=Disable attacks during attack cooldown
+ randomtweaks.config.misc.deathPunishmentMode=Death punishment mode
+ randomtweaks.config.misc.deathPunishmentMode.enabled=Enabled
+ randomtweaks.config.misc.deathPunishmentMode.enabledIfKeepInventory=Enabled if keepInventory
+ randomtweaks.config.misc.deathPunishmentMode.disabled=Disabled
+-randomtweaks.config.misc.disableBedProximityRequirement=Disable bed proximity requirement
+ randomtweaks.config.misc.disableCumulativeAnvilCosts=Disable cumulative anvil cost
+ randomtweaks.config.misc.entitiesDropNameTags=Enable living entities with custom names dropping nametags
+-randomtweaks.config.misc.farmlandTrampleBehavior=Farmland trample behavior
+-randomtweaks.config.misc.farmlandTrampleBehavior.vanilla=Vanilla
+-randomtweaks.config.misc.farmlandTrampleBehavior.dontTrampleIfFeatherFalling=Don't trample if Feather Falling
+-randomtweaks.config.misc.farmlandTrampleBehavior.dontTrample=Don't trample
++randomtweaks.config.misc.entityNaNHealthFix=Entity NaN Health Fix
+ randomtweaks.config.misc.localizeEndPortalNames=Localize End portal names
++randomtweaks.config.misc.mobsDropAllArmorAndEquipment=Mobs drop all armor and equipment
+ randomtweaks.config.misc.mobsAlwaysDropLoot=Mobs always drop loot
+ randomtweaks.config.misc.moreRomanNumerals=More Roman numerals
+-randomtweaks.config.misc.pickUpSkeletonArrows=Allow arrows shot by skeletons to be picked up
++randomtweaks.config.misc.torchReorientationBehavior=Torch reorientation behavior
++randomtweaks.config.misc.torchReorientationBehavior.never=Never
++randomtweaks.config.misc.torchReorientationBehavior.sneaking=Sneaking
++randomtweaks.config.misc.torchReorientationBehavior.notSneaking=Not sneaking
++randomtweaks.config.misc.torchReorientationBehavior.always=Always
++randomtweaks.config.misc.torchReorientationPriority=Torch reorientation priority
+ randomtweaks.config.misc.updateAllMapsInInventory=Update all maps in inventory
++randomtweaks.config.misc.wetSpongesDryInNether=Wet sponges dry in the Nether
++randomtweaks.config.misc.zombieTargetDetectionImprovements=Zombie target detection improvements
+ 
+ randomtweaks.config.playerHeadDrops=Player Head Drops
+ randomtweaks.config.playerHeadDrops.enabled=Enable player head drops
+@@ -185,7 +190,14 @@ randomtweaks.config.playerHeadDrops.chanceWhenKilledByChargedCreeper=Drop chance
+ randomtweaks.config.playerHeadDrops.chanceWhenKilledByPlayer=Drop chance when killed by another player
+ randomtweaks.config.playerHeadDrops.normalChance=Normal drop chance
+ 
++randomtweaks.config.sleep=Sleep
++randomtweaks.config.sleep.allowSleepNearMobsWithCustomNames=Allow sleep near mobs with custom names
++randomtweaks.config.sleep.disableBedProximityRequirement=Disable bed proximity requirement
++randomtweaks.config.sleep.nearbyMonsterGlowDuration=Nearby monster glow duration
++randomtweaks.config.sleep.nearbyMonsterGlowParticles=Nearby monster glow particles
++
+ randomtweaks.config.world=World
++randomtweaks.config.world.cactusSpawnRate=Cactus spawn rate
+ randomtweaks.config.world.fixDuplicateEntityUUIDs=Fix duplicate entity UUIDs
+ randomtweaks.config.world.logEntityUUIDReassignments=Log entity UUID reassignments
+ randomtweaks.config.world.realisticWorldType=Enable Realistic world type
+diff --git a/src/main/resources/assets/randomtweaks/lang/en_US.lang b/src/main/resources/assets/randomtweaks/lang/en_US.lang
+index 06c65eb..53b3429 100644
+--- a/src/main/resources/assets/randomtweaks/lang/en_US.lang
++++ b/src/main/resources/assets/randomtweaks/lang/en_US.lang
+@@ -157,27 +157,32 @@ randomtweaks.config.hunger.respawnResetBehavior.resetUnlessKeepInventory=Reset u
+ randomtweaks.config.hunger.saturationLimit=Value added to food level for saturation limit
+ 
+ randomtweaks.config.misc=Miscellaneous
+-randomtweaks.config.misc.allowSleepNearMobsWithCustomNames=Allow sleep near mobs with custom names
+ randomtweaks.config.misc.attackSpeed=Attack speed
++randomtweaks.config.misc.armorStandSwapping=Armor stand swapping
+ randomtweaks.config.misc.betterButtonNames=Better button names
+ randomtweaks.config.misc.bowInfinityFix=Bow Infinity fix
++randomtweaks.config.misc.cakeSoundsAndParticles=Cake sounds and particles
+ randomtweaks.config.misc.disableAttacksDuringAttackCooldown=Disable attacks during attack cooldown
+ randomtweaks.config.misc.deathPunishmentMode=Death punishment mode
+ randomtweaks.config.misc.deathPunishmentMode.enabled=Enabled
+ randomtweaks.config.misc.deathPunishmentMode.enabledIfKeepInventory=Enabled if keepInventory
+ randomtweaks.config.misc.deathPunishmentMode.disabled=Disabled
+-randomtweaks.config.misc.disableBedProximityRequirement=Disable bed proximity requirement
+ randomtweaks.config.misc.disableCumulativeAnvilCosts=Disable cumulative anvil cost
+ randomtweaks.config.misc.entitiesDropNameTags=Enable living entities with custom names dropping nametags
+-randomtweaks.config.misc.farmlandTrampleBehavior=Farmland trample behavior
+-randomtweaks.config.misc.farmlandTrampleBehavior.vanilla=Vanilla
+-randomtweaks.config.misc.farmlandTrampleBehavior.dontTrampleIfFeatherFalling=Don't trample if Feather Falling
+-randomtweaks.config.misc.farmlandTrampleBehavior.dontTrample=Don't trample
++randomtweaks.config.misc.entityNaNHealthFix=Entity NaN Health Fix
+ randomtweaks.config.misc.localizeEndPortalNames=Localize End portal names
++randomtweaks.config.misc.mobsDropAllArmorAndEquipment=Mobs drop all armor and equipment
+ randomtweaks.config.misc.mobsAlwaysDropLoot=Mobs always drop loot
+ randomtweaks.config.misc.moreRomanNumerals=More Roman numerals
+-randomtweaks.config.misc.pickUpSkeletonArrows=Allow arrows shot by skeletons to be picked up
++randomtweaks.config.misc.torchReorientationBehavior=Torch reorientation behavior
++randomtweaks.config.misc.torchReorientationBehavior.never=Never
++randomtweaks.config.misc.torchReorientationBehavior.sneaking=Sneaking
++randomtweaks.config.misc.torchReorientationBehavior.notSneaking=Not sneaking
++randomtweaks.config.misc.torchReorientationBehavior.always=Always
++randomtweaks.config.misc.torchReorientationPriority=Torch reorientation priority
+ randomtweaks.config.misc.updateAllMapsInInventory=Update all maps in inventory
++randomtweaks.config.misc.wetSpongesDryInNether=Wet sponges dry in the Nether
++randomtweaks.config.misc.zombieTargetDetectionImprovements=Zombie target detection improvements
+ 
+ randomtweaks.config.playerHeadDrops=Player Head Drops
+ randomtweaks.config.playerHeadDrops.enabled=Enable player head drops
+@@ -185,7 +190,14 @@ randomtweaks.config.playerHeadDrops.chanceWhenKilledByChargedCreeper=Drop chance
+ randomtweaks.config.playerHeadDrops.chanceWhenKilledByPlayer=Drop chance when killed by another player
+ randomtweaks.config.playerHeadDrops.normalChance=Normal drop chance
+ 
++randomtweaks.config.sleep=Sleep
++randomtweaks.config.sleep.allowSleepNearMobsWithCustomNames=Allow sleep near mobs with custom names
++randomtweaks.config.sleep.disableBedProximityRequirement=Disable bed proximity requirement
++randomtweaks.config.sleep.nearbyMonsterGlowDuration=Nearby monster glow duration
++randomtweaks.config.sleep.nearbyMonsterGlowParticles=Nearby monster glow particles
++
+ randomtweaks.config.world=World
++randomtweaks.config.world.cactusSpawnRate=Cactus spawn rate
+ randomtweaks.config.world.fixDuplicateEntityUUIDs=Fix duplicate entity UUIDs
+ randomtweaks.config.world.logEntityUUIDReassignments=Log entity UUID reassignments
+ randomtweaks.config.world.realisticWorldType=Enable Realistic world type
