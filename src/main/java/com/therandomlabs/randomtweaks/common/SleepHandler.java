@@ -167,18 +167,11 @@ public final class SleepHandler {
 				Math.abs(player.posZ - pos.getZ()) <= 3.0;
 	}
 
-	public static List<EntityMob> getMobsInRange(
-			EntityPlayer player, World world, BlockPos position
-	) {
+	public static List<EntityMob> getMobsInRange(EntityPlayer player, World world, BlockPos pos) {
 		return world.getEntitiesWithinAABB(
 				EntityMob.class,
 				new AxisAlignedBB(
-						position.getX(),
-						position.getY(),
-						position.getZ(),
-						position.getX(),
-						position.getY(),
-						position.getZ()
+						pos.getX(), pos.getY(), pos.getZ(), pos.getX(), pos.getY(), pos.getZ()
 				).expand(8.0, 5.0, 8.0),
 				mob -> !RTConfig.Sleep.allowSleepNearMobsWithCustomNames || !mob.hasCustomName()
 		);
