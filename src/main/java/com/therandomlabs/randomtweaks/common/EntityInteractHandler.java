@@ -62,12 +62,7 @@ public final class EntityInteractHandler {
 	}
 
 	private static int getHealAmount(EntityTameable entity, ItemStack stack) {
-		//If the entity is not tamed and this is not a development environment
-		if(!(TRLUtils.IS_DEOBFUSCATED || entity.isTamed())) {
-			return 0;
-		}
-
-		if(entity.getHealth() >= entity.getMaxHealth()) {
+		if(!entity.isTamed() || entity.getHealth() >= entity.getMaxHealth()) {
 			return 0;
 		}
 
