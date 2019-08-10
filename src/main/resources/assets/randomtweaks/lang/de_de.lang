@@ -11,6 +11,7 @@ randomtweaks.config.animals.randomizedAges=Randomized Ages
 randomtweaks.config.animals.randomizedAges.chance=Chance that an animal's age is randomized
 randomtweaks.config.animals.randomizedAges.maximumAge=Maximum age
 randomtweaks.config.animals.randomizedAges.minimumAge=Minimum age
+randomtweaks.config.animals.randomizedAges.blacklist=Blacklist
 
 randomtweaks.config.animals.sheepColorWeights=Sheep Color Weights
 randomtweaks.config.animals.sheepColorWeights.enabled=Enable colored sheep spawning

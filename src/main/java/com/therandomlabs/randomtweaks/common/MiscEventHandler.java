@@ -60,6 +60,9 @@ import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.registry.EntityEntry;
+import net.minecraftforge.fml.common.registry.EntityRegistry;
+import org.apache.commons.lang3.ArrayUtils;
 
 @Mod.EventBusSubscriber(modid = RandomTweaks.MOD_ID)
 public final class MiscEventHandler {
@@ -107,6 +110,12 @@ public final class MiscEventHandler {
 			final EntityAgeable ageable = (EntityAgeable) entity;
 
 			if(ageable.isChild()) {
+				return;
+			}
+
+			final EntityEntry entry = EntityRegistry.getEntry(ageable.getClass());
+
+			if(ArrayUtils.contains(RTConfig.RandomizedAges.blacklist, entry)) {
 				return;
 			}
 

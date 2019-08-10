@@ -26,6 +26,7 @@ import net.minecraft.item.Item;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.world.biome.Biome;
+import net.minecraftforge.fml.common.registry.EntityEntry;
 
 @Config(value = RandomTweaks.MOD_ID, path = RandomTweaks.MOD_ID + "/" + RandomTweaks.MOD_ID)
 public final class RTConfig {
@@ -630,6 +631,11 @@ public final class RTConfig {
 
 		@Config.Property("The minimum age in ticks.")
 		public static int minimumAge = -24000;
+
+		@Config.Property(
+				"The registry names of the animals that should not have their ages randomized."
+		)
+		public static EntityEntry[] blacklist = new EntityEntry[0];
 
 		public static void onReload() {
 			if(maximumAge < minimumAge) {
