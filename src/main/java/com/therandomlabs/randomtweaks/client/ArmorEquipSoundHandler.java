@@ -13,12 +13,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.SoundEvent;
 
 public final class ArmorEquipSoundHandler {
-	private static final Minecraft mc = Minecraft.getMinecraft();
 	private static final List<ItemStack> previousArmor = Arrays.asList(null, null, null, null);
 
 	private ArmorEquipSoundHandler() {}
 
 	public static void onClientTick() {
+		final Minecraft mc = Minecraft.getMinecraft();
+
 		if(!RTConfig.ArmorEquipSounds.enabled || mc.player == null) {
 			return;
 		}
@@ -44,6 +45,8 @@ public final class ArmorEquipSoundHandler {
 	}
 
 	public static SoundEvent getSound(ItemStack stack) {
+		final Minecraft mc = Minecraft.getMinecraft();
+
 		if(mc.player.ticksExisted < 20 || stack == null) {
 			return null;
 		}
