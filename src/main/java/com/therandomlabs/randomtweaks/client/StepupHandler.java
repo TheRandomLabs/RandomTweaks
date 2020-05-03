@@ -61,14 +61,14 @@ public final class StepupHandler {
 		} else {
 			mc.player.stepHeight = mode.stepHeight;
 
-			if(mode == Mode.STEPUP_AUTO_JUMP) {
-				if(jumpBoost == null) {
+			if (mode == Mode.STEPUP_AUTO_JUMP && RTConfig.Client.jumpBoostAffectsStepup) {
+				if (jumpBoost == null) {
 					jumpBoost = Potion.getPotionFromResourceLocation("jump_boost");
 				}
 
 				final PotionEffect effect = mc.player.getActivePotionEffect(jumpBoost);
 
-				if(effect != null) {
+				if (effect != null) {
 					mc.player.stepHeight += (effect.getAmplifier() + 1) * 0.75F;
 				}
 			}
@@ -83,14 +83,14 @@ public final class StepupHandler {
 
 	public static void toggle(boolean sendStatusMessage) {
 		final RTData data = RTData.get();
-		final boolean autojump =
+		final boolean autoJump =
 				mc.gameSettings.getOptionOrdinalValue(GameSettings.Options.AUTO_JUMP);
 
 		if(mode == null) {
 			if(data.stepup) {
 				mode = Mode.STEPUP_AUTO_JUMP;
 			} else {
-				mode = autojump ? Mode.VANILLA_AUTO_JUMP : Mode.NO_AUTO_JUMP;
+				mode = autoJump ? Mode.VANILLA_AUTO_JUMP : Mode.NO_AUTO_JUMP;
 			}
 		}
 
@@ -105,7 +105,7 @@ public final class StepupHandler {
 		data.stepup = mode == Mode.STEPUP_AUTO_JUMP;
 		RTData.save();
 
-		if(autojump) {
+		if(autoJump) {
 			if(!mode.enabled) {
 				//setOptionValue toggles auto jump regardless of value
 				mc.gameSettings.setOptionValue(GameSettings.Options.AUTO_JUMP, 0);

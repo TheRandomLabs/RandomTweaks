@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+
 import com.therandomlabs.randomlib.EntityUtils;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.client.ArmorEquipSoundHandler;
@@ -110,23 +111,28 @@ public final class MiscEventHandler {
 		if(RTConfig.RandomizedAges.chance != 0.0) {
 			final EntityAgeable ageable = (EntityAgeable) entity;
 
-			if(ageable.isChild()) {
+			if (ageable.isChild()) {
 				return;
 			}
 
 			final EntityEntry entry = EntityRegistry.getEntry(ageable.getClass());
+			final boolean found = ArrayUtils.contains(RTConfig.RandomizedAges.animals, entry);
 
-			if(ArrayUtils.contains(RTConfig.RandomizedAges.blacklist, entry)) {
+			if (RTConfig.RandomizedAges.animalsWhitelist) {
+				if (!found) {
+					return;
+				}
+			} else if (found) {
 				return;
 			}
 
 			final Random rng = ageable.getRNG();
 
-			if(rng.nextDouble() < RTConfig.RandomizedAges.chance) {
+			if (rng.nextDouble() < RTConfig.RandomizedAges.chance) {
 				final int min = RTConfig.RandomizedAges.minimumAge;
 				final int max = RTConfig.RandomizedAges.maximumAge;
 
-				if(min == max) {
+				if (min == max) {
 					ageable.setGrowingAge(min);
 				} else {
 					ageable.setGrowingAge(rng.nextInt(max + 1 - min) + min);

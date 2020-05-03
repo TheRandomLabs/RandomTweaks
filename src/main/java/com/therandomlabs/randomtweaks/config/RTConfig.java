@@ -39,7 +39,7 @@ public final class RTConfig {
 		public static final SheepColorWeights sheepColorWeights = null;
 
 		@Config.Category("Options related to squid spawning behavior.")
-		public static final Squids squids = new Squids();
+		public static final Squids squids = null;
 
 		@Config.RangeDouble(min = 0.0, max = 1.0)
 		@Config.Property("The chance that a bat drops a piece of leather when killed.")
@@ -172,6 +172,9 @@ public final class RTConfig {
 
 		@Config.Property("Whether to enable stepup.")
 		public static boolean stepup = TRLUtils.IS_DEOBFUSCATED;
+
+		@Config.Property("Whether stepup should be affected by the Jump Boost effect.")
+		public static boolean jumpBoostAffectsStepup = true;
 
 		@Config.Property("Whether stepup is enabled by default.")
 		public static boolean stepupEnabledByDefault = TRLUtils.IS_DEOBFUSCATED;
@@ -658,10 +661,15 @@ public final class RTConfig {
 		@Config.Property("The minimum age in ticks.")
 		public static int minimumAge = -24000;
 
+		@Config.Property("Whether the animals list is a whitelist or a blacklist.")
+		public static boolean animalsWhitelist;
+
+		@Config.Previous("blacklist")
 		@Config.Property(
-				"The registry names of the animals that should not have their ages randomized."
+				"The registry names of the animals that should or should not have their ages " +
+						"randomized depending on the value of animalsWhitelist."
 		)
-		public static EntityEntry[] blacklist = new EntityEntry[0];
+		public static EntityEntry[] animals = new EntityEntry[0];
 
 		public static void onReload() {
 			if(maximumAge < minimumAge) {
@@ -949,7 +957,7 @@ public final class RTConfig {
 		})
 		public static boolean realisticWorldType = true;
 
-		private static Map<Biome, Integer> originalCactusSpawnRates = new HashMap<>();
+		private static final Map<Biome, Integer> originalCactusSpawnRates = new HashMap<>();
 
 		public static void onReload() {
 			WorldTypeRegistry.registerWorldTypes();

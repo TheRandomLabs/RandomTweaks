@@ -2,6 +2,7 @@ package com.therandomlabs.randomtweaks.common.world;
 
 import java.util.Random;
 import java.util.UUID;
+
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.block.Block;
@@ -137,20 +138,9 @@ public final class WorldHandler {
 		}
 
 		final World world = player.getEntityWorld();
+		final BlockPos spawnPoint = world.getSpawnPoint();
 
-		if(isSpawnable(world, world.getTopSolidOrLiquidBlock(player.getPosition()))) {
-			return;
-		}
-
-		BlockPos playerSpawnPoint = player.getBedLocation();
-		boolean usingWorldSpawn = false;
-
-		if(playerSpawnPoint == null) {
-			playerSpawnPoint = world.getSpawnPoint();
-			usingWorldSpawn = true;
-		}
-
-		if(isSpawnable(world, world.getTopSolidOrLiquidBlock(playerSpawnPoint))) {
+		if(isSpawnable(world, world.getTopSolidOrLiquidBlock(spawnPoint))) {
 			return;
 		}
 
@@ -167,13 +157,12 @@ public final class WorldHandler {
 
 		final BlockPos newSpawn = new BlockPos(0, newSpawnY, 0);
 
-		player.setPosition(0.5, newSpawnY, 0.5);
-		player.setSpawnPoint(newSpawn, true);
-
-		//If this is the world spawn point and it is invalid
-		if(usingWorldSpawn) {
-			world.setSpawnPoint(newSpawn);
+		if (player.getBedLocation() == null) {
+			player.setPosition(0.5, newSpawnY, 0.5);
+			player.setSpawnPoint(newSpawn, true);
 		}
+
+		world.setSpawnPoint(newSpawn);
 
 		if(voidIslands) {
 			return;
