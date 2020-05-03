@@ -19,7 +19,8 @@ public final class ClientProxy extends CommonProxy {
 
 	@Override
 	public void postInit() {
-		if(RTConfig.NightVision.enabled && !RandomTweaks.NO_NIGHT_VISION_FLASHING_LOADED) {
+		if(RTConfig.NightVision.enabled && !RandomTweaks.NO_NIGHT_VISION_FLASHING_LOADED &&
+				!RandomTweaks.POTION_CORE_LOADED) {
 			NightVisionHandler.initialize();
 		}
 	}

@@ -45,6 +45,7 @@ public final class RandomTweaks {
 	public static final boolean HELPFIXER_LOADED = Loader.isModLoaded("helpfixer");
 	public static final boolean NO_NIGHT_VISION_FLASHING_LOADED = Loader.isModLoaded("nonvflash");
 	public static final boolean PLAYERS_DROP_HEADS_LOADED = Loader.isModLoaded("playersdropheads");
+	public static final boolean POTION_CORE_LOADED = Loader.isModLoaded("potioncore");
 	public static final boolean QUARK_LOADED = Loader.isModLoaded("quark");
 	public static final boolean OCEAN_FLOOR_LOADED = Loader.isModLoaded("samsocean");
 	public static final boolean RANDOMCONFIGS_LOADED = Loader.isModLoaded("randomconfigs");

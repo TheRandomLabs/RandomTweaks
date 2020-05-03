@@ -1,8 +1,8 @@
 package com.therandomlabs.randomtweaks.common;
 
 import java.util.Set;
+
 import com.google.common.collect.ImmutableSet;
-import com.therandomlabs.randomlib.TRLUtils;
 import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
 import net.minecraft.entity.Entity;
