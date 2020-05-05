@@ -15,6 +15,12 @@ public final class NightVisionHandler {
 
 	public static void initialize() {
 		final Minecraft mc = Minecraft.getMinecraft();
+
+		//Avoid conflicts.
+		if (mc.entityRenderer.getClass() != EntityRenderer.class) {
+			return;
+		}
+
 		final SimpleReloadableResourceManager manager =
 				(SimpleReloadableResourceManager) mc.getResourceManager();
 
