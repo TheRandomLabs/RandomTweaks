@@ -1,6 +1,9 @@
 package com.therandomlabs.randomtweaks.client;
 
+import com.therandomlabs.randomtweaks.RandomTweaks;
 import com.therandomlabs.randomtweaks.config.RTConfig;
+import me.paulf.wings.server.flight.Flight;
+import me.paulf.wings.server.flight.Flights;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityBoat;
@@ -13,21 +16,48 @@ public final class AutoThirdPersonHandler {
 
 	private static final int THIRD_PERSON = 1;
 
+	private static final int WINGS = -2;
 	private static final int ELYTRA = -1;
 	private static final int NO_ENTITY = 0;
 
 	private static int lastID = NO_ENTITY;
 	private static int originalPerspective;
 
+	private static int wingsFlyingTicks;
+
 	private AutoThirdPersonHandler() {}
 
 	public static void onClientTick() {
-		if(!RTConfig.AutoThirdPerson.enabled || mc.world == null || mc.player == null) {
+		if (!RTConfig.AutoThirdPerson.enabled || mc.world == null || mc.player == null ||
+				mc.isGamePaused()) {
 			return;
 		}
 
-		if(mc.player.isElytraFlying()) {
-			if(!RTConfig.AutoThirdPerson.elytra || lastID == ELYTRA) {
+		if (RandomTweaks.WINGS_LOADED && RTConfig.AutoThirdPerson.wings) {
+			final Flight flight = Flights.get(mc.player);
+
+			if (flight != null && flight.isFlying()) {
+				if (wingsFlyingTicks++ == RTConfig.AutoThirdPerson.wingsFlyingTickDelay) {
+					lastID = WINGS;
+					originalPerspective = mc.gameSettings.thirdPersonView;
+					mc.gameSettings.thirdPersonView = THIRD_PERSON;
+				}
+
+				return;
+			} else {
+				if (lastID == WINGS) {
+					lastID = NO_ENTITY;
+					mc.gameSettings.thirdPersonView = originalPerspective;
+				}
+
+				wingsFlyingTicks = 0;
+			}
+		} else {
+			wingsFlyingTicks = 0;
+		}
+
+		if (mc.player.isElytraFlying()) {
+			if (!RTConfig.AutoThirdPerson.elytra || lastID == ELYTRA) {
 				return;
 			}
 

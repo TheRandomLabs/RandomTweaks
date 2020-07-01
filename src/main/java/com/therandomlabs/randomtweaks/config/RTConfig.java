@@ -99,6 +99,20 @@ public final class RTConfig {
 
 		@Config.Property("Enables auto-third person upon mounting a pig.")
 		public static boolean pig = TRLUtils.IS_DEOBFUSCATED;
+
+		@Config.Property("Enables auto-third person with the Wings mod.")
+		public static boolean wings = true;
+
+		//Inspired by
+		//https://github.com/quat1024/AutoThirdPerson/blob/master/src/main/java/quaternary/
+		//thirdpersonboat/WingsCompat.java
+		@Config.RangeInt(min = 0)
+		@Config.Property({
+				"The sudden third-person perspective shift can be jarring when flying with Wings.",
+				"Increase this value to set the number of ticks you need to fly for before " +
+						"automatically going into third person."
+		})
+		public static int wingsFlyingTickDelay = 1;
 	}
 
 	public static final class BoneMeal {

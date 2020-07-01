@@ -52,6 +52,7 @@ public final class RandomTweaks {
 	public static final boolean RANDOMPATCHES_LOADED = Loader.isModLoaded("randompatches");
 	public static final boolean RANDOMPORTALS_LOADED = Loader.isModLoaded("randomportals");
 	public static final boolean VANILLATWEAKS_LOADED = Loader.isModLoaded("vt");
+	public static final boolean WINGS_LOADED = Loader.isModLoaded("wings");
 
 	@SidedProxy(
 			clientSide = "com.therandomlabs.randomtweaks.ClientProxy",

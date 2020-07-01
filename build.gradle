@@ -42,6 +42,7 @@ dependencies {
 	deobfCompile "randompatches:randompatches:1.12.2:1.17.1.0"
 	deobfCompile "randomportals:randomportals:1.12.2:1.8.1.1"
 	deobfCompile "applecore:AppleCore:1.12.2-3.2.0:api"
+	deobfCompile "llibrary:llibrary:1.7.19:1.12.2"
 	deobfCompile "wings:wings:1.1.6:1.12.2"
 }
 
