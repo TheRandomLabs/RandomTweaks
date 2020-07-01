@@ -281,4 +281,7 @@ spawnEgg.noAI=§cNo AI
 tile.buttonStone.name=Stone Button
 tile.buttonWood.name=Wooden Button
 tile.endPortal.name=End Portal
-tile.endGateway.name=End Gateway
+tile.endGateway.name=End Gatewayrandomtweaks.config.client.autoThirdPerson.wings=Wings
+randomtweaks.config.client.autoThirdPerson.wingsFlyingTickDelay=Wings flying tick delay
+randomtweaks.config.misc.farmlandTrampleBehavior.dontTrampleIfFeatherFallingOrWet=Don't trample if Feather Falling or wet
+randomtweaks.config.misc.farmlandTrampleBehavior.dontTrampleIfWet=Don't trample if wet

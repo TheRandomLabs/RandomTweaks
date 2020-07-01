@@ -70,6 +70,8 @@ randomtweaks.config.client.autoThirdPerson.enabled=Enable auto-third person
 randomtweaks.config.client.autoThirdPerson.horse=Horse
 randomtweaks.config.client.autoThirdPerson.minecart=Minecart
 randomtweaks.config.client.autoThirdPerson.pig=Pig
+randomtweaks.config.client.autoThirdPerson.wings=Wings
+randomtweaks.config.client.autoThirdPerson.wingsFlyingTickDelay=Wings flying tick delay
 
 randomtweaks.config.client.creativeTabs=Creative Tabs
 randomtweaks.config.client.creativeTabs.moveBucketCreativeTab=Move the bucket to the Tools creative tab
