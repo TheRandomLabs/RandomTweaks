@@ -193,6 +193,12 @@ public final class RTConfig {
 		@Config.Property("Whether stepup is enabled by default.")
 		public static boolean stepupEnabledByDefault = TRLUtils.IS_DEOBFUSCATED;
 
+		@Config.Property("Whether to enable the \"Toggle Potion Particles\" keybind.")
+		public static boolean togglePotionParticlesKeybind = true;
+
+		@Config.Property("Whether potion particles should be enabled by default.")
+		public static boolean potionParticlesEnabledByDefault = !TRLUtils.IS_DEOBFUSCATED;
+
 		@Config.Property(
 				"Whether the toggle states for the time of day overlay, stepup and FoV changes " +
 						"should be stored in local/client instead of config/randomtweaks."

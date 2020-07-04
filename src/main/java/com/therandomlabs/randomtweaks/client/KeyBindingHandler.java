@@ -48,6 +48,14 @@ public final class KeyBindingHandler {
 			"key.categories.randomtweaks"
 	);
 
+	public static final KeyBinding TOGGLE_POTION_PARTICLES = new KeyBinding(
+			"key.togglePotionParticles",
+			KeyConflictContext.IN_GAME,
+			KeyModifier.CONTROL,
+			Keyboard.KEY_F8,
+			"key.categories.randomtweaks"
+	);
+
 	private static final Minecraft mc = Minecraft.getMinecraft();
 
 	private static boolean categoryEnabled;
@@ -62,9 +70,10 @@ public final class KeyBindingHandler {
 				TOGGLE_TIME_OF_DAY_OVERLAY
 		);
 		register(RTConfig.Client.stepup, TOGGLE_AUTO_JUMP);
+		register(RTConfig.Client.togglePotionParticlesKeybind, TOGGLE_POTION_PARTICLES);
 
 		//Forge just isn't designed to allow keybinds to be toggled in-game
-		if(categoryEnabled) {
+		if (categoryEnabled) {
 			KeyBinding.getKeybinds().add("key.categories.randomtweaks");
 		} else {
 			//If none of the keybinds are enabled, then GuiKeyBindingList.getListEntry
@@ -93,8 +102,11 @@ public final class KeyBindingHandler {
 			if(RTConfig.TimeOfDay.enabled && RTConfig.Keybinds.toggleTimeOfDayOverlay) {
 				TimeOfDayOverlay.toggle();
 			}
-		} else if(TOGGLE_AUTO_JUMP.isActiveAndMatches(key) && RTConfig.Client.stepup) {
+		} else if (TOGGLE_AUTO_JUMP.isActiveAndMatches(key) && RTConfig.Client.stepup) {
 			StepupHandler.toggle();
+		} else if (TOGGLE_POTION_PARTICLES.isActiveAndMatches(key) &&
+				RTConfig.Client.togglePotionParticlesKeybind) {
+			PotionParticlesHandler.toggle();
 		}
 	}
 

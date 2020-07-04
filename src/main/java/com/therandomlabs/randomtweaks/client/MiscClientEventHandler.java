@@ -96,5 +96,6 @@ public final class MiscClientEventHandler {
 		AutoThirdPersonHandler.onClientTick();
 		ArmorEquipSoundHandler.onClientTick();
 		DingHandler.onClientTick();
+		PotionParticlesHandler.onClientTick();
 	}
 }

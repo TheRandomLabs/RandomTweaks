@@ -55,6 +55,8 @@ randomtweaks.config.client.startOnMultiplayerScreen=Start on the multiplayer scr
 randomtweaks.config.client.stepup=Enable stepup
 randomtweaks.config.client.jumpBoostAffectsStepup=Jump Boost affects stepup
 randomtweaks.config.client.stepupEnabledByDefault=Enable stepup by default
+randomtweaks.config.client.togglePotionParticlesKeybind=Toggle Potion Particles keybind
+randomtweaks.config.client.potionParticlesEnabledByDefault=Potion particles enabled by default
 randomtweaks.config.client.storeDataInLocal=Store data in local
 
 randomtweaks.config.client.armorEquipSounds=Armor Equip Sounds
@@ -258,6 +260,7 @@ key.reloadSoundSystem=Soundsystem Neuladen
 key.toggleFoVChanges=Toggle FoV Changes
 key.toggleTimeOfDayOverlay=Toggle Time of Day Overlay
 key.toggleAutoJump=Toggle Auto Jump
+key.togglePotionParticles=Toggle Potion Particles
 
 reloadSoundSystem.success=§eSoundsystem erfolgreich neugeladen!
 
