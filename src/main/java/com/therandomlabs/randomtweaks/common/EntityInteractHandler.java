@@ -95,7 +95,7 @@ public final class EntityInteractHandler {
 			return 0;
 		}
 
-		return ((ItemFood) item).getHealAmount(stack);
+		return item instanceof ItemFood ? ((ItemFood) item).getHealAmount(stack) : 1;
 	}
 
 	private static void onVillagerInteract(
