@@ -58,6 +58,7 @@ import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -71,18 +72,18 @@ import org.apache.commons.lang3.ArrayUtils;
 public final class MiscEventHandler {
 	@SubscribeEvent(priority = EventPriority.HIGH)
 	public static void onEntityJoinWorld(EntityJoinWorldEvent event) {
-		if(event.getWorld().isRemote) {
+		if (event.getWorld().isRemote) {
 			return;
 		}
 
 		final Entity entity = event.getEntity();
 
-		if(entity instanceof EntityPlayer) {
+		if (entity instanceof EntityPlayer) {
 			onPlayerJoinWorld((EntityPlayer) entity);
 			return;
 		}
 
-		if(entity instanceof EntityZombie) {
+		if (entity instanceof EntityZombie) {
 			ZombieAIHandler.onZombieJoinWorld((EntityZombie) entity);
 		}
 	}
@@ -92,7 +93,7 @@ public final class MiscEventHandler {
 				player.getEntityAttribute(SharedMonsterAttributes.ATTACK_SPEED);
 		attackSpeed.setBaseValue(RTConfig.Misc.attackSpeed);
 
-		if(RTConfig.Hunger.enabled && !RandomTweaks.APPLECORE_LOADED) {
+		if (RTConfig.Hunger.enabled && !RandomTweaks.APPLECORE_LOADED) {
 			player.foodStats = new RTFoodStats(player.foodStats);
 		}
 	}
@@ -101,16 +102,16 @@ public final class MiscEventHandler {
 	public static void onCheckSpawn(LivingSpawnEvent.CheckSpawn event) {
 		final Entity entity = event.getEntity();
 
-		if(!(entity instanceof EntityAgeable)) {
+		if (!(entity instanceof EntityAgeable)) {
 			return;
 		}
 
-		if(RTConfig.SheepColorWeights.enabled && !RandomTweaks.COLORFUL_SHEEP_LOADED &&
+		if (RTConfig.SheepColorWeights.enabled && !RandomTweaks.COLORFUL_SHEEP_LOADED &&
 				entity.getClass() == EntitySheep.class) {
 			ColoredSheepHandler.onSheepSpawn((EntitySheep) entity);
 		}
 
-		if(RTConfig.RandomizedAges.chance != 0.0) {
+		if (RTConfig.RandomizedAges.chance != 0.0) {
 			final EntityAgeable ageable = (EntityAgeable) entity;
 
 			if (ageable.isChild()) {
@@ -147,17 +148,17 @@ public final class MiscEventHandler {
 	public static void onLivingUpdate(LivingEvent.LivingUpdateEvent event) {
 		final EntityLivingBase entity = event.getEntityLiving();
 
-		if(entity.getEntityWorld().isRemote) {
+		if (entity.getEntityWorld().isRemote) {
 			return;
 		}
 
-		if(RTConfig.Misc.entityNaNHealthFix && !RandomTweaks.ENTITY_NAN_HEALTH_FIX_LOADED &&
+		if (RTConfig.Misc.entityNaNHealthFix && !RandomTweaks.ENTITY_NAN_HEALTH_FIX_LOADED &&
 				Float.isNaN(entity.getHealth())) {
 			entity.setHealth(0.0F);
 			return;
 		}
 
-		if(entity.getClass() == EntitySheep.class) {
+		if (entity.getClass() == EntitySheep.class) {
 			ColoredSheepHandler.onSheepTick((EntitySheep) entity);
 		}
 	}
@@ -168,7 +169,7 @@ public final class MiscEventHandler {
 		final DamageSource source = event.getSource();
 		final float amount = event.getAmount();
 
-		if(RTConfig.Misc.entityNaNHealthFix && !RandomTweaks.ENTITY_NAN_HEALTH_FIX_LOADED &&
+		if (RTConfig.Misc.entityNaNHealthFix && !RandomTweaks.ENTITY_NAN_HEALTH_FIX_LOADED &&
 				Float.isNaN(amount)) {
 			RandomTweaks.LOGGER.error("{} was damaged by a NaN value.", entity);
 			RandomTweaks.LOGGER.error("Immediate source: " + source);
@@ -184,17 +185,17 @@ public final class MiscEventHandler {
 
 		final String gameRule;
 
-		if(source == DamageSource.DROWN) {
+		if (source == DamageSource.DROWN) {
 			gameRule = RTConfig.GameRules.drowningDamageMultiplier;
-		} else if(source == DamageSource.FALL) {
+		} else if (source == DamageSource.FALL) {
 			gameRule = RTConfig.GameRules.fallDamageMultiplier;
-		} else if(source == DamageSource.IN_FIRE || source == DamageSource.ON_FIRE) {
+		} else if (source == DamageSource.IN_FIRE || source == DamageSource.ON_FIRE) {
 			gameRule = RTConfig.GameRules.fireDamageMultiplier;
 		} else {
 			return;
 		}
 
-		if(gameRule.isEmpty()) {
+		if (gameRule.isEmpty()) {
 			return;
 		}
 
@@ -204,11 +205,11 @@ public final class MiscEventHandler {
 			multiplier = Float.parseFloat(
 					entity.getEntityWorld().getGameRules().getString(gameRule)
 			);
-		} catch(NumberFormatException ignored) {}
+		} catch (NumberFormatException ignored) {}
 
-		if(multiplier == 0.0F) {
+		if (multiplier == 0.0F) {
 			event.setCanceled(true);
-		} else if(multiplier <= 0.0F) {
+		} else if (multiplier <= 0.0F) {
 			event.setCanceled(true);
 			entity.setHealth(Math.max(
 					entity.getHealth() + amount * multiplier,
@@ -224,29 +225,29 @@ public final class MiscEventHandler {
 		final Entity attacker = event.getSource().getTrueSource();
 		final EntityLivingBase entity = event.getEntityLiving();
 
-		if(attacker == null || !(entity instanceof IEntityOwnable)) {
+		if (attacker == null || !(entity instanceof IEntityOwnable)) {
 			return;
 		}
 
 		final IEntityOwnable pet = ((IEntityOwnable) entity);
 		final UUID owner = pet.getOwnerId();
 
-		if(owner == null) {
+		if (owner == null) {
 			return;
 		}
 
 		final boolean protectFromSneaking = RTConfig.Animals.protectPetsFromSneakingOwners;
 
-		if(RTConfig.Animals.protectPetsFromOwners && owner.equals(attacker.getUniqueID()) &&
+		if (RTConfig.Animals.protectPetsFromOwners && owner.equals(attacker.getUniqueID()) &&
 				(protectFromSneaking || (!protectFromSneaking && !attacker.isSneaking()))) {
 			event.setCanceled(true);
 			return;
 		}
 
-		if(RTConfig.Animals.protectPetsFromOtherPets && attacker instanceof IEntityOwnable) {
+		if (RTConfig.Animals.protectPetsFromOtherPets && attacker instanceof IEntityOwnable) {
 			final IEntityOwnable otherPet = (IEntityOwnable) attacker;
 
-			if(owner.equals(otherPet.getOwnerId())) {
+			if (owner.equals(otherPet.getOwnerId())) {
 				entity.setRevengeTarget(null);
 				((EntityLivingBase) attacker).setRevengeTarget(null);
 				event.setCanceled(true);
@@ -258,55 +259,55 @@ public final class MiscEventHandler {
 	public static void onLivingDeath(LivingDeathEvent event) {
 		final EntityLivingBase entity = event.getEntityLiving();
 
-		if(RTConfig.Misc.mobsDropAllArmorAndEquipment && entity instanceof EntityLiving) {
+		if (RTConfig.Misc.mobsDropAllArmorAndEquipment && entity instanceof EntityLiving) {
 			final EntityLiving living = (EntityLiving) entity;
 			Arrays.fill(living.inventoryHandsDropChances, 1.0F);
 			Arrays.fill(living.inventoryArmorDropChances, 1.0F);
 		}
 
-		if(!RTConfig.Misc.mobsAlwaysDropLoot) {
+		if (!RTConfig.Misc.mobsAlwaysDropLoot) {
 			return;
 		}
 
 		final World world = entity.getEntityWorld();
 
-		if(world.isRemote) {
+		if (world.isRemote) {
 			return;
 		}
 
-		if(entity.recentlyHit == 0) {
+		if (entity.recentlyHit == 0) {
 			entity.recentlyHit = 100;
 		}
 
-		if(entity.attackingPlayer == null) {
+		if (entity.attackingPlayer == null) {
 			entity.attackingPlayer = FakePlayerFactory.getMinecraft((WorldServer) world);
 		}
 	}
 
 	@SubscribeEvent(priority = EventPriority.LOWEST)
 	public static void onLivingDrops(LivingDropsEvent event) {
-		if(RandomTweaks.VANILLATWEAKS_LOADED) {
+		if (RandomTweaks.VANILLATWEAKS_LOADED) {
 			return;
 		}
 
 		final Entity entity = event.getEntity();
 
-		if(!entity.getEntityWorld().getGameRules().getBoolean("doMobLoot")) {
+		if (!entity.getEntityWorld().getGameRules().getBoolean("doMobLoot")) {
 			return;
 		}
 
-		if(RTConfig.Animals.batLeatherDropChance != 0.0 && entity instanceof EntityBat &&
+		if (RTConfig.Animals.batLeatherDropChance != 0.0 && entity instanceof EntityBat &&
 				Math.random() < RTConfig.Animals.batLeatherDropChance) {
 			entity.dropItem(Items.LEATHER, 1);
 		}
 
-		if(!RTConfig.Misc.entitiesDropNameTags) {
+		if (!RTConfig.Misc.entitiesDropNameTags) {
 			return;
 		}
 
 		final String customName = entity.getCustomNameTag();
 
-		if(customName.isEmpty()) {
+		if (customName.isEmpty()) {
 			return;
 		}
 
@@ -317,13 +318,14 @@ public final class MiscEventHandler {
 
 	@SubscribeEvent
 	public static void onPlayerAttackEntity(AttackEntityEvent event) {
-		if(RandomTweaks.RANDOMCONFIGS_LOADED || !RTConfig.Misc.disableAttacksDuringAttackCooldown) {
+		if (RandomTweaks.RANDOMCONFIGS_LOADED ||
+				!RTConfig.Misc.disableAttacksDuringAttackCooldown) {
 			return;
 		}
 
 		final EntityPlayer player = event.getEntityPlayer();
 
-		if(!player.getEntityWorld().isRemote && player.getCooledAttackStrength(0.5F) != 1.0F) {
+		if (!player.getEntityWorld().isRemote && player.getCooledAttackStrength(0.5F) != 1.0F) {
 			player.resetCooldown();
 			event.setCanceled(true);
 		}
@@ -331,29 +333,29 @@ public final class MiscEventHandler {
 
 	@SubscribeEvent
 	public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-		if(!RTConfig.Misc.updateAllMapsInInventory) {
+		if (!RTConfig.Misc.updateAllMapsInInventory) {
 			return;
 		}
 
 		final EntityPlayer player = event.player;
 		final World world = player.getEntityWorld();
 
-		if(world.isRemote) {
+		if (world.isRemote) {
 			return;
 		}
 
 		//Taken from https://github.com/quat1024/Crowmap/blob/master/src/main/java/quaternary/
 		//crowmap/Crowmap.java
 
-		for(int i = 0; i < player.inventory.getSizeInventory(); i++) {
-			if(i == player.inventory.currentItem) {
+		for (int i = 0; i < player.inventory.getSizeInventory(); i++) {
+			if (i == player.inventory.currentItem) {
 				//The map is already being held, so there's no need to update it again
 				return;
 			}
 
 			final ItemStack stack = player.inventory.getStackInSlot(i);
 
-			if(stack.getItem() == Items.FILLED_MAP) {
+			if (stack.getItem() == Items.FILLED_MAP) {
 				Items.FILLED_MAP.updateMapData(
 						world, player, Items.FILLED_MAP.getMapData(stack, world)
 				);
@@ -363,7 +365,7 @@ public final class MiscEventHandler {
 
 	@SubscribeEvent
 	public static void onArrowNock(ArrowNockEvent event) {
-		if(!RTConfig.Misc.bowInfinityFix) {
+		if (!RTConfig.Misc.bowInfinityFix) {
 			return;
 		}
 
@@ -371,7 +373,7 @@ public final class MiscEventHandler {
 
 		//Taken from https://github.com/Parker8283/BowInfinityFix/blob/master/src/main/java/net/
 		//parker8283/bif/BowInfinityFix.java
-		if(EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, bow) > 0) {
+		if (EnchantmentHelper.getEnchantmentLevel(Enchantments.INFINITY, bow) > 0) {
 			event.getEntityPlayer().setActiveHand(event.getHand());
 			event.setAction(new ActionResult<>(EnumActionResult.SUCCESS, bow));
 		}
@@ -379,7 +381,7 @@ public final class MiscEventHandler {
 
 	@SubscribeEvent
 	public static void onBlockRightClick(PlayerInteractEvent.RightClickBlock event) {
-		if(!RTConfig.Misc.cakeSoundsAndParticles || RandomTweaks.CAKE_CHOMPS_LOADED) {
+		if (!RTConfig.Misc.cakeSoundsAndParticles || RandomTweaks.CAKE_CHOMPS_LOADED) {
 			return;
 		}
 
@@ -389,7 +391,7 @@ public final class MiscEventHandler {
 		final IBlockState state = world.getBlockState(pos);
 		final Block block = state.getBlock();
 
-		if(!(block instanceof BlockCake) || !player.canEat(false)) {
+		if (!(block instanceof BlockCake) || !player.canEat(false)) {
 			return;
 		}
 
@@ -400,7 +402,7 @@ public final class MiscEventHandler {
 		final int meta = stack.getMetadata();
 
 		//Taken from EntityLivingBase#updateItemUse
-		for(int i = 0; i < 5; i++) {
+		for (int i = 0; i < 5; i++) {
 			final Vec3d particlePos = new Vec3d(
 					(random.nextFloat() - 0.5) * 0.3, (-random.nextFloat()) * 0.6 - 0.3, 0.6
 			).rotatePitch(
@@ -438,25 +440,25 @@ public final class MiscEventHandler {
 	@SuppressWarnings("deprecation")
 	@SubscribeEvent
 	public static void onBlockPlaced(BlockEvent.PlaceEvent event) {
-		if(!RTConfig.Misc.wetSpongesDryInNether) {
+		if (!RTConfig.Misc.wetSpongesDryInNether) {
 			return;
 		}
 
 		final World world = event.getWorld();
 
-		if(world.isRemote) {
+		if (world.isRemote) {
 			return;
 		}
 
 		final IBlockState state = event.getPlacedBlock();
 
-		if(state.getBlock() != Blocks.SPONGE || !state.getValue(BlockSponge.WET)) {
+		if (state.getBlock() != Blocks.SPONGE || !state.getValue(BlockSponge.WET)) {
 			return;
 		}
 
 		final BlockPos pos = event.getPos();
 
-		if(!BiomeDictionary.getTypes(world.getBiome(pos)).contains(BiomeDictionary.Type.NETHER)) {
+		if (!BiomeDictionary.getTypes(world.getBiome(pos)).contains(BiomeDictionary.Type.NETHER)) {
 			return;
 		}
 
@@ -467,7 +469,7 @@ public final class MiscEventHandler {
 				2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F
 		);
 
-		for(int i = 0; i < 8; i++) {
+		for (int i = 0; i < 8; i++) {
 			world.spawnParticle(
 					EnumParticleTypes.SMOKE_NORMAL, pos.getX() + Math.random(),
 					pos.getY() + Math.random(), pos.getZ() + Math.random(), 0.0, 0.0, 0.0
@@ -477,19 +479,19 @@ public final class MiscEventHandler {
 
 	@SubscribeEvent(priority = EventPriority.LOW)
 	public static void onEntityInteractSpecific(PlayerInteractEvent.EntityInteractSpecific event) {
-		if(!RTConfig.Misc.armorStandSwapping) {
+		if (!RTConfig.Misc.armorStandSwapping) {
 			return;
 		}
 
 		final EntityPlayer player = event.getEntityPlayer();
 
-		if(player.getEntityWorld().isRemote || !player.isSneaking() || player.isSpectator()) {
+		if (player.getEntityWorld().isRemote || !player.isSneaking() || player.isSpectator()) {
 			return;
 		}
 
 		final Entity target = event.getTarget();
 
-		if(!(target instanceof EntityArmorStand)) {
+		if (!(target instanceof EntityArmorStand)) {
 			return;
 		}
 
@@ -499,7 +501,7 @@ public final class MiscEventHandler {
 		final List<ItemStack> armorStandInventory =
 				(List<ItemStack>) armorStand.getArmorInventoryList();
 
-		for(EntityEquipmentSlot slot : EntityUtils.ARMOR_SLOTS) {
+		for (EntityEquipmentSlot slot : EntityUtils.ARMOR_SLOTS) {
 			final ItemStack playerStack = player.getItemStackFromSlot(slot);
 			final ItemStack armorStandStack = armorStand.getItemStackFromSlot(slot);
 
@@ -522,10 +524,11 @@ public final class MiscEventHandler {
 	}
 
 	@SubscribeEvent
-	public static void onMobGriefing(EntityMobGriefingEvent event) {
-		if (RTConfig.Misc.shearableCreepers && (event.getEntity() instanceof EntityCreeper) &&
-				event.getEntity().getEntityData().getBoolean("Sheared")) {
-			event.setResult(Event.Result.DENY);
+	public static void onExplosion(ExplosionEvent.Start event) {
+		if (RTConfig.Misc.shearableCreepers &&
+				event.getExplosion().getExplosivePlacedBy() instanceof EntityCreeper &&
+				event.getExplosion().getExplosivePlacedBy().getEntityData().getBoolean("Sheared")) {
+			event.setCanceled(true);
 		}
 	}
 }
