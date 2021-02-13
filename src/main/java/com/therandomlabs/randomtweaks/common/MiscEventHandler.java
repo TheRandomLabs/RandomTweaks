@@ -525,7 +525,7 @@ public final class MiscEventHandler {
 	public static void onMobGriefing(EntityMobGriefingEvent event) {
 		if (RTConfig.Misc.shearableCreepers && (event.getEntity() instanceof EntityCreeper) &&
 				event.getEntity().getEntityData().getBoolean("Sheared")) {
-			event.setCanceled(true);
+			event.setResult(Event.Result.DENY);
 		}
 	}
 }
