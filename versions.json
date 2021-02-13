@@ -1,6 +1,7 @@
 {
 	"homepage": "https://minecraft.curseforge.com/projects/randomtweaks",
 	"1.12.2": {
+		"1.12.2-2.8.3.0": "Added shearable creepers.",
 		"1.12.2-2.8.2.2": "Fixed parrot feeding.",
 		"1.12.2-2.8.2.1": "Fixed death punishments applying when returning from the End.",
 		"1.12.2-2.8.2.0": "Added a keybind to toggle potion particles.",
@@ -91,6 +92,7 @@
 		"1.12.1-1.10.0.0": "Changed the versioning scheme.\nChanged the location of logfilters.json.\nAdded /rtreloadclient."
 	},
 	"1.12.1": {
+		"1.12.2-2.8.3.0": "Added shearable creepers.",
 		"1.12.2-2.8.2.2": "Fixed parrot feeding.",
 		"1.12.2-2.8.2.1": "Fixed death punishments applying when returning from the End.",
 		"1.12.2-2.8.2.0": "Added a keybind to toggle potion particles.",
@@ -139,6 +141,7 @@
 		"1.12.1-1.10.0.0": "Changed the versioning scheme.\nChanged the location of logfilters.json.\nAdded /rtreloadclient."
 	},
 	"1.12": {
+		"1.12.2-2.8.3.0": "Added shearable creepers.",
 		"1.12.2-2.8.2.2": "Fixed parrot feeding.",
 		"1.12.2-2.8.2.1": "Fixed death punishments applying when returning from the End.",
 		"1.12.2-2.8.2.0": "Added a keybind to toggle potion particles.",
@@ -409,12 +412,12 @@
 		"1.11.2-1.0.0.0": "Initial release."
 	},
 	"promos": {
-		"1.12.2-latest": "1.12.2-2.8.2.2",
-		"1.12.2-recommended": "1.12.2-2.8.2.2",
-		"1.12.1-latest": "1.12.2-2.8.2.2",
-		"1.12.1-recommended": "1.12.2-2.8.2.2",
-		"1.12-latest": "1.12.2-2.8.2.2",
-		"1.12-recommended": "1.12.2-2.8.2.2",
+		"1.12.2-latest": "1.12.2-2.8.3.0",
+		"1.12.2-recommended": "1.12.2-2.8.3.0",
+		"1.12.1-latest": "1.12.2-2.8.3.0",
+		"1.12.1-recommended": "1.12.2-2.8.3.0",
+		"1.12-latest": "1.12.2-2.8.3.0",
+		"1.12-recommended": "1.12.2-2.8.3.0",
 		"1.11.2-latest": "1.11.2-2.7.1.0",
 		"1.11.2-recommended": "1.11.2-2.7.1.0",
 		"1.11-latest": "1.11.2-2.7.1.0",
