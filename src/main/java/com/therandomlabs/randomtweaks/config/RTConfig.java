@@ -516,6 +516,11 @@ public final class RTConfig {
 		public static boolean pickUpSkeletonArrows = TRLUtils.IS_DEOBFUSCATED;
 
 		@Config.Property(
+				"Allows creepers to be sheared for gunpowder, after which they cannot explode."
+		)
+		public static boolean shearableCreepers = TRLUtils.IS_DEOBFUSCATED;
+
+		@Config.Property(
 				"In which circumstance a torch should be reoriented when the block it is " +
 						"attached to is broken."
 		)

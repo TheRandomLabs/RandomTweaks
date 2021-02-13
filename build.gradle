@@ -16,7 +16,7 @@ buildscript {
 apply plugin: "net.minecraftforge.gradle.forge"
 apply plugin: "com.github.johnrengelman.shadow"
 
-version = "1.12.2-2.8.2.2"
+version = "1.12.2-2.8.3.0"
 group = "com.therandomlabs.randomtweaks"
 archivesBaseName = "randomtweaks"
 
@@ -28,26 +28,18 @@ repositories {
 	}
 
 	maven {
-		url "https://minecraft.curseforge.com/api/maven"
-	}
-
-	maven {
-		url "http://www.ryanliptak.com/maven/"
-	}
-
-	maven {
-		url "https://maven.mcmoddev.com/"
+		url "https://www.cursemaven.com"
 	}
 }
 
 dependencies {
 	shadow "com.github.TheRandomLabs:RandomLib:1.12-SNAPSHOT"
 	compile "com.github.TheRandomLabs:RandomLib:1.12-SNAPSHOT"
-	deobfCompile "randompatches:randompatches:1.12.2:1.17.1.0"
-	deobfCompile "randomportals:randomportals:1.12.2:1.8.1.1"
-	deobfCompile "applecore:AppleCore:1.12.2-3.2.0:api"
-	deobfCompile "net.ilexiconn:llibrary:1.7.19-1.12.2"
-	deobfCompile "wings:wings:1.1.6:1.12.2"
+	deobfCompile "curse.maven:randompatches-285612:3133651"
+	deobfCompile "curse.maven:randomportals-308137:3136488"
+	deobfCompile "curse.maven:applecore-224472:2969118"
+	deobfCompile "curse.maven:llibrary-243298:3116493"
+	deobfCompile "curse.maven:wings-302584:2829351"
 }
 
 shadowJar {

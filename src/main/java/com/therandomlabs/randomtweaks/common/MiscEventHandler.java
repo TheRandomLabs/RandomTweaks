@@ -22,6 +22,7 @@ import net.minecraft.entity.IEntityOwnable;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.item.EntityArmorStand;
+import net.minecraft.entity.monster.EntityCreeper;
 import net.minecraft.entity.monster.EntityZombie;
 import net.minecraft.entity.passive.EntityBat;
 import net.minecraft.entity.passive.EntitySheep;
@@ -46,6 +47,7 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
+import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -509,13 +511,21 @@ public final class MiscEventHandler {
 			final SoundEvent playerEquipSound = ArmorEquipSoundHandler.getSound(armorStandStack);
 			final SoundEvent armorStandEquipSound = ArmorEquipSoundHandler.getSound(playerStack);
 
-			if(playerEquipSound != null) {
+			if (playerEquipSound != null) {
 				player.playSound(playerEquipSound, 1.0F, 1.0F);
 			}
 
-			if(armorStandEquipSound != null) {
+			if (armorStandEquipSound != null) {
 				armorStand.playSound(armorStandEquipSound, 1.0F, 1.0F);
 			}
+		}
+	}
+
+	@SubscribeEvent
+	public static void onMobGriefing(EntityMobGriefingEvent event) {
+		if (RTConfig.Misc.shearableCreepers && (event.getEntity() instanceof EntityCreeper) &&
+				event.getEntity().getEntityData().getBoolean("Sheared")) {
+			event.setCanceled(true);
 		}
 	}
 }
