@@ -47,7 +47,6 @@ import net.minecraft.world.WorldServer;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.util.FakePlayerFactory;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.EntityMobGriefingEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingDropsEvent;
@@ -58,7 +57,6 @@ import net.minecraftforge.event.entity.player.ArrowNockEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.ExplosionEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.eventhandler.Event;
 import net.minecraftforge.fml.common.eventhandler.EventPriority;
@@ -85,6 +83,11 @@ public final class MiscEventHandler {
 
 		if (entity instanceof EntityZombie) {
 			ZombieAIHandler.onZombieJoinWorld((EntityZombie) entity);
+		}
+
+		if (RTConfig.Misc.shearableCreepers && entity instanceof EntityCreeper &&
+				entity.getEntityData().getBoolean("Sheared")) {
+			((EntityCreeper) entity).targetTasks.taskEntries.clear();
 		}
 	}
 
@@ -520,15 +523,6 @@ public final class MiscEventHandler {
 			if (armorStandEquipSound != null) {
 				armorStand.playSound(armorStandEquipSound, 1.0F, 1.0F);
 			}
-		}
-	}
-
-	@SubscribeEvent
-	public static void onExplosion(ExplosionEvent.Start event) {
-		if (RTConfig.Misc.shearableCreepers &&
-				event.getExplosion().getExplosivePlacedBy() instanceof EntityCreeper &&
-				event.getExplosion().getExplosivePlacedBy().getEntityData().getBoolean("Sheared")) {
-			event.setCanceled(true);
 		}
 	}
 }

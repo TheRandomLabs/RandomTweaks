@@ -164,6 +164,7 @@ public final class EntityInteractHandler {
 		}
 
 		creeper.getEntityData().setBoolean("Sheared", true);
+		creeper.targetTasks.taskEntries.clear();
 		stack.damageItem(1, player);
 	}
 }
